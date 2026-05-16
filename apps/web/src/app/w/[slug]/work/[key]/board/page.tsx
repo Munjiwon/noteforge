@@ -47,6 +47,7 @@ export default async function BoardPage({
             assignee: { select: { name: true, color: true } },
             epic: { select: { number: true, summary: true } },
             status: { select: { category: true } },
+            labels: { include: { label: { select: { name: true, color: true } } } },
           },
         });
 
@@ -65,6 +66,7 @@ export default async function BoardPage({
     epicLabel: i.epic ? issueKey(project.key, i.epic.number) : null,
     dueDate: i.dueDate ? i.dueDate.toISOString() : null,
     statusCategory: i.status.category,
+    labels: i.labels.map((l) => ({ name: l.label.name, color: l.label.color })),
   }));
 
   const epics = await prisma.issue.findMany({

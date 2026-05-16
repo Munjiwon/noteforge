@@ -20,6 +20,7 @@ export type BoardCard = {
   epicLabel: string | null;
   dueDate: string | null;
   statusCategory: string;
+  labels: { name: string; color: string | null }[];
 };
 
 type Column = { id: string; name: string; statusIds: string[]; wipLimit: number | null };
@@ -225,6 +226,15 @@ export function BoardView({
                                 📅 {c.dueDate.slice(5, 10)}
                               </span>
                             )}
+                            {c.labels.map((l) => (
+                              <span
+                                key={l.name}
+                                className="inline-block rounded px-1.5 py-0.5 text-[10px] text-white"
+                                style={{ background: l.color ?? "#64748b" }}
+                              >
+                                {l.name}
+                              </span>
+                            ))}
                           </div>
                           <div className="flex items-center gap-2 text-xs text-gray-500">
                             <span>{c.typeIcon}</span>
