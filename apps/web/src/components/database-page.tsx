@@ -1,0 +1,247 @@
+"use client";
+
+import { useEffect, useState, useTransition } from "react";
+import { renamePage, setPageIcon } from "@/app/w/[slug]/actions";
+import { PeekModal } from "./peek-modal";
+import { setKanbanGroup, setView } from "@/app/w/[slug]/database-actions";
+import { DatabaseView } from "./database-view";
+import { KanbanView } from "./kanban-view";
+import { GalleryView } from "./gallery-view";
+import { CalendarView } from "./calendar-view";
+import { TimelineView } from "./timeline-view";
+import { PageCover } from "./page-cover";
+import { ShareButton } from "./share-button";
+import { DbControls } from "./db-controls";
+import { applyQuery } from "@/lib/db-query";
+import type { DbSchema, DbView } from "@/lib/database";
+import type { PermItem } from "./share-button";
+
+const EMOJI_CHOICES = ["📊", "🗂️", "📋", "✅", "🚀", "🐛", "🎯", "📅", "🧾"];
+
+export function DatabasePage({
+  slug,
+  db,
+  rows,
+  role,
+}: {
+  slug: string;
+  db: {
+    id: string;
+    title: string;
+    icon: string | null;
+    schema: DbSchema;
+    cover?: string | null;
+    publicAccess?: "none" | "view";
+    publicSlug?: string | null;
+    permissions?: PermItem[];
+  };
+  rows: { id: string; parentId: string; title: string; cover?: string | null; dataValues: Record<string, unknown> }[];
+  role: "owner" | "editor" | "viewer";
+}) {
+  const [title, setTitle] = useState(db.title);
+  const [icon, setIcon] = useState(db.icon);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [, start] = useTransition();
+  const readOnly = role === "viewer";
+  const view: DbView = db.schema.view ?? "table";
+  const selectProps = db.schema.props.filter((p) => p.type === "select");
+  const visibleRows = applyQuery(db.schema, rows);
+  const [peekId, setPeekId] = useState<string | null>(null);
+
+  // Listen for global event so Row "Peek" button can open the modal without prop drilling.
+  useEffect(() => {
+    const onPeek = (e: Event) => {
+      const ce = e as CustomEvent<{ pageId: string }>;
+      if (ce.detail?.pageId) setPeekId(ce.detail.pageId);
+    };
+    window.addEventListener("db-row-peek", onPeek as EventListener);
+    return () => window.removeEventListener("db-row-peek", onPeek as EventListener);
+  }, []);
+
+  return (
+    <div>
+      <PageCover
+        slug={slug}
+        pageId={db.id}
+        cover={db.cover ?? null}
+        readOnly={readOnly}
+      />
+      <div className="max-w-6xl mx-auto px-12 py-10">
+        <div className="flex justify-end mb-2">
+          <ShareButton
+            slug={slug}
+            pageId={db.id}
+            initialAccess={db.publicAccess ?? "none"}
+            initialPublicSlug={db.publicSlug ?? null}
+            initialPermissions={db.permissions ?? []}
+            canEdit={!readOnly}
+          />
+        </div>
+      <div className="relative flex items-center gap-2 mb-2">
+        <button
+          className="text-4xl leading-none hover:bg-black/5 rounded px-1"
+          onClick={() => setPickerOpen((o) => !o)}
+          disabled={readOnly}
+        >
+          {icon ?? "📊"}
+        </button>
+        {pickerOpen && (
+          <div className="absolute top-12 left-0 z-10 bg-white shadow-lg border rounded p-2 grid grid-cols-5 gap-1">
+            {EMOJI_CHOICES.map((e) => (
+              <button
+                key={e}
+                className="text-xl hover:bg-black/5 rounded p-1"
+                onClick={() => {
+                  setIcon(e);
+                  setPickerOpen(false);
+                  start(() => setPageIcon(slug, db.id, e));
+                }}
+              >
+                {e}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+      <input
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        onBlur={() => {
+          if (title !== db.title) start(() => renamePage(slug, db.id, title));
+        }}
+        disabled={readOnly}
+        placeholder="Untitled database"
+        className="w-full text-4xl font-bold outline-none bg-transparent placeholder-gray-300 mb-1"
+      />
+      <div className="flex items-center gap-3 mb-4 text-xs text-gray-500">
+        <span>Database</span>
+        <span className="text-gray-300">·</span>
+        <div className="inline-flex rounded border border-gray-200 overflow-hidden">
+          <button
+            className={
+              "px-2 py-1 " +
+              (view === "table" ? "bg-gray-900 text-white" : "hover:bg-black/5")
+            }
+            disabled={readOnly}
+            onClick={() => {
+              if (view !== "table") start(() => setView(slug, db.id, "table"));
+            }}
+          >
+            Table
+          </button>
+          <button
+            className={
+              "px-2 py-1 " +
+              (view === "kanban" ? "bg-gray-900 text-white" : "hover:bg-black/5")
+            }
+            disabled={readOnly}
+            onClick={() => {
+              if (view !== "kanban") start(() => setView(slug, db.id, "kanban"));
+            }}
+          >
+            Kanban
+          </button>
+          <button
+            className={
+              "px-2 py-1 " +
+              (view === "gallery" ? "bg-gray-900 text-white" : "hover:bg-black/5")
+            }
+            disabled={readOnly}
+            onClick={() => {
+              if (view !== "gallery") start(() => setView(slug, db.id, "gallery"));
+            }}
+          >
+            Gallery
+          </button>
+          <button
+            className={
+              "px-2 py-1 " +
+              (view === "calendar" ? "bg-gray-900 text-white" : "hover:bg-black/5")
+            }
+            disabled={readOnly}
+            onClick={() => {
+              if (view !== "calendar") start(() => setView(slug, db.id, "calendar"));
+            }}
+          >
+            Calendar
+          </button>
+          <button
+            className={
+              "px-2 py-1 " +
+              (view === "timeline" ? "bg-gray-900 text-white" : "hover:bg-black/5")
+            }
+            disabled={readOnly}
+            onClick={() => {
+              if (view !== "timeline") start(() => setView(slug, db.id, "timeline"));
+            }}
+          >
+            Timeline
+          </button>
+        </div>
+        <DbControls slug={slug} dbId={db.id} schema={db.schema} readOnly={readOnly} />
+        {view === "kanban" && selectProps.length > 0 && (
+          <label className="inline-flex items-center gap-1">
+            <span>Group by:</span>
+            <select
+              className="bg-transparent border border-gray-200 rounded px-1 py-0.5"
+              disabled={readOnly}
+              value={db.schema.kanbanGroupBy ?? selectProps[0].id}
+              onChange={(e) =>
+                start(() => setKanbanGroup(slug, db.id, e.target.value))
+              }
+            >
+              {selectProps.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
+      </div>
+      {view === "kanban" ? (
+        <KanbanView
+          slug={slug}
+          dbId={db.id}
+          schema={db.schema}
+          rows={visibleRows}
+          readOnly={readOnly}
+        />
+      ) : view === "gallery" ? (
+        <GalleryView
+          slug={slug}
+          dbId={db.id}
+          schema={db.schema}
+          rows={visibleRows}
+          readOnly={readOnly}
+        />
+      ) : view === "calendar" ? (
+        <CalendarView
+          slug={slug}
+          dbId={db.id}
+          schema={db.schema}
+          rows={visibleRows}
+          readOnly={readOnly}
+        />
+      ) : view === "timeline" ? (
+        <TimelineView
+          slug={slug}
+          dbId={db.id}
+          schema={db.schema}
+          rows={visibleRows}
+          readOnly={readOnly}
+        />
+      ) : (
+        <DatabaseView
+          slug={slug}
+          dbId={db.id}
+          schema={db.schema}
+          rows={visibleRows}
+          readOnly={readOnly}
+        />
+      )}
+      </div>
+      <PeekModal pageId={peekId} onClose={() => setPeekId(null)} />
+    </div>
+  );
+}

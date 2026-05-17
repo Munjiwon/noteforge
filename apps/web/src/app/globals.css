@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "../../../../node_modules/@blocknote/core/dist/style.css";
+@import "../../../../node_modules/@blocknote/mantine/dist/style.css";
+
+html, body { height: 100%; }
+body {
+  color: #37352f;
+  background: #ffffff;
+}
+
+.dark body {
+  color: #e5e7eb;
+  background: #191919;
+}
+.dark .bg-white { background-color: #2a2a2a !important; }
+.dark .bg-sidebar { background-color: #202020 !important; }
+.dark .bg-gray-50 { background-color: #232323 !important; }
+.dark .bg-gray-100 { background-color: #2a2a2a !important; }
+.dark .border-gray-200 { border-color: #383838 !important; }
+.dark .border-gray-100 { border-color: #2f2f2f !important; }
+.dark .text-gray-900 { color: #e5e7eb !important; }
+.dark .text-gray-700 { color: #d1d5db !important; }
+.dark .text-gray-600 { color: #b3b3b3 !important; }
+.dark .text-gray-500 { color: #9ca3af !important; }
+.dark .text-gray-400 { color: #7a7a7a !important; }
+.dark .text-gray-300 { color: #555 !important; }
+.dark .hover\:bg-black\/5:hover { background-color: rgba(255,255,255,0.06) !important; }
+.dark .hover\:bg-black\/10:hover { background-color: rgba(255,255,255,0.1) !important; }
+.dark .bg-black\/5 { background-color: rgba(255,255,255,0.06) !important; }
+.dark .bg-black\/10 { background-color: rgba(255,255,255,0.1) !important; }
+.dark .placeholder-gray-300::placeholder { color: #555 !important; }
+
+/* BlockNote tweaks to feel more Notion-like */
+.bn-container {
+  background: transparent;
+}
+.dark .bn-container,
+.dark .bn-editor {
+  color: #e5e7eb;
+}

@@ -1,0 +1,186 @@
+"use client";
+
+import { useEffect, useRef, useState, useTransition } from "react";
+import Link from "next/link";
+import clsx from "clsx";
+import {
+  markAllNotificationsRead,
+  markNotificationRead,
+} from "@/app/notification-actions";
+
+export type NotifItem = {
+  id: string;
+  kind: string;
+  preview: string;
+  read: boolean;
+  createdAt: string;
+  pageId: string | null;
+  workspaceSlug: string | null;
+  actor: { name: string; color: string } | null;
+};
+
+export function NotificationsButton({
+  notifications,
+  workspaceSlug,
+}: {
+  notifications: NotifItem[];
+  workspaceSlug: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const [, start] = useTransition();
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, [open]);
+
+  const unread = notifications.filter((n) => !n.read).length;
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="relative px-2 py-1 rounded hover:bg-black/5"
+        title="Notifications"
+      >
+        🔔
+        {unread > 0 && (
+          <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] rounded-full px-1 min-w-[16px] text-center">
+            {unread}
+          </span>
+        )}
+      </button>
+      {open && (
+        <div className="absolute right-0 top-full mt-1 z-40 bg-white border border-gray-200 rounded-md shadow-lg w-[360px] max-h-[480px] overflow-hidden flex flex-col">
+          <div className="flex items-center justify-between px-3 py-2 border-b border-gray-100">
+            <span className="text-sm font-medium">Notifications</span>
+            <span className="flex gap-2">
+              {unread > 0 && (
+                <button
+                  onClick={() =>
+                    start(async () => {
+                      await markAllNotificationsRead();
+                    })
+                  }
+                  className="text-xs text-gray-500 hover:text-gray-900"
+                >
+                  Mark all read
+                </button>
+              )}
+            </span>
+          </div>
+          <div className="overflow-y-auto max-h-[420px]">
+            {notifications.length === 0 ? (
+              <p className="text-xs text-gray-400 text-center py-8">
+                You're all caught up.
+              </p>
+            ) : (
+              <ul>
+                {notifications.map((n) => (
+                  <li
+                    key={n.id}
+                    className={clsx(
+                      "border-b border-gray-50 last:border-b-0",
+                      !n.read && "bg-blue-50/40",
+                    )}
+                  >
+                    <NotifRow
+                      n={n}
+                      onOpen={(id) => {
+                        setOpen(false);
+                        start(async () => {
+                          await markNotificationRead(id);
+                        });
+                      }}
+                    />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+          <div className="border-t border-gray-100 px-3 py-1.5 text-[11px]">
+            <Link
+              href={`/w/${workspaceSlug}/inbox`}
+              onClick={() => setOpen(false)}
+              className="text-gray-500 hover:text-gray-900"
+            >
+              View all notifications →
+            </Link>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function NotifRow({
+  n,
+  onOpen,
+}: {
+  n: NotifItem;
+  onOpen: (id: string) => void;
+}) {
+  const verb =
+    n.kind === "mention"
+      ? "mentioned you"
+      : n.kind === "comment_reply"
+      ? "replied to your thread"
+      : "commented";
+  const href =
+    n.workspaceSlug && n.pageId
+      ? `/w/${n.workspaceSlug}/p/${n.pageId}`
+      : "#";
+
+  return (
+    <Link
+      href={href}
+      onClick={() => onOpen(n.id)}
+      className="block px-3 py-2 hover:bg-black/5"
+    >
+      <div className="flex items-start gap-2">
+        {n.actor ? (
+          <span
+            className="inline-flex items-center justify-center w-6 h-6 rounded-full text-white text-[10px] font-medium shrink-0"
+            style={{ background: n.actor.color }}
+          >
+            {n.actor.name.slice(0, 1).toUpperCase()}
+          </span>
+        ) : (
+          <span className="w-6" />
+        )}
+        <div className="flex-1 min-w-0">
+          <div className="text-xs text-gray-700">
+            <span className="font-medium">{n.actor?.name ?? "Someone"}</span>{" "}
+            {verb}
+          </div>
+          {n.preview && (
+            <div className="text-xs text-gray-500 truncate">{n.preview}</div>
+          )}
+          <div className="text-[10px] text-gray-400 mt-0.5">
+            {relative(n.createdAt)}
+          </div>
+        </div>
+        {!n.read && (
+          <span className="w-2 h-2 rounded-full bg-blue-500 mt-1 shrink-0" />
+        )}
+      </div>
+    </Link>
+  );
+}
+
+function relative(iso: string) {
+  const t = new Date(iso).getTime();
+  const diff = (Date.now() - t) / 1000;
+  if (diff < 60) return "just now";
+  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+  if (diff < 86400 * 7) return `${Math.floor(diff / 86400)}d ago`;
+  return new Date(iso).toLocaleDateString();
+}

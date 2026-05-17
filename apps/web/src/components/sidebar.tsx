@@ -1,0 +1,495 @@
+"use client";
+
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useMemo, useState, useTransition } from "react";
+import clsx from "clsx";
+import {
+  createPage,
+  createPageFromTemplate,
+  deletePage,
+  duplicatePage,
+  purgePage,
+  reorderPage,
+  restorePage,
+  toggleFavorite,
+} from "@/app/w/[slug]/actions";
+import { PAGE_TEMPLATES } from "@/lib/page-templates";
+import { createDatabase } from "@/app/w/[slug]/database-actions";
+import { InviteButton } from "./invite-button";
+import { UserMenu } from "./user-menu";
+import { NotificationsButton, type NotifItem } from "./notifications-button";
+import { ImportButton } from "./import-button";
+
+type SidebarPage = {
+  id: string;
+  title: string;
+  icon: string | null;
+  parentId: string | null;
+  kind: string;
+  favorite?: boolean;
+};
+
+type TrashItem = { id: string; title: string; icon: string | null; kind: string };
+
+type Tree = SidebarPage & { children: Tree[] };
+
+function toTree(pages: SidebarPage[]): Tree[] {
+  const byId = new Map<string, Tree>();
+  pages.forEach((p) => byId.set(p.id, { ...p, children: [] }));
+  const roots: Tree[] = [];
+  for (const p of byId.values()) {
+    if (p.parentId && byId.has(p.parentId)) byId.get(p.parentId)!.children.push(p);
+    else roots.push(p);
+  }
+  return roots;
+}
+
+export function Sidebar({
+  workspaces,
+  currentSlug,
+  currentName,
+  memberCount,
+  role,
+  pages,
+  favorites,
+  trashed,
+  notifications,
+  recent,
+  user,
+}: {
+  workspaces: { slug: string; name: string }[];
+  currentSlug: string;
+  currentName: string;
+  memberCount: number;
+  role: "owner" | "editor" | "viewer";
+  pages: SidebarPage[];
+  favorites: SidebarPage[];
+  trashed: TrashItem[];
+  notifications: NotifItem[];
+  recent: TrashItem[];
+  user: { id: string; name: string; color: string };
+}) {
+  const params = useParams<{ pageId?: string }>();
+  const activePageId = params.pageId;
+  const tree = useMemo(() => toTree(pages), [pages]);
+  const [open, setOpen] = useState<Set<string>>(new Set());
+  const [, startTransition] = useTransition();
+
+  const toggle = (id: string) =>
+    setOpen((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+
+  const onCreate = (parentId: string | null) =>
+    startTransition(() => {
+      createPage(currentSlug, parentId);
+    });
+
+  const onCreateDb = (parentId: string | null) =>
+    startTransition(() => {
+      createDatabase(currentSlug, parentId);
+    });
+
+  const onDelete = (id: string) => {
+    if (!confirm("Move this page and all its sub-pages to Trash?")) return;
+    startTransition(() => {
+      deletePage(currentSlug, id);
+    });
+  };
+
+  const onToggleFav = (id: string) =>
+    startTransition(() => {
+      toggleFavorite(currentSlug, id);
+    });
+  const onRestore = (id: string) =>
+    startTransition(() => {
+      restorePage(currentSlug, id);
+    });
+  const onPurge = (id: string) => {
+    if (!confirm("Permanently delete? This cannot be undone.")) return;
+    startTransition(() => {
+      purgePage(currentSlug, id);
+    });
+  };
+  const onDuplicate = (id: string) =>
+    startTransition(() => {
+      duplicatePage(currentSlug, id);
+    });
+
+  const [dragId, setDragId] = useState<string | null>(null);
+  const [dropTarget, setDropTarget] = useState<{ id: string; where: "into" | "before" | "after" } | null>(null);
+
+  const [addMenuFor, setAddMenuFor] = useState<string | "root" | null>(null);
+
+  function renderNode(node: Tree, depth: number) {
+    const isOpen = open.has(node.id);
+    const hasKids = node.children.length > 0;
+    const isActive = node.id === activePageId;
+    const dropHere = dropTarget?.id === node.id ? dropTarget.where : null;
+    return (
+      <li key={node.id}>
+        <div
+          draggable={role !== "viewer"}
+          onDragStart={(e) => {
+            e.stopPropagation();
+            setDragId(node.id);
+            e.dataTransfer.effectAllowed = "move";
+          }}
+          onDragOver={(e) => {
+            if (!dragId || dragId === node.id) return;
+            e.preventDefault();
+            e.stopPropagation();
+            const rect = e.currentTarget.getBoundingClientRect();
+            const y = e.clientY - rect.top;
+            const where =
+              y < rect.height * 0.25
+                ? "before"
+                : y > rect.height * 0.75
+                ? "after"
+                : "into";
+            setDropTarget({ id: node.id, where });
+          }}
+          onDragLeave={() => {
+            if (dropTarget?.id === node.id) setDropTarget(null);
+          }}
+          onDrop={(e) => {
+            if (!dragId || dragId === node.id) return;
+            e.preventDefault();
+            e.stopPropagation();
+            const where = dropTarget?.id === node.id ? dropTarget.where : "into";
+            const draggedId = dragId;
+            setDragId(null);
+            setDropTarget(null);
+            const newParentId = where === "into" ? node.id : node.parentId;
+            const siblings = pages
+              .filter((p) => p.parentId === newParentId)
+              .sort((a, b) => a.id.localeCompare(b.id));
+            const idx = siblings.findIndex((s) => s.id === node.id);
+            const newPosition =
+              where === "into" ? siblings.length + 1
+              : where === "before" ? Math.max(0, idx)
+              : idx + 1;
+            startTransition(() => {
+              reorderPage(currentSlug, draggedId, newParentId, newPosition);
+            });
+          }}
+          onDragEnd={() => {
+            setDragId(null);
+            setDropTarget(null);
+          }}
+          className={clsx(
+            "group flex items-center gap-1 px-2 py-1 rounded hover:bg-black/5 cursor-default relative",
+            isActive && "bg-black/10",
+            dropHere === "into" && "ring-2 ring-blue-400 ring-inset",
+            dropHere === "before" && "before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-blue-400",
+            dropHere === "after" && "after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-blue-400",
+          )}
+          style={{ paddingLeft: 8 + depth * 14 }}
+        >
+          <button
+            onClick={() => toggle(node.id)}
+            className={clsx(
+              "w-4 h-4 grid place-items-center text-gray-400 hover:text-gray-700",
+              !hasKids && "invisible",
+            )}
+            aria-label="toggle"
+          >
+            {isOpen ? "▾" : "▸"}
+          </button>
+          <Link
+            href={`/w/${currentSlug}/p/${node.id}`}
+            className="flex-1 truncate text-sm py-0.5"
+          >
+            <span className="mr-1">
+              {node.icon ?? (node.kind === "database" ? "📊" : "📄")}
+            </span>
+            {node.title || (node.kind === "database" ? "Untitled database" : "Untitled")}
+          </Link>
+          <button
+            onClick={() => onToggleFav(node.id)}
+            className={clsx(
+              "px-1 text-gray-500 hover:text-yellow-500",
+              node.favorite ? "text-yellow-500" : "opacity-0 group-hover:opacity-100",
+            )}
+            title={node.favorite ? "Unfavorite" : "Favorite"}
+          >
+            {node.favorite ? "★" : "☆"}
+          </button>
+          {role !== "viewer" && (
+            <>
+              <div className="relative">
+                <button
+                  onClick={() => setAddMenuFor(addMenuFor === node.id ? null : node.id)}
+                  className="opacity-0 group-hover:opacity-100 text-gray-500 hover:text-gray-900 px-1"
+                  title="Add"
+                >
+                  +
+                </button>
+                {addMenuFor === node.id && (
+                  <div className="absolute top-full right-0 z-30 bg-white shadow-lg border rounded p-1 min-w-[140px]">
+                    <button
+                      className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded"
+                      onClick={() => {
+                        setAddMenuFor(null);
+                        onCreate(node.id);
+                      }}
+                    >
+                      📄 Sub-page
+                    </button>
+                    <button
+                      className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded"
+                      onClick={() => {
+                        setAddMenuFor(null);
+                        onCreateDb(node.id);
+                      }}
+                    >
+                      📊 Sub-database
+                    </button>
+                    <div className="border-t my-1" />
+                    <button
+                      className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded"
+                      onClick={() => {
+                        setAddMenuFor(null);
+                        onDuplicate(node.id);
+                      }}
+                    >
+                      ⎘ Duplicate
+                    </button>
+                  </div>
+                )}
+              </div>
+              <button
+                onClick={() => onDelete(node.id)}
+                className="opacity-0 group-hover:opacity-100 text-gray-500 hover:text-red-600 px-1"
+                title="Move to Trash"
+              >
+                ✕
+              </button>
+            </>
+          )}
+        </div>
+        {hasKids && isOpen && (
+          <ul>{node.children.map((c) => renderNode(c, depth + 1))}</ul>
+        )}
+      </li>
+    );
+  }
+
+  return (
+    <aside className="w-64 shrink-0 bg-sidebar border-r border-black/10 flex flex-col">
+      <div className="p-3 border-b border-black/10">
+        <details className="group">
+          <summary className="flex items-center gap-2 cursor-pointer list-none">
+            <div className="w-7 h-7 rounded bg-black text-white grid place-items-center text-sm">
+              {currentName.slice(0, 1).toUpperCase()}
+            </div>
+            <div className="flex-1">
+              <div className="text-sm font-medium truncate">{currentName}</div>
+              <div className="text-xs text-gray-500">
+                {memberCount} member{memberCount !== 1 && "s"}
+              </div>
+            </div>
+            <span className="text-gray-400 group-open:rotate-180 transition">▾</span>
+          </summary>
+          <ul className="mt-2 space-y-0.5 text-sm">
+            {workspaces.map((w) => (
+              <li key={w.slug}>
+                <Link
+                  href={`/w/${w.slug}`}
+                  className={clsx(
+                    "block px-2 py-1 rounded hover:bg-black/5",
+                    w.slug === currentSlug && "bg-black/10",
+                  )}
+                >
+                  {w.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </details>
+      </div>
+
+      <div className="mx-3 mt-2 flex items-center gap-1">
+        <button
+          onClick={() => window.dispatchEvent(new Event("search-open"))}
+          className="flex-1 flex items-center gap-2 px-2 py-1.5 rounded hover:bg-black/5 text-sm text-gray-600"
+        >
+          <span className="text-gray-400">🔎</span>
+          <span className="flex-1 text-left">Search</span>
+          <kbd className="text-[10px] text-gray-400 border border-gray-200 rounded px-1">⌘K</kbd>
+        </button>
+        <NotificationsButton notifications={notifications} workspaceSlug={currentSlug} />
+      </div>
+
+      {recent.length > 0 && (
+        <>
+          <div className="px-3 pt-3 pb-1 text-xs uppercase tracking-wide text-gray-500">
+            Recent
+          </div>
+          <ul className="pb-1">
+            {recent.map((r) => (
+              <li key={r.id}>
+                <Link
+                  href={`/w/${currentSlug}/p/${r.id}`}
+                  className={clsx(
+                    "flex items-center gap-1 px-3 py-1 rounded hover:bg-black/5 text-sm",
+                    r.id === activePageId && "bg-black/10",
+                  )}
+                >
+                  <span className="mr-1">
+                    {r.icon ?? (r.kind === "database" ? "📊" : "📄")}
+                  </span>
+                  <span className="truncate">
+                    {r.title || (r.kind === "database" ? "Untitled database" : "Untitled")}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+
+      {favorites.length > 0 && (
+        <>
+          <div className="px-3 pt-3 pb-1 text-xs uppercase tracking-wide text-gray-500">
+            Favorites
+          </div>
+          <ul className="pb-1">
+            {favorites.map((f) => (
+              <li key={f.id}>
+                <Link
+                  href={`/w/${currentSlug}/p/${f.id}`}
+                  className={clsx(
+                    "flex items-center gap-1 px-3 py-1 rounded hover:bg-black/5 text-sm",
+                    f.id === activePageId && "bg-black/10",
+                  )}
+                >
+                  <span className="text-yellow-500 text-xs">★</span>
+                  <span className="mr-1">
+                    {f.icon ?? (f.kind === "database" ? "📊" : "📄")}
+                  </span>
+                  <span className="truncate">
+                    {f.title || (f.kind === "database" ? "Untitled database" : "Untitled")}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+
+      <div className="flex items-center justify-between px-3 pt-3 pb-1 text-xs uppercase tracking-wide text-gray-500">
+        <span>Pages</span>
+        {role !== "viewer" && (
+          <div className="relative">
+            <button
+              onClick={() => setAddMenuFor(addMenuFor === "root" ? null : "root")}
+              className="text-gray-500 hover:text-gray-900"
+              title="Add"
+            >
+              +
+            </button>
+            {addMenuFor === "root" && (
+              <div className="absolute top-full right-0 z-30 bg-white shadow-lg border rounded p-1 min-w-[140px]">
+                <button
+                  className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded"
+                  onClick={() => {
+                    setAddMenuFor(null);
+                    onCreate(null);
+                  }}
+                >
+                  📄 New page
+                </button>
+                <button
+                  className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded"
+                  onClick={() => {
+                    setAddMenuFor(null);
+                    onCreateDb(null);
+                  }}
+                >
+                  📊 New database
+                </button>
+                <div className="border-t my-1" />
+                <div className="text-[10px] uppercase text-gray-400 px-2 pb-1">From template</div>
+                {PAGE_TEMPLATES.map((t) => (
+                  <button
+                    key={t.id}
+                    className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded"
+                    onClick={() => {
+                      setAddMenuFor(null);
+                      startTransition(() => {
+                        createPageFromTemplate(currentSlug, null, t.id);
+                      });
+                    }}
+                  >
+                    {t.icon} {t.name}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+      <ul className="flex-1 overflow-auto pb-2">{tree.map((n) => renderNode(n, 0))}</ul>
+
+      {trashed.length > 0 && (
+        <details className="border-t border-black/10 px-3 py-2 group">
+          <summary className="text-xs uppercase tracking-wide text-gray-500 cursor-pointer flex items-center gap-1 list-none">
+            <span className="text-gray-400 group-open:rotate-90 transition inline-block">▸</span>
+            🗑 Trash
+            <span className="ml-1 text-gray-400">({trashed.length})</span>
+          </summary>
+          <ul className="mt-1 space-y-0.5 text-sm">
+            {trashed.map((t) => (
+              <li
+                key={t.id}
+                className="group/row flex items-center gap-1 px-2 py-0.5 rounded hover:bg-black/5"
+              >
+                <span className="mr-1 text-gray-400">
+                  {t.icon ?? (t.kind === "database" ? "📊" : "📄")}
+                </span>
+                <span className="flex-1 truncate text-gray-500 line-through">
+                  {t.title || "Untitled"}
+                </span>
+                {role !== "viewer" && (
+                  <>
+                    <button
+                      onClick={() => onRestore(t.id)}
+                      className="opacity-0 group-hover/row:opacity-100 text-xs text-gray-500 hover:text-emerald-600"
+                      title="Restore"
+                    >
+                      ↺
+                    </button>
+                    <button
+                      onClick={() => onPurge(t.id)}
+                      className="opacity-0 group-hover/row:opacity-100 text-xs text-gray-500 hover:text-red-600"
+                      title="Delete permanently"
+                    >
+                      ✕
+                    </button>
+                  </>
+                )}
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
+
+      <div className="border-t border-black/10 p-3 space-y-2">
+        <Link
+          href={`/w/${currentSlug}/settings`}
+          className="block text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
+        >
+          ⚙ Settings
+        </Link>
+        {role !== "viewer" && <ImportButton slug={currentSlug} />}
+        {role === "owner" && <InviteButton slug={currentSlug} />}
+        <UserMenu user={user} />
+      </div>
+    </aside>
+  );
+}

@@ -1,0 +1,26 @@
+node_modules
+.next
+.turbo
+dist
+.env
+.env.local
+*.log
+.DS_Store
+
+# Local DB / persistence
+**/dev.db*
+**/prisma/dev.db*
+packages/db/tmp-leveldb-test
+apps/collab/data
+
+# User-uploaded files (dev)
+apps/web/.uploads
+
+# Build artifacts
+*.tsbuildinfo
+.vercel
+
+# Editor / local tooling
+.claude/
+.idea/
+.vscode/

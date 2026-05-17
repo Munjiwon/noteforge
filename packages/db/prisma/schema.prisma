@@ -1,0 +1,176 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String            @id @default(cuid())
+  email        String            @unique
+  name         String
+  passwordHash String
+  color        String            @default("#6366f1")
+  createdAt    DateTime          @default(now())
+
+  memberships  WorkspaceMember[]
+  pagesCreated Page[]            @relation("PageAuthor")
+  invitesMade  Invite[]          @relation("InviteCreator")
+  comments     Comment[]
+  notifications Notification[]   @relation("NotifRecipient")
+  notifsSent   Notification[]    @relation("NotifActor")
+  pagePermissions PagePermission[]
+}
+
+model Workspace {
+  id        String            @id @default(cuid())
+  name      String
+  slug      String            @unique
+  createdAt DateTime          @default(now())
+
+  members   WorkspaceMember[]
+  pages     Page[]
+  invites   Invite[]
+}
+
+model WorkspaceMember {
+  id          String    @id @default(cuid())
+  userId      String
+  workspaceId String
+  role        String    @default("editor") // "owner" | "editor" | "viewer"
+  createdAt   DateTime  @default(now())
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, workspaceId])
+  @@index([workspaceId])
+}
+
+model Page {
+  id          String    @id @default(cuid())
+  workspaceId String
+  parentId    String?
+  kind        String    @default("doc")    // "doc" | "database"
+  title       String    @default("Untitled")
+  icon        String?   // emoji
+  // BlockNote JSON snapshot (debounced from Yjs doc) — for kind="doc"
+  content     String    @default("[]")
+  // Schema of properties for a database page (JSON: [{id,name,type,options?}])
+  dbSchema    String?
+  // Property values for a row page (JSON: { propId: value })
+  dataValues  String?
+  position    Float     @default(0)
+  authorId    String?
+  cover       String?
+  favorite    Boolean   @default(false)
+  deletedAt   DateTime?
+  publicSlug  String?   @unique
+  publicAccess String   @default("none") // "none" | "view"
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  parent      Page?     @relation("PageTree", fields: [parentId], references: [id], onDelete: Cascade)
+  children    Page[]    @relation("PageTree")
+  author      User?     @relation("PageAuthor", fields: [authorId], references: [id])
+  comments    Comment[]
+  snapshots   PageSnapshot[]
+  permissions PagePermission[]
+
+  @@index([workspaceId, parentId])
+}
+
+model PageSnapshot {
+  id        String   @id @default(cuid())
+  pageId    String
+  content   String
+  authorId  String?
+  createdAt DateTime @default(now())
+
+  page      Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+
+  @@index([pageId, createdAt])
+}
+
+model PagePermission {
+  id        String   @id @default(cuid())
+  pageId    String
+  userId    String
+  role      String   @default("view") // "view" | "comment" | "edit"
+  createdAt DateTime @default(now())
+
+  page      Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([pageId, userId])
+  @@index([userId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  pageId    String
+  authorId  String
+  body      String
+  blockId   String?  // optional anchor to a BlockNote block id
+  threadId  String?  // null = top-level, else parent Comment.id
+  resolved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  page      Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  notifications Notification[]
+  reactions CommentReaction[]
+
+  @@index([pageId])
+  @@index([threadId])
+}
+
+model CommentReaction {
+  id        String   @id @default(cuid())
+  commentId String
+  userId    String
+  emoji     String
+  createdAt DateTime @default(now())
+
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@unique([commentId, userId, emoji])
+  @@index([commentId])
+}
+
+model Notification {
+  id          String   @id @default(cuid())
+  recipientId String
+  actorId     String?
+  workspaceId String
+  pageId      String?
+  commentId   String?
+  kind        String   // "mention" | "comment_reply" | "comment_new"
+  preview     String   @default("")
+  read        Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  recipient   User     @relation("NotifRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  actor       User?    @relation("NotifActor", fields: [actorId], references: [id], onDelete: SetNull)
+  comment     Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@index([recipientId, read])
+  @@index([recipientId, createdAt])
+}
+
+model Invite {
+  id          String    @id @default(cuid())
+  workspaceId String
+  token       String    @unique
+  role        String    @default("editor")
+  createdById String
+  expiresAt   DateTime?
+  createdAt   DateTime  @default(now())
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdBy   User      @relation("InviteCreator", fields: [createdById], references: [id])
+}
