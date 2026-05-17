@@ -21,6 +21,24 @@ export async function renameWorkspace(slug: string, name: string) {
   revalidatePath(`/w/${slug}`, "layout");
 }
 
+export async function setWorkspaceIcon(slug: string, icon: string | null) {
+  const ctx = await assertOwner(slug);
+  await prisma.workspace.update({
+    where: { id: ctx.workspace.id },
+    data: { icon: icon?.trim() || null },
+  });
+  revalidatePath(`/w/${slug}`, "layout");
+}
+
+export async function setWorkspaceColor(slug: string, color: string | null) {
+  const ctx = await assertOwner(slug);
+  await prisma.workspace.update({
+    where: { id: ctx.workspace.id },
+    data: { color: color?.trim() || null },
+  });
+  revalidatePath(`/w/${slug}`, "layout");
+}
+
 export async function updateMemberRole(
   slug: string,
   userId: string,

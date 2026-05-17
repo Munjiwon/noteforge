@@ -94,6 +94,7 @@ export type DbSchema = {
   sort?: DbSort[];
   columnOrder?: string[];
   hiddenColumns?: string[];
+  columnWidths?: Record<string, number>;
 };
 
 export function formatNumber(n: number, format: NumberFormat | undefined): string {

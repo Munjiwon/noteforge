@@ -211,6 +211,18 @@ export async function setColumnOrder(
   revalidatePath(`/w/${slug}/p/${dbId}`);
 }
 
+export async function setColumnWidth(
+  slug: string,
+  dbId: string,
+  propId: string,
+  width: number,
+) {
+  const { schema } = await loadDb(slug, dbId);
+  schema.columnWidths = { ...(schema.columnWidths ?? {}), [propId]: Math.max(60, Math.min(800, Math.round(width))) };
+  await saveSchema(dbId, schema);
+  revalidatePath(`/w/${slug}/p/${dbId}`);
+}
+
 export async function setFilters(slug: string, dbId: string, filters: DbFilter[]) {
   const { schema } = await loadDb(slug, dbId);
   schema.filters = filters;

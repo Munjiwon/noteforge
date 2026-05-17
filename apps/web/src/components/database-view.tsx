@@ -14,10 +14,13 @@ import {
   deleteRow,
   renameColumn,
   setColumnDescription,
+  setColumnWidth,
   setDateFormat,
   setNumberFormat,
+  setSelectOptionColor,
   updateCell,
 } from "@/app/w/[slug]/database-actions";
+import { SELECT_COLORS } from "@/lib/database";
 import { reorderPage } from "@/app/w/[slug]/actions";
 import type { DbProp, DbPropType, DbSchema } from "@/lib/database";
 import {
@@ -113,8 +116,11 @@ export function DatabaseView({
               {visibleProps.map((p) => (
                 <th
                   key={p.id}
-                  className="text-left text-xs font-medium text-gray-600 border-r border-gray-200 last:border-r-0 align-top"
-                  style={{ minWidth: 160 }}
+                  className="text-left text-xs font-medium text-gray-600 border-r border-gray-200 last:border-r-0 align-top relative"
+                  style={{
+                    width: schema.columnWidths?.[p.id] ?? undefined,
+                    minWidth: schema.columnWidths?.[p.id] ?? 160,
+                  }}
                 >
                   <ColumnHeader
                     prop={p}
@@ -125,6 +131,14 @@ export function DatabaseView({
                     onOpen={(v) => setOpenMenuPropId(v ? p.id : null)}
                     readOnly={readOnly}
                   />
+                  {!readOnly && (
+                    <ColumnResizer
+                      slug={slug}
+                      dbId={dbId}
+                      propId={p.id}
+                      initialWidth={schema.columnWidths?.[p.id] ?? 160}
+                    />
+                  )}
                 </th>
               ))}
               {!readOnly && (
@@ -777,23 +791,35 @@ function SelectCell({
         )}
       </button>
       {open && (
-        <div className="absolute top-full left-0 z-30 bg-white shadow-lg border rounded p-2 min-w-[180px]">
+        <div className="absolute top-full left-0 z-30 bg-white shadow-lg border rounded p-2 min-w-[200px]">
           {prop.options.map((o) => (
-            <button
+            <div
               key={o.id}
-              className="block w-full text-left px-2 py-1 hover:bg-black/5 rounded"
-              onClick={() => {
-                start(() => updateCell(slug, rowId, prop.id, o.id));
-                setOpen(false);
-              }}
+              className="group/opt flex items-center gap-1 px-2 py-1 hover:bg-black/5 rounded"
             >
-              <span
-                className="inline-block px-2 py-0.5 rounded text-xs"
-                style={{ background: o.color }}
+              <button
+                className="flex-1 text-left"
+                onClick={() => {
+                  start(() => updateCell(slug, rowId, prop.id, o.id));
+                  setOpen(false);
+                }}
               >
-                {o.name}
-              </span>
-            </button>
+                <span
+                  className="inline-block px-2 py-0.5 rounded text-xs"
+                  style={{ background: o.color }}
+                >
+                  {o.name}
+                </span>
+              </button>
+              <ColorSwatches
+                current={o.color}
+                onPick={(c) =>
+                  start(() =>
+                    setSelectOptionColor(slug, dbId, prop.id, o.id, c),
+                  )
+                }
+              />
+            </div>
           ))}
           {current && (
             <button
@@ -983,21 +1009,33 @@ function MultiSelectCell({
         )}
       </button>
       {open && (
-        <div className="absolute top-full left-0 z-30 bg-white shadow-lg border rounded p-2 min-w-[200px]">
+        <div className="absolute top-full left-0 z-30 bg-white shadow-lg border rounded p-2 min-w-[220px]">
           {prop.options.map((o) => (
-            <button
+            <div
               key={o.id}
-              className="block w-full text-left px-2 py-1 hover:bg-black/5 rounded text-sm flex items-center gap-2"
-              onClick={() => toggle(o.id)}
+              className="flex items-center gap-1 px-2 py-1 hover:bg-black/5 rounded"
             >
-              <input type="checkbox" readOnly checked={selected.has(o.id)} />
-              <span
-                className="inline-block px-2 py-0.5 rounded text-xs"
-                style={{ background: o.color }}
+              <button
+                className="flex-1 text-left text-sm flex items-center gap-2"
+                onClick={() => toggle(o.id)}
               >
-                {o.name}
-              </span>
-            </button>
+                <input type="checkbox" readOnly checked={selected.has(o.id)} />
+                <span
+                  className="inline-block px-2 py-0.5 rounded text-xs"
+                  style={{ background: o.color }}
+                >
+                  {o.name}
+                </span>
+              </button>
+              <ColorSwatches
+                current={o.color}
+                onPick={(c) =>
+                  start(() =>
+                    setSelectOptionColor(slug, dbId, prop.id, o.id, c),
+                  )
+                }
+              />
+            </div>
           ))}
           <div className="border-t mt-1 pt-1">
             <input
@@ -1113,6 +1151,64 @@ function PersonCell({
         </div>
       )}
     </div>
+  );
+}
+
+function ColumnResizer({
+  slug,
+  dbId,
+  propId,
+  initialWidth,
+}: {
+  slug: string;
+  dbId: string;
+  propId: string;
+  initialWidth: number;
+}) {
+  const startX = useRef<number | null>(null);
+  const startW = useRef(initialWidth);
+  const widthRef = useRef(initialWidth);
+  const [, start] = useTransition();
+  const onDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    startX.current = e.clientX;
+    startW.current = initialWidth;
+    const onMove = (ev: MouseEvent) => {
+      if (startX.current === null) return;
+      const dx = ev.clientX - startX.current;
+      widthRef.current = Math.max(60, Math.min(800, startW.current + dx));
+      // live-update the parent th width
+      const th = (ev.target as HTMLElement)?.closest?.("th");
+      // we set on the originating th via its parentElement traversal
+      const trigger = document.querySelector(
+        `[data-resizer-prop="${propId}"]`,
+      ) as HTMLElement | null;
+      const parentTh = trigger?.parentElement as HTMLElement | null;
+      if (parentTh) {
+        parentTh.style.minWidth = `${widthRef.current}px`;
+        parentTh.style.width = `${widthRef.current}px`;
+      }
+    };
+    const onUp = () => {
+      document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseup", onUp);
+      if (widthRef.current !== startW.current) {
+        const w = widthRef.current;
+        start(() => setColumnWidth(slug, dbId, propId, w));
+      }
+      startX.current = null;
+    };
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseup", onUp);
+  };
+  return (
+    <div
+      data-resizer-prop={propId}
+      onMouseDown={onDown}
+      className="absolute top-0 right-0 h-full w-1 cursor-col-resize hover:bg-blue-300/50"
+      title="Drag to resize column"
+    />
   );
 }
 
@@ -1602,6 +1698,50 @@ function FormulaCell({
         <span className="text-gray-300">—</span>
       ) : (
         String(result)
+      )}
+    </div>
+  );
+}
+
+function ColorSwatches({
+  current,
+  onPick,
+}: {
+  current: string;
+  onPick: (c: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const h = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", h);
+    return () => document.removeEventListener("mousedown", h);
+  }, [open]);
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-3 h-3 rounded-full border border-gray-300"
+        style={{ background: current }}
+        title="Change color"
+      />
+      {open && (
+        <div className="absolute right-0 top-full mt-1 z-40 bg-white border border-gray-200 rounded p-1 shadow-lg flex gap-1">
+          {SELECT_COLORS.map((c) => (
+            <button
+              key={c}
+              onClick={() => {
+                onPick(c);
+                setOpen(false);
+              }}
+              className="w-4 h-4 rounded-full border border-gray-300 hover:scale-110 transition-transform"
+              style={{ background: c }}
+            />
+          ))}
+        </div>
       )}
     </div>
   );

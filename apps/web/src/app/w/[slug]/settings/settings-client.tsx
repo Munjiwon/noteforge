@@ -5,14 +5,19 @@ import {
   removeMember,
   renameWorkspace,
   revokeInvite,
+  setWorkspaceColor,
+  setWorkspaceIcon,
   updateMemberRole,
 } from "./actions";
+import { EmojiPicker } from "@/components/emoji-picker";
 
 type Role = "owner" | "editor" | "viewer";
 
 export function SettingsClient({
   slug,
   workspaceName,
+  workspaceIcon,
+  workspaceColor,
   currentUserId,
   role,
   members,
@@ -20,14 +25,20 @@ export function SettingsClient({
 }: {
   slug: string;
   workspaceName: string;
+  workspaceIcon: string | null;
+  workspaceColor: string | null;
   currentUserId: string;
   role: Role;
   members: { userId: string; name: string; email: string; color: string; role: Role }[];
   invites: { token: string; role: string; createdAt: string }[];
 }) {
   const [name, setName] = useState(workspaceName);
+  const [icon, setIcon] = useState(workspaceIcon);
+  const [color, setColor] = useState(workspaceColor ?? "#111111");
+  const [iconOpen, setIconOpen] = useState(false);
   const [, start] = useTransition();
   const isOwner = role === "owner";
+  const PRESET_COLORS = ["#111111", "#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899", "#0ea5e9"];
 
   return (
     <div className="max-w-3xl mx-auto px-8 py-10 space-y-8">
@@ -35,20 +46,73 @@ export function SettingsClient({
 
       <section>
         <h2 className="text-sm font-medium text-gray-700 mb-2">General</h2>
-        <label className="block">
-          <span className="block text-xs text-gray-500 mb-1">Workspace name</span>
-          <input
-            value={name}
-            disabled={!isOwner}
-            onChange={(e) => setName(e.target.value)}
-            onBlur={() => {
-              if (name.trim() !== workspaceName) {
-                start(() => renameWorkspace(slug, name));
-              }
-            }}
-            className="w-full border border-gray-200 rounded px-2 py-1 text-sm outline-none focus:border-gray-400 disabled:bg-gray-50"
-          />
-        </label>
+        <div className="flex items-center gap-3 mb-3">
+          <div className="relative">
+            <button
+              disabled={!isOwner}
+              onClick={() => setIconOpen((v) => !v)}
+              className="w-12 h-12 rounded grid place-items-center text-xl text-white"
+              style={{ background: color }}
+            >
+              {icon ?? name.slice(0, 1).toUpperCase()}
+            </button>
+            {iconOpen && (
+              <EmojiPicker
+                onPick={(e) => {
+                  setIcon(e);
+                  start(() => setWorkspaceIcon(slug, e));
+                }}
+                onClose={() => setIconOpen(false)}
+              />
+            )}
+          </div>
+          <div className="flex-1">
+            <label className="block">
+              <span className="block text-xs text-gray-500 mb-1">Workspace name</span>
+              <input
+                value={name}
+                disabled={!isOwner}
+                onChange={(e) => setName(e.target.value)}
+                onBlur={() => {
+                  if (name.trim() !== workspaceName) {
+                    start(() => renameWorkspace(slug, name));
+                  }
+                }}
+                className="w-full border border-gray-200 rounded px-2 py-1 text-sm outline-none focus:border-gray-400 disabled:bg-gray-50"
+              />
+            </label>
+            {isOwner && (
+              <div className="flex items-center gap-1 mt-2">
+                <span className="text-xs text-gray-500 mr-1">Color:</span>
+                {PRESET_COLORS.map((c) => (
+                  <button
+                    key={c}
+                    onClick={() => {
+                      setColor(c);
+                      start(() => setWorkspaceColor(slug, c));
+                    }}
+                    className={
+                      "w-5 h-5 rounded-full border-2 " +
+                      (color === c ? "border-gray-900" : "border-transparent")
+                    }
+                    style={{ background: c }}
+                  />
+                ))}
+                {icon && (
+                  <button
+                    onClick={() => {
+                      setIcon(null);
+                      start(() => setWorkspaceIcon(slug, null));
+                    }}
+                    className="ml-2 text-[11px] text-gray-500 hover:text-gray-900"
+                  >
+                    Clear icon
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
       </section>
 
       <section>

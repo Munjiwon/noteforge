@@ -4,6 +4,7 @@ import { useEffect, useState, useTransition } from "react";
 import { renamePage, setPageIcon } from "@/app/w/[slug]/actions";
 import { PeekModal } from "./peek-modal";
 import { PageStyleMenu, fontClass, widthClass } from "./page-style-menu";
+import { EmojiPicker } from "./emoji-picker";
 import { setKanbanGroup, setView } from "@/app/w/[slug]/database-actions";
 import { DatabaseView } from "./database-view";
 import { KanbanView } from "./kanban-view";
@@ -17,7 +18,6 @@ import { applyQuery } from "@/lib/db-query";
 import type { DbSchema, DbView } from "@/lib/database";
 import type { PermItem } from "./share-button";
 
-const EMOJI_CHOICES = ["📊", "🗂️", "📋", "✅", "🚀", "🐛", "🎯", "📅", "🧾"];
 
 export function DatabasePage({
   slug,
@@ -53,7 +53,13 @@ export function DatabasePage({
   const font = db.font ?? "default";
   const view: DbView = db.schema.view ?? "table";
   const selectProps = db.schema.props.filter((p) => p.type === "select");
-  const visibleRows = applyQuery(db.schema, rows);
+  const [rowSearch, setRowSearch] = useState("");
+  const queried = applyQuery(db.schema, rows);
+  const visibleRows = rowSearch.trim()
+    ? queried.filter((r) =>
+        (r.title || "Untitled").toLowerCase().includes(rowSearch.trim().toLowerCase()),
+      )
+    : queried;
   const [peekId, setPeekId] = useState<string | null>(null);
 
   // Listen for global event so Row "Peek" button can open the modal without prop drilling.
@@ -75,11 +81,15 @@ export function DatabasePage({
         readOnly={readOnly}
       />
       <div className={`${width === "full" ? "max-w-none" : width === "wide" ? "max-w-7xl" : "max-w-6xl"} mx-auto px-12 py-10`}>
-        {db.locked && (
+        {db.locked ? (
           <div className="mb-3 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-3 py-1 inline-flex items-center gap-1">
             🔒 Database locked — read-only
           </div>
-        )}
+        ) : readOnly ? (
+          <div className="mb-3 text-xs text-gray-600 bg-gray-100 border border-gray-200 rounded px-3 py-1 inline-flex items-center gap-1">
+            👁 Read-only view
+          </div>
+        ) : null}
         <div className="flex justify-end gap-2 mb-2">
           <PageStyleMenu
             slug={slug}
@@ -107,21 +117,13 @@ export function DatabasePage({
           {icon ?? "📊"}
         </button>
         {pickerOpen && (
-          <div className="absolute top-12 left-0 z-10 bg-white shadow-lg border rounded p-2 grid grid-cols-5 gap-1">
-            {EMOJI_CHOICES.map((e) => (
-              <button
-                key={e}
-                className="text-xl hover:bg-black/5 rounded p-1"
-                onClick={() => {
-                  setIcon(e);
-                  setPickerOpen(false);
-                  start(() => setPageIcon(slug, db.id, e));
-                }}
-              >
-                {e}
-              </button>
-            ))}
-          </div>
+          <EmojiPicker
+            onPick={(e) => {
+              setIcon(e);
+              start(() => setPageIcon(slug, db.id, e));
+            }}
+            onClose={() => setPickerOpen(false)}
+          />
         )}
       </div>
       <input
@@ -200,6 +202,12 @@ export function DatabasePage({
           </button>
         </div>
         <DbControls slug={slug} dbId={db.id} schema={db.schema} readOnly={readOnly} />
+        <input
+          value={rowSearch}
+          onChange={(e) => setRowSearch(e.target.value)}
+          placeholder="Search rows…"
+          className="text-xs border border-gray-200 rounded px-2 py-1 outline-none w-32"
+        />
         {view === "kanban" && selectProps.length > 0 && (
           <label className="inline-flex items-center gap-1">
             <span>Group by:</span>

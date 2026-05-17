@@ -34,7 +34,20 @@ const GROUPS: { name: string; items: { keys: string; desc: string }[] }[] = [
     name: "Database",
     items: [
       { keys: "Drag card", desc: "Move between Kanban columns / Calendar days" },
+      { keys: "Drag row", desc: "Reorder rows in Table view" },
+      { keys: "Drag column edge", desc: "Resize Table column width" },
       { keys: "↗ Open", desc: "Open row as full page" },
+      { keys: "👁 Peek", desc: "Open row as a side modal preview" },
+    ],
+  },
+  {
+    name: "Sidebar",
+    items: [
+      { keys: "Hover ★", desc: "Toggle favorite on a page" },
+      { keys: "+", desc: "Add sub-page or sub-database" },
+      { keys: "Drag page", desc: "Reorder or nest under another page" },
+      { keys: "Select / Done", desc: "Multi-select pages for bulk delete or favorite" },
+      { keys: "‹ / ›", desc: "Collapse / expand the sidebar" },
     ],
   },
 ];

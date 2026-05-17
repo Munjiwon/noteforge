@@ -10,6 +10,7 @@ import { HistoryButton, type SnapshotItem } from "./history-button";
 import { ExportButton } from "./export-button";
 import { PageInfo } from "./page-info";
 import { PageStyleMenu, fontClass, widthClass } from "./page-style-menu";
+import { EmojiPicker } from "./emoji-picker";
 import type { PermItem } from "./share-button";
 
 const Editor = dynamic(() => import("./editor").then((m) => m.Editor), {
@@ -17,7 +18,6 @@ const Editor = dynamic(() => import("./editor").then((m) => m.Editor), {
   loading: () => <div className="px-24 py-10 text-gray-400">Loading editor…</div>,
 });
 
-const EMOJI_CHOICES = ["📄", "📝", "📌", "✅", "🚀", "💡", "📊", "🐛", "🎯", "🗂️", "🔥", "👋"];
 
 export function PageView({
   slug,
@@ -78,11 +78,15 @@ export function PageView({
         readOnly={readOnly}
       />
       <div className={`${widthClass(width)} mx-auto px-12 md:px-24 py-10`}>
-        {page.locked && (
+        {page.locked ? (
           <div className="mb-3 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-3 py-1 inline-flex items-center gap-1">
             🔒 Page locked — read-only
           </div>
-        )}
+        ) : readOnly ? (
+          <div className="mb-3 text-xs text-gray-600 bg-gray-100 border border-gray-200 rounded px-3 py-1 inline-flex items-center gap-1">
+            👁 Read-only view
+          </div>
+        ) : null}
         <div className="flex justify-end gap-2 mb-2">
           <PageInfo info={info} />
           <ExportButton slug={slug} pageId={page.id} title={page.title} />
@@ -119,21 +123,13 @@ export function PageView({
           {icon ?? "📄"}
         </button>
         {pickerOpen && (
-          <div className="absolute top-12 left-0 z-10 bg-white shadow-lg border rounded p-2 grid grid-cols-6 gap-1">
-            {EMOJI_CHOICES.map((e) => (
-              <button
-                key={e}
-                className="text-xl hover:bg-black/5 rounded p-1"
-                onClick={() => {
-                  setIcon(e);
-                  setPickerOpen(false);
-                  start(() => setPageIcon(slug, page.id, e));
-                }}
-              >
-                {e}
-              </button>
-            ))}
-          </div>
+          <EmojiPicker
+            onPick={(e) => {
+              setIcon(e);
+              start(() => setPageIcon(slug, page.id, e));
+            }}
+            onClose={() => setPickerOpen(false)}
+          />
         )}
       </div>
       <input

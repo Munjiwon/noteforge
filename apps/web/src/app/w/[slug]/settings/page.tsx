@@ -25,6 +25,8 @@ export default async function SettingsPage({
     <SettingsClient
       slug={params.slug}
       workspaceName={ctx.workspace.name}
+      workspaceIcon={ctx.workspace.icon}
+      workspaceColor={ctx.workspace.color}
       currentUserId={ctx.user.id}
       role={ctx.role as "owner" | "editor" | "viewer"}
       members={members.map((m) => ({

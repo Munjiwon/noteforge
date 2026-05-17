@@ -121,6 +121,8 @@ export default async function WorkspaceLayout({
         }))}
         currentSlug={ctx.workspace.slug}
         currentName={ctx.workspace.name}
+        currentIcon={ctx.workspace.icon}
+        currentColor={ctx.workspace.color}
         memberCount={memberCount}
         role={ctx.role as any}
         pages={pagesForSidebar}

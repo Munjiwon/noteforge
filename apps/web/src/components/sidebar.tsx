@@ -53,6 +53,8 @@ export function Sidebar({
   workspaces,
   currentSlug,
   currentName,
+  currentIcon,
+  currentColor,
   memberCount,
   role,
   pages,
@@ -65,6 +67,8 @@ export function Sidebar({
   workspaces: { slug: string; name: string }[];
   currentSlug: string;
   currentName: string;
+  currentIcon: string | null;
+  currentColor: string | null;
   memberCount: number;
   role: "owner" | "editor" | "viewer";
   pages: SidebarPage[];
@@ -153,6 +157,18 @@ export function Sidebar({
   const [dropTarget, setDropTarget] = useState<{ id: string; where: "into" | "before" | "after" } | null>(null);
   const [movingId, setMovingId] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+  useEffect(() => {
+    try {
+      const v = localStorage.getItem("collab-notion-sidebar-collapsed");
+      if (v === "1") setCollapsed(true);
+    } catch {}
+  }, []);
+  useEffect(() => {
+    try {
+      localStorage.setItem("collab-notion-sidebar-collapsed", collapsed ? "1" : "0");
+    } catch {}
+  }, [collapsed]);
   const [selectMode, setSelectMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const toggleSelected = (id: string) =>
@@ -358,17 +374,28 @@ export function Sidebar({
     )}
     <aside
       className={clsx(
-        "w-64 shrink-0 bg-sidebar border-r border-black/10 flex flex-col",
+        collapsed ? "md:w-12 md:overflow-hidden" : "w-64",
+        "shrink-0 bg-sidebar border-r border-black/10 flex flex-col relative",
         "md:relative md:translate-x-0",
-        "fixed inset-y-0 left-0 z-40 transition-transform",
-        mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0",
+        "fixed inset-y-0 left-0 z-40 transition-all",
+        mobileOpen ? "translate-x-0 w-64" : "-translate-x-full md:translate-x-0",
       )}
     >
+      <button
+        onClick={() => setCollapsed((v) => !v)}
+        className="hidden md:flex absolute -right-3 top-3 z-50 w-6 h-6 rounded-full bg-white border border-gray-200 shadow-sm items-center justify-center text-[10px] text-gray-500 hover:text-gray-900"
+        title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+      >
+        {collapsed ? "›" : "‹"}
+      </button>
       <div className="p-3 border-b border-black/10">
         <details className="group">
           <summary className="flex items-center gap-2 cursor-pointer list-none">
-            <div className="w-7 h-7 rounded bg-black text-white grid place-items-center text-sm">
-              {currentName.slice(0, 1).toUpperCase()}
+            <div
+              className="w-7 h-7 rounded grid place-items-center text-sm text-white"
+              style={{ background: currentColor ?? "#111" }}
+            >
+              {currentIcon ?? currentName.slice(0, 1).toUpperCase()}
             </div>
             <div className="flex-1">
               <div className="text-sm font-medium truncate">{currentName}</div>

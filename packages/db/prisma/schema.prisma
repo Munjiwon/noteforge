@@ -28,6 +28,8 @@ model Workspace {
   id        String            @id @default(cuid())
   name      String
   slug      String            @unique
+  icon      String?           // emoji
+  color     String?           // hex
   createdAt DateTime          @default(now())
 
   members   WorkspaceMember[]

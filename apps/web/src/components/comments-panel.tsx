@@ -39,6 +39,7 @@ export function CommentsPanel({
   readOnly: boolean;
 }) {
   const [showResolved, setShowResolved] = useState(false);
+  const [sortDir, setSortDir] = useState<"newest" | "oldest">("newest");
   const [draft, setDraft] = useState("");
   const [, start] = useTransition();
 
@@ -52,7 +53,13 @@ export function CommentsPanel({
       tops.push(c);
     }
   }
-  const visible = tops.filter((t) => showResolved || !t.resolved);
+  const visible = tops
+    .filter((t) => showResolved || !t.resolved)
+    .sort((a, b) => {
+      const da = new Date(a.createdAt).getTime();
+      const db_ = new Date(b.createdAt).getTime();
+      return sortDir === "newest" ? db_ - da : da - db_;
+    });
 
   const submit = () => {
     const body = draft.trim();
@@ -78,14 +85,25 @@ export function CommentsPanel({
             {resolvedCount > 0 ? ` · ${resolvedCount} resolved` : ""}
           </span>
         </h2>
-        {resolvedCount > 0 && (
+        <div className="flex items-center gap-2">
           <button
-            onClick={() => setShowResolved((v) => !v)}
+            onClick={() =>
+              setSortDir((d) => (d === "newest" ? "oldest" : "newest"))
+            }
             className="text-xs text-gray-500 hover:text-gray-900"
+            title="Toggle sort order"
           >
-            {showResolved ? "Hide resolved" : "Show resolved"}
+            {sortDir === "newest" ? "↓ Newest" : "↑ Oldest"}
           </button>
-        )}
+          {resolvedCount > 0 && (
+            <button
+              onClick={() => setShowResolved((v) => !v)}
+              className="text-xs text-gray-500 hover:text-gray-900"
+            >
+              {showResolved ? "Hide resolved" : "Show resolved"}
+            </button>
+          )}
+        </div>
       </div>
 
       {blockAnchored.length > 0 && (
