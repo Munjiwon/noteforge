@@ -3,6 +3,32 @@ import { prisma } from "db";
 import { Sidebar } from "@/components/sidebar";
 import { SearchPalette } from "@/components/search-palette";
 import { ShortcutsHelp } from "@/components/shortcuts-help";
+import { MobileSidebarToggle } from "@/components/mobile-sidebar-toggle";
+
+function extractPreview(content: string): string {
+  try {
+    const blocks = JSON.parse(content) as unknown;
+    if (!Array.isArray(blocks)) return "";
+    const parts: string[] = [];
+    const walk = (b: unknown) => {
+      if (!b || typeof b !== "object") return;
+      const node = b as { content?: unknown; children?: unknown };
+      const c = node.content;
+      if (Array.isArray(c)) {
+        for (const it of c) {
+          if (it && typeof it === "object" && "text" in it && typeof (it as { text: unknown }).text === "string") {
+            parts.push((it as { text: string }).text);
+          }
+        }
+      }
+      if (Array.isArray(node.children)) for (const ch of node.children) walk(ch);
+    };
+    for (const b of blocks) walk(b);
+    return parts.join(" ").replace(/\s+/g, " ").trim().slice(0, 80);
+  } catch {
+    return "";
+  }
+}
 
 export default async function WorkspaceLayout({
   params,
@@ -24,6 +50,7 @@ export default async function WorkspaceLayout({
         position: true,
         kind: true,
         favorite: true,
+        content: true,
       },
     }),
     prisma.page.findMany({
@@ -65,7 +92,25 @@ export default async function WorkspaceLayout({
   const pages = allPages.filter(
     (p) => !p.parentId || !databaseIds.has(p.parentId),
   );
-  const favorites = allPages.filter((p) => p.favorite && (!p.parentId || !databaseIds.has(p.parentId)));
+  const favorites = allPages
+    .filter((p) => p.favorite && (!p.parentId || !databaseIds.has(p.parentId)))
+    .map((p) => ({
+      id: p.id,
+      title: p.title,
+      icon: p.icon,
+      parentId: p.parentId,
+      kind: p.kind,
+      favorite: p.favorite,
+      preview: extractPreview(p.content),
+    }));
+  const pagesForSidebar = pages.map((p) => ({
+    id: p.id,
+    title: p.title,
+    icon: p.icon,
+    parentId: p.parentId,
+    kind: p.kind,
+    favorite: p.favorite,
+  }));
 
   return (
     <div className="flex h-screen">
@@ -78,14 +123,17 @@ export default async function WorkspaceLayout({
         currentName={ctx.workspace.name}
         memberCount={memberCount}
         role={ctx.role as any}
-        pages={pages}
+        pages={pagesForSidebar}
         favorites={favorites}
         trashed={trashedPages}
         notifications={notifications}
         recent={recentRows}
         user={ctx.user}
       />
-      <main className="flex-1 overflow-auto bg-white">{children}</main>
+      <main className="flex-1 overflow-auto bg-white">
+        <MobileSidebarToggle />
+        {children}
+      </main>
       <SearchPalette slug={ctx.workspace.slug} />
       <ShortcutsHelp />
     </div>

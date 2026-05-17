@@ -37,6 +37,24 @@ body {
 .bn-container {
   background: transparent;
 }
+
+/* Code block styling: monospace + grey background. Full syntax highlight
+   is best-effort with the default BlockNote prosemirror behavior. */
+.bn-block-content[data-content-type="codeBlock"] pre,
+.bn-block-content[data-content-type="codeBlock"] code {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace !important;
+  font-size: 13px;
+  background: #f6f7f9;
+  border-radius: 6px;
+  padding: 8px 12px;
+  display: block;
+  overflow-x: auto;
+}
+.dark .bn-block-content[data-content-type="codeBlock"] pre,
+.dark .bn-block-content[data-content-type="codeBlock"] code {
+  background: #1a1a1a;
+  color: #e5e7eb;
+}
 .dark .bn-container,
 .dark .bn-editor {
   color: #e5e7eb;

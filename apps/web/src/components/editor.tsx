@@ -273,6 +273,75 @@ export function Editor({
                 onItemClick: insert("columns", { count: "3" }),
               },
               {
+                title: "AI · Summarize page",
+                subtext: "Insert a summary placeholder (manual fill for now)",
+                aliases: ["ai", "summarize", "summary", "요약"],
+                group: "AI",
+                icon: <span>✨</span>,
+                onItemClick: () => {
+                  editor.insertBlocks(
+                    [
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      {
+                        type: "callout" as any,
+                        props: { emoji: "✨", color: "blue" } as any,
+                        content: [
+                          { type: "text", text: "AI summary placeholder — fill in once an AI provider is connected.", styles: {} },
+                        ] as any,
+                      },
+                    ],
+                    editor.getTextCursorPosition().block,
+                    "after",
+                  );
+                },
+              },
+              {
+                title: "AI · Translate selection",
+                subtext: "Insert a translation placeholder",
+                aliases: ["ai", "translate", "번역"],
+                group: "AI",
+                icon: <span>🌐</span>,
+                onItemClick: () => {
+                  editor.insertBlocks(
+                    [
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      {
+                        type: "callout" as any,
+                        props: { emoji: "🌐", color: "purple" } as any,
+                        content: [
+                          { type: "text", text: "AI translation placeholder.", styles: {} },
+                        ] as any,
+                      },
+                    ],
+                    editor.getTextCursorPosition().block,
+                    "after",
+                  );
+                },
+              },
+              {
+                title: "AI · Improve writing",
+                subtext: "Insert a writing-improvement placeholder",
+                aliases: ["ai", "improve", "rewrite", "교정"],
+                group: "AI",
+                icon: <span>📝</span>,
+                onItemClick: () => {
+                  editor.insertBlocks(
+                    [
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      {
+                        type: "callout" as any,
+                        props: { emoji: "📝", color: "green" } as any,
+                        content: [
+                          { type: "text", text: "AI suggestion placeholder.", styles: {} },
+                        ] as any,
+                      },
+                    ],
+                    editor.getTextCursorPosition().block,
+                    "after",
+                  );
+                },
+              },
+              {
                 title: "Linked database",
                 subtext: "Embed an existing database view",
                 aliases: ["db", "database", "linked database", "데이터베이스"],

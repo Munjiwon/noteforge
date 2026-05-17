@@ -13,11 +13,20 @@ import {
   deleteColumn,
   deleteRow,
   renameColumn,
+  setColumnDescription,
+  setDateFormat,
+  setNumberFormat,
   updateCell,
 } from "@/app/w/[slug]/database-actions";
 import { reorderPage } from "@/app/w/[slug]/actions";
 import type { DbProp, DbPropType, DbSchema } from "@/lib/database";
-import { STATUS_GROUP_LABEL, orderedVisibleProps, type StatusGroup } from "@/lib/database";
+import {
+  STATUS_GROUP_LABEL,
+  formatDate,
+  formatNumber,
+  orderedVisibleProps,
+  type StatusGroup,
+} from "@/lib/database";
 
 type Row = {
   id: string;
@@ -225,16 +234,25 @@ function ColumnHeader({
 }) {
   const [name, setName] = useState(prop.name);
   const [configuring, setConfiguring] = useState(false);
+  const [editingDesc, setEditingDesc] = useState(false);
+  const [desc, setDesc] = useState(prop.description ?? "");
   const [, start] = useTransition();
   useEffect(() => setName(prop.name), [prop.name]);
+  useEffect(() => setDesc(prop.description ?? ""), [prop.description]);
 
   return (
     <div className="relative px-3 py-2 flex items-center gap-1">
-      <span className="text-gray-400 w-4">{TYPE_ICONS[prop.type]}</span>
+      <span
+        className="text-gray-400 w-4"
+        title={prop.description || undefined}
+      >
+        {TYPE_ICONS[prop.type]}
+      </span>
       <input
         className="bg-transparent outline-none flex-1 text-sm font-medium"
         value={name}
         disabled={readOnly}
+        title={prop.description || undefined}
         onChange={(e) => setName(e.target.value)}
         onBlur={() => {
           if (name !== prop.name) {
@@ -253,7 +271,11 @@ function ColumnHeader({
       )}
       {open && (
         <div className="absolute top-full right-0 z-30 bg-white shadow-lg border rounded p-1 min-w-[160px]">
-          {(prop.type === "relation" || prop.type === "rollup" || prop.type === "formula") && (
+          {(prop.type === "relation" ||
+            prop.type === "rollup" ||
+            prop.type === "formula" ||
+            prop.type === "number" ||
+            prop.type === "date") && (
             <button
               className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded"
               onClick={() => {
@@ -264,6 +286,15 @@ function ColumnHeader({
               ⚙ Configure
             </button>
           )}
+          <button
+            className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded"
+            onClick={() => {
+              setEditingDesc(true);
+              onOpen(false);
+            }}
+          >
+            ✎ Edit description
+          </button>
           <button
             className="block w-full text-left px-2 py-1 text-sm text-red-600 hover:bg-red-50 rounded"
             onClick={() => {
@@ -285,6 +316,49 @@ function ColumnHeader({
           schema={schema}
           onClose={() => setConfiguring(false)}
         />
+      )}
+      {editingDesc && (
+        <div
+          className="fixed inset-0 z-50 bg-black/30 flex items-center justify-center p-4"
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) setEditingDesc(false);
+          }}
+        >
+          <div className="bg-white rounded-lg shadow-2xl w-[360px] max-w-[92vw] p-4">
+            <h3 className="text-sm font-medium mb-2">
+              Description for “{prop.name}”
+            </h3>
+            <textarea
+              value={desc}
+              onChange={(e) => setDesc(e.target.value)}
+              placeholder="What is this column for?"
+              className="w-full border border-gray-200 rounded px-2 py-1 text-sm outline-none min-h-[60px] mb-2"
+              autoFocus
+            />
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => {
+                  setDesc(prop.description ?? "");
+                  setEditingDesc(false);
+                }}
+                className="text-xs text-gray-500 hover:text-gray-900 px-2 py-1"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setEditingDesc(false);
+                  start(async () => {
+                    await setColumnDescription(slug, dbId, prop.id, desc);
+                  });
+                }}
+                className="text-xs px-2 py-1 rounded bg-gray-900 text-white"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
@@ -531,11 +605,19 @@ function Cell({
   }
 
   if (prop.type === "date") {
+    if (readOnly) {
+      return (
+        <div className="px-3 py-2 text-sm text-gray-800">
+          {typeof value === "string" ? formatDate(value, prop.format) : ""}
+        </div>
+      );
+    }
     return (
       <input
         type="date"
         defaultValue={typeof value === "string" ? value : ""}
         disabled={readOnly}
+        title={typeof value === "string" ? formatDate(value, prop.format) : undefined}
         className="px-3 py-2 text-sm bg-transparent outline-none w-full"
         onBlur={(e) => {
           const v = e.target.value;
@@ -599,11 +681,19 @@ function Cell({
   }
 
   if (prop.type === "number") {
+    if (readOnly) {
+      return (
+        <div className="px-3 py-2 text-sm text-right tabular-nums text-gray-800">
+          {typeof value === "number" ? formatNumber(value, prop.format) : ""}
+        </div>
+      );
+    }
     return (
       <input
         type="number"
         defaultValue={value as number | undefined}
         disabled={readOnly}
+        title={typeof value === "number" ? formatNumber(value, prop.format) : undefined}
         className="px-3 py-2 text-sm bg-transparent outline-none w-full text-right tabular-nums"
         onBlur={(e) => {
           const raw = e.target.value;
@@ -1047,6 +1137,8 @@ function ColumnConfigure({
   const isRelation = prop.type === "relation";
   const isRollup = prop.type === "rollup";
   const isFormula = prop.type === "formula";
+  const isNumber = prop.type === "number";
+  const isDate = prop.type === "date";
 
   const [targetDbId, setTargetDbId] = useState(
     isRelation ? prop.targetDbId : "",
@@ -1061,6 +1153,12 @@ function ColumnConfigure({
     "count" | "sum" | "min" | "max" | "unique"
   >(isRollup ? prop.aggregate : "count");
   const [expr, setExpr] = useState(isFormula ? prop.expr : "");
+  const [numFormat, setNumFormat] = useState<"integer" | "decimal" | "percent" | "currency">(
+    isNumber ? (prop.format ?? "decimal") : "decimal",
+  );
+  const [dateFormat, setDateFmt] = useState<"short" | "long" | "relative">(
+    isDate ? (prop.format ?? "short") : "short",
+  );
 
   useEffect(() => {
     if (!isRelation && !isRollup) return;
@@ -1200,6 +1298,59 @@ function ColumnConfigure({
                 })
               }
               className="text-xs px-3 py-1 rounded bg-gray-900 text-white disabled:opacity-30"
+            >
+              Save
+            </button>
+          </div>
+        )}
+
+        {isNumber && (
+          <div>
+            <label className="block text-xs text-gray-500 mb-1">Number format</label>
+            <select
+              value={numFormat}
+              onChange={(e) => setNumFormat(e.target.value as typeof numFormat)}
+              className="w-full text-sm border border-gray-200 rounded px-2 py-1 outline-none mb-2"
+            >
+              <option value="integer">Integer (1,234)</option>
+              <option value="decimal">Decimal (1,234.56)</option>
+              <option value="percent">Percent (1.23 → 123%)</option>
+              <option value="currency">Currency (USD)</option>
+            </select>
+            <button
+              onClick={() =>
+                start(async () => {
+                  await setNumberFormat(slug, dbId, prop.id, numFormat);
+                  onClose();
+                })
+              }
+              className="text-xs px-3 py-1 rounded bg-gray-900 text-white"
+            >
+              Save
+            </button>
+          </div>
+        )}
+
+        {isDate && (
+          <div>
+            <label className="block text-xs text-gray-500 mb-1">Date format</label>
+            <select
+              value={dateFormat}
+              onChange={(e) => setDateFmt(e.target.value as typeof dateFormat)}
+              className="w-full text-sm border border-gray-200 rounded px-2 py-1 outline-none mb-2"
+            >
+              <option value="short">Short (2026-05-17)</option>
+              <option value="long">Long (May 17, 2026)</option>
+              <option value="relative">Relative (3 days ago)</option>
+            </select>
+            <button
+              onClick={() =>
+                start(async () => {
+                  await setDateFormat(slug, dbId, prop.id, dateFormat);
+                  onClose();
+                })
+              }
+              className="text-xs px-3 py-1 rounded bg-gray-900 text-white"
             >
               Save
             </button>

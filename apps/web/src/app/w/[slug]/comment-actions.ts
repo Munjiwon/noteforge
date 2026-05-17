@@ -107,6 +107,29 @@ export async function createComment(
       preview,
     });
   }
+  // For top-level comments, notify the page author too (if not already covered).
+  if (!opts.threadId) {
+    const page = await prisma.page.findUnique({
+      where: { id: pageId },
+      select: { authorId: true },
+    });
+    if (
+      page?.authorId &&
+      page.authorId !== ctx.user.id &&
+      !mentionedSet.has(page.authorId) &&
+      !threadParticipantIds.includes(page.authorId)
+    ) {
+      notifs.push({
+        recipientId: page.authorId,
+        actorId: ctx.user.id,
+        workspaceId: ctx.workspace.id,
+        pageId,
+        commentId: c.id,
+        kind: "comment_new",
+        preview,
+      });
+    }
+  }
   if (notifs.length > 0) {
     // Make sure recipients are workspace members to avoid leaking notifs across workspaces.
     const members = await prisma.workspaceMember.findMany({

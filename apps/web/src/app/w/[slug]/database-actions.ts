@@ -147,6 +147,34 @@ export async function configureRollup(
   revalidatePath(`/w/${slug}/p/${dbId}`);
 }
 
+export async function setNumberFormat(
+  slug: string,
+  dbId: string,
+  propId: string,
+  format: "integer" | "decimal" | "percent" | "currency",
+) {
+  const { schema } = await loadDb(slug, dbId);
+  const p = schema.props.find((x) => x.id === propId);
+  if (!p || p.type !== "number") throw new Error("not a number column");
+  p.format = format;
+  await saveSchema(dbId, schema);
+  revalidatePath(`/w/${slug}/p/${dbId}`);
+}
+
+export async function setDateFormat(
+  slug: string,
+  dbId: string,
+  propId: string,
+  format: "short" | "long" | "relative",
+) {
+  const { schema } = await loadDb(slug, dbId);
+  const p = schema.props.find((x) => x.id === propId);
+  if (!p || p.type !== "date") throw new Error("not a date column");
+  p.format = format;
+  await saveSchema(dbId, schema);
+  revalidatePath(`/w/${slug}/p/${dbId}`);
+}
+
 export async function configureFormula(
   slug: string,
   dbId: string,
@@ -201,6 +229,40 @@ export async function renameColumn(slug: string, dbId: string, propId: string, n
   const { schema } = await loadDb(slug, dbId);
   const p = schema.props.find((x) => x.id === propId);
   if (p) p.name = name.trim() || p.name;
+  await saveSchema(dbId, schema);
+  revalidatePath(`/w/${slug}/p/${dbId}`);
+}
+
+export async function setColumnDescription(
+  slug: string,
+  dbId: string,
+  propId: string,
+  description: string,
+) {
+  const { schema } = await loadDb(slug, dbId);
+  const p = schema.props.find((x) => x.id === propId);
+  if (!p) throw new Error("not found");
+  const t = description.trim();
+  p.description = t ? t : undefined;
+  await saveSchema(dbId, schema);
+  revalidatePath(`/w/${slug}/p/${dbId}`);
+}
+
+export async function setSelectOptionColor(
+  slug: string,
+  dbId: string,
+  propId: string,
+  optionId: string,
+  color: string,
+) {
+  const { schema } = await loadDb(slug, dbId);
+  const p = schema.props.find((x) => x.id === propId);
+  if (!p || (p.type !== "select" && p.type !== "multi_select")) {
+    throw new Error("not a select column");
+  }
+  const opt = p.options.find((o) => o.id === optionId);
+  if (!opt) throw new Error("option not found");
+  opt.color = color;
   await saveSchema(dbId, schema);
   revalidatePath(`/w/${slug}/p/${dbId}`);
 }

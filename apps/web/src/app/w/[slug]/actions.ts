@@ -136,6 +136,46 @@ export async function deletePage(slug: string, pageId: string) {
   revalidatePath(`/w/${slug}`, "layout");
 }
 
+export async function bulkDeletePages(slug: string, pageIds: string[]) {
+  const ctx = await assertEditor(slug);
+  if (pageIds.length === 0) return;
+  const allIds = new Set<string>();
+  for (const id of pageIds) {
+    const ids = await collectDescendantIds(ctx.workspace.id, id);
+    for (const i of ids) allIds.add(i);
+  }
+  await prisma.page.updateMany({
+    where: {
+      id: { in: Array.from(allIds) },
+      workspaceId: ctx.workspace.id,
+      deletedAt: null,
+    },
+    data: { deletedAt: new Date(), favorite: false },
+  });
+  for (const id of pageIds) {
+    await logActivity(id, ctx.user.id, "deleted", { bulk: true });
+  }
+  revalidatePath(`/w/${slug}`, "layout");
+}
+
+export async function bulkFavoritePages(
+  slug: string,
+  pageIds: string[],
+  favorite: boolean,
+) {
+  const ctx = await requireWorkspaceMember(slug);
+  if (pageIds.length === 0) return;
+  await prisma.page.updateMany({
+    where: {
+      id: { in: pageIds },
+      workspaceId: ctx.workspace.id,
+      deletedAt: null,
+    },
+    data: { favorite },
+  });
+  revalidatePath(`/w/${slug}`, "layout");
+}
+
 export async function restorePage(slug: string, pageId: string) {
   const ctx = await assertEditor(slug);
   const ids = await collectDescendantIds(ctx.workspace.id, pageId);

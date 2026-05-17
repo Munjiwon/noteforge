@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import clsx from "clsx";
 import {
+  bulkDeletePages,
+  bulkFavoritePages,
   createPage,
   createPageFromTemplate,
   deletePage,
@@ -29,6 +31,7 @@ type SidebarPage = {
   parentId: string | null;
   kind: string;
   favorite?: boolean;
+  preview?: string;
 };
 
 type TrashItem = { id: string; title: string; icon: string | null; kind: string };
@@ -73,8 +76,33 @@ export function Sidebar({
 }) {
   const params = useParams<{ pageId?: string }>();
   const activePageId = params.pageId;
-  const tree = useMemo(() => toTree(pages), [pages]);
+  const [filterQ, setFilterQ] = useState("");
+  const filteredPages = useMemo(() => {
+    const q = filterQ.trim().toLowerCase();
+    if (!q) return pages;
+    const matches = new Set<string>();
+    for (const p of pages) {
+      if ((p.title || "Untitled").toLowerCase().includes(q)) {
+        // include match + all ancestors
+        let cur: SidebarPage | undefined = p;
+        while (cur) {
+          matches.add(cur.id);
+          const next: SidebarPage | undefined = pages.find(
+            (x) => x.id === cur!.parentId,
+          );
+          cur = next;
+        }
+      }
+    }
+    return pages.filter((p) => matches.has(p.id));
+  }, [pages, filterQ]);
+  const tree = useMemo(() => toTree(filteredPages), [filteredPages]);
   const [open, setOpen] = useState<Set<string>>(new Set());
+  // When filtering, auto-expand all matched nodes.
+  useEffect(() => {
+    if (!filterQ.trim()) return;
+    setOpen(new Set(filteredPages.map((p) => p.id)));
+  }, [filterQ, filteredPages]);
   const [, startTransition] = useTransition();
 
   const toggle = (id: string) =>
@@ -124,6 +152,26 @@ export function Sidebar({
   const [dragId, setDragId] = useState<string | null>(null);
   const [dropTarget, setDropTarget] = useState<{ id: string; where: "into" | "before" | "after" } | null>(null);
   const [movingId, setMovingId] = useState<string | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [selectMode, setSelectMode] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const toggleSelected = (id: string) =>
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  // listen for global event so a topbar button (in main area) can open sidebar
+  useEffect(() => {
+    const onOpen = () => setMobileOpen(true);
+    window.addEventListener("sidebar-open", onOpen);
+    return () => window.removeEventListener("sidebar-open", onOpen);
+  }, []);
+  // close on page navigation (active page id change)
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [activePageId]);
 
   const [addMenuFor, setAddMenuFor] = useState<string | "root" | null>(null);
 
@@ -135,7 +183,7 @@ export function Sidebar({
     return (
       <li key={node.id}>
         <div
-          draggable={role !== "viewer"}
+          draggable={role !== "viewer" && !selectMode}
           onDragStart={(e) => {
             e.stopPropagation();
             setDragId(node.id);
@@ -192,16 +240,26 @@ export function Sidebar({
           )}
           style={{ paddingLeft: 8 + depth * 14 }}
         >
-          <button
-            onClick={() => toggle(node.id)}
-            className={clsx(
-              "w-4 h-4 grid place-items-center text-gray-400 hover:text-gray-700",
-              !hasKids && "invisible",
-            )}
-            aria-label="toggle"
-          >
-            {isOpen ? "▾" : "▸"}
-          </button>
+          {selectMode && role !== "viewer" ? (
+            <input
+              type="checkbox"
+              checked={selectedIds.has(node.id)}
+              onChange={() => toggleSelected(node.id)}
+              className="w-3 h-3"
+              aria-label="select page"
+            />
+          ) : (
+            <button
+              onClick={() => toggle(node.id)}
+              className={clsx(
+                "w-4 h-4 grid place-items-center text-gray-400 hover:text-gray-700",
+                !hasKids && "invisible",
+              )}
+              aria-label="toggle"
+            >
+              {isOpen ? "▾" : "▸"}
+            </button>
+          )}
           <Link
             href={`/w/${currentSlug}/p/${node.id}`}
             className="flex-1 truncate text-sm py-0.5"
@@ -291,7 +349,21 @@ export function Sidebar({
   }
 
   return (
-    <aside className="w-64 shrink-0 bg-sidebar border-r border-black/10 flex flex-col">
+    <>
+    {mobileOpen && (
+      <div
+        className="md:hidden fixed inset-0 z-30 bg-black/30"
+        onClick={() => setMobileOpen(false)}
+      />
+    )}
+    <aside
+      className={clsx(
+        "w-64 shrink-0 bg-sidebar border-r border-black/10 flex flex-col",
+        "md:relative md:translate-x-0",
+        "fixed inset-y-0 left-0 z-40 transition-transform",
+        mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0",
+      )}
+    >
       <div className="p-3 border-b border-black/10">
         <details className="group">
           <summary className="flex items-center gap-2 cursor-pointer list-none">
@@ -374,6 +446,7 @@ export function Sidebar({
               <li key={f.id}>
                 <Link
                   href={`/w/${currentSlug}/p/${f.id}`}
+                  title={f.preview || undefined}
                   className={clsx(
                     "flex items-center gap-1 px-3 py-1 rounded hover:bg-black/5 text-sm",
                     f.id === activePageId && "bg-black/10",
@@ -393,8 +466,30 @@ export function Sidebar({
         </>
       )}
 
-      <div className="flex items-center justify-between px-3 pt-3 pb-1 text-xs uppercase tracking-wide text-gray-500">
-        <span>Pages</span>
+      <div className="px-3 pt-2 pb-1">
+        <input
+          value={filterQ}
+          onChange={(e) => setFilterQ(e.target.value)}
+          placeholder="Filter pages…"
+          className="w-full text-xs border border-gray-200 rounded px-2 py-1 outline-none focus:border-gray-400 bg-white/60"
+        />
+      </div>
+
+      <div className="flex items-center justify-between px-3 pt-2 pb-1 text-xs uppercase tracking-wide text-gray-500">
+        <span className="flex items-center gap-2">
+          Pages
+          {role !== "viewer" && (
+            <button
+              onClick={() => {
+                setSelectMode((v) => !v);
+                setSelectedIds(new Set());
+              }}
+              className="text-[10px] normal-case tracking-normal text-gray-400 hover:text-gray-900"
+            >
+              {selectMode ? "Done" : "Select"}
+            </button>
+          )}
+        </span>
         {role !== "viewer" && (
           <div className="relative">
             <button
@@ -445,6 +540,39 @@ export function Sidebar({
           </div>
         )}
       </div>
+      {selectMode && selectedIds.size > 0 && (
+        <div className="mx-3 mb-2 p-2 bg-blue-50 border border-blue-200 rounded text-xs flex items-center gap-2">
+          <span className="text-blue-700">{selectedIds.size} selected</span>
+          <button
+            onClick={() => {
+              startTransition(() => {
+                bulkFavoritePages(currentSlug, Array.from(selectedIds), true);
+              });
+            }}
+            className="px-1.5 py-0.5 rounded bg-white border border-gray-200 hover:bg-black/5"
+          >
+            ★ Favorite
+          </button>
+          <button
+            onClick={() => {
+              if (!confirm(`Move ${selectedIds.size} page(s) to trash?`)) return;
+              startTransition(() => {
+                bulkDeletePages(currentSlug, Array.from(selectedIds));
+                setSelectedIds(new Set());
+              });
+            }}
+            className="px-1.5 py-0.5 rounded bg-white border border-gray-200 hover:bg-red-50 text-red-600"
+          >
+            🗑 Trash
+          </button>
+          <button
+            onClick={() => setSelectedIds(new Set())}
+            className="ml-auto text-gray-500 hover:text-gray-900"
+          >
+            Clear
+          </button>
+        </div>
+      )}
       <ul className="flex-1 overflow-auto pb-2">{tree.map((n) => renderNode(n, 0))}</ul>
 
       {trashed.length > 0 && (
@@ -492,6 +620,12 @@ export function Sidebar({
 
       <div className="border-t border-black/10 p-3 space-y-2">
         <Link
+          href={`/w/${currentSlug}/activity`}
+          className="block text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
+        >
+          📜 Activity
+        </Link>
+        <Link
           href={`/w/${currentSlug}/settings`}
           className="block text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
         >
@@ -508,5 +642,6 @@ export function Sidebar({
         onClose={() => setMovingId(null)}
       />
     </aside>
+    </>
   );
 }
