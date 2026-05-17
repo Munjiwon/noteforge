@@ -1,7 +1,12 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { setFilters, setSort } from "@/app/w/[slug]/database-actions";
+import {
+  setColumnOrder,
+  setFilters,
+  setHiddenColumns,
+  setSort,
+} from "@/app/w/[slug]/database-actions";
 import type {
   DbFilter,
   DbFilterOp,
@@ -57,6 +62,7 @@ export function DbControls({
 }) {
   const [openFilter, setOpenFilter] = useState(false);
   const [openSort, setOpenSort] = useState(false);
+  const [openColumns, setOpenColumns] = useState(false);
   const [, start] = useTransition();
 
   const filters = schema.filters ?? [];
@@ -114,6 +120,110 @@ export function DbControls({
           />
         )}
       </div>
+
+      <div className="relative">
+        <button
+          onClick={() => setOpenColumns((v) => !v)}
+          disabled={readOnly}
+          className="px-2 py-1 rounded hover:bg-black/5"
+        >
+          ☱ Columns
+        </button>
+        {openColumns && (
+          <ColumnsPanel
+            schema={schema}
+            slug={slug}
+            dbId={dbId}
+            onClose={() => setOpenColumns(false)}
+            readOnly={readOnly}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ColumnsPanel({
+  schema,
+  slug,
+  dbId,
+  onClose,
+  readOnly,
+}: {
+  schema: DbSchema;
+  slug: string;
+  dbId: string;
+  onClose: () => void;
+  readOnly: boolean;
+}) {
+  const [, start] = useTransition();
+  const hidden = new Set(schema.hiddenColumns ?? []);
+  // build current order (existing + remaining)
+  const order: string[] = (() => {
+    const known = new Set(schema.props.map((p) => p.id));
+    const fromSchema = (schema.columnOrder ?? []).filter((id) => known.has(id));
+    const remaining = schema.props
+      .map((p) => p.id)
+      .filter((id) => !fromSchema.includes(id));
+    return [...fromSchema, ...remaining];
+  })();
+
+  const toggleHide = (id: string) => {
+    const next = new Set(hidden);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    start(() => setHiddenColumns(slug, dbId, Array.from(next)));
+  };
+  const move = (id: string, dir: -1 | 1) => {
+    const idx = order.indexOf(id);
+    const ni = idx + dir;
+    if (ni < 0 || ni >= order.length) return;
+    const next = [...order];
+    next.splice(idx, 1);
+    next.splice(ni, 0, id);
+    start(() => setColumnOrder(slug, dbId, next));
+  };
+
+  return (
+    <div className="absolute top-full left-0 z-30 mt-1 bg-white border border-gray-200 rounded shadow-lg p-2 min-w-[260px]">
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-xs font-medium text-gray-700">Columns</span>
+        <button onClick={onClose} className="text-gray-400 hover:text-gray-900">
+          ✕
+        </button>
+      </div>
+      <ul className="space-y-0.5 max-h-72 overflow-y-auto">
+        {order.map((id, i) => {
+          const p = schema.props.find((x) => x.id === id);
+          if (!p) return null;
+          const isTitle = p.id === "p_title";
+          return (
+            <li key={id} className="flex items-center gap-1 px-1 py-0.5">
+              <input
+                type="checkbox"
+                disabled={readOnly || isTitle}
+                checked={isTitle || !hidden.has(id)}
+                onChange={() => toggleHide(id)}
+              />
+              <span className="flex-1 text-sm truncate">{p.name}</span>
+              <button
+                disabled={readOnly || i === 0}
+                onClick={() => move(id, -1)}
+                className="text-xs text-gray-400 hover:text-gray-900 disabled:opacity-20"
+              >
+                ↑
+              </button>
+              <button
+                disabled={readOnly || i === order.length - 1}
+                onClick={() => move(id, 1)}
+                className="text-xs text-gray-400 hover:text-gray-900 disabled:opacity-20"
+              >
+                ↓
+              </button>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }

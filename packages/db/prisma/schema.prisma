@@ -66,6 +66,9 @@ model Page {
   authorId    String?
   cover       String?
   favorite    Boolean   @default(false)
+  locked      Boolean   @default(false)
+  width       String    @default("normal") // "normal" | "wide" | "full"
+  font        String    @default("default") // "default" | "serif" | "mono"
   deletedAt   DateTime?
   publicSlug  String?   @unique
   publicAccess String   @default("none") // "none" | "view"
@@ -79,6 +82,7 @@ model Page {
   comments    Comment[]
   snapshots   PageSnapshot[]
   permissions PagePermission[]
+  activities  PageActivity[]
 
   @@index([workspaceId, parentId])
 }
@@ -88,6 +92,19 @@ model PageSnapshot {
   pageId    String
   content   String
   authorId  String?
+  createdAt DateTime @default(now())
+
+  page      Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+
+  @@index([pageId, createdAt])
+}
+
+model PageActivity {
+  id        String   @id @default(cuid())
+  pageId    String
+  userId    String?
+  action    String   // "created" | "renamed" | "deleted" | "restored" | "shared" | "snapshot" | ...
+  meta      String?  // free-form JSON
   createdAt DateTime @default(now())
 
   page      Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)

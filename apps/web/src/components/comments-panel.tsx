@@ -65,6 +65,7 @@ export function CommentsPanel({
 
   const openCount = tops.filter((t) => !t.resolved).length;
   const resolvedCount = tops.length - openCount;
+  const blockAnchored = tops.filter((t) => t.blockId && !t.resolved);
 
   return (
     <section className="mt-10 border-t border-gray-200 pt-6">
@@ -72,7 +73,9 @@ export function CommentsPanel({
         <h2 className="text-sm font-semibold text-gray-700">
           Comments
           <span className="ml-2 text-xs text-gray-400">
-            {openCount} open{resolvedCount > 0 ? ` · ${resolvedCount} resolved` : ""}
+            {openCount} open
+            {blockAnchored.length > 0 ? ` · 📍 ${blockAnchored.length} on blocks` : ""}
+            {resolvedCount > 0 ? ` · ${resolvedCount} resolved` : ""}
           </span>
         </h2>
         {resolvedCount > 0 && (
@@ -84,6 +87,24 @@ export function CommentsPanel({
           </button>
         )}
       </div>
+
+      {blockAnchored.length > 0 && (
+        <div className="mb-4 flex flex-wrap gap-1">
+          {blockAnchored.map((c) => (
+            <button
+              key={c.id}
+              onClick={() => {
+                const el = document.querySelector(`[data-id="${c.blockId}"]`) as HTMLElement | null;
+                if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+              }}
+              className="text-[11px] px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 hover:bg-blue-100"
+              title={c.body.slice(0, 80)}
+            >
+              📍 {c.body.slice(0, 24)}{c.body.length > 24 ? "…" : ""}
+            </button>
+          ))}
+        </div>
+      )}
 
       {!readOnly && (
         <div className="mb-4">

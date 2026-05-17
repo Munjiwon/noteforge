@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import {
+  inviteGuestByEmail,
   regeneratePublicSlug,
   removePagePermission,
   setPagePermission,
@@ -39,6 +40,8 @@ export function ShareButton({
     { id: string; name: string; color: string }[]
   >([]);
   const [pickRole, setPickRole] = useState<"view" | "comment" | "edit">("edit");
+  const [email, setEmail] = useState("");
+  const [emailMsg, setEmailMsg] = useState<string | null>(null);
   const [, start] = useTransition();
   const wrapRef = useRef<HTMLDivElement>(null);
 
@@ -111,6 +114,40 @@ export function ShareButton({
           <div className="text-sm font-medium mb-2">Share this page</div>
           {canEdit && (
             <section className="mb-3">
+              <div className="text-xs text-gray-500 mb-1">Invite by email</div>
+              <div className="flex gap-1 mb-2">
+                <input
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setEmailMsg(null);
+                  }}
+                  placeholder="name@example.com"
+                  type="email"
+                  className="flex-1 text-xs border border-gray-200 rounded px-2 py-1 outline-none"
+                />
+                <button
+                  onClick={() =>
+                    start(async () => {
+                      const res = await inviteGuestByEmail(slug, pageId, email, pickRole);
+                      if (res.ok) {
+                        setEmail("");
+                        setEmailMsg("Invited. Refreshing…");
+                        // permissions list will refresh via revalidatePath; force local refresh next open
+                      } else {
+                        setEmailMsg(res.error);
+                      }
+                    })
+                  }
+                  disabled={!email.trim()}
+                  className="text-xs px-2 py-1 rounded bg-gray-900 text-white disabled:opacity-30"
+                >
+                  Invite
+                </button>
+              </div>
+              {emailMsg && (
+                <p className="text-[11px] text-gray-500 mb-2">{emailMsg}</p>
+              )}
               <div className="text-xs text-gray-500 mb-1">Invite workspace members</div>
               <div className="flex gap-1 mb-1">
                 <input

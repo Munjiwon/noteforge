@@ -13,6 +13,12 @@ export function PageInfo({
     commentCount: number;
     backlinkCount: number;
     childrenCount: number;
+    activity?: {
+      id: string;
+      action: string;
+      createdAt: string;
+      user: { name: string; color: string } | null;
+    }[];
   };
 }) {
   const [open, setOpen] = useState(false);
@@ -65,10 +71,60 @@ export function PageInfo({
             <span className="text-gray-500">Backlinks</span>
             <span className="text-right">{info.backlinkCount}</span>
           </div>
+          {info.activity && info.activity.length > 0 && (
+            <div className="border-t border-gray-100 pt-2">
+              <div className="text-xs text-gray-500 mb-1">Recent activity</div>
+              <ul className="space-y-1 max-h-40 overflow-y-auto">
+                {info.activity.map((a) => (
+                  <li key={a.id} className="text-[11px] flex items-center gap-1 text-gray-600">
+                    {a.user ? (
+                      <span
+                        className="inline-flex items-center justify-center w-4 h-4 rounded-full text-white text-[8px] font-medium shrink-0"
+                        style={{ background: a.user.color }}
+                      >
+                        {a.user.name.slice(0, 1).toUpperCase()}
+                      </span>
+                    ) : (
+                      <span className="w-4" />
+                    )}
+                    <span className="truncate">
+                      <span className="font-medium">{a.user?.name ?? "Someone"}</span>{" "}
+                      {actionLabel(a.action)}
+                    </span>
+                    <span className="ml-auto text-gray-400 shrink-0">
+                      {relative(a.createdAt)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       )}
     </div>
   );
+}
+
+function actionLabel(a: string): string {
+  switch (a) {
+    case "created": return "created the page";
+    case "renamed": return "renamed";
+    case "deleted": return "moved to trash";
+    case "restored": return "restored";
+    case "shared": return "enabled sharing";
+    case "unshared": return "stopped sharing";
+    case "snapshot": return "saved a snapshot";
+    default: return a;
+  }
+}
+
+function relative(iso: string) {
+  const diff = (Date.now() - new Date(iso).getTime()) / 1000;
+  if (diff < 60) return "just now";
+  if (diff < 3600) return `${Math.floor(diff / 60)}m`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)}h`;
+  if (diff < 86400 * 7) return `${Math.floor(diff / 86400)}d`;
+  return new Date(iso).toLocaleDateString();
 }
 
 function Row({ label, children }: { label: string; children: React.ReactNode }) {

@@ -89,7 +89,19 @@ export type DbSchema = {
   timelineEndBy?: string;
   filters?: DbFilter[];
   sort?: DbSort[];
+  columnOrder?: string[];
+  hiddenColumns?: string[];
 };
+
+export function orderedVisibleProps(schema: DbSchema): DbProp[] {
+  const byId = new Map(schema.props.map((p) => [p.id, p]));
+  const hidden = new Set(schema.hiddenColumns ?? []);
+  const orderedIds = (schema.columnOrder ?? []).filter((id) => byId.has(id));
+  const remaining = schema.props.filter((p) => !orderedIds.includes(p.id));
+  return [...orderedIds.map((id) => byId.get(id)!), ...remaining].filter(
+    (p) => p.id === "p_title" || !hidden.has(p.id),
+  );
+}
 
 export type DbValues = Record<string, unknown>;
 

@@ -20,6 +20,7 @@ import { InviteButton } from "./invite-button";
 import { UserMenu } from "./user-menu";
 import { NotificationsButton, type NotifItem } from "./notifications-button";
 import { ImportButton } from "./import-button";
+import { PageMovePicker } from "./page-move-picker";
 
 type SidebarPage = {
   id: string;
@@ -122,6 +123,7 @@ export function Sidebar({
 
   const [dragId, setDragId] = useState<string | null>(null);
   const [dropTarget, setDropTarget] = useState<{ id: string; where: "into" | "before" | "after" } | null>(null);
+  const [movingId, setMovingId] = useState<string | null>(null);
 
   const [addMenuFor, setAddMenuFor] = useState<string | "root" | null>(null);
 
@@ -258,6 +260,15 @@ export function Sidebar({
                       }}
                     >
                       ⎘ Duplicate
+                    </button>
+                    <button
+                      className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded"
+                      onClick={() => {
+                        setAddMenuFor(null);
+                        setMovingId(node.id);
+                      }}
+                    >
+                      ↪ Move to…
                     </button>
                   </div>
                 )}
@@ -490,6 +501,12 @@ export function Sidebar({
         {role === "owner" && <InviteButton slug={currentSlug} />}
         <UserMenu user={user} />
       </div>
+      <PageMovePicker
+        slug={currentSlug}
+        pages={pages}
+        movingId={movingId}
+        onClose={() => setMovingId(null)}
+      />
     </aside>
   );
 }

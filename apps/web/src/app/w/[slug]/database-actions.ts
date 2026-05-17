@@ -161,6 +161,28 @@ export async function configureFormula(
   revalidatePath(`/w/${slug}/p/${dbId}`);
 }
 
+export async function setHiddenColumns(
+  slug: string,
+  dbId: string,
+  ids: string[],
+) {
+  const { schema } = await loadDb(slug, dbId);
+  schema.hiddenColumns = ids.filter((id) => id !== "p_title");
+  await saveSchema(dbId, schema);
+  revalidatePath(`/w/${slug}/p/${dbId}`);
+}
+
+export async function setColumnOrder(
+  slug: string,
+  dbId: string,
+  order: string[],
+) {
+  const { schema } = await loadDb(slug, dbId);
+  schema.columnOrder = order;
+  await saveSchema(dbId, schema);
+  revalidatePath(`/w/${slug}/p/${dbId}`);
+}
+
 export async function setFilters(slug: string, dbId: string, filters: DbFilter[]) {
   const { schema } = await loadDb(slug, dbId);
   schema.filters = filters;

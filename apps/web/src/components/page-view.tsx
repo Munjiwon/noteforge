@@ -9,6 +9,7 @@ import { PageCover } from "./page-cover";
 import { HistoryButton, type SnapshotItem } from "./history-button";
 import { ExportButton } from "./export-button";
 import { PageInfo } from "./page-info";
+import { PageStyleMenu, fontClass, widthClass } from "./page-style-menu";
 import type { PermItem } from "./share-button";
 
 const Editor = dynamic(() => import("./editor").then((m) => m.Editor), {
@@ -28,6 +29,7 @@ export function PageView({
   backlinks,
   info,
   permissions,
+  canChangeSettings = false,
 }: {
   slug: string;
   page: {
@@ -38,7 +40,11 @@ export function PageView({
     cover?: string | null;
     publicAccess?: "none" | "view";
     publicSlug?: string | null;
+    locked?: boolean;
+    width?: "normal" | "wide" | "full";
+    font?: "default" | "serif" | "mono";
   };
+  canChangeSettings?: boolean;
   user: { id: string; name: string; color: string };
   role: "owner" | "editor" | "viewer";
   comments: CommentItem[];
@@ -61,18 +67,33 @@ export function PageView({
   const [, start] = useTransition();
   const readOnly = role === "viewer";
 
+  const width = page.width ?? "normal";
+  const font = page.font ?? "default";
   return (
-    <div>
+    <div className={fontClass(font)}>
       <PageCover
         slug={slug}
         pageId={page.id}
         cover={page.cover ?? null}
         readOnly={readOnly}
       />
-      <div className="max-w-3xl mx-auto px-24 py-10">
+      <div className={`${widthClass(width)} mx-auto px-12 md:px-24 py-10`}>
+        {page.locked && (
+          <div className="mb-3 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-3 py-1 inline-flex items-center gap-1">
+            🔒 Page locked — read-only
+          </div>
+        )}
         <div className="flex justify-end gap-2 mb-2">
           <PageInfo info={info} />
           <ExportButton slug={slug} pageId={page.id} title={page.title} />
+          <PageStyleMenu
+            slug={slug}
+            pageId={page.id}
+            width={width}
+            font={font}
+            locked={page.locked ?? false}
+            canEdit={canChangeSettings}
+          />
           <HistoryButton
             slug={slug}
             pageId={page.id}

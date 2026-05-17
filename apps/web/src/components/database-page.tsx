@@ -3,6 +3,7 @@
 import { useEffect, useState, useTransition } from "react";
 import { renamePage, setPageIcon } from "@/app/w/[slug]/actions";
 import { PeekModal } from "./peek-modal";
+import { PageStyleMenu, fontClass, widthClass } from "./page-style-menu";
 import { setKanbanGroup, setView } from "@/app/w/[slug]/database-actions";
 import { DatabaseView } from "./database-view";
 import { KanbanView } from "./kanban-view";
@@ -23,6 +24,7 @@ export function DatabasePage({
   db,
   rows,
   role,
+  canChangeSettings = false,
 }: {
   slug: string;
   db: {
@@ -34,15 +36,21 @@ export function DatabasePage({
     publicAccess?: "none" | "view";
     publicSlug?: string | null;
     permissions?: PermItem[];
+    locked?: boolean;
+    width?: "normal" | "wide" | "full";
+    font?: "default" | "serif" | "mono";
   };
   rows: { id: string; parentId: string; title: string; cover?: string | null; dataValues: Record<string, unknown> }[];
   role: "owner" | "editor" | "viewer";
+  canChangeSettings?: boolean;
 }) {
   const [title, setTitle] = useState(db.title);
   const [icon, setIcon] = useState(db.icon);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [, start] = useTransition();
   const readOnly = role === "viewer";
+  const width = db.width ?? "normal";
+  const font = db.font ?? "default";
   const view: DbView = db.schema.view ?? "table";
   const selectProps = db.schema.props.filter((p) => p.type === "select");
   const visibleRows = applyQuery(db.schema, rows);
@@ -59,15 +67,28 @@ export function DatabasePage({
   }, []);
 
   return (
-    <div>
+    <div className={fontClass(font)}>
       <PageCover
         slug={slug}
         pageId={db.id}
         cover={db.cover ?? null}
         readOnly={readOnly}
       />
-      <div className="max-w-6xl mx-auto px-12 py-10">
-        <div className="flex justify-end mb-2">
+      <div className={`${width === "full" ? "max-w-none" : width === "wide" ? "max-w-7xl" : "max-w-6xl"} mx-auto px-12 py-10`}>
+        {db.locked && (
+          <div className="mb-3 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-3 py-1 inline-flex items-center gap-1">
+            🔒 Database locked — read-only
+          </div>
+        )}
+        <div className="flex justify-end gap-2 mb-2">
+          <PageStyleMenu
+            slug={slug}
+            pageId={db.id}
+            width={width}
+            font={font}
+            locked={db.locked ?? false}
+            canEdit={canChangeSettings}
+          />
           <ShareButton
             slug={slug}
             pageId={db.id}

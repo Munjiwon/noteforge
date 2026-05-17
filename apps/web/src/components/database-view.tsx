@@ -7,13 +7,17 @@ import {
   addColumn,
   addRow,
   addSelectOption,
+  configureFormula,
+  configureRelation,
+  configureRollup,
   deleteColumn,
   deleteRow,
   renameColumn,
   updateCell,
 } from "@/app/w/[slug]/database-actions";
+import { reorderPage } from "@/app/w/[slug]/actions";
 import type { DbProp, DbPropType, DbSchema } from "@/lib/database";
-import { STATUS_GROUP_LABEL, type StatusGroup } from "@/lib/database";
+import { STATUS_GROUP_LABEL, orderedVisibleProps, type StatusGroup } from "@/lib/database";
 
 type Row = {
   id: string;
@@ -71,9 +75,25 @@ export function DatabaseView({
   const [, start] = useTransition();
   const [addingType, setAddingType] = useState<DbPropType | null>(null);
   const [openMenuPropId, setOpenMenuPropId] = useState<string | null>(null);
+  const [dragRowId, setDragRowId] = useState<string | null>(null);
+  const [dragOverRowId, setDragOverRowId] = useState<string | null>(null);
+
+  const onDropOnRow = (targetIdx: number) => {
+    if (!dragRowId) return;
+    const draggedIdx = rows.findIndex((r) => r.id === dragRowId);
+    if (draggedIdx === -1 || draggedIdx === targetIdx) return;
+    // simple position: targetIdx+1 (1-based positions in DB)
+    const newPos =
+      draggedIdx < targetIdx ? targetIdx + 1.5 : targetIdx + 0.5;
+    start(() => reorderPage(slug, dragRowId, dbId, newPos));
+    setDragRowId(null);
+    setDragOverRowId(null);
+  };
 
   const callAddColumn = (type: DbPropType) =>
     start(() => addColumn(slug, dbId, type));
+
+  const visibleProps = orderedVisibleProps(schema);
 
   return (
     <div className="w-full">
@@ -81,7 +101,7 @@ export function DatabaseView({
         <table className="border-collapse w-max min-w-full">
           <thead>
             <tr className="bg-gray-50 border-b border-gray-200">
-              {schema.props.map((p) => (
+              {visibleProps.map((p) => (
                 <th
                   key={p.id}
                   className="text-left text-xs font-medium text-gray-600 border-r border-gray-200 last:border-r-0 align-top"
@@ -91,6 +111,7 @@ export function DatabaseView({
                     prop={p}
                     slug={slug}
                     dbId={dbId}
+                    schema={schema}
                     open={openMenuPropId === p.id}
                     onOpen={(v) => setOpenMenuPropId(v ? p.id : null)}
                     readOnly={readOnly}
@@ -137,19 +158,29 @@ export function DatabaseView({
             </tr>
           </thead>
           <tbody>
-            {rows.map((row) => (
+            {rows.map((row, idx) => (
               <RowRow
                 key={row.id}
                 row={row}
                 schema={schema}
                 slug={slug}
                 readOnly={readOnly}
+                draggable={!readOnly}
+                isDragging={dragRowId === row.id}
+                isDropOver={dragOverRowId === row.id}
+                onDragStart={() => setDragRowId(row.id)}
+                onDragOver={() => setDragOverRowId(row.id)}
+                onDragEnd={() => {
+                  setDragRowId(null);
+                  setDragOverRowId(null);
+                }}
+                onDrop={() => onDropOnRow(idx)}
               />
             ))}
             {rows.length === 0 && (
               <tr>
                 <td
-                  colSpan={schema.props.length + (readOnly ? 0 : 1)}
+                  colSpan={visibleProps.length + (readOnly ? 0 : 1)}
                   className="text-center text-sm text-gray-400 py-6"
                 >
                   No rows yet
@@ -179,6 +210,7 @@ function ColumnHeader({
   prop,
   slug,
   dbId,
+  schema,
   open,
   onOpen,
   readOnly,
@@ -186,11 +218,13 @@ function ColumnHeader({
   prop: DbProp;
   slug: string;
   dbId: string;
+  schema: DbSchema;
   open: boolean;
   onOpen: (open: boolean) => void;
   readOnly: boolean;
 }) {
   const [name, setName] = useState(prop.name);
+  const [configuring, setConfiguring] = useState(false);
   const [, start] = useTransition();
   useEffect(() => setName(prop.name), [prop.name]);
 
@@ -218,7 +252,18 @@ function ColumnHeader({
         </button>
       )}
       {open && (
-        <div className="absolute top-full right-0 z-30 bg-white shadow-lg border rounded p-1 min-w-[140px]">
+        <div className="absolute top-full right-0 z-30 bg-white shadow-lg border rounded p-1 min-w-[160px]">
+          {(prop.type === "relation" || prop.type === "rollup" || prop.type === "formula") && (
+            <button
+              className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded"
+              onClick={() => {
+                setConfiguring(true);
+                onOpen(false);
+              }}
+            >
+              ⚙ Configure
+            </button>
+          )}
           <button
             className="block w-full text-left px-2 py-1 text-sm text-red-600 hover:bg-red-50 rounded"
             onClick={() => {
@@ -232,6 +277,15 @@ function ColumnHeader({
           </button>
         </div>
       )}
+      {configuring && (
+        <ColumnConfigure
+          prop={prop}
+          slug={slug}
+          dbId={dbId}
+          schema={schema}
+          onClose={() => setConfiguring(false)}
+        />
+      )}
     </div>
   );
 }
@@ -241,21 +295,56 @@ function RowRow({
   schema,
   slug,
   readOnly,
+  draggable,
+  isDragging,
+  isDropOver,
+  onDragStart,
+  onDragOver,
+  onDragEnd,
+  onDrop,
 }: {
   row: Row;
   schema: DbSchema;
   slug: string;
   readOnly: boolean;
+  draggable?: boolean;
+  isDragging?: boolean;
+  isDropOver?: boolean;
+  onDragStart?: () => void;
+  onDragOver?: () => void;
+  onDragEnd?: () => void;
+  onDrop?: () => void;
 }) {
   const [hover, setHover] = useState(false);
   const [, start] = useTransition();
+  const visibleProps = orderedVisibleProps(schema);
   return (
     <tr
-      className="border-b border-gray-100 hover:bg-gray-50"
+      draggable={draggable}
+      onDragStart={(e) => {
+        e.dataTransfer.effectAllowed = "move";
+        onDragStart?.();
+      }}
+      onDragOver={(e) => {
+        if (!draggable) return;
+        e.preventDefault();
+        onDragOver?.();
+      }}
+      onDragEnd={onDragEnd}
+      onDrop={(e) => {
+        if (!draggable) return;
+        e.preventDefault();
+        onDrop?.();
+      }}
+      className={
+        "border-b border-gray-100 hover:bg-gray-50 " +
+        (isDragging ? "opacity-40 " : "") +
+        (isDropOver ? "bg-blue-50 " : "")
+      }
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      {schema.props.map((p, idx) => (
+      {visibleProps.map((p, idx) => (
         <td
           key={p.id}
           className="border-r border-gray-100 last:border-r-0 align-top relative"
@@ -933,6 +1022,219 @@ function PersonCell({
           )}
         </div>
       )}
+    </div>
+  );
+}
+
+function ColumnConfigure({
+  prop,
+  slug,
+  dbId,
+  schema,
+  onClose,
+}: {
+  prop: DbProp;
+  slug: string;
+  dbId: string;
+  schema: DbSchema;
+  onClose: () => void;
+}) {
+  const [, start] = useTransition();
+  const [dbHits, setDbHits] = useState<{ id: string; title: string; icon: string | null }[]>([]);
+  const [targetDb, setTargetDb] = useState<{
+    schema: DbSchema;
+  } | null>(null);
+  const isRelation = prop.type === "relation";
+  const isRollup = prop.type === "rollup";
+  const isFormula = prop.type === "formula";
+
+  const [targetDbId, setTargetDbId] = useState(
+    isRelation ? prop.targetDbId : "",
+  );
+  const [relationPropId, setRelationPropId] = useState(
+    isRollup ? prop.relationPropId : "",
+  );
+  const [targetPropId, setTargetPropId] = useState(
+    isRollup ? prop.targetPropId : "",
+  );
+  const [aggregate, setAggregate] = useState<
+    "count" | "sum" | "min" | "max" | "unique"
+  >(isRollup ? prop.aggregate : "count");
+  const [expr, setExpr] = useState(isFormula ? prop.expr : "");
+
+  useEffect(() => {
+    if (!isRelation && !isRollup) return;
+    const m = /^\/w\/([^/]+)/.exec(window.location.pathname);
+    const wsSlug = m ? m[1] : slug;
+    fetch(`/api/search?ws=${encodeURIComponent(wsSlug)}&q=`)
+      .then((r) => r.json())
+      .then((d) => {
+        const dbs = (d.hits ?? []).filter((h: { kind: string }) => h.kind === "database");
+        setDbHits(dbs);
+      });
+  }, [isRelation, isRollup, slug]);
+
+  // For rollup: load the target DB (via relation prop) so we can pick its target prop
+  useEffect(() => {
+    if (!isRollup) return;
+    const relProp = schema.props.find((p) => p.id === relationPropId);
+    if (!relProp || relProp.type !== "relation" || !relProp.targetDbId) {
+      setTargetDb(null);
+      return;
+    }
+    fetch(`/api/db/${encodeURIComponent(relProp.targetDbId)}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (d) setTargetDb({ schema: d.schema });
+      });
+  }, [isRollup, relationPropId, schema.props]);
+
+  return (
+    <div
+      className="fixed inset-0 z-50 bg-black/30 flex items-center justify-center p-4"
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div className="bg-white rounded-lg shadow-2xl w-[420px] max-w-[92vw] p-4">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-sm font-medium">Configure “{prop.name}”</h3>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-900">✕</button>
+        </div>
+
+        {isRelation && (
+          <div>
+            <label className="block text-xs text-gray-500 mb-1">Target database</label>
+            <select
+              value={targetDbId}
+              onChange={(e) => setTargetDbId(e.target.value)}
+              className="w-full text-sm border border-gray-200 rounded px-2 py-1 outline-none mb-3"
+            >
+              <option value="">— pick a database —</option>
+              {dbHits.map((h) => (
+                <option key={h.id} value={h.id}>
+                  {h.icon ?? "📊"} {h.title || "Untitled"}
+                </option>
+              ))}
+            </select>
+            <button
+              disabled={!targetDbId}
+              onClick={() =>
+                start(async () => {
+                  await configureRelation(slug, dbId, prop.id, targetDbId);
+                  onClose();
+                })
+              }
+              className="text-xs px-3 py-1 rounded bg-gray-900 text-white disabled:opacity-30"
+            >
+              Save
+            </button>
+          </div>
+        )}
+
+        {isRollup && (
+          <div className="space-y-2">
+            <div>
+              <label className="block text-xs text-gray-500 mb-1">Relation column</label>
+              <select
+                value={relationPropId}
+                onChange={(e) => setRelationPropId(e.target.value)}
+                className="w-full text-sm border border-gray-200 rounded px-2 py-1 outline-none"
+              >
+                <option value="">— pick a relation —</option>
+                {schema.props
+                  .filter((p) => p.type === "relation")
+                  .map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.name}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            {targetDb && (
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">Target property</label>
+                <select
+                  value={targetPropId}
+                  onChange={(e) => setTargetPropId(e.target.value)}
+                  className="w-full text-sm border border-gray-200 rounded px-2 py-1 outline-none"
+                >
+                  <option value="">—</option>
+                  {targetDb.schema.props.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+            <div>
+              <label className="block text-xs text-gray-500 mb-1">Aggregate</label>
+              <select
+                value={aggregate}
+                onChange={(e) =>
+                  setAggregate(e.target.value as typeof aggregate)
+                }
+                className="w-full text-sm border border-gray-200 rounded px-2 py-1 outline-none"
+              >
+                <option value="count">Count</option>
+                <option value="sum">Sum</option>
+                <option value="min">Min</option>
+                <option value="max">Max</option>
+                <option value="unique">Unique values</option>
+              </select>
+            </div>
+            <button
+              disabled={!relationPropId || (aggregate !== "count" && !targetPropId)}
+              onClick={() =>
+                start(async () => {
+                  await configureRollup(
+                    slug,
+                    dbId,
+                    prop.id,
+                    relationPropId,
+                    targetPropId,
+                    aggregate,
+                  );
+                  onClose();
+                })
+              }
+              className="text-xs px-3 py-1 rounded bg-gray-900 text-white disabled:opacity-30"
+            >
+              Save
+            </button>
+          </div>
+        )}
+
+        {isFormula && (
+          <div>
+            <label className="block text-xs text-gray-500 mb-1">
+              Expression
+            </label>
+            <textarea
+              value={expr}
+              onChange={(e) => setExpr(e.target.value)}
+              placeholder='e.g. prop("Score") * 2 + 1, concat("Hi ", prop("Name"))'
+              className="w-full text-sm border border-gray-200 rounded px-2 py-1 outline-none font-mono min-h-[80px] mb-2"
+            />
+            <p className="text-[10px] text-gray-500 mb-2">
+              Supports: prop("Name"), +, -, *, /, %, concat(a,b), if(cond,a,b),
+              length(x), number(x), string(x), sum/min/max.
+            </p>
+            <button
+              onClick={() =>
+                start(async () => {
+                  await configureFormula(slug, dbId, prop.id, expr);
+                  onClose();
+                })
+              }
+              className="text-xs px-3 py-1 rounded bg-gray-900 text-white"
+            >
+              Save
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

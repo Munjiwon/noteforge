@@ -14,6 +14,24 @@ async function assertEditor(slug: string) {
   return ctx;
 }
 
+async function logActivity(
+  pageId: string,
+  userId: string | null,
+  action: string,
+  meta?: Record<string, unknown>,
+) {
+  await prisma.pageActivity
+    .create({
+      data: {
+        pageId,
+        userId,
+        action,
+        meta: meta ? JSON.stringify(meta) : null,
+      },
+    })
+    .catch((e) => console.error("activity log failed", e));
+}
+
 export async function createPage(slug: string, parentId: string | null) {
   const ctx = await assertEditor(slug);
   const max = await prisma.page.aggregate({
@@ -29,6 +47,7 @@ export async function createPage(slug: string, parentId: string | null) {
       authorId: ctx.user.id,
     },
   });
+  await logActivity(page.id, ctx.user.id, "created");
   revalidatePath(`/w/${slug}`, "layout");
   redirect(`/w/${slug}/p/${page.id}`);
 }
@@ -62,10 +81,12 @@ export async function createPageFromTemplate(
 
 export async function renamePage(slug: string, pageId: string, title: string) {
   const ctx = await assertEditor(slug);
+  const newTitle = title.trim() || "Untitled";
   await prisma.page.updateMany({
     where: { id: pageId, workspaceId: ctx.workspace.id },
-    data: { title: title.trim() || "Untitled" },
+    data: { title: newTitle },
   });
+  await logActivity(pageId, ctx.user.id, "renamed", { title: newTitle });
   revalidatePath(`/w/${slug}`, "layout");
 }
 
@@ -111,6 +132,7 @@ export async function deletePage(slug: string, pageId: string) {
     where: { id: { in: ids }, workspaceId: ctx.workspace.id, deletedAt: null },
     data: { deletedAt: new Date(), favorite: false },
   });
+  await logActivity(pageId, ctx.user.id, "deleted", { descendantsAffected: ids.length });
   revalidatePath(`/w/${slug}`, "layout");
 }
 
@@ -121,6 +143,7 @@ export async function restorePage(slug: string, pageId: string) {
     where: { id: { in: ids }, workspaceId: ctx.workspace.id },
     data: { deletedAt: null },
   });
+  await logActivity(pageId, ctx.user.id, "restored");
   revalidatePath(`/w/${slug}`, "layout");
 }
 
@@ -215,6 +238,46 @@ export async function reorderPage(
   revalidatePath(`/w/${slug}`, "layout");
 }
 
+export async function setPageWidth(
+  slug: string,
+  pageId: string,
+  width: "normal" | "wide" | "full",
+) {
+  const ctx = await assertEditor(slug);
+  await prisma.page.updateMany({
+    where: { id: pageId, workspaceId: ctx.workspace.id },
+    data: { width },
+  });
+  revalidatePath(`/w/${slug}/p/${pageId}`);
+}
+
+export async function setPageFont(
+  slug: string,
+  pageId: string,
+  font: "default" | "serif" | "mono",
+) {
+  const ctx = await assertEditor(slug);
+  await prisma.page.updateMany({
+    where: { id: pageId, workspaceId: ctx.workspace.id },
+    data: { font },
+  });
+  revalidatePath(`/w/${slug}/p/${pageId}`);
+}
+
+export async function togglePageLock(slug: string, pageId: string) {
+  const ctx = await assertEditor(slug);
+  const row = await prisma.page.findFirst({
+    where: { id: pageId, workspaceId: ctx.workspace.id },
+    select: { locked: true },
+  });
+  if (!row) throw new Error("not found");
+  await prisma.page.update({
+    where: { id: pageId },
+    data: { locked: !row.locked },
+  });
+  revalidatePath(`/w/${slug}/p/${pageId}`);
+}
+
 export async function toggleFavorite(slug: string, pageId: string) {
   const ctx = await requireWorkspaceMember(slug);
   const row = await prisma.page.findFirst({
@@ -262,6 +325,7 @@ export async function takeSnapshot(slug: string, pageId: string) {
   await prisma.pageSnapshot.create({
     data: { pageId, content: page.content, authorId: ctx.user.id },
   });
+  await logActivity(pageId, ctx.user.id, "snapshot");
   revalidatePath(`/w/${slug}/p/${pageId}`);
 }
 
@@ -300,6 +364,7 @@ export async function setPagePublic(
     where: { id: pageId },
     data: { publicAccess: access, publicSlug: nextSlug },
   });
+  await logActivity(pageId, ctx.user.id, access === "view" ? "shared" : "unshared");
   revalidatePath(`/w/${slug}/p/${pageId}`);
   return nextSlug;
 }
@@ -334,6 +399,48 @@ export async function removePagePermission(
     where: { pageId, userId, page: { workspaceId: ctx.workspace.id } },
   });
   revalidatePath(`/w/${slug}/p/${pageId}`);
+}
+
+export async function inviteGuestByEmail(
+  slug: string,
+  pageId: string,
+  email: string,
+  role: "view" | "comment" | "edit",
+): Promise<{ ok: true; userId: string } | { ok: false; error: string }> {
+  const ctx = await assertEditor(slug);
+  const trimmed = email.trim().toLowerCase();
+  if (!trimmed || !/.+@.+\..+/.test(trimmed)) {
+    return { ok: false, error: "Invalid email" };
+  }
+  const user = await prisma.user.findUnique({ where: { email: trimmed } });
+  if (!user) {
+    return {
+      ok: false,
+      error:
+        "User not registered. Ask them to sign up first, then invite again.",
+    };
+  }
+  // Ensure they are at least a viewer of the workspace
+  const member = await prisma.workspaceMember.findUnique({
+    where: { userId_workspaceId: { userId: user.id, workspaceId: ctx.workspace.id } },
+  });
+  if (!member) {
+    await prisma.workspaceMember.create({
+      data: {
+        userId: user.id,
+        workspaceId: ctx.workspace.id,
+        role: "viewer",
+      },
+    });
+  }
+  // Set page-level permission
+  await prisma.pagePermission.upsert({
+    where: { pageId_userId: { pageId, userId: user.id } },
+    update: { role },
+    create: { pageId, userId: user.id, role },
+  });
+  revalidatePath(`/w/${slug}/p/${pageId}`);
+  return { ok: true, userId: user.id };
 }
 
 export async function regeneratePublicSlug(slug: string, pageId: string) {

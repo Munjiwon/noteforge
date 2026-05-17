@@ -52,15 +52,19 @@ export default async function PageRoute({
       deletedAt: true,
       publicAccess: true,
       publicSlug: true,
+      locked: true,
+      width: true,
+      font: true,
       author: { select: { name: true, color: true } },
     },
   });
   if (!page) notFound();
 
   const trashed = page.deletedAt !== null;
-  const effectiveRole = trashed
+  const effectiveRole = (trashed || page.locked)
     ? "viewer"
     : (ctx.role as "owner" | "editor" | "viewer");
+  const canChangePageSettings = !trashed && ctx.role !== "viewer";
 
   const permRows = await prisma.pagePermission.findMany({
     where: { pageId: page.id },
@@ -101,7 +105,11 @@ export default async function PageRoute({
             publicAccess: page.publicAccess === "view" ? "view" : "none",
             publicSlug: page.publicSlug,
             permissions,
+            locked: page.locked,
+            width: (page.width === "wide" || page.width === "full" ? page.width : "normal") as "normal" | "wide" | "full",
+            font: (page.font === "serif" || page.font === "mono" ? page.font : "default") as "default" | "serif" | "mono",
           }}
+          canChangeSettings={canChangePageSettings}
           rows={rows.map((r) => ({
             id: r.id,
             parentId: page.id,
@@ -165,9 +173,19 @@ export default async function PageRoute({
       })
     : [];
   const authorMap = new Map(authors.map((a) => [a.id, a]));
-  const childCount = await prisma.page.count({
-    where: { parentId: page.id, deletedAt: null },
+  const [childCount, activityRows] = await Promise.all([
+    prisma.page.count({ where: { parentId: page.id, deletedAt: null } }),
+    prisma.pageActivity.findMany({
+      where: { pageId: page.id },
+      orderBy: { createdAt: "desc" },
+      take: 10,
+    }),
+  ]);
+  const activityUsers = await prisma.user.findMany({
+    where: { id: { in: activityRows.map((a) => a.userId).filter((id): id is string => !!id) } },
+    select: { id: true, name: true, color: true },
   });
+  const userMap = new Map(activityUsers.map((u) => [u.id, u]));
   const wordCount = countWords(page.content);
   const info = {
     author: page.author ?? null,
@@ -177,6 +195,12 @@ export default async function PageRoute({
     commentCount: commentRows.length,
     backlinkCount: backlinkRows.length,
     childrenCount: childCount,
+    activity: activityRows.map((a) => ({
+      id: a.id,
+      action: a.action,
+      createdAt: a.createdAt.toISOString(),
+      user: a.userId ? userMap.get(a.userId) ?? null : null,
+    })),
   };
   const snapshots = snapshotRows.map((s) => ({
     id: s.id,
@@ -200,7 +224,10 @@ export default async function PageRoute({
         page={{
           ...page,
           publicAccess: (page.publicAccess === "view" ? "view" : "none"),
+          width: (page.width === "wide" || page.width === "full" ? page.width : "normal") as "normal" | "wide" | "full",
+          font: (page.font === "serif" || page.font === "mono" ? page.font : "default") as "default" | "serif" | "mono",
         }}
+        canChangeSettings={canChangePageSettings}
         user={ctx.user}
         role={effectiveRole}
         comments={comments}
