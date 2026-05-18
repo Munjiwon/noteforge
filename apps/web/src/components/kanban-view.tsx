@@ -2,7 +2,12 @@
 
 import { useMemo, useState, useTransition } from "react";
 import clsx from "clsx";
-import { addRow, deleteRow, updateCell } from "@/app/w/[slug]/database-actions";
+import {
+  addRow,
+  addSelectOption,
+  deleteRow,
+  updateCell,
+} from "@/app/w/[slug]/database-actions";
 import type { DbSchema } from "@/lib/database";
 
 type Row = {
@@ -134,6 +139,21 @@ export function KanbanView({
           </div>
         );
       })}
+      {!readOnly && (
+        <button
+          onClick={() => {
+            const name = prompt(`New "${groupProp.name}" option`);
+            if (!name || !name.trim()) return;
+            start(async () => {
+              await addSelectOption(slug, dbId, groupProp.id, name.trim());
+            });
+          }}
+          className="shrink-0 w-72 rounded-md bg-gray-50 border border-dashed border-gray-300 text-xs text-gray-500 hover:bg-black/5 hover:text-gray-900 grid place-items-center"
+          style={{ minHeight: 80 }}
+        >
+          + Add option
+        </button>
+      )}
     </div>
   );
 }

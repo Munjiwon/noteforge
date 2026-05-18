@@ -28,6 +28,7 @@ export function NotificationsButton({
   workspaceSlug: string;
 }) {
   const [open, setOpen] = useState(false);
+  const [unreadOnly, setUnreadOnly] = useState(false);
   const [, start] = useTransition();
   const ref = useRef<HTMLDivElement>(null);
 
@@ -62,7 +63,16 @@ export function NotificationsButton({
         <div className="absolute right-0 top-full mt-1 z-40 bg-white border border-gray-200 rounded-md shadow-lg w-[360px] max-h-[480px] overflow-hidden flex flex-col">
           <div className="flex items-center justify-between px-3 py-2 border-b border-gray-100">
             <span className="text-sm font-medium">Notifications</span>
-            <span className="flex gap-2">
+            <span className="flex gap-2 items-center">
+              <button
+                onClick={() => setUnreadOnly((v) => !v)}
+                className={
+                  "text-xs " +
+                  (unreadOnly ? "text-blue-600" : "text-gray-500 hover:text-gray-900")
+                }
+              >
+                {unreadOnly ? "All" : "Unread only"}
+              </button>
               {unread > 0 && (
                 <button
                   onClick={() =>
@@ -78,13 +88,15 @@ export function NotificationsButton({
             </span>
           </div>
           <div className="overflow-y-auto max-h-[420px]">
-            {notifications.length === 0 ? (
-              <p className="text-xs text-gray-400 text-center py-8">
-                You're all caught up.
-              </p>
-            ) : (
-              <ul>
-                {notifications.map((n) => (
+            {(() => {
+              const filtered = unreadOnly ? notifications.filter((n) => !n.read) : notifications;
+              return filtered.length === 0 ? (
+                <p className="text-xs text-gray-400 text-center py-8">
+                  {unreadOnly ? "No unread notifications." : "You're all caught up."}
+                </p>
+              ) : (
+                <ul>
+                  {filtered.map((n) => (
                   <li
                     key={n.id}
                     className={clsx(
@@ -103,8 +115,9 @@ export function NotificationsButton({
                     />
                   </li>
                 ))}
-              </ul>
-            )}
+                </ul>
+              );
+            })()}
           </div>
           <div className="border-t border-gray-100 px-3 py-1.5 text-[11px]">
             <Link

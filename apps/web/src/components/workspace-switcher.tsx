@@ -86,8 +86,17 @@ export function WorkspaceSwitcher({
             </li>
           ))}
         </ul>
-        <div className="border-t border-gray-100 px-3 py-1.5 text-[10px] text-gray-400">
-          ⌘⇧L to toggle · ↑↓ to navigate
+        <div className="border-t border-gray-100 px-3 py-1.5 flex items-center justify-between text-[10px] text-gray-400">
+          <span>⌘⇧L to toggle · ↑↓ to navigate</span>
+          <button
+            onClick={() => {
+              setOpen(false);
+              router.push("/onboarding");
+            }}
+            className="text-gray-500 hover:text-gray-900"
+          >
+            + New workspace
+          </button>
         </div>
       </div>
     </div>

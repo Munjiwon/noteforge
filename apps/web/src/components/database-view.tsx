@@ -346,9 +346,18 @@ export function DatabaseView({
               <tr>
                 <td
                   colSpan={visibleProps.length + (readOnly ? 0 : 1)}
-                  className="text-center text-sm text-gray-400 py-6"
+                  className="text-center text-sm text-gray-400 py-8"
                 >
-                  No rows yet
+                  {readOnly ? (
+                    "No rows yet"
+                  ) : (
+                    <button
+                      onClick={() => start(async () => { await addRow(slug, dbId); })}
+                      className="text-blue-600 hover:underline"
+                    >
+                      + Add your first row
+                    </button>
+                  )}
                 </td>
               </tr>
             )}

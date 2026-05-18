@@ -67,6 +67,23 @@ export default async function PageRoute({
     : (ctx.role as "owner" | "editor" | "viewer");
   const canChangePageSettings = !trashed && ctx.role !== "viewer";
 
+  // Collect ancestor chain for breadcrumb
+  const ancestors: { id: string; title: string; icon: string | null }[] = [];
+  let cursor: { id: string; title: string; icon: string | null; parentId: string | null } | null = await prisma.page.findUnique({
+    where: { id: page.id },
+    select: { id: true, title: true, icon: true, parentId: true },
+  });
+  // walk up via parentId, max 10 hops
+  for (let i = 0; i < 10 && cursor && cursor.parentId; i++) {
+    const parent = await prisma.page.findUnique({
+      where: { id: cursor.parentId },
+      select: { id: true, title: true, icon: true, parentId: true },
+    });
+    if (!parent) break;
+    ancestors.unshift({ id: parent.id, title: parent.title, icon: parent.icon });
+    cursor = parent;
+  }
+
   const permRows = await prisma.pagePermission.findMany({
     where: { pageId: page.id },
     include: { user: { select: { id: true, name: true, color: true } } },
@@ -242,6 +259,7 @@ export default async function PageRoute({
         backlinks={backlinkRows}
         info={info}
         permissions={permissions}
+        ancestors={ancestors}
       />
     </>
   );

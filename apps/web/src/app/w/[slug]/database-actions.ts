@@ -79,39 +79,68 @@ async function saveSchema(dbId: string, schema: DbSchema) {
   });
 }
 
+const TYPE_DEFAULT_NAME: Record<DbPropType, string> = {
+  text: "Text",
+  number: "Number",
+  select: "Select",
+  multi_select: "Multi-select",
+  status: "Status",
+  date: "Date",
+  checkbox: "Checkbox",
+  url: "URL",
+  email: "Email",
+  phone: "Phone",
+  person: "Person",
+  files: "Files",
+  relation: "Relation",
+  rollup: "Rollup",
+  formula: "Formula",
+};
+
+function uniqueName(base: string, existing: Set<string>): string {
+  if (!existing.has(base)) return base;
+  for (let i = 2; i < 1000; i++) {
+    const candidate = `${base} ${i}`;
+    if (!existing.has(candidate)) return candidate;
+  }
+  return base;
+}
+
 export async function addColumn(slug: string, dbId: string, type: DbPropType, name?: string) {
   const { schema } = await loadDb(slug, dbId);
+  const existingNames = new Set(schema.props.map((p) => p.name));
+  const chosen = name?.trim() || uniqueName(TYPE_DEFAULT_NAME[type], existingNames);
   const id = newId("p");
   const prop: DbProp =
     type === "select"
-      ? { id, name: name ?? "Select", type: "select", options: [] }
+      ? { id, name: chosen, type: "select", options: [] }
       : type === "multi_select"
-      ? { id, name: name ?? "Multi-select", type: "multi_select", options: [] }
+      ? { id, name: chosen, type: "multi_select", options: [] }
       : type === "status"
-      ? { id, name: name ?? "Status", type: "status", options: [...DEFAULT_STATUS_OPTIONS] }
+      ? { id, name: chosen, type: "status", options: [...DEFAULT_STATUS_OPTIONS] }
       : type === "number"
-      ? { id, name: name ?? "Number", type: "number" }
+      ? { id, name: chosen, type: "number" }
       : type === "date"
-      ? { id, name: name ?? "Date", type: "date" }
+      ? { id, name: chosen, type: "date" }
       : type === "checkbox"
-      ? { id, name: name ?? "Checkbox", type: "checkbox" }
+      ? { id, name: chosen, type: "checkbox" }
       : type === "url"
-      ? { id, name: name ?? "URL", type: "url" }
+      ? { id, name: chosen, type: "url" }
       : type === "email"
-      ? { id, name: name ?? "Email", type: "email" }
+      ? { id, name: chosen, type: "email" }
       : type === "phone"
-      ? { id, name: name ?? "Phone", type: "phone" }
+      ? { id, name: chosen, type: "phone" }
       : type === "person"
-      ? { id, name: name ?? "Person", type: "person" }
+      ? { id, name: chosen, type: "person" }
       : type === "files"
-      ? { id, name: name ?? "Files", type: "files" }
+      ? { id, name: chosen, type: "files" }
       : type === "relation"
-      ? { id, name: name ?? "Relation", type: "relation", targetDbId: "" }
+      ? { id, name: chosen, type: "relation", targetDbId: "" }
       : type === "rollup"
-      ? { id, name: name ?? "Rollup", type: "rollup", relationPropId: "", targetPropId: "", aggregate: "count" }
+      ? { id, name: chosen, type: "rollup", relationPropId: "", targetPropId: "", aggregate: "count" }
       : type === "formula"
-      ? { id, name: name ?? "Formula", type: "formula", expr: "" }
-      : { id, name: name ?? "Text", type: "text" };
+      ? { id, name: chosen, type: "formula", expr: "" }
+      : { id, name: chosen, type: "text" };
   schema.props.push(prop);
   await saveSchema(dbId, schema);
   revalidatePath(`/w/${slug}/p/${dbId}`);

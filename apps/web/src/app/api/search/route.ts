@@ -8,6 +8,7 @@ export type SearchHit = {
   icon: string | null;
   kind: string;
   snippet: string | null;
+  parentTitle: string | null;
 };
 
 export async function GET(req: NextRequest) {
@@ -35,7 +36,14 @@ export async function GET(req: NextRequest) {
     },
     take: 20,
     orderBy: { updatedAt: "desc" },
-    select: { id: true, title: true, icon: true, kind: true, content: true },
+    select: {
+      id: true,
+      title: true,
+      icon: true,
+      kind: true,
+      content: true,
+      parent: { select: { title: true } },
+    },
   });
 
   const lower = q.toLowerCase();
@@ -52,7 +60,14 @@ export async function GET(req: NextRequest) {
         snippet = text.slice(0, 80) + (text.length > 80 ? "…" : "");
       }
     }
-    return { id: p.id, title: p.title, icon: p.icon, kind: p.kind, snippet };
+    return {
+      id: p.id,
+      title: p.title,
+      icon: p.icon,
+      kind: p.kind,
+      snippet,
+      parentTitle: p.parent?.title ?? null,
+    };
   });
 
   return NextResponse.json({ hits });

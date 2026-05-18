@@ -34,6 +34,7 @@ export function PageView({
   backlinks,
   info,
   permissions,
+  ancestors,
   canChangeSettings = false,
 }: {
   slug: string;
@@ -65,6 +66,7 @@ export function PageView({
     childrenCount: number;
   };
   permissions: PermItem[];
+  ancestors?: { id: string; title: string; icon: string | null }[];
 }) {
   const [title, setTitle] = useState(page.title);
   const [icon, setIcon] = useState(page.icon);
@@ -129,6 +131,22 @@ export function PageView({
         readOnly={readOnly}
       />
       <div className={`${widthClass(width)} mx-auto px-12 md:px-24 py-10`}>
+        {ancestors && ancestors.length > 0 && (
+          <nav className="mb-2 flex items-center gap-1 text-xs text-gray-500 no-print">
+            {ancestors.map((a) => (
+              <span key={a.id} className="inline-flex items-center gap-1">
+                <a
+                  href={`/w/${slug}/p/${a.id}`}
+                  className="hover:text-gray-900 inline-flex items-center gap-1"
+                >
+                  <span>{a.icon ?? "📄"}</span>
+                  <span className="truncate max-w-[160px]">{a.title || "Untitled"}</span>
+                </a>
+                <span className="text-gray-300">/</span>
+              </span>
+            ))}
+          </nav>
+        )}
         {page.locked ? (
           <div className="mb-3 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-3 py-1 inline-flex items-center gap-1">
             🔒 Page locked — read-only

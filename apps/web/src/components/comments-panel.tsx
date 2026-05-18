@@ -217,6 +217,11 @@ function Thread({
         canResolve
       />
       {replies.length > 0 && (
+        <div className="ml-8 mt-0.5 text-[11px] text-gray-500">
+          {replies.length} {replies.length === 1 ? "reply" : "replies"}
+        </div>
+      )}
+      {replies.length > 0 && (
         <div className="ml-6 mt-3 space-y-3 border-l border-gray-100 pl-3">
           {replies.map((r) => (
             <CommentRow

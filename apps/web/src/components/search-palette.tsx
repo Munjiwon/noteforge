@@ -10,6 +10,7 @@ type Hit = {
   icon: string | null;
   kind: string;
   snippet: string | null;
+  parentTitle: string | null;
 };
 
 function markMatch(text: string, q: string): React.ReactNode {
@@ -183,6 +184,11 @@ export function SearchPalette({ slug }: { slug: string }) {
                       {h.icon ?? (h.kind === "database" ? "📊" : "📄")}
                     </span>
                     <span className="flex-1 min-w-0">
+                      {h.parentTitle && (
+                        <span className="text-[10px] text-gray-400 truncate block">
+                          {h.parentTitle} /
+                        </span>
+                      )}
                       <span className="text-sm text-gray-900 truncate block">
                         {markMatch(h.title || "Untitled", q)}
                       </span>
