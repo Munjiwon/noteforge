@@ -268,6 +268,11 @@ export default async function WorkspaceLayout({
   }));
 
   const accentRgb = hexToRgbTriplet(ctx.workspace.color);
+  const userRow = await prisma.user.findUnique({
+    where: { id: ctx.user.id },
+    select: { avatarUrl: true },
+  });
+  const currentUserAvatar = userRow?.avatarUrl ?? null;
 
   return (
     <div className="flex h-screen" style={accentRgb ? { ["--accent" as any]: accentRgb } : undefined}>
@@ -294,7 +299,7 @@ export default async function WorkspaceLayout({
         notifications={notifications}
         recent={recentRows}
         trashStaleCount={trashedPages.filter((t) => t.deletedAt && Date.now() - t.deletedAt.getTime() > 30 * 24 * 3600 * 1000).length}
-        user={ctx.user}
+        user={{ ...ctx.user, avatarUrl: currentUserAvatar }}
       />
       <main className="flex-1 overflow-auto bg-white">
         <MobileSidebarToggle />

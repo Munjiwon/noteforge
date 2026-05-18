@@ -10,11 +10,17 @@ export default async function SettingsPage({
   params: { slug: string };
 }) {
   const ctx = await requireWorkspaceMember(params.slug);
-  const tokens = await prisma.apiToken.findMany({
-    where: { userId: ctx.user.id },
-    orderBy: { createdAt: "desc" },
-    select: { id: true, name: true, lastUsedAt: true, createdAt: true },
-  });
+  const [tokens, currentUserRow] = await Promise.all([
+    prisma.apiToken.findMany({
+      where: { userId: ctx.user.id },
+      orderBy: { createdAt: "desc" },
+      select: { id: true, name: true, lastUsedAt: true, createdAt: true },
+    }),
+    prisma.user.findUnique({
+      where: { id: ctx.user.id },
+      select: { id: true, name: true, color: true, avatarUrl: true },
+    }),
+  ]);
   const [members, invites, pageCount, commentCount, lastActivity] = await Promise.all([
     prisma.workspaceMember.findMany({
       where: { workspaceId: ctx.workspace.id },
@@ -69,6 +75,15 @@ export default async function SettingsPage({
         lastUsedAt: t.lastUsedAt?.toISOString() ?? null,
         createdAt: t.createdAt.toISOString(),
       }))}
+      profile={
+        currentUserRow
+          ? {
+              name: currentUserRow.name,
+              color: currentUserRow.color,
+              avatarUrl: currentUserRow.avatarUrl,
+            }
+          : null
+      }
     />
   );
 }

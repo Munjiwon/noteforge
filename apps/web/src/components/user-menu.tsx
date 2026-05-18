@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { signOut } from "next-auth/react";
 import { ThemeToggle } from "./theme-toggle";
+import { Avatar } from "./avatar";
 import { updateUserProfile } from "@/app/notification-actions";
 import { useLang } from "@/lib/i18n";
 
@@ -11,18 +12,21 @@ const COLORS = [
   "#8b5cf6", "#ec4899", "#0ea5e9", "#111827",
 ];
 
-export function UserMenu({ user }: { user: { name: string; color: string } }) {
+export function UserMenu({
+  user,
+}: {
+  user: { name: string; color: string; avatarUrl?: string | null };
+}) {
   const [editing, setEditing] = useState(false);
   const [lang, setLang] = useLang();
   return (
     <div className="flex items-center gap-2">
       <button
         onClick={() => setEditing(true)}
-        className="w-7 h-7 rounded-full grid place-items-center text-white text-xs font-medium hover:ring-2 hover:ring-gray-300"
-        style={{ backgroundColor: user.color }}
+        className="rounded-full hover:ring-2 hover:ring-gray-300"
         title="Edit profile"
       >
-        {user.name.slice(0, 1).toUpperCase()}
+        <Avatar user={user} size="md" />
       </button>
       <button
         onClick={() => setEditing(true)}

@@ -96,7 +96,7 @@ export function Sidebar({
   notifications: NotifItem[];
   recent: TrashItem[];
   trashStaleCount?: number;
-  user: { id: string; name: string; color: string };
+  user: { id: string; name: string; color: string; avatarUrl?: string | null };
 }) {
   const params = useParams<{ pageId?: string }>();
   const activePageId = params.pageId;

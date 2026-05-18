@@ -13,6 +13,7 @@ model User {
   name         String
   passwordHash String
   color        String            @default("#6366f1")
+  avatarUrl    String?
   createdAt    DateTime          @default(now())
 
   memberships  WorkspaceMember[]

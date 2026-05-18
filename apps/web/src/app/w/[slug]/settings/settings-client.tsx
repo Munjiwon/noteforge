@@ -13,7 +13,13 @@ import {
   updateMemberRole,
 } from "./actions";
 import { EmojiPicker } from "@/components/emoji-picker";
+import { Avatar } from "@/components/avatar";
 import { createApiToken, deleteApiToken } from "@/app/api-token-actions";
+import {
+  setMyAvatar,
+  setMyColor,
+  setMyName,
+} from "@/app/profile-actions";
 
 type Role = "owner" | "editor" | "viewer";
 
@@ -28,6 +34,7 @@ export function SettingsClient({
   invites,
   stats,
   tokens = [],
+  profile = null,
 }: {
   slug: string;
   workspaceName: string;
@@ -46,6 +53,7 @@ export function SettingsClient({
   invites: { token: string; role: string; createdAt: string }[];
   stats?: { pageCount: number; commentCount: number; lastActivityAt: string | null };
   tokens?: { id: string; name: string; lastUsedAt: string | null; createdAt: string }[];
+  profile?: { name: string; color: string; avatarUrl: string | null } | null;
 }) {
   const [name, setName] = useState(workspaceName);
   const [icon, setIcon] = useState(workspaceIcon);
@@ -63,6 +71,8 @@ export function SettingsClient({
   return (
     <div className="max-w-3xl mx-auto px-8 py-10 space-y-8">
       <h1 className="text-2xl font-bold">Workspace settings</h1>
+
+      {profile && <ProfileSection profile={profile} />}
 
       <section>
         <h2 className="text-sm font-medium text-gray-700 mb-2">General</h2>
@@ -376,6 +386,93 @@ export function SettingsClient({
         </section>
       )}
     </div>
+  );
+}
+
+function ProfileSection({
+  profile,
+}: {
+  profile: { name: string; color: string; avatarUrl: string | null };
+}) {
+  const [name, setName] = useState(profile.name);
+  const [color, setColor] = useState(profile.color);
+  const [avatarUrl, setAvatarUrl] = useState(profile.avatarUrl);
+  const [uploading, setUploading] = useState(false);
+  const [, start] = useTransition();
+  async function onFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    setUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append("file", f);
+      const res = await fetch("/api/upload", { method: "POST", body: fd });
+      if (!res.ok) throw new Error(await res.text());
+      const data = (await res.json()) as { url: string };
+      setAvatarUrl(data.url);
+      await setMyAvatar(data.url);
+    } catch (err) {
+      alert("Upload failed: " + (err as Error).message);
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
+  }
+  return (
+    <section>
+      <h2 className="text-sm font-medium text-gray-700 mb-2">Your profile</h2>
+      <div className="flex items-center gap-3">
+        <Avatar user={{ name, color, avatarUrl }} size="xl" />
+        <div className="flex-1 space-y-2">
+          <div className="flex items-center gap-2">
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              onBlur={() => {
+                if (name.trim() && name !== profile.name) {
+                  start(() => setMyName(name));
+                }
+              }}
+              className="text-sm border border-gray-200 rounded px-2 py-1 w-48 outline-none focus:border-gray-400"
+              placeholder="Your name"
+            />
+            <input
+              type="color"
+              value={color}
+              onChange={(e) => {
+                setColor(e.target.value);
+                start(() => setMyColor(e.target.value));
+              }}
+              className="w-7 h-7 p-0 border border-gray-200 rounded"
+              title="Initials background color"
+            />
+          </div>
+          <div className="flex items-center gap-2 text-xs">
+            <label className="px-2 py-1 rounded border border-gray-200 hover:bg-black/5 cursor-pointer">
+              {uploading ? "Uploading…" : avatarUrl ? "Replace photo" : "Upload photo"}
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                disabled={uploading}
+                onChange={onFile}
+              />
+            </label>
+            {avatarUrl && (
+              <button
+                onClick={() => {
+                  setAvatarUrl(null);
+                  start(() => setMyAvatar(null));
+                }}
+                className="text-gray-500 hover:text-red-600"
+              >
+                Remove photo
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
