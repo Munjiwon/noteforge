@@ -2,11 +2,18 @@
 
 import { useEffect, useRef, useState } from "react";
 
-type Msg = { role: "user" | "assistant"; text: string };
+type Source = { id: string; title: string };
+type Msg = {
+  role: "user" | "assistant";
+  text: string;
+  sources?: Source[];
+};
 
 export function AskAiPanel({
+  slug,
   getPageText,
 }: {
+  slug: string;
   getPageText: () => string;
 }) {
   const [open, setOpen] = useState(false);
@@ -14,6 +21,7 @@ export function AskAiPanel({
   const [busy, setBusy] = useState(false);
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [configured, setConfigured] = useState<boolean | null>(null);
+  const [scope, setScope] = useState<"page" | "workspace">("page");
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,25 +37,29 @@ export function AskAiPanel({
     setMsgs((prev) => [...prev, { role: "user", text: q }]);
     setBusy(true);
     try {
+      const payload =
+        scope === "workspace"
+          ? { action: "askWorkspace", question: q, workspaceSlug: slug }
+          : { action: "ask", question: q, text: getPageText() };
       const res = await fetch("/api/ai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "ask",
-          question: q,
-          text: getPageText(),
-        }),
+        body: JSON.stringify(payload),
       });
       const data = (await res.json()) as {
         output?: string;
         error?: string;
         configured?: boolean;
+        sources?: Source[];
       };
       if (typeof data.configured === "boolean") setConfigured(data.configured);
       const answer =
         data.output ??
         (data.error ? `⚠ ${data.error}` : "(no response)");
-      setMsgs((prev) => [...prev, { role: "assistant", text: answer }]);
+      setMsgs((prev) => [
+        ...prev,
+        { role: "assistant", text: answer, sources: data.sources },
+      ]);
     } catch (e) {
       setMsgs((prev) => [
         ...prev,
@@ -93,6 +105,31 @@ export function AskAiPanel({
               </button>
             </div>
           </div>
+          <div className="flex items-center gap-1 px-3 py-1.5 border-b border-gray-100 text-[10px]">
+            <span className="text-gray-500">Scope</span>
+            <button
+              onClick={() => setScope("page")}
+              className={
+                "px-1.5 py-0.5 rounded " +
+                (scope === "page"
+                  ? "bg-gray-900 text-white"
+                  : "hover:bg-black/5 text-gray-500")
+              }
+            >
+              This page
+            </button>
+            <button
+              onClick={() => setScope("workspace")}
+              className={
+                "px-1.5 py-0.5 rounded " +
+                (scope === "workspace"
+                  ? "bg-gray-900 text-white"
+                  : "hover:bg-black/5 text-gray-500")
+              }
+            >
+              Workspace
+            </button>
+          </div>
           <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 py-2 space-y-2">
             {configured === false && (
               <div className="text-[11px] text-amber-600 bg-amber-50 border border-amber-100 rounded px-2 py-1">
@@ -106,16 +143,33 @@ export function AskAiPanel({
               </div>
             )}
             {msgs.map((m, i) => (
-              <div
-                key={i}
-                className={
-                  "text-sm whitespace-pre-wrap rounded-lg px-3 py-2 " +
-                  (m.role === "user"
-                    ? "bg-gray-900 text-white ml-8"
-                    : "bg-gray-100 text-gray-900 mr-8")
-                }
-              >
-                {m.text}
+              <div key={i}>
+                <div
+                  className={
+                    "text-sm whitespace-pre-wrap rounded-lg px-3 py-2 " +
+                    (m.role === "user"
+                      ? "bg-gray-900 text-white ml-8"
+                      : "bg-gray-100 text-gray-900 mr-8")
+                  }
+                >
+                  {m.text}
+                </div>
+                {m.role === "assistant" && m.sources && m.sources.length > 0 && (
+                  <div className="text-[10px] text-gray-500 mr-8 mt-1 px-3">
+                    Sources:{" "}
+                    {m.sources.map((s, j) => (
+                      <span key={s.id}>
+                        {j > 0 ? " · " : ""}
+                        <a
+                          href={`/w/${slug}/p/${s.id}`}
+                          className="hover:underline"
+                        >
+                          {s.title}
+                        </a>
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
             {busy && (

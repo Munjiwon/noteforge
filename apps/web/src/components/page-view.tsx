@@ -363,7 +363,7 @@ export function PageView({
           readOnly={readOnly}
         />
       </div>
-      <AskAiPanel getPageText={() => extractText(page.content, title)} />
+      <AskAiPanel slug={slug} getPageText={() => extractText(page.content, title)} />
     </div>
   );
 }
