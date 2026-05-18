@@ -129,6 +129,7 @@ export default async function WorkspaceLayout({
     kind: p.kind,
     favorite: p.favorite,
     count: childCount.get(p.id) ?? 0,
+    preview: extractPreview(p.content),
   }));
 
   return (

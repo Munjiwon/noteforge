@@ -75,6 +75,7 @@ model Page {
   deletedAt   DateTime?
   publicSlug  String?   @unique
   publicAccess String   @default("none") // "none" | "view"
+  slug        String?   // optional human-readable URL alias (unique per workspace)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 

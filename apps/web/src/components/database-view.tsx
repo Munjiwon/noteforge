@@ -7,6 +7,7 @@ import {
   addColumn,
   addRow,
   addSelectOption,
+  bulkDeleteRows,
   bulkSetCheckboxColumn,
   changeColumnType,
   configureFormula,
@@ -137,6 +138,14 @@ export function DatabaseView({
   const [openMenuPropId, setOpenMenuPropId] = useState<string | null>(null);
   const [dragRowId, setDragRowId] = useState<string | null>(null);
   const [dragOverRowId, setDragOverRowId] = useState<string | null>(null);
+  const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
+  const toggleRowSelected = (id: string) =>
+    setSelectedRows((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
 
   const onDropOnRow = (targetIdx: number) => {
     if (!dragRowId) return;
@@ -157,6 +166,30 @@ export function DatabaseView({
 
   return (
     <div className="w-full">
+      {selectedRows.size > 0 && !readOnly && (
+        <div className="mb-2 flex items-center gap-2 text-xs bg-blue-50 border border-blue-200 rounded px-3 py-1.5">
+          <span className="text-blue-700">{selectedRows.size} selected</span>
+          <button
+            onClick={() => {
+              if (!confirm(`Delete ${selectedRows.size} row(s)?`)) return;
+              const ids = Array.from(selectedRows);
+              start(async () => {
+                await bulkDeleteRows(slug, dbId, ids);
+                setSelectedRows(new Set());
+              });
+            }}
+            className="px-1.5 py-0.5 rounded bg-white border border-gray-200 hover:bg-red-50 text-red-600"
+          >
+            🗑 Delete
+          </button>
+          <button
+            onClick={() => setSelectedRows(new Set())}
+            className="ml-auto text-gray-500 hover:text-gray-900"
+          >
+            Clear
+          </button>
+        </div>
+      )}
       <div className="overflow-x-auto border border-gray-200 rounded-md">
         <table className="border-collapse w-max min-w-full">
           <thead>
@@ -246,25 +279,28 @@ export function DatabaseView({
               const groupBy = schema.tableGroupBy
                 ? schema.props.find((p) => p.id === schema.tableGroupBy)
                 : null;
+              const rowProps = (row: Row, idx: number) => ({
+                key: row.id,
+                row,
+                schema,
+                slug,
+                readOnly,
+                draggable: !readOnly,
+                isDragging: dragRowId === row.id,
+                isDropOver: dragOverRowId === row.id,
+                isSelected: selectedRows.has(row.id),
+                onToggleSelected: () => toggleRowSelected(row.id),
+                onDragStart: () => setDragRowId(row.id),
+                onDragOver: () => setDragOverRowId(row.id),
+                onDragEnd: () => {
+                  setDragRowId(null);
+                  setDragOverRowId(null);
+                },
+                onDrop: () => onDropOnRow(idx),
+              });
               if (!groupBy || (groupBy.type !== "select" && groupBy.type !== "status")) {
                 return rows.map((row, idx) => (
-                  <RowRow
-                    key={row.id}
-                    row={row}
-                    schema={schema}
-                    slug={slug}
-                    readOnly={readOnly}
-                    draggable={!readOnly}
-                    isDragging={dragRowId === row.id}
-                    isDropOver={dragOverRowId === row.id}
-                    onDragStart={() => setDragRowId(row.id)}
-                    onDragOver={() => setDragOverRowId(row.id)}
-                    onDragEnd={() => {
-                      setDragRowId(null);
-                      setDragOverRowId(null);
-                    }}
-                    onDrop={() => onDropOnRow(idx)}
-                  />
+                  <RowRow {...rowProps(row, idx)} />
                 ));
               }
               const buckets = new Map<string, Row[]>();
@@ -301,25 +337,7 @@ export function DatabaseView({
                 );
                 for (const row of list) {
                   const idx = rows.indexOf(row);
-                  out.push(
-                    <RowRow
-                      key={row.id}
-                      row={row}
-                      schema={schema}
-                      slug={slug}
-                      readOnly={readOnly}
-                      draggable={!readOnly}
-                      isDragging={dragRowId === row.id}
-                      isDropOver={dragOverRowId === row.id}
-                      onDragStart={() => setDragRowId(row.id)}
-                      onDragOver={() => setDragOverRowId(row.id)}
-                      onDragEnd={() => {
-                        setDragRowId(null);
-                        setDragOverRowId(null);
-                      }}
-                      onDrop={() => onDropOnRow(idx)}
-                    />,
-                  );
+                  out.push(<RowRow {...rowProps(row, idx)} />);
                 }
               }
               return out;
@@ -587,6 +605,8 @@ function RowRow({
   draggable,
   isDragging,
   isDropOver,
+  isSelected,
+  onToggleSelected,
   onDragStart,
   onDragOver,
   onDragEnd,
@@ -599,6 +619,8 @@ function RowRow({
   draggable?: boolean;
   isDragging?: boolean;
   isDropOver?: boolean;
+  isSelected?: boolean;
+  onToggleSelected?: () => void;
   onDragStart?: () => void;
   onDragOver?: () => void;
   onDragEnd?: () => void;
@@ -651,6 +673,18 @@ function RowRow({
                 schema={schema}
               />
             </div>
+            {idx === 0 && !readOnly && onToggleSelected && (
+              <input
+                type="checkbox"
+                checked={!!isSelected}
+                onChange={onToggleSelected}
+                className={
+                  "mr-2 w-3 h-3 shrink-0 transition-opacity " +
+                  (hover || isSelected ? "opacity-100" : "opacity-0")
+                }
+                aria-label="select row"
+              />
+            )}
             {idx === 0 && slug && (
               <span
                 className={

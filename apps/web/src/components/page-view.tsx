@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import {
   incrementPageView,
   renamePage,
@@ -71,6 +71,15 @@ export function PageView({
   const [pickerOpen, setPickerOpen] = useState(false);
   const [, start] = useTransition();
   const readOnly = role === "viewer";
+  const titleRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    // auto-focus title input when opening a freshly-created page (empty/Untitled)
+    if (!readOnly && (page.title === "" || page.title === "Untitled")) {
+      titleRef.current?.focus();
+      titleRef.current?.select();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page.id]);
 
   // Increment view count once per session per page.
   useEffect(() => {
@@ -182,6 +191,7 @@ export function PageView({
         )}
       </div>
       <input
+        ref={titleRef}
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         onBlur={() => {

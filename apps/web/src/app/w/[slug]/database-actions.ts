@@ -497,6 +497,19 @@ export async function setKanbanGroup(slug: string, dbId: string, propId: string)
   revalidatePath(`/w/${slug}/p/${dbId}`);
 }
 
+export async function bulkDeleteRows(slug: string, dbId: string, rowIds: string[]) {
+  const ctx = await assertEditor(slug);
+  if (rowIds.length === 0) return;
+  await prisma.page.deleteMany({
+    where: {
+      id: { in: rowIds },
+      parentId: dbId,
+      workspaceId: ctx.workspace.id,
+    },
+  });
+  revalidatePath(`/w/${slug}/p/${dbId}`);
+}
+
 export async function deleteRow(slug: string, rowId: string) {
   const ctx = await assertEditor(slug);
   const row = await prisma.page.findFirst({

@@ -53,7 +53,7 @@ export function NotificationsButton({
       >
         🔔
         {unread > 0 && (
-          <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] rounded-full px-1 min-w-[16px] text-center">
+          <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] rounded-full px-1 min-w-[16px] text-center animate-pulse">
             {unread}
           </span>
         )}

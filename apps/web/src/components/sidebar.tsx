@@ -174,10 +174,16 @@ export function Sidebar({
   const [mobileOpen, setMobileOpen] = useState(false);
   const [trashQ, setTrashQ] = useState("");
   const [collapsed, setCollapsed] = useState(false);
+  const [sidebarWidth, setSidebarWidth] = useState<number>(256);
   useEffect(() => {
     try {
       const v = localStorage.getItem("collab-notion-sidebar-collapsed");
       if (v === "1") setCollapsed(true);
+      const w = localStorage.getItem("collab-notion-sidebar-w");
+      if (w) {
+        const n = Number(w);
+        if (Number.isFinite(n) && n >= 180 && n <= 400) setSidebarWidth(n);
+      }
     } catch {}
   }, []);
   useEffect(() => {
@@ -185,6 +191,25 @@ export function Sidebar({
       localStorage.setItem("collab-notion-sidebar-collapsed", collapsed ? "1" : "0");
     } catch {}
   }, [collapsed]);
+  const onResizeMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const startX = e.clientX;
+    const startW = sidebarWidth;
+    const onMove = (ev: MouseEvent) => {
+      const dx = ev.clientX - startX;
+      const w = Math.max(180, Math.min(400, startW + dx));
+      setSidebarWidth(w);
+    };
+    const onUp = () => {
+      document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseup", onUp);
+      try {
+        localStorage.setItem("collab-notion-sidebar-w", String(sidebarWidth));
+      } catch {}
+    };
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseup", onUp);
+  };
 
   const [favOrder, setFavOrder] = useState<string[]>([]);
   useEffect(() => {
@@ -346,6 +371,7 @@ export function Sidebar({
           )}
           <Link
             href={`/w/${currentSlug}/p/${node.id}`}
+            title={node.preview || undefined}
             className="flex-1 truncate text-sm py-0.5 flex items-center"
           >
             <span className="mr-1">
@@ -448,14 +474,22 @@ export function Sidebar({
       />
     )}
     <aside
+      style={collapsed ? undefined : { width: sidebarWidth }}
       className={clsx(
-        collapsed ? "md:w-12 md:overflow-hidden" : "w-64",
+        collapsed ? "md:w-12 md:overflow-hidden" : "",
         "shrink-0 bg-sidebar border-r border-black/10 flex flex-col relative",
         "md:relative md:translate-x-0",
-        "fixed inset-y-0 left-0 z-40 transition-all",
+        "fixed inset-y-0 left-0 z-40 transition-[transform,width]",
         mobileOpen ? "translate-x-0 w-64" : "-translate-x-full md:translate-x-0",
       )}
     >
+      {!collapsed && (
+        <div
+          onMouseDown={onResizeMouseDown}
+          className="hidden md:block absolute top-0 right-0 h-full w-1 cursor-col-resize hover:bg-blue-300/50 z-50"
+          title="Drag to resize sidebar"
+        />
+      )}
       <button
         onClick={() => setCollapsed((v) => !v)}
         className="hidden md:flex absolute -right-3 top-3 z-50 w-6 h-6 rounded-full bg-white border border-gray-200 shadow-sm items-center justify-center text-[10px] text-gray-500 hover:text-gray-900"
@@ -696,6 +730,8 @@ export function Sidebar({
           No pages yet.
           <br />
           Click <span className="text-gray-700">+</span> above to create one.
+          <br />
+          <span className="text-[10px]">Drag a page onto another to nest as a sub-page.</span>
         </div>
       )}
       <ul className="flex-1 overflow-auto pb-2">{tree.map((n) => renderNode(n, 0))}</ul>

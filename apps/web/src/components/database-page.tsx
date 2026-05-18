@@ -223,6 +223,11 @@ export function DatabasePage({
           placeholder="Search rows…"
           className="text-xs border border-gray-200 rounded px-2 py-1 outline-none w-32"
         />
+        <span className="text-[11px] text-gray-400 ml-auto">
+          {visibleRows.length === rows.length
+            ? `${rows.length} row${rows.length === 1 ? "" : "s"}`
+            : `${visibleRows.length} of ${rows.length} rows`}
+        </span>
         {view === "kanban" && selectProps.length > 0 && (
           <label className="inline-flex items-center gap-1">
             <span>Group by:</span>

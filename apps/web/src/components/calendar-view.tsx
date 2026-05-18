@@ -39,6 +39,7 @@ export function CalendarView({
     return new Date(d.getFullYear(), d.getMonth(), 1);
   });
   const [dragRow, setDragRow] = useState<string | null>(null);
+  const [expandedDay, setExpandedDay] = useState<string | null>(null);
 
   const dateProp = useMemo(() => {
     if (!schema.calendarDateBy) return null;
@@ -164,7 +165,7 @@ export function CalendarView({
                 )}
               </div>
               <div className="mt-1 space-y-0.5">
-                {items.map((r) => (
+                {(expandedDay === key ? items : items.slice(0, 3)).map((r) => (
                   <Link
                     key={r.id}
                     href={`/w/${slug}/p/${r.id}`}
@@ -177,6 +178,22 @@ export function CalendarView({
                     {r.title || "Untitled"}
                   </Link>
                 ))}
+                {items.length > 3 && expandedDay !== key && (
+                  <button
+                    onClick={() => setExpandedDay(key)}
+                    className="text-[10px] text-blue-600 hover:underline"
+                  >
+                    + {items.length - 3} more
+                  </button>
+                )}
+                {expandedDay === key && items.length > 3 && (
+                  <button
+                    onClick={() => setExpandedDay(null)}
+                    className="text-[10px] text-gray-500 hover:text-gray-900"
+                  >
+                    Collapse
+                  </button>
+                )}
               </div>
             </div>
           );
