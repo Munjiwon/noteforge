@@ -31,6 +31,22 @@ function countWords(json: string): number {
   }
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string; pageId: string };
+}) {
+  const p = await prisma.page.findUnique({
+    where: { id: params.pageId },
+    select: { title: true, icon: true },
+  });
+  if (!p) return { title: "Untitled" };
+  const t = (p.title || "Untitled").slice(0, 80);
+  return {
+    title: p.icon ? `${p.icon} ${t}` : t,
+  };
+}
+
 export default async function PageRoute({
   params,
 }: {

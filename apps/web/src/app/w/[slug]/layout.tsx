@@ -5,6 +5,7 @@ import { SearchPalette } from "@/components/search-palette";
 import { ShortcutsHelp } from "@/components/shortcuts-help";
 import { MobileSidebarToggle } from "@/components/mobile-sidebar-toggle";
 import { WorkspaceSwitcher } from "@/components/workspace-switcher";
+import { QuickAddFab } from "@/components/quick-add-fab";
 
 function hexToRgbTriplet(hex: string | null | undefined): string | null {
   if (!hex) return null;
@@ -309,6 +310,7 @@ export default async function WorkspaceLayout({
       </main>
       <SearchPalette slug={ctx.workspace.slug} />
       <ShortcutsHelp />
+      {ctx.role !== "viewer" && <QuickAddFab slug={ctx.workspace.slug} />}
       <WorkspaceSwitcher
         workspaces={workspaces.map((m) => ({
           slug: m.workspace.slug,

@@ -12,6 +12,19 @@ function greeting(): string {
   return "Good evening";
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const ws = await prisma.workspace.findUnique({
+    where: { slug: params.slug },
+    select: { name: true, icon: true },
+  });
+  if (!ws) return { title: "Workspace" };
+  return { title: ws.icon ? `${ws.icon} ${ws.name}` : ws.name };
+}
+
 export default async function WorkspaceHome({
   params,
 }: {
@@ -25,7 +38,9 @@ export default async function WorkspaceHome({
   weekEnd.setDate(weekEnd.getDate() + 7);
   weekEnd.setHours(23, 59, 59, 999);
 
-  const [recents, favorites, totals, dueCount, comingReminders, dateDatabases] = await Promise.all([
+  const weekAgo = new Date(Date.now() - 7 * 24 * 3600 * 1000);
+
+  const [recents, favorites, totals, dueCount, comingReminders, dateDatabases, recent7] = await Promise.all([
     prisma.page.findMany({
       where: {
         workspaceId: ctx.workspace.id,
@@ -99,7 +114,32 @@ export default async function WorkspaceHome({
       },
       select: { id: true, title: true, dbSchema: true },
     }),
+    Promise.all([
+      prisma.page.count({
+        where: {
+          workspaceId: ctx.workspace.id,
+          deletedAt: null,
+          isTemplate: false,
+          createdAt: { gte: weekAgo },
+        },
+      }),
+      prisma.page.count({
+        where: {
+          workspaceId: ctx.workspace.id,
+          deletedAt: null,
+          isTemplate: false,
+          updatedAt: { gte: weekAgo },
+        },
+      }),
+      prisma.comment.count({
+        where: {
+          page: { workspaceId: ctx.workspace.id },
+          createdAt: { gte: weekAgo },
+        },
+      }),
+    ]),
   ]);
+  const [newPages7, editedPages7, newComments7] = recent7;
   const [pageTotal, dbTotal, memberTotal] = totals;
 
   type Upcoming = {
@@ -283,6 +323,21 @@ export default async function WorkspaceHome({
           </ul>
         </section>
       )}
+
+      <section className="grid grid-cols-3 gap-3 text-center text-xs text-gray-500 mb-3">
+        <div className="border border-gray-200 rounded p-3">
+          <div className="text-xl font-semibold text-gray-900">{newPages7}</div>
+          New pages · 7d
+        </div>
+        <div className="border border-gray-200 rounded p-3">
+          <div className="text-xl font-semibold text-gray-900">{editedPages7}</div>
+          Edited · 7d
+        </div>
+        <div className="border border-gray-200 rounded p-3">
+          <div className="text-xl font-semibold text-gray-900">{newComments7}</div>
+          Comments · 7d
+        </div>
+      </section>
 
       <section className="grid grid-cols-3 gap-3 text-center text-xs text-gray-500">
         <div className="border border-gray-200 rounded p-3">
