@@ -31,8 +31,10 @@ import type { DbProp, DbPropType, DbSchema } from "@/lib/database";
 import {
   STATUS_GROUP_LABEL,
   formatDate,
+  formatDuration,
   formatNumber,
   orderedVisibleProps,
+  parseDuration,
   type StatusGroup,
 } from "@/lib/database";
 
@@ -65,6 +67,7 @@ const TYPE_LABELS: Record<DbPropType, string> = {
   created_at: "Created at",
   updated_at: "Updated at",
   created_by: "Created by",
+  duration: "Duration",
 };
 const TYPE_ICONS: Record<DbPropType, string> = {
   text: "A",
@@ -85,6 +88,7 @@ const TYPE_ICONS: Record<DbPropType, string> = {
   created_at: "🕐",
   updated_at: "🕑",
   created_by: "👤",
+  duration: "⏱",
 };
 function columnStat(prop: DbProp, rows: Row[]): string {
   const total = rows.length;
@@ -131,6 +135,7 @@ const TYPE_GROUP: Record<DbPropType, "Basic" | "Advanced" | "Computed"> = {
   created_at: "Computed",
   updated_at: "Computed",
   created_by: "Computed",
+  duration: "Basic",
 };
 
 export function DatabaseView({
@@ -916,6 +921,40 @@ function Cell({
       <div className="px-3 py-2 text-sm text-gray-500" title={iso}>
         {iso ? formatDate(iso, prop.format) : ""}
       </div>
+    );
+  }
+
+  if (prop.type === "duration") {
+    const n = typeof value === "number" ? value : null;
+    if (readOnly) {
+      return (
+        <div className="px-3 py-2 text-sm text-gray-800">
+          {n !== null ? formatDuration(n) : ""}
+        </div>
+      );
+    }
+    return (
+      <input
+        type="text"
+        defaultValue={n !== null ? formatDuration(n) : ""}
+        placeholder="e.g. 1h 30m"
+        disabled={readOnly}
+        className="px-3 py-2 text-sm bg-transparent outline-none w-full"
+        onBlur={(e) => {
+          const txt = e.target.value;
+          const parsed = parseDuration(txt);
+          // No-op if unparseable; reset display to last value
+          if (parsed === null && txt.trim() !== "") {
+            e.target.value = n !== null ? formatDuration(n) : "";
+            return;
+          }
+          if (parsed !== n) {
+            start(() => updateCell(slug, rowId, prop.id, parsed));
+          } else {
+            e.target.value = n !== null ? formatDuration(n) : "";
+          }
+        }}
+      />
     );
   }
 

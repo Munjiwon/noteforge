@@ -19,7 +19,8 @@ export type DbPropType =
   | "formula"
   | "created_at"
   | "updated_at"
-  | "created_by";
+  | "created_by"
+  | "duration";
 
 export type StatusGroup = "todo" | "in_progress" | "complete";
 
@@ -67,7 +68,8 @@ export type DbProp =
   | { id: string; name: string; description?: string; type: "formula"; expr: string }
   | { id: string; name: string; description?: string; type: "created_at"; format?: DateFormat }
   | { id: string; name: string; description?: string; type: "updated_at"; format?: DateFormat }
-  | { id: string; name: string; description?: string; type: "created_by" };
+  | { id: string; name: string; description?: string; type: "created_by" }
+  | { id: string; name: string; description?: string; type: "duration" };
 
 export type DbFilterOp =
   | "eq"
@@ -196,4 +198,30 @@ export function parseValues(s: string | null | undefined): DbValues {
   } catch {
     return {};
   }
+}
+
+// Duration helpers: stored as integer minutes.
+export function formatDuration(minutes: number | null | undefined): string {
+  if (!minutes || !Number.isFinite(minutes) || minutes <= 0) return "";
+  const m = Math.floor(minutes);
+  const h = Math.floor(m / 60);
+  const rest = m % 60;
+  if (h === 0) return `${rest}m`;
+  if (rest === 0) return `${h}h`;
+  return `${h}h ${rest}m`;
+}
+
+// Accepts "90", "1h 30m", "1h", "30m", "1:30". Returns minutes or null.
+export function parseDuration(input: string): number | null {
+  const s = input.trim().toLowerCase();
+  if (!s) return null;
+  const colon = /^(\d+):(\d{1,2})$/.exec(s);
+  if (colon) return parseInt(colon[1], 10) * 60 + parseInt(colon[2], 10);
+  const re = /^\s*(?:(\d+)\s*h)?\s*(?:(\d+)\s*m)?\s*$/.exec(s);
+  if (re && (re[1] || re[2])) {
+    return (parseInt(re[1] ?? "0", 10) || 0) * 60 + (parseInt(re[2] ?? "0", 10) || 0);
+  }
+  const plain = /^\d+$/.exec(s);
+  if (plain) return parseInt(plain[0], 10);
+  return null;
 }
