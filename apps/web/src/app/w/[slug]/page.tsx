@@ -92,11 +92,16 @@ export default async function WorkspaceHome({
         </p>
       </header>
 
-      <section className="grid grid-cols-2 sm:grid-cols-6 gap-3 mb-8">
+      <section className="grid grid-cols-2 sm:grid-cols-7 gap-3 mb-8">
         <DashLink
           href={`/w/${params.slug}/today`}
           icon="☀️"
           label="Today"
+        />
+        <DashLink
+          href={`/w/${params.slug}/tasks`}
+          icon="✅"
+          label="Tasks"
         />
         <DashLink
           href={`/w/${params.slug}/inbox`}

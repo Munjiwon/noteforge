@@ -900,6 +900,12 @@ export function Sidebar({
           ☀️ Today
         </Link>
         <Link
+          href={`/w/${currentSlug}/tasks`}
+          className="block text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
+        >
+          ✅ Tasks
+        </Link>
+        <Link
           href={`/w/${currentSlug}/calendar`}
           className="block text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
         >
