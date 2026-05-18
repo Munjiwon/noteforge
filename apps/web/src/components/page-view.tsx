@@ -17,6 +17,7 @@ import { PageStyleMenu, fontClass, widthClass } from "./page-style-menu";
 import { EmojiPicker } from "./emoji-picker";
 import { PageOutline } from "./page-outline";
 import { PageTags, parseTags } from "./page-tags";
+import { PageReactions, type PageReactionGroup } from "./page-reactions";
 import { AskAiPanel } from "./ask-ai-panel";
 import type { PermItem } from "./share-button";
 
@@ -38,6 +39,7 @@ export function PageView({
   permissions,
   ancestors,
   rowContext,
+  reactions = [],
   canChangeSettings = false,
 }: {
   slug: string;
@@ -81,6 +83,7 @@ export function PageView({
     schema?: { props: { id: string; name: string; type: string; options?: { id: string; name: string; color: string }[] }[] };
     dataValues?: Record<string, unknown>;
   } | null;
+  reactions?: PageReactionGroup[];
 }) {
   const [title, setTitle] = useState(page.title);
   const [icon, setIcon] = useState(page.icon);
@@ -302,6 +305,12 @@ export function PageView({
         disabled={readOnly}
         placeholder="Untitled"
         className="w-full text-4xl font-bold outline-none bg-transparent placeholder-gray-300 mb-3"
+      />
+      <PageReactions
+        slug={slug}
+        pageId={page.id}
+        groups={reactions}
+        readOnly={readOnly}
       />
       <PageTags
         slug={slug}

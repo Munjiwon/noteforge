@@ -240,14 +240,37 @@ export default async function PageRoute({
       })
     : [];
   const authorMap = new Map(authors.map((a) => [a.id, a]));
-  const [childCount, activityRows] = await Promise.all([
+  const [childCount, activityRows, reactionRows] = await Promise.all([
     prisma.page.count({ where: { parentId: page.id, deletedAt: null } }),
     prisma.pageActivity.findMany({
       where: { pageId: page.id },
       orderBy: { createdAt: "desc" },
       take: 10,
     }),
+    prisma.pageReaction.findMany({
+      where: { pageId: page.id },
+      include: { user: { select: { id: true, name: true } } },
+    }),
   ]);
+  const reactionGroupsMap = new Map<
+    string,
+    { emoji: string; users: { id: string; name: string }[]; reactedByMe: boolean }
+  >();
+  for (const r of reactionRows) {
+    if (!reactionGroupsMap.has(r.emoji)) {
+      reactionGroupsMap.set(r.emoji, {
+        emoji: r.emoji,
+        users: [],
+        reactedByMe: false,
+      });
+    }
+    const g = reactionGroupsMap.get(r.emoji)!;
+    g.users.push({ id: r.user.id, name: r.user.name });
+    if (r.userId === ctx.user.id) g.reactedByMe = true;
+  }
+  const reactionGroups = Array.from(reactionGroupsMap.values()).sort(
+    (a, b) => b.users.length - a.users.length,
+  );
   const activityUsers = await prisma.user.findMany({
     where: { id: { in: activityRows.map((a) => a.userId).filter((id): id is string => !!id) } },
     select: { id: true, name: true, color: true },
@@ -311,6 +334,7 @@ export default async function PageRoute({
         permissions={permissions}
         ancestors={ancestors}
         rowContext={rowContext}
+        reactions={reactionGroups}
       />
     </>
   );

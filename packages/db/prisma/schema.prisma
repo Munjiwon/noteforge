@@ -23,6 +23,7 @@ model User {
   notifsSent   Notification[]    @relation("NotifActor")
   pagePermissions PagePermission[]
   apiTokens    ApiToken[]
+  pageReactions PageReaction[]
 }
 
 model ApiToken {
@@ -107,6 +108,7 @@ model Page {
   snapshots   PageSnapshot[]
   permissions PagePermission[]
   activities  PageActivity[]
+  reactions   PageReaction[]
 
   @@index([workspaceId, parentId])
 }
@@ -181,6 +183,20 @@ model CommentReaction {
 
   @@unique([commentId, userId, emoji])
   @@index([commentId])
+}
+
+model PageReaction {
+  id        String   @id @default(cuid())
+  pageId    String
+  userId    String
+  emoji     String
+  createdAt DateTime @default(now())
+
+  page      Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([pageId, userId, emoji])
+  @@index([pageId])
 }
 
 model Notification {

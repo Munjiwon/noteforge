@@ -291,6 +291,36 @@ export async function purgePage(slug: string, pageId: string) {
   revalidatePath(`/w/${slug}`, "layout");
 }
 
+export async function togglePageReaction(
+  slug: string,
+  pageId: string,
+  emoji: string,
+) {
+  const ctx = await requireWorkspaceMember(slug);
+  const page = await prisma.page.findFirst({
+    where: { id: pageId, workspaceId: ctx.workspace.id },
+    select: { id: true },
+  });
+  if (!page) throw new Error("not found");
+  const existing = await prisma.pageReaction.findUnique({
+    where: {
+      pageId_userId_emoji: {
+        pageId,
+        userId: ctx.user.id,
+        emoji,
+      },
+    },
+  });
+  if (existing) {
+    await prisma.pageReaction.delete({ where: { id: existing.id } });
+  } else {
+    await prisma.pageReaction.create({
+      data: { pageId, userId: ctx.user.id, emoji },
+    });
+  }
+  revalidatePath(`/w/${slug}/p/${pageId}`);
+}
+
 export async function quickCapture(slug: string) {
   const ctx = await assertEditor(slug);
   // Ensure (or create) an Inbox folder at the workspace root.
