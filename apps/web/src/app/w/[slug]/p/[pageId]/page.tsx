@@ -255,6 +255,16 @@ export default async function PageRoute({
   const subscribed = !!(await prisma.pageSubscription.findUnique({
     where: { pageId_userId: { pageId: page.id, userId: ctx.user.id } },
   }));
+  const pendingReminders = await prisma.reminder.findMany({
+    where: {
+      userId: ctx.user.id,
+      pageId: page.id,
+      sentAt: null,
+      dueAt: { gt: new Date() },
+    },
+    orderBy: { dueAt: "asc" },
+    select: { id: true, dueAt: true, note: true },
+  });
   const reactionGroupsMap = new Map<
     string,
     { emoji: string; users: { id: string; name: string }[]; reactedByMe: boolean }
@@ -339,6 +349,11 @@ export default async function PageRoute({
         rowContext={rowContext}
         reactions={reactionGroups}
         subscribed={subscribed}
+        reminders={pendingReminders.map((r) => ({
+          id: r.id,
+          dueAt: r.dueAt.toISOString(),
+          note: r.note,
+        }))}
       />
     </>
   );

@@ -50,6 +50,38 @@ export default async function WorkspaceLayout({
       },
     })
     .catch(() => {});
+  // Best-effort: fire due reminders for the current user. We turn each into a
+  // Notification + mark the reminder as sent, so the bell picks them up.
+  prisma.reminder
+    .findMany({
+      where: {
+        userId: ctx.user.id,
+        workspaceId: ctx.workspace.id,
+        sentAt: null,
+        dueAt: { lte: new Date() },
+      },
+      include: { page: { select: { title: true } } },
+      take: 20,
+    })
+    .then(async (due) => {
+      if (due.length === 0) return;
+      await prisma.notification.createMany({
+        data: due.map((r) => ({
+          recipientId: r.userId,
+          workspaceId: r.workspaceId,
+          pageId: r.pageId,
+          kind: "reminder",
+          preview: r.note
+            ? `${r.note} (${r.page.title || "Untitled"})`
+            : `Reminder: ${r.page.title || "Untitled"}`,
+        })),
+      });
+      await prisma.reminder.updateMany({
+        where: { id: { in: due.map((r) => r.id) } },
+        data: { sentAt: new Date() },
+      });
+    })
+    .catch(() => {});
   // Best-effort auto-expire: delete read notifications older than 30 days
   // (cheap to run as part of the normal layout fetch; runs in background).
   prisma.notification

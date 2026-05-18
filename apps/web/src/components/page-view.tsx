@@ -19,6 +19,7 @@ import { PageOutline } from "./page-outline";
 import { PageTags, parseTags } from "./page-tags";
 import { PageReactions, type PageReactionGroup } from "./page-reactions";
 import { SubscribeButton } from "./subscribe-button";
+import { ReminderButton, type PendingReminder } from "./reminder-button";
 import { AskAiPanel } from "./ask-ai-panel";
 import type { PermItem } from "./share-button";
 
@@ -42,6 +43,7 @@ export function PageView({
   rowContext,
   reactions = [],
   subscribed = false,
+  reminders = [],
   canChangeSettings = false,
 }: {
   slug: string;
@@ -87,6 +89,7 @@ export function PageView({
   } | null;
   reactions?: PageReactionGroup[];
   subscribed?: boolean;
+  reminders?: PendingReminder[];
 }) {
   const [title, setTitle] = useState(page.title);
   const [icon, setIcon] = useState(page.icon);
@@ -254,6 +257,7 @@ export function PageView({
           </button>
           <PageInfo info={info} />
           <SubscribeButton slug={slug} pageId={page.id} subscribed={subscribed} />
+          <ReminderButton slug={slug} pageId={page.id} pending={reminders} />
           <ExportButton slug={slug} pageId={page.id} title={page.title} />
           <PageStyleMenu
             slug={slug}

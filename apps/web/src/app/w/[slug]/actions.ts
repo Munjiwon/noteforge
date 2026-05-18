@@ -291,6 +291,43 @@ export async function purgePage(slug: string, pageId: string) {
   revalidatePath(`/w/${slug}`, "layout");
 }
 
+export async function setReminder(
+  slug: string,
+  pageId: string,
+  dueAtIso: string,
+  note?: string,
+) {
+  const ctx = await requireWorkspaceMember(slug);
+  const page = await prisma.page.findFirst({
+    where: { id: pageId, workspaceId: ctx.workspace.id },
+    select: { id: true },
+  });
+  if (!page) throw new Error("not found");
+  const dueAt = new Date(dueAtIso);
+  if (Number.isNaN(dueAt.getTime())) throw new Error("invalid date");
+  await prisma.reminder.create({
+    data: {
+      userId: ctx.user.id,
+      pageId,
+      workspaceId: ctx.workspace.id,
+      dueAt,
+      note: note?.trim() || null,
+    },
+  });
+  revalidatePath(`/w/${slug}/p/${pageId}`);
+}
+
+export async function cancelReminder(slug: string, reminderId: string) {
+  const ctx = await requireWorkspaceMember(slug);
+  const r = await prisma.reminder.findUnique({
+    where: { id: reminderId },
+    select: { userId: true, pageId: true },
+  });
+  if (!r || r.userId !== ctx.user.id) throw new Error("not found");
+  await prisma.reminder.delete({ where: { id: reminderId } });
+  revalidatePath(`/w/${slug}/p/${r.pageId}`);
+}
+
 export async function togglePageReaction(
   slug: string,
   pageId: string,

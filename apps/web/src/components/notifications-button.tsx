@@ -107,6 +107,8 @@ export function NotificationsButton({
                   ? "replied"
                   : toast.kind === "page_updated"
                   ? "edited a page you follow"
+                  : toast.kind === "reminder"
+                  ? "reminded you"
                   : "commented"
               }
             </div>
@@ -218,6 +220,8 @@ function NotifRow({
       ? "replied to your thread"
       : n.kind === "page_updated"
       ? "edited a page you follow"
+      : n.kind === "reminder"
+      ? "reminded you"
       : "commented";
   const href =
     n.workspaceSlug && n.pageId

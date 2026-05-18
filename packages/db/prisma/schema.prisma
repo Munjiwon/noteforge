@@ -25,6 +25,7 @@ model User {
   apiTokens    ApiToken[]
   pageReactions PageReaction[]
   pageSubscriptions PageSubscription[]
+  reminders    Reminder[]
 }
 
 model ApiToken {
@@ -51,6 +52,7 @@ model Workspace {
   members   WorkspaceMember[]
   pages     Page[]
   invites   Invite[]
+  reminders Reminder[]
 }
 
 model WorkspaceMember {
@@ -111,6 +113,7 @@ model Page {
   activities  PageActivity[]
   reactions   PageReaction[]
   subscriptions PageSubscription[]
+  reminders   Reminder[]
 
   @@index([workspaceId, parentId])
 }
@@ -212,6 +215,24 @@ model PageSubscription {
 
   @@unique([pageId, userId])
   @@index([pageId])
+}
+
+model Reminder {
+  id        String    @id @default(cuid())
+  userId    String
+  pageId    String
+  workspaceId String
+  dueAt     DateTime
+  note      String?
+  sentAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  page      Page      @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([userId, dueAt])
+  @@index([sentAt])
 }
 
 model Notification {
