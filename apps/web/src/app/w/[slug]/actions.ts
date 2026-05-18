@@ -365,6 +365,26 @@ export async function togglePageReaction(
   revalidatePath(`/w/${slug}/p/${pageId}`);
 }
 
+export async function archivePage(slug: string, pageId: string) {
+  const ctx = await assertEditor(slug);
+  await prisma.page.updateMany({
+    where: { id: pageId, workspaceId: ctx.workspace.id, deletedAt: null },
+    data: { archivedAt: new Date() },
+  });
+  await logActivity(pageId, ctx.user.id, "archived");
+  revalidatePath(`/w/${slug}`, "layout");
+}
+
+export async function unarchivePage(slug: string, pageId: string) {
+  const ctx = await assertEditor(slug);
+  await prisma.page.updateMany({
+    where: { id: pageId, workspaceId: ctx.workspace.id },
+    data: { archivedAt: null },
+  });
+  await logActivity(pageId, ctx.user.id, "unarchived");
+  revalidatePath(`/w/${slug}`, "layout");
+}
+
 export async function quickCapture(slug: string) {
   const ctx = await assertEditor(slug);
   // Ensure (or create) an Inbox folder at the workspace root.

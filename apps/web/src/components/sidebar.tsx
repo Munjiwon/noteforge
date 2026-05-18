@@ -918,6 +918,12 @@ export function Sidebar({
           📁 Files
         </Link>
         <Link
+          href={`/w/${currentSlug}/archive`}
+          className="block text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
+        >
+          📦 Archive
+        </Link>
+        <Link
           href={`/w/${currentSlug}/activity`}
           className="block text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
         >

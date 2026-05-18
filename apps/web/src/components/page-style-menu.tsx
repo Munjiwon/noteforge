@@ -2,11 +2,13 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import {
+  archivePage,
   setPageAsTemplate,
   setPageFont,
   setPageWidth,
   togglePageLock,
 } from "@/app/w/[slug]/actions";
+import { useRouter } from "next/navigation";
 
 export type PageWidth = "normal" | "wide" | "full";
 export type PageFont = "default" | "serif" | "mono";
@@ -31,6 +33,7 @@ export function PageStyleMenu({
   const [open, setOpen] = useState(false);
   const [, start] = useTransition();
   const ref = useRef<HTMLDivElement>(null);
+  const router = useRouter();
   useEffect(() => {
     if (!open) return;
     const onDown = (e: MouseEvent) => {
@@ -102,7 +105,7 @@ export function PageStyleMenu({
                     await setPageAsTemplate(slug, pageId, !isTemplate);
                   })
                 }
-                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center"
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
                 title={
                   isTemplate
                     ? "Remove from Templates section"
@@ -110,6 +113,23 @@ export function PageStyleMenu({
                 }
               >
                 {isTemplate ? "✕ Remove as template" : "📋 Save as template"}
+              </button>
+              <button
+                onClick={() => {
+                  if (
+                    !confirm(
+                      "Archive this page? It stays available under Archive but is hidden from the sidebar.",
+                    )
+                  )
+                    return;
+                  start(async () => {
+                    await archivePage(slug, pageId);
+                    router.push(`/w/${slug}`);
+                  });
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center"
+              >
+                📦 Archive
               </button>
             </>
           )}

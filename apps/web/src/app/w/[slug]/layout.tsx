@@ -155,7 +155,7 @@ export default async function WorkspaceLayout({
     .catch(() => {});
   const [allPages, trashedPages, workspaces, memberCount, notifRows, recentRows] = await Promise.all([
     prisma.page.findMany({
-      where: { workspaceId: ctx.workspace.id, deletedAt: null },
+      where: { workspaceId: ctx.workspace.id, deletedAt: null, archivedAt: null },
       orderBy: [{ position: "asc" }, { createdAt: "asc" }],
       select: {
         id: true,
