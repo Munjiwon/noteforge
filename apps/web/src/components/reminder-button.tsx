@@ -7,6 +7,7 @@ export type PendingReminder = {
   id: string;
   dueAt: string;
   note: string | null;
+  repeatRule?: string;
 };
 
 function nextMondayAt9(): Date {
@@ -45,6 +46,8 @@ function fmt(d: Date): string {
       });
 }
 
+type Repeat = "none" | "daily" | "weekdays" | "weekly" | "monthly";
+
 export function ReminderButton({
   slug,
   pageId,
@@ -56,6 +59,7 @@ export function ReminderButton({
 }) {
   const [open, setOpen] = useState(false);
   const [custom, setCustom] = useState("");
+  const [repeat, setRepeat] = useState<Repeat>("none");
   const [, start] = useTransition();
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -68,7 +72,8 @@ export function ReminderButton({
   }, [open]);
   const schedule = (d: Date) => {
     setOpen(false);
-    start(() => setReminder(slug, pageId, d.toISOString()));
+    const rule = repeat;
+    start(() => setReminder(slug, pageId, d.toISOString(), undefined, rule));
   };
   return (
     <div className="relative" ref={ref}>
@@ -113,6 +118,20 @@ export function ReminderButton({
             Next Monday 9am
           </button>
           <div className="border-t border-gray-100 mt-1 pt-1">
+            <label className="block text-[10px] text-gray-500 mb-0.5">
+              Repeat
+            </label>
+            <select
+              value={repeat}
+              onChange={(e) => setRepeat(e.target.value as Repeat)}
+              className="w-full text-xs border border-gray-200 rounded px-2 py-1 outline-none focus:border-gray-400 mb-1"
+            >
+              <option value="none">Don't repeat</option>
+              <option value="daily">Daily</option>
+              <option value="weekdays">Weekdays</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+            </select>
             <input
               type="datetime-local"
               value={custom}
@@ -145,6 +164,9 @@ export function ReminderButton({
                   >
                     <span className="flex-1 truncate">
                       {fmt(new Date(r.dueAt))}
+                      {r.repeatRule && r.repeatRule !== "none"
+                        ? ` · ↻ ${r.repeatRule}`
+                        : ""}
                       {r.note ? ` — ${r.note}` : ""}
                     </span>
                     <button

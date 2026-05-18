@@ -239,6 +239,7 @@ model Reminder {
   dueAt     DateTime
   note      String?
   sentAt    DateTime?
+  repeatRule String   @default("none") // "none" | "daily" | "weekdays" | "weekly" | "monthly"
   createdAt DateTime  @default(now())
 
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)

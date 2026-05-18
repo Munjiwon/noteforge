@@ -6,6 +6,29 @@ import { ShortcutsHelp } from "@/components/shortcuts-help";
 import { MobileSidebarToggle } from "@/components/mobile-sidebar-toggle";
 import { WorkspaceSwitcher } from "@/components/workspace-switcher";
 
+function nextDue(prev: Date, rule: string): Date | null {
+  const d = new Date(prev);
+  if (rule === "daily") {
+    d.setDate(d.getDate() + 1);
+    return d;
+  }
+  if (rule === "weekly") {
+    d.setDate(d.getDate() + 7);
+    return d;
+  }
+  if (rule === "monthly") {
+    d.setMonth(d.getMonth() + 1);
+    return d;
+  }
+  if (rule === "weekdays") {
+    do {
+      d.setDate(d.getDate() + 1);
+    } while (d.getDay() === 0 || d.getDay() === 6);
+    return d;
+  }
+  return null;
+}
+
 function extractPreview(content: string): string {
   try {
     const blocks = JSON.parse(content) as unknown;
@@ -51,7 +74,8 @@ export default async function WorkspaceLayout({
     })
     .catch(() => {});
   // Best-effort: fire due reminders for the current user. We turn each into a
-  // Notification + mark the reminder as sent, so the bell picks them up.
+  // Notification + mark the reminder as sent, so the bell picks them up. For
+  // recurring reminders, also schedule the next occurrence.
   prisma.reminder
     .findMany({
       where: {
@@ -80,6 +104,26 @@ export default async function WorkspaceLayout({
         where: { id: { in: due.map((r) => r.id) } },
         data: { sentAt: new Date() },
       });
+      // Recurring reminders → re-schedule.
+      const recurrences = due.filter((r) => r.repeatRule && r.repeatRule !== "none");
+      if (recurrences.length > 0) {
+        await prisma.reminder.createMany({
+          data: recurrences
+            .map((r) => {
+              const next = nextDue(r.dueAt, r.repeatRule);
+              if (!next) return null;
+              return {
+                userId: r.userId,
+                pageId: r.pageId,
+                workspaceId: r.workspaceId,
+                dueAt: next,
+                note: r.note,
+                repeatRule: r.repeatRule,
+              };
+            })
+            .filter((x): x is NonNullable<typeof x> => !!x),
+        });
+      }
     })
     .catch(() => {});
   // Best-effort auto-expire: delete read notifications older than 30 days

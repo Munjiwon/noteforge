@@ -263,7 +263,7 @@ export default async function PageRoute({
       dueAt: { gt: new Date() },
     },
     orderBy: { dueAt: "asc" },
-    select: { id: true, dueAt: true, note: true },
+    select: { id: true, dueAt: true, note: true, repeatRule: true },
   });
   const reactionGroupsMap = new Map<
     string,
@@ -353,6 +353,7 @@ export default async function PageRoute({
           id: r.id,
           dueAt: r.dueAt.toISOString(),
           note: r.note,
+          repeatRule: r.repeatRule,
         }))}
       />
     </>

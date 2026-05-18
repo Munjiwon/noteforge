@@ -296,6 +296,12 @@ export async function setReminder(
   pageId: string,
   dueAtIso: string,
   note?: string,
+  repeatRule:
+    | "none"
+    | "daily"
+    | "weekdays"
+    | "weekly"
+    | "monthly" = "none",
 ) {
   const ctx = await requireWorkspaceMember(slug);
   const page = await prisma.page.findFirst({
@@ -312,6 +318,7 @@ export async function setReminder(
       workspaceId: ctx.workspace.id,
       dueAt,
       note: note?.trim() || null,
+      repeatRule,
     },
   });
   revalidatePath(`/w/${slug}/p/${pageId}`);
