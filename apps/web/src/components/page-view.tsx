@@ -82,18 +82,24 @@ export function PageView({
     void incrementPageView(slug, page.id);
   }, [page.id, slug]);
 
-  // Auto-scroll to anchored block if URL has ?b=<id>
+  // Auto-scroll to anchored block (?b) or comment (?c)
   useEffect(() => {
     const u = new URL(window.location.href);
     const b = u.searchParams.get("b");
-    if (!b) return;
+    const c = u.searchParams.get("c");
+    const targetSelector = b
+      ? `[data-id="${b}"]`
+      : c
+      ? `[data-comment-id="${c}"]`
+      : null;
+    if (!targetSelector) return;
     let attempts = 0;
     const tick = () => {
-      const el = document.querySelector(`[data-id="${b}"]`) as HTMLElement | null;
+      const el = document.querySelector(targetSelector) as HTMLElement | null;
       if (el) {
         el.scrollIntoView({ behavior: "smooth", block: "center" });
         el.classList.add("ring-2", "ring-blue-300", "rounded");
-        setTimeout(() => el.classList.remove("ring-2", "ring-blue-300", "rounded"), 2000);
+        setTimeout(() => el.classList.remove("ring-2", "ring-blue-300", "rounded"), 2500);
         return;
       }
       attempts++;

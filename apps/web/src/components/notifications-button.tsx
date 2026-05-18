@@ -15,6 +15,7 @@ export type NotifItem = {
   read: boolean;
   createdAt: string;
   pageId: string | null;
+  commentId: string | null;
   workspaceSlug: string | null;
   actor: { name: string; color: string } | null;
 };
@@ -135,7 +136,7 @@ function NotifRow({
       : "commented";
   const href =
     n.workspaceSlug && n.pageId
-      ? `/w/${n.workspaceSlug}/p/${n.pageId}`
+      ? `/w/${n.workspaceSlug}/p/${n.pageId}${n.commentId ? `?c=${encodeURIComponent(n.commentId)}` : ""}`
       : "#";
 
   return (

@@ -35,6 +35,7 @@ export function SearchPalette({ slug }: { slug: string }) {
   const [hits, setHits] = useState<Hit[]>([]);
   const [highlight, setHighlight] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [kindFilter, setKindFilter] = useState<"all" | "doc" | "database">("all");
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
@@ -113,6 +114,22 @@ export function SearchPalette({ slug }: { slug: string }) {
       <div className="bg-white rounded-lg shadow-2xl w-[560px] max-w-[92vw] overflow-hidden">
         <div className="flex items-center gap-2 border-b border-gray-100 px-3 py-2">
           <span className="text-gray-400 text-sm">🔎</span>
+          <div className="flex gap-1 text-[10px]">
+            {(["all", "doc", "database"] as const).map((k) => (
+              <button
+                key={k}
+                onClick={() => setKindFilter(k)}
+                className={
+                  "px-1.5 py-0.5 rounded " +
+                  (kindFilter === k
+                    ? "bg-gray-900 text-white"
+                    : "hover:bg-black/5 text-gray-500")
+                }
+              >
+                {k === "all" ? "All" : k === "doc" ? "Pages" : "Databases"}
+              </button>
+            ))}
+          </div>
           <input
             ref={inputRef}
             value={q}
@@ -141,11 +158,15 @@ export function SearchPalette({ slug }: { slug: string }) {
             </div>
           ) : loading && hits.length === 0 ? (
             <div className="text-xs text-gray-400 text-center py-8">Searching…</div>
-          ) : hits.length === 0 ? (
-            <div className="text-xs text-gray-400 text-center py-8">No results.</div>
-          ) : (
-            <ul>
-              {hits.map((h, i) => (
+          ) : (() => {
+            const filtered = hits.filter((h) =>
+              kindFilter === "all" ? true : h.kind === kindFilter,
+            );
+            return filtered.length === 0 ? (
+              <div className="text-xs text-gray-400 text-center py-8">No results.</div>
+            ) : (
+              <ul>
+              {filtered.map((h, i) => (
                 <li key={h.id}>
                   <button
                     onMouseDown={(e) => {
@@ -178,7 +199,8 @@ export function SearchPalette({ slug }: { slug: string }) {
                 </li>
               ))}
             </ul>
-          )}
+            );
+          })()}
         </div>
         <div className="border-t border-gray-100 px-3 py-1.5 text-[10px] text-gray-400 flex justify-between">
           <span>↑↓ navigate · Enter to open</span>

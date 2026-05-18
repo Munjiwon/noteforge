@@ -1,6 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+const RECENT_KEY = "collab-notion-emoji-recent";
+function loadRecent(): string[] {
+  try {
+    const raw = localStorage.getItem(RECENT_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+function saveRecent(emoji: string) {
+  try {
+    const prev = loadRecent();
+    const next = [emoji, ...prev.filter((e) => e !== emoji)].slice(0, 16);
+    localStorage.setItem(RECENT_KEY, JSON.stringify(next));
+  } catch {}
+}
 
 const CATEGORIES: { name: string; emojis: string[] }[] = [
   {
@@ -39,11 +56,24 @@ export function EmojiPicker({
   onPick: (emoji: string) => void;
   onClose: () => void;
 }) {
-  const [active, setActive] = useState(CATEGORIES[0].name);
+  const [active, setActive] = useState("Recent");
   const [q, setQ] = useState("");
-  const cat = CATEGORIES.find((c) => c.name === active) ?? CATEGORIES[0];
+  const [recent, setRecent] = useState<string[]>([]);
+  useEffect(() => setRecent(loadRecent()), []);
+  const categoriesWithRecent = [
+    ...(recent.length > 0 ? [{ name: "Recent", emojis: recent }] : []),
+    ...CATEGORIES,
+  ];
+  const cat =
+    categoriesWithRecent.find((c) => c.name === active) ??
+    categoriesWithRecent[0];
   const all = CATEGORIES.flatMap((c) => c.emojis);
   const display = q ? all.filter(() => true) : cat.emojis;
+  const pick = (e: string) => {
+    saveRecent(e);
+    onPick(e);
+    onClose();
+  };
   // very crude search: just filter when q is non-empty by including any from the active cat
   // (real emoji search would need name index)
 
@@ -59,8 +89,7 @@ export function EmojiPicker({
         <button
           onClick={() => {
             const pool = CATEGORIES.flatMap((c) => c.emojis);
-            onPick(pool[Math.floor(Math.random() * pool.length)]);
-            onClose();
+            pick(pool[Math.floor(Math.random() * pool.length)]);
           }}
           className="text-xs text-gray-500 hover:text-gray-900 px-1"
           title="Random emoji"
@@ -76,7 +105,7 @@ export function EmojiPicker({
       </div>
       {!q && (
         <div className="flex flex-wrap gap-0.5 mb-2 border-b border-gray-100 pb-1">
-          {CATEGORIES.map((c) => (
+          {categoriesWithRecent.map((c) => (
             <button
               key={c.name}
               onClick={() => setActive(c.name)}
@@ -95,10 +124,7 @@ export function EmojiPicker({
           <button
             key={e + i}
             className="text-xl hover:bg-black/5 rounded p-1"
-            onClick={() => {
-              onPick(e);
-              onClose();
-            }}
+            onClick={() => pick(e)}
           >
             {e}
           </button>

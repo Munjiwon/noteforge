@@ -43,7 +43,7 @@ export type RollupAggregate = "count" | "sum" | "min" | "max" | "unique";
 
 export type DbPropSelectOption = { id: string; name: string; color: string };
 
-export type NumberFormat = "integer" | "decimal" | "percent" | "currency";
+export type NumberFormat = "integer" | "decimal" | "percent" | "currency" | "progress" | "rating";
 export type DateFormat = "short" | "long" | "relative";
 
 export type DbProp =
@@ -109,6 +109,12 @@ export function formatNumber(n: number, format: NumberFormat | undefined): strin
       return (n * 100).toLocaleString(undefined, { maximumFractionDigits: 2 }) + "%";
     case "currency":
       return n.toLocaleString(undefined, { style: "currency", currency: "USD" });
+    case "progress":
+      return Math.round(Math.max(0, Math.min(1, n)) * 100) + "%";
+    case "rating": {
+      const v = Math.max(0, Math.min(5, Math.round(n)));
+      return "★".repeat(v) + "☆".repeat(5 - v);
+    }
     case "decimal":
     default:
       return n.toLocaleString();

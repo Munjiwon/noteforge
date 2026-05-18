@@ -691,6 +691,13 @@ export function Sidebar({
           </button>
         </div>
       )}
+      {tree.length === 0 && (
+        <div className="px-3 py-6 text-center text-xs text-gray-400 italic">
+          No pages yet.
+          <br />
+          Click <span className="text-gray-700">+</span> above to create one.
+        </div>
+      )}
       <ul className="flex-1 overflow-auto pb-2">{tree.map((n) => renderNode(n, 0))}</ul>
 
       {trashed.length > 0 && (

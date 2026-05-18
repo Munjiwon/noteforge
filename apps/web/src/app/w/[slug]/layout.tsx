@@ -93,6 +93,7 @@ export default async function WorkspaceLayout({
     read: n.read,
     createdAt: n.createdAt.toISOString(),
     pageId: n.pageId,
+    commentId: n.commentId,
     workspaceSlug: ctx.workspace.slug,
     actor: n.actor ? { name: n.actor.name, color: n.actor.color } : null,
   }));

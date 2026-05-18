@@ -112,6 +112,11 @@ export function ShareButton({
       {open && (
         <div className="absolute right-0 top-full mt-1 z-40 bg-white shadow-lg border rounded-md w-[360px] p-3 max-h-[80vh] overflow-y-auto">
           <div className="text-sm font-medium mb-2">Share this page</div>
+          <p className="text-[11px] text-gray-500 mb-2">
+            Workspace members already have the workspace-wide role (owner /
+            editor / viewer). Use the controls below to grant extra access
+            to specific people or anyone with the link.
+          </p>
           {canEdit && (
             <section className="mb-3">
               <div className="text-xs text-gray-500 mb-1">Invite by email</div>

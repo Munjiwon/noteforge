@@ -7,6 +7,7 @@ import {
   addColumn,
   addRow,
   addSelectOption,
+  bulkSetCheckboxColumn,
   changeColumnType,
   configureFormula,
   configureRelation,
@@ -19,6 +20,7 @@ import {
   setDateFormat,
   setNumberFormat,
   setSelectOptionColor,
+  setSort,
   updateCell,
 } from "@/app/w/[slug]/database-actions";
 import { SELECT_COLORS } from "@/lib/database";
@@ -411,6 +413,18 @@ function ColumnHeader({
           }
         }}
       />
+      {!readOnly && prop.type === "checkbox" && prop.id !== "p_title" && (
+        <button
+          className="text-gray-400 hover:text-gray-900 px-1 text-[11px]"
+          title="Toggle all rows in this column"
+          onClick={() => {
+            const setAll = confirm("Check all rows? (Cancel = uncheck all)");
+            start(() => bulkSetCheckboxColumn(slug, dbId, prop.id, setAll));
+          }}
+        >
+          ☑/☐
+        </button>
+      )}
       {!readOnly && prop.id !== "p_title" && (
         <button
           className="text-gray-400 hover:text-gray-900 px-1"
@@ -446,6 +460,32 @@ function ColumnHeader({
           >
             ✎ Edit description
           </button>
+          {prop.id !== "p_title" && (
+            <>
+              <button
+                className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded"
+                onClick={() => {
+                  const next = (schema.sort ?? []).filter((s) => s.propId !== prop.id);
+                  next.unshift({ propId: prop.id, dir: "asc" });
+                  start(() => setSort(slug, dbId, next));
+                  onOpen(false);
+                }}
+              >
+                ↑ Sort ascending
+              </button>
+              <button
+                className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded"
+                onClick={() => {
+                  const next = (schema.sort ?? []).filter((s) => s.propId !== prop.id);
+                  next.unshift({ propId: prop.id, dir: "desc" });
+                  start(() => setSort(slug, dbId, next));
+                  onOpen(false);
+                }}
+              >
+                ↓ Sort descending
+              </button>
+            </>
+          )}
           {(prop.type === "text" ||
             prop.type === "url" ||
             prop.type === "email" ||
@@ -875,6 +915,55 @@ function Cell({
   }
 
   if (prop.type === "number") {
+    if (prop.format === "progress") {
+      const n = typeof value === "number" ? value : 0;
+      const pct = Math.max(0, Math.min(1, n)) * 100;
+      return (
+        <div className="px-3 py-2 flex items-center gap-2">
+          <div className="flex-1 h-2 bg-gray-100 rounded overflow-hidden">
+            <div className="h-full bg-blue-500" style={{ width: pct + "%" }} />
+          </div>
+          {!readOnly ? (
+            <input
+              type="number"
+              step="0.01"
+              defaultValue={n}
+              className="w-14 text-xs bg-transparent outline-none text-right tabular-nums"
+              onBlur={(e) => {
+                const raw = e.target.value;
+                const num = raw === "" ? null : Number(raw);
+                if (num !== value) start(() => updateCell(slug, rowId, prop.id, num));
+              }}
+            />
+          ) : (
+            <span className="text-xs text-gray-500 tabular-nums">{Math.round(pct)}%</span>
+          )}
+        </div>
+      );
+    }
+    if (prop.format === "rating") {
+      const n = typeof value === "number" ? value : 0;
+      const stars = Math.max(0, Math.min(5, Math.round(n)));
+      return (
+        <div className="px-3 py-2 flex items-center gap-0.5">
+          {[1, 2, 3, 4, 5].map((s) => (
+            <button
+              key={s}
+              disabled={readOnly}
+              onClick={() => {
+                if (readOnly) return;
+                const next = stars === s ? 0 : s;
+                start(() => updateCell(slug, rowId, prop.id, next));
+              }}
+              className={s <= stars ? "text-yellow-500" : "text-gray-300"}
+              title={`${s} of 5`}
+            >
+              ★
+            </button>
+          ))}
+        </div>
+      );
+    }
     if (readOnly) {
       return (
         <div className="px-3 py-2 text-sm text-right tabular-nums text-gray-800">
@@ -1429,7 +1518,7 @@ function ColumnConfigure({
     "count" | "sum" | "min" | "max" | "unique"
   >(isRollup ? prop.aggregate : "count");
   const [expr, setExpr] = useState(isFormula ? prop.expr : "");
-  const [numFormat, setNumFormat] = useState<"integer" | "decimal" | "percent" | "currency">(
+  const [numFormat, setNumFormat] = useState<"integer" | "decimal" | "percent" | "currency" | "progress" | "rating">(
     isNumber ? (prop.format ?? "decimal") : "decimal",
   );
   const [dateFormat, setDateFmt] = useState<"short" | "long" | "relative">(
@@ -1592,6 +1681,8 @@ function ColumnConfigure({
               <option value="decimal">Decimal (1,234.56)</option>
               <option value="percent">Percent (1.23 → 123%)</option>
               <option value="currency">Currency (USD)</option>
+              <option value="progress">Progress bar (0–1 → ▰▰▱▱▱)</option>
+              <option value="rating">Rating (0–5 → ★★★☆☆)</option>
             </select>
             <button
               onClick={() =>

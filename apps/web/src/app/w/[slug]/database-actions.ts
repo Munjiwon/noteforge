@@ -153,7 +153,7 @@ export async function setNumberFormat(
   slug: string,
   dbId: string,
   propId: string,
-  format: "integer" | "decimal" | "percent" | "currency",
+  format: "integer" | "decimal" | "percent" | "currency" | "progress" | "rating",
 ) {
   const { schema } = await loadDb(slug, dbId);
   const p = schema.props.find((x) => x.id === propId);
@@ -229,6 +229,32 @@ export async function setTableGroup(
     schema.tableGroupBy = undefined;
   }
   await saveSchema(dbId, schema);
+  revalidatePath(`/w/${slug}/p/${dbId}`);
+}
+
+export async function bulkSetCheckboxColumn(
+  slug: string,
+  dbId: string,
+  propId: string,
+  value: boolean,
+) {
+  const ctx = await assertEditor(slug);
+  const { schema } = await loadDb(slug, dbId);
+  const p = schema.props.find((x) => x.id === propId);
+  if (!p || p.type !== "checkbox") throw new Error("not a checkbox column");
+  const rows = await prisma.page.findMany({
+    where: { parentId: dbId, workspaceId: ctx.workspace.id, deletedAt: null },
+    select: { id: true, dataValues: true },
+  });
+  for (const r of rows) {
+    const values = parseValues(r.dataValues);
+    if (value) values[propId] = true;
+    else delete values[propId];
+    await prisma.page.update({
+      where: { id: r.id },
+      data: { dataValues: JSON.stringify(values) },
+    });
+  }
   revalidatePath(`/w/${slug}/p/${dbId}`);
 }
 

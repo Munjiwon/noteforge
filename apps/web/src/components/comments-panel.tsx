@@ -320,7 +320,7 @@ function CommentRow({
   };
 
   return (
-    <div>
+    <div data-comment-id={comment.id}>
       <div className="flex items-center gap-2 text-xs">
         <span
           className="inline-flex items-center justify-center w-6 h-6 rounded-full text-white text-[10px] font-medium"
@@ -446,8 +446,18 @@ function Reactions({
       await toggleReaction(slug, commentId, emoji);
     });
   };
+  const hasThumbs = (groups.get("👍") ?? []).length > 0;
   return (
     <div className="ml-8 mt-1 flex flex-wrap items-center gap-1">
+      {!hasThumbs && (
+        <button
+          onClick={() => toggle("👍")}
+          className="text-xs px-1.5 py-0.5 rounded border border-gray-200 text-gray-400 hover:text-blue-700 hover:bg-blue-50"
+          title="React with 👍"
+        >
+          👍
+        </button>
+      )}
       {Array.from(groups.entries()).map(([emoji, users]) => {
         const mine = users.includes(currentUserId);
         return (
