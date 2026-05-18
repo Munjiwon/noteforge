@@ -36,6 +36,7 @@ export function PageView({
   info,
   permissions,
   ancestors,
+  rowContext,
   canChangeSettings = false,
 }: {
   slug: string;
@@ -49,6 +50,7 @@ export function PageView({
     tags?: string | null;
     publicAccess?: "none" | "view";
     publicSlug?: string | null;
+    publicViewCount?: number;
     locked?: boolean;
     width?: "normal" | "wide" | "full";
     font?: "default" | "serif" | "mono";
@@ -70,6 +72,7 @@ export function PageView({
   };
   permissions: PermItem[];
   ancestors?: { id: string; title: string; icon: string | null }[];
+  rowContext?: { dbId: string; dbTitle: string; dbIcon: string | null } | null;
 }) {
   const [title, setTitle] = useState(page.title);
   const [icon, setIcon] = useState(page.icon);
@@ -139,6 +142,17 @@ export function PageView({
         readOnly={readOnly}
       />
       <div className={`${widthClass(width)} mx-auto px-12 md:px-24 py-10`}>
+        {rowContext && (
+          <div className="mb-2 text-xs text-gray-500 inline-flex items-center gap-1 no-print">
+            <a
+              href={`/w/${slug}/p/${rowContext.dbId}`}
+              className="inline-flex items-center gap-1 hover:text-gray-900"
+            >
+              <span>{rowContext.dbIcon ?? "📊"}</span>
+              <span>Row in {rowContext.dbTitle || "Untitled database"}</span>
+            </a>
+          </div>
+        )}
         {ancestors && ancestors.length > 0 && (
           <nav className="mb-2 flex items-center gap-1 text-xs text-gray-500 no-print">
             {ancestors.map((a) => (
@@ -194,6 +208,7 @@ export function PageView({
             initialAccess={page.publicAccess ?? "none"}
             initialPublicSlug={page.publicSlug ?? null}
             initialPermissions={permissions}
+            publicViewCount={page.publicViewCount}
             canEdit={!readOnly}
           />
         </div>

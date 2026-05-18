@@ -38,6 +38,7 @@ export function DatabasePage({
     coverPos?: string | null;
     publicAccess?: "none" | "view";
     publicSlug?: string | null;
+    publicViewCount?: number;
     permissions?: PermItem[];
     locked?: boolean;
     width?: "normal" | "wide" | "full";
@@ -112,6 +113,7 @@ export function DatabasePage({
             initialAccess={db.publicAccess ?? "none"}
             initialPublicSlug={db.publicSlug ?? null}
             initialPermissions={db.permissions ?? []}
+            publicViewCount={db.publicViewCount}
             canEdit={!readOnly}
           />
         </div>

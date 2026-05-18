@@ -25,6 +25,14 @@ export default async function PublicSharedPage({
   });
   if (!page) notFound();
 
+  // fire-and-forget public view count
+  prisma.page
+    .update({
+      where: { id: page.id },
+      data: { publicViewCount: { increment: 1 } },
+    })
+    .catch(() => {});
+
   if (page.kind === "database") {
     const rows = await prisma.page.findMany({
       where: { parentId: page.id, deletedAt: null },

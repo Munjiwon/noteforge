@@ -22,6 +22,7 @@ export function ShareButton({
   initialAccess,
   initialPublicSlug,
   initialPermissions,
+  publicViewCount,
   canEdit,
 }: {
   slug: string;
@@ -29,6 +30,7 @@ export function ShareButton({
   initialAccess: "none" | "view";
   initialPublicSlug: string | null;
   initialPermissions: PermItem[];
+  publicViewCount?: number;
   canEdit: boolean;
 }) {
   const [open, setOpen] = useState(false);
@@ -274,6 +276,9 @@ export function ShareButton({
             <>
               <p className="text-xs text-gray-500 mb-2">
                 Anyone with the link can view (read-only).
+                {typeof publicViewCount === "number" && (
+                  <> · <strong>{publicViewCount}</strong> public views</>
+                )}
               </p>
               <div className="flex gap-1">
                 <input

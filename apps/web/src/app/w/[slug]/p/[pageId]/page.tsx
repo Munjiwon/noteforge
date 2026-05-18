@@ -53,6 +53,7 @@ export default async function PageRoute({
       deletedAt: true,
       publicAccess: true,
       publicSlug: true,
+      publicViewCount: true,
       locked: true,
       width: true,
       font: true,
@@ -68,6 +69,20 @@ export default async function PageRoute({
     ? "viewer"
     : (ctx.role as "owner" | "editor" | "viewer");
   const canChangePageSettings = !trashed && ctx.role !== "viewer";
+
+  // Detect "this page is a database row" — parent is a database
+  const parentDb = page.kind === "doc" && (await prisma.page.findUnique({
+    where: { id: (await prisma.page.findUnique({ where: { id: page.id }, select: { parentId: true } }))?.parentId ?? "__none__" },
+    select: { id: true, title: true, icon: true, kind: true, dbSchema: true },
+  }));
+  const rowContext =
+    parentDb && parentDb.kind === "database"
+      ? {
+          dbId: parentDb.id,
+          dbTitle: parentDb.title,
+          dbIcon: parentDb.icon,
+        }
+      : null;
 
   // Collect ancestor chain for breadcrumb
   const ancestors: { id: string; title: string; icon: string | null }[] = [];
@@ -125,6 +140,7 @@ export default async function PageRoute({
             schema: parseSchema(page.dbSchema),
             publicAccess: page.publicAccess === "view" ? "view" : "none",
             publicSlug: page.publicSlug,
+            publicViewCount: page.publicViewCount,
             permissions,
             locked: page.locked,
             width: (page.width === "wide" || page.width === "full" ? page.width : "normal") as "normal" | "wide" | "full",
@@ -263,6 +279,7 @@ export default async function PageRoute({
         info={info}
         permissions={permissions}
         ancestors={ancestors}
+        rowContext={rowContext}
       />
     </>
   );

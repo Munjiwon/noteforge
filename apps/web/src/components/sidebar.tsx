@@ -482,7 +482,8 @@ export function Sidebar({
         "shrink-0 bg-sidebar border-r border-black/10 flex flex-col relative",
         "md:relative md:translate-x-0",
         "fixed inset-y-0 left-0 z-40 transition-[transform,width]",
-        mobileOpen ? "translate-x-0 w-64" : "-translate-x-full md:translate-x-0",
+        // mobile drawer: full width when open, slide-off when closed
+        mobileOpen ? "translate-x-0 w-72 max-w-[85vw] md:w-auto md:max-w-none" : "-translate-x-full md:translate-x-0",
       )}
     >
       {!collapsed && (
@@ -530,6 +531,21 @@ export function Sidebar({
                 </Link>
               </li>
             ))}
+            <li className="border-t border-black/10 mt-1 pt-1 text-xs text-gray-500">
+              <Link
+                href="/onboarding"
+                className="block px-2 py-1 rounded hover:bg-black/5"
+              >
+                + New workspace
+              </Link>
+              <button
+                onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "L", shiftKey: true, metaKey: true }))}
+                className="block w-full text-left px-2 py-1 rounded hover:bg-black/5"
+                title="⌘⇧L"
+              >
+                ⌘⇧L Switcher
+              </button>
+            </li>
           </ul>
         </details>
       </div>

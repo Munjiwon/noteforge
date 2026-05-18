@@ -10,16 +10,23 @@ export default async function InboxPage({
   searchParams,
 }: {
   params: { slug: string };
-  searchParams: { filter?: string };
+  searchParams: { filter?: string; kind?: string };
 }) {
   const ctx = await requireWorkspaceMember(params.slug);
   const filter = searchParams.filter === "unread" ? "unread" : "all";
+  const kind =
+    searchParams.kind === "mention" ||
+    searchParams.kind === "comment_reply" ||
+    searchParams.kind === "comment_new"
+      ? searchParams.kind
+      : null;
 
   const rows = await prisma.notification.findMany({
     where: {
       recipientId: ctx.user.id,
       workspaceId: ctx.workspace.id,
       ...(filter === "unread" ? { read: false } : {}),
+      ...(kind ? { kind } : {}),
     },
     orderBy: { createdAt: "desc" },
     take: 200,
@@ -47,9 +54,9 @@ export default async function InboxPage({
     <div className="max-w-3xl mx-auto px-8 py-10">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold">Inbox</h1>
-        <div className="flex gap-1 text-xs">
+        <div className="flex flex-wrap gap-1 text-xs">
           <Link
-            href={`/w/${params.slug}/inbox?filter=all`}
+            href={`/w/${params.slug}/inbox?filter=all${kind ? `&kind=${kind}` : ""}`}
             className={
               "px-2 py-1 rounded " +
               (filter === "all" ? "bg-gray-900 text-white" : "hover:bg-black/5")
@@ -58,7 +65,7 @@ export default async function InboxPage({
             All
           </Link>
           <Link
-            href={`/w/${params.slug}/inbox?filter=unread`}
+            href={`/w/${params.slug}/inbox?filter=unread${kind ? `&kind=${kind}` : ""}`}
             className={
               "px-2 py-1 rounded " +
               (filter === "unread" ? "bg-gray-900 text-white" : "hover:bg-black/5")
@@ -66,6 +73,28 @@ export default async function InboxPage({
           >
             Unread {unreadCount > 0 && <span className="ml-1 text-[10px]">({unreadCount})</span>}
           </Link>
+          <span className="w-px h-4 bg-gray-200 mx-1" />
+          {([
+            { k: null, label: "Any" },
+            { k: "mention", label: "@mentions" },
+            { k: "comment_reply", label: "Replies" },
+            { k: "comment_new", label: "Comments" },
+          ] as { k: string | null; label: string }[]).map((c) => {
+            const href = `/w/${params.slug}/inbox?filter=${filter}${c.k ? `&kind=${c.k}` : ""}`;
+            const active = c.k === kind;
+            return (
+              <Link
+                key={c.k ?? "any"}
+                href={href}
+                className={
+                  "px-2 py-1 rounded " +
+                  (active ? "bg-gray-900 text-white" : "hover:bg-black/5")
+                }
+              >
+                {c.label}
+              </Link>
+            );
+          })}
         </div>
       </div>
       <InboxClient slug={params.slug} />

@@ -88,6 +88,7 @@ model Page {
   width       String    @default("normal") // "normal" | "wide" | "full"
   font        String    @default("default") // "default" | "serif" | "mono"
   viewCount   Int       @default(0)
+  publicViewCount Int   @default(0)
   deletedAt   DateTime?
   publicSlug  String?   @unique
   publicAccess String   @default("none") // "none" | "view"

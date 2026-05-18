@@ -11,9 +11,9 @@ const themeBootstrap = `
 (function(){
   try {
     var k = "collab-notion-theme";
-    var v = localStorage.getItem(k);
-    if (!v) v = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    if (v === "dark") document.documentElement.classList.add("dark");
+    var v = localStorage.getItem(k) || "auto";
+    var dark = v === "dark" || (v === "auto" && matchMedia("(prefers-color-scheme: dark)").matches);
+    if (dark) document.documentElement.classList.add("dark");
   } catch(e) {}
 })();
 `;

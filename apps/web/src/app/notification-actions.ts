@@ -40,3 +40,11 @@ export async function markAllNotificationsRead() {
   });
   revalidatePath("/");
 }
+
+export async function clearReadNotifications() {
+  const userId = await currentUserId();
+  await prisma.notification.deleteMany({
+    where: { recipientId: userId, read: true },
+  });
+  revalidatePath("/");
+}
