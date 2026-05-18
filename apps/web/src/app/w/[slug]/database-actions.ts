@@ -561,21 +561,43 @@ export async function updateCell(
     where: { id: rowId, workspaceId: ctx.workspace.id },
   });
   if (!row || !row.parentId) throw new Error("not found");
+  let oldValue: unknown = null;
+  let newValue: unknown = null;
   if (propId === "p_title") {
+    oldValue = row.title;
+    newValue = String(value ?? "").trim();
     await prisma.page.update({
       where: { id: rowId },
-      data: { title: String(value ?? "").trim() },
+      data: { title: newValue as string },
     });
   } else {
     const values = parseValues(row.dataValues);
+    oldValue = values[propId] ?? null;
     if (value === null || value === undefined || value === "") {
       delete values[propId];
+      newValue = null;
     } else {
       values[propId] = value;
+      newValue = value;
     }
     await prisma.page.update({
       where: { id: rowId },
       data: { dataValues: JSON.stringify(values) },
+    });
+  }
+  // Skip logging no-ops (same value, e.g. clicking a select that's already set)
+  if (JSON.stringify(oldValue) !== JSON.stringify(newValue)) {
+    await prisma.pageActivity.create({
+      data: {
+        pageId: rowId,
+        userId: ctx.user.id,
+        action: "cell_changed",
+        meta: JSON.stringify({
+          propId,
+          oldValue: oldValue ?? null,
+          newValue: newValue ?? null,
+        }),
+      },
     });
   }
   revalidatePath(`/w/${slug}/p/${row.parentId}`);

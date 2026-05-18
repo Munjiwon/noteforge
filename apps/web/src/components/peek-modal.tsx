@@ -9,6 +9,13 @@ const StaticEditor = dynamic(
   { ssr: false, loading: () => <div className="text-gray-400 text-sm">Loading…</div> },
 );
 
+type Activity = {
+  id: string;
+  action: string;
+  meta: string | null;
+  createdAt: string;
+  user: { name: string; color: string } | null;
+};
 type PageData = {
   id: string;
   title: string;
@@ -20,7 +27,32 @@ type PageData = {
   author: { name: string; color: string } | null;
   createdAt: string;
   updatedAt: string;
+  activities?: Activity[];
 };
+
+function describeActivity(a: Activity): string {
+  if (a.action === "cell_changed" && a.meta) {
+    try {
+      const m = JSON.parse(a.meta) as {
+        propId?: string;
+        oldValue?: unknown;
+        newValue?: unknown;
+      };
+      const old = formatVal(m.oldValue);
+      const next = formatVal(m.newValue);
+      const label = m.propId === "p_title" ? "Title" : m.propId ?? "Property";
+      return `${label}: ${old || "(empty)"} → ${next || "(empty)"}`;
+    } catch {
+      return "Cell changed";
+    }
+  }
+  return a.action.replace(/_/g, " ");
+}
+function formatVal(v: unknown): string {
+  if (v === null || v === undefined) return "";
+  if (typeof v === "object") return JSON.stringify(v).slice(0, 60);
+  return String(v).slice(0, 60);
+}
 
 export function PeekModal({
   pageId,
@@ -111,6 +143,38 @@ export function PeekModal({
                 {new Date(data.updatedAt).toLocaleString()}
               </div>
               <StaticEditor content={data.content} />
+              {data.activities && data.activities.length > 0 && (
+                <section className="mt-6 border-t border-gray-100 pt-4">
+                  <h2 className="text-xs uppercase tracking-wide text-gray-500 mb-2">
+                    Recent changes
+                  </h2>
+                  <ul className="space-y-1.5">
+                    {data.activities.map((a) => (
+                      <li key={a.id} className="flex items-start gap-2 text-xs">
+                        {a.user ? (
+                          <span
+                            className="inline-flex items-center justify-center w-5 h-5 rounded-full text-white text-[9px] font-medium shrink-0 mt-0.5"
+                            style={{ background: a.user.color }}
+                          >
+                            {a.user.name.slice(0, 1).toUpperCase()}
+                          </span>
+                        ) : (
+                          <span className="w-5" />
+                        )}
+                        <span className="flex-1 min-w-0">
+                          <span className="text-gray-700">
+                            {a.user?.name ?? "Unknown"}
+                          </span>
+                          <span className="text-gray-500"> · {describeActivity(a)}</span>
+                          <span className="text-gray-400 ml-1">
+                            {new Date(a.createdAt).toLocaleString()}
+                          </span>
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
             </div>
           </div>
         )}

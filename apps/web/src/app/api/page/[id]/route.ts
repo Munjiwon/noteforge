@@ -21,6 +21,12 @@ export async function GET(
   if (page.workspace.members.length === 0) {
     return NextResponse.json({ error: "forbidden" }, { status: 403 });
   }
+  const activities = await prisma.pageActivity.findMany({
+    where: { pageId: page.id },
+    orderBy: { createdAt: "desc" },
+    take: 8,
+    include: { user: { select: { name: true, color: true } } },
+  });
   return NextResponse.json({
     id: page.id,
     title: page.title,
@@ -33,5 +39,12 @@ export async function GET(
     author: page.author,
     createdAt: page.createdAt.toISOString(),
     updatedAt: page.updatedAt.toISOString(),
+    activities: activities.map((a) => ({
+      id: a.id,
+      action: a.action,
+      meta: a.meta,
+      createdAt: a.createdAt.toISOString(),
+      user: a.user ? { name: a.user.name, color: a.user.color } : null,
+    })),
   });
 }
