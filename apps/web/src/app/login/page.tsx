@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { isGoogleEnabled, signIn } from "@/lib/auth";
+import { signIn } from "@/lib/auth";
 
 export default function LoginPage({
   searchParams,
@@ -19,11 +19,6 @@ export default function LoginPage({
     redirect("/");
   }
 
-  async function googleLogin() {
-    "use server";
-    await signIn("google", { redirectTo: "/" });
-  }
-
   return (
     <main className="min-h-screen grid place-items-center bg-sidebar p-4">
       <div className="w-full max-w-sm bg-white rounded-lg shadow p-8 space-y-4">
@@ -34,20 +29,6 @@ export default function LoginPage({
         </div>
         {searchParams.error && (
           <p className="text-red-600 text-sm text-center">Invalid email or password.</p>
-        )}
-        {isGoogleEnabled && (
-          <>
-            <form action={googleLogin}>
-              <button className="w-full border border-gray-200 rounded py-2 text-sm hover:bg-black/5">
-                Continue with Google
-              </button>
-            </form>
-            <div className="flex items-center gap-2 text-[10px] uppercase text-gray-400">
-              <span className="flex-1 h-px bg-gray-200" />
-              or
-              <span className="flex-1 h-px bg-gray-200" />
-            </div>
-          </>
         )}
         <form action={login} className="space-y-3">
           <label className="block">

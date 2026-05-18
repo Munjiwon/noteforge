@@ -7,7 +7,7 @@ Self-hosted, collaborative Notion-style workspace.
 - BlockNote (Notion-style block editor)
 - Yjs + y-websocket (real-time collaboration)
 - Prisma + SQLite (dev) / Postgres (prod)
-- Auth.js (NextAuth v5) — Credentials + optional Google OAuth
+- Auth.js (NextAuth v5) — email + password (credentials)
 
 ## Layout
 ```
@@ -43,7 +43,6 @@ Required (web):
 - `DATABASE_URL` — Prisma connection string
 
 Optional:
-- `AUTH_GOOGLE_ID` + `AUTH_GOOGLE_SECRET` — enables "Continue with Google" on the login page
 - `OPENAI_API_KEY` — enables real Chat Completions for the AI slash commands (otherwise placeholder output)
 - `UPLOAD_BACKEND` — `local` (default) or `s3`. `s3` is reserved for future SDK wiring; currently falls back to local disk
 - `COLLAB_PORT` (collab) — default 1234
