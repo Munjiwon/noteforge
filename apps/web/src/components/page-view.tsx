@@ -17,6 +17,7 @@ import { PageStyleMenu, fontClass, widthClass } from "./page-style-menu";
 import { EmojiPicker } from "./emoji-picker";
 import { PageOutline } from "./page-outline";
 import { PageTags, parseTags } from "./page-tags";
+import { AskAiPanel } from "./ask-ai-panel";
 import type { PermItem } from "./share-button";
 
 const Editor = dynamic(() => import("./editor").then((m) => m.Editor), {
@@ -344,6 +345,37 @@ export function PageView({
           readOnly={readOnly}
         />
       </div>
+      <AskAiPanel getPageText={() => extractText(page.content, title)} />
     </div>
   );
+}
+
+function extractText(json: string, fallbackTitle: string): string {
+  try {
+    const blocks = JSON.parse(json) as unknown;
+    if (!Array.isArray(blocks)) return fallbackTitle;
+    const parts: string[] = [fallbackTitle];
+    const walk = (b: unknown) => {
+      if (!b || typeof b !== "object") return;
+      const node = b as { content?: unknown; children?: unknown };
+      const c = node.content;
+      if (Array.isArray(c)) {
+        for (const it of c) {
+          if (
+            it &&
+            typeof it === "object" &&
+            "text" in it &&
+            typeof (it as { text: unknown }).text === "string"
+          ) {
+            parts.push((it as { text: string }).text);
+          }
+        }
+      }
+      if (Array.isArray(node.children)) for (const ch of node.children) walk(ch);
+    };
+    for (const b of blocks) walk(b);
+    return parts.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+  } catch {
+    return fallbackTitle;
+  }
 }

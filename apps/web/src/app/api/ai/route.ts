@@ -13,15 +13,33 @@ export async function POST(req: NextRequest) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "unauth" }, { status: 401 });
   const body = (await req.json().catch(() => null)) as
-    | { action?: string; text?: string }
+    | { action?: string; text?: string; question?: string }
     | null;
-  if (!body || !body.action || !body.text) {
-    return NextResponse.json({ error: "missing action or text" }, { status: 400 });
+  if (!body || !body.action) {
+    return NextResponse.json({ error: "missing action" }, { status: 400 });
   }
-  const promptFn = ACTION_PROMPT[body.action];
-  if (!promptFn) {
-    return NextResponse.json({ error: "unknown action" }, { status: 400 });
+  // "ask" mode: free-form Q&A about a page. body.text is page content, body.question is the user prompt.
+  let userMessage: string | null = null;
+  if (body.action === "ask") {
+    const question = (body.question ?? "").trim();
+    if (!question) {
+      return NextResponse.json({ error: "missing question" }, { status: 400 });
+    }
+    const context = (body.text ?? "").slice(0, 6000);
+    userMessage = context
+      ? `Page content:\n"""\n${context}\n"""\n\nQuestion: ${question}`
+      : `Question: ${question}`;
+  } else {
+    const promptFn = ACTION_PROMPT[body.action];
+    if (!promptFn) {
+      return NextResponse.json({ error: "unknown action" }, { status: 400 });
+    }
+    if (!body.text) {
+      return NextResponse.json({ error: "missing text" }, { status: 400 });
+    }
+    userMessage = promptFn(body.text);
   }
+
   const key = process.env.OPENAI_API_KEY;
   if (!key) {
     return NextResponse.json({
@@ -41,9 +59,9 @@ export async function POST(req: NextRequest) {
         model: "gpt-4o-mini",
         messages: [
           { role: "system", content: SYSTEM },
-          { role: "user", content: promptFn(body.text) },
+          { role: "user", content: userMessage },
         ],
-        max_tokens: 400,
+        max_tokens: body.action === "ask" ? 600 : 400,
       }),
     });
     if (!res.ok) {

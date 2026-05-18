@@ -10,6 +10,7 @@ import {
   createPage,
   createPageFromTemplate,
   createPageFromUserTemplate,
+  quickCapture,
   deletePage,
   duplicatePage,
   emptyTrash,
@@ -265,8 +266,8 @@ export function Sidebar({
   }, [activePageId]);
 
   // Cmd+Shift+B (or Ctrl+Shift+B): toggle favorite for the active page
+  // Cmd+Shift+I (or Ctrl+Shift+I): quick-capture a note into Inbox
   useEffect(() => {
-    if (!activePageId) return;
     const onKey = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
       const inForm =
@@ -277,9 +278,15 @@ export function Sidebar({
         );
       if (inForm) return;
       if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === "b") {
+        if (!activePageId) return;
         e.preventDefault();
         startTransition(() => {
           toggleFavorite(currentSlug, activePageId);
+        });
+      } else if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === "i") {
+        e.preventDefault();
+        startTransition(() => {
+          quickCapture(currentSlug);
         });
       }
     };
@@ -898,6 +905,18 @@ export function Sidebar({
         >
           🏷 Tags
         </Link>
+        {role !== "viewer" && (
+          <button
+            onClick={() => startTransition(() => quickCapture(currentSlug))}
+            className="w-full text-left block text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5 flex items-center justify-between"
+            title="Quick capture (Cmd+Shift+I)"
+          >
+            <span>📥 Quick capture</span>
+            <kbd className="text-[10px] text-gray-400 border border-gray-200 rounded px-1">
+              ⌘⇧I
+            </kbd>
+          </button>
+        )}
         <Link
           href={`/w/${currentSlug}/settings`}
           className="block text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"

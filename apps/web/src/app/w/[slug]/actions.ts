@@ -291,6 +291,53 @@ export async function purgePage(slug: string, pageId: string) {
   revalidatePath(`/w/${slug}`, "layout");
 }
 
+export async function quickCapture(slug: string) {
+  const ctx = await assertEditor(slug);
+  // Ensure (or create) an Inbox folder at the workspace root.
+  let inbox = await prisma.page.findFirst({
+    where: {
+      workspaceId: ctx.workspace.id,
+      parentId: null,
+      title: "📥 Inbox",
+      deletedAt: null,
+      kind: "doc",
+    },
+  });
+  if (!inbox) {
+    const max = await prisma.page.aggregate({
+      where: { workspaceId: ctx.workspace.id, parentId: null },
+      _max: { position: true },
+    });
+    inbox = await prisma.page.create({
+      data: {
+        workspaceId: ctx.workspace.id,
+        parentId: null,
+        title: "📥 Inbox",
+        icon: "📥",
+        position: (max._max.position ?? 0) + 1,
+        authorId: ctx.user.id,
+      },
+    });
+  }
+  const max = await prisma.page.aggregate({
+    where: { workspaceId: ctx.workspace.id, parentId: inbox.id },
+    _max: { position: true },
+  });
+  const stamp = new Date().toISOString().slice(0, 16).replace("T", " ");
+  const page = await prisma.page.create({
+    data: {
+      workspaceId: ctx.workspace.id,
+      parentId: inbox.id,
+      title: `Note · ${stamp}`,
+      position: (max._max.position ?? 0) + 1,
+      authorId: ctx.user.id,
+    },
+  });
+  await logActivity(page.id, ctx.user.id, "quick_capture");
+  revalidatePath(`/w/${slug}`, "layout");
+  redirect(`/w/${slug}/p/${page.id}`);
+}
+
 export async function setPageAsTemplate(
   slug: string,
   pageId: string,
