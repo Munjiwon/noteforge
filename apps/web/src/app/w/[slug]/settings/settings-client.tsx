@@ -323,6 +323,7 @@ export function SettingsClient({
             ))}
           </ul>
         )}
+        <ClipperHint slug={slug} />
       </section>
 
       {isOwner && (
@@ -361,5 +362,55 @@ export function SettingsClient({
         </section>
       )}
     </div>
+  );
+}
+
+function ClipperHint({ slug }: { slug: string }) {
+  const [copied, setCopied] = useState(false);
+  // Bookmarklet that prompts for the user's token once, stores it, and posts
+  // the current tab to /api/v1/clip. Replace the origin with the deployed
+  // server's URL when sharing externally.
+  const origin =
+    typeof window !== "undefined" ? window.location.origin : "http://localhost:3000";
+  const code =
+    "javascript:" +
+    "(function(){var o='" +
+    origin +
+    "',k=localStorage.getItem('nf_clip_token');if(!k){k=prompt('Paste your API token:');if(!k)return;localStorage.setItem('nf_clip_token',k);}var s=getSelection().toString();fetch(o+'/api/v1/clip',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+k},body:JSON.stringify({workspaceSlug:'" +
+    slug +
+    "',url:location.href,title:document.title,content:s||document.body.innerText.slice(0,4000)})}).then(r=>r.json()).then(d=>{if(d.url){location.href=o+d.url;}else{alert('Clip failed: '+(d.error||'unknown'));}}).catch(e=>alert(e));})();";
+  return (
+    <details className="mt-3 text-xs border border-gray-100 rounded p-2 bg-gray-50">
+      <summary className="cursor-pointer text-gray-600">
+        🔖 Web clipper bookmarklet
+      </summary>
+      <p className="text-gray-500 mt-2">
+        Drag this link to your bookmarks bar. Open any page and click it — the
+        current page gets clipped into this workspace.
+      </p>
+      <p className="mt-2">
+        <a
+          href={code}
+          className="text-xs px-2 py-1 rounded bg-gray-900 text-white inline-block no-underline"
+          onClick={(e) => e.preventDefault()}
+        >
+          Clip to {slug}
+        </a>
+      </p>
+      <p className="mt-2 text-gray-500">Or copy the source:</p>
+      <pre className="mt-1 bg-white border border-gray-200 rounded p-2 text-[10px] overflow-x-auto whitespace-pre-wrap break-all">
+        {code}
+      </pre>
+      <button
+        onClick={() => {
+          navigator.clipboard.writeText(code);
+          setCopied(true);
+          setTimeout(() => setCopied(false), 1500);
+        }}
+        className="mt-1 text-[11px] text-gray-500 hover:text-gray-900"
+      >
+        {copied ? "Copied!" : "Copy"}
+      </button>
+    </details>
   );
 }
