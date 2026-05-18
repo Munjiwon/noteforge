@@ -37,3 +37,33 @@ export function mimeForExt(ext: string): string {
 }
 
 export const MAX_UPLOAD_BYTES = 25 * 1024 * 1024; // 25MB
+
+// Extensions we refuse to store (server-side execution risk or bookmarklet abuse).
+const DENY_EXT = new Set([
+  ".html",
+  ".htm",
+  ".xhtml",
+  ".js",
+  ".mjs",
+  ".cjs",
+  ".jsx",
+  ".tsx",
+  ".sh",
+  ".bash",
+  ".bat",
+  ".cmd",
+  ".ps1",
+  ".exe",
+  ".com",
+  ".dll",
+  ".so",
+  ".dylib",
+  ".php",
+  ".rb",
+  ".py",
+  ".pyc",
+]);
+
+export function isAllowedExt(ext: string): boolean {
+  return !DENY_EXT.has(ext.toLowerCase());
+}

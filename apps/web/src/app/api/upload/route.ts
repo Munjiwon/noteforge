@@ -7,6 +7,7 @@ import {
   UPLOAD_DIR,
   ensureUploadDir,
   MAX_UPLOAD_BYTES,
+  isAllowedExt,
 } from "@/lib/uploads";
 
 export const runtime = "nodejs";
@@ -36,6 +37,12 @@ export async function POST(req: Request) {
 
   const origName = file.name ?? "file";
   const ext = path.extname(origName).toLowerCase().slice(0, 16);
+  if (!isAllowedExt(ext)) {
+    return NextResponse.json(
+      { error: `file type "${ext}" not allowed` },
+      { status: 415 },
+    );
+  }
   const stored = `${randomBytes(10).toString("hex")}${ext}`;
   const buf = Buffer.from(await file.arrayBuffer());
   await writeFile(path.join(UPLOAD_DIR, stored), buf);

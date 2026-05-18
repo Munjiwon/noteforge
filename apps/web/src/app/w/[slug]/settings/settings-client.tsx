@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import {
   deleteWorkspace,
+  exportWorkspaceMarkdown,
   removeMember,
   renameWorkspace,
   revokeInvite,
@@ -12,6 +13,7 @@ import {
   updateMemberRole,
 } from "./actions";
 import { EmojiPicker } from "@/components/emoji-picker";
+import { createApiToken, deleteApiToken } from "@/app/api-token-actions";
 
 type Role = "owner" | "editor" | "viewer";
 
@@ -25,6 +27,7 @@ export function SettingsClient({
   members,
   invites,
   stats,
+  tokens = [],
 }: {
   slug: string;
   workspaceName: string;
@@ -35,6 +38,7 @@ export function SettingsClient({
   members: { userId: string; name: string; email: string; color: string; role: Role }[];
   invites: { token: string; role: string; createdAt: string }[];
   stats?: { pageCount: number; commentCount: number; lastActivityAt: string | null };
+  tokens?: { id: string; name: string; lastUsedAt: string | null; createdAt: string }[];
 }) {
   const [name, setName] = useState(workspaceName);
   const [icon, setIcon] = useState(workspaceIcon);
@@ -43,6 +47,8 @@ export function SettingsClient({
   const [, start] = useTransition();
   const router = useRouter();
   const [deleteConfirm, setDeleteConfirm] = useState("");
+  const [tokenName, setTokenName] = useState("");
+  const [newToken, setNewToken] = useState<string | null>(null);
   const isOwner = role === "owner";
   const PRESET_COLORS = ["#111111", "#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899", "#0ea5e9"];
 
@@ -119,6 +125,29 @@ export function SettingsClient({
             )}
           </div>
         </div>
+      </section>
+
+      <section>
+        <h2 className="text-sm font-medium text-gray-700 mb-2">Export</h2>
+        <button
+          onClick={() =>
+            start(async () => {
+              const md = await exportWorkspaceMarkdown(slug);
+              const blob = new Blob([md], { type: "text/markdown" });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = workspaceName.replace(/[^\w\d-]+/g, "_") + ".md";
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+              URL.revokeObjectURL(url);
+            })
+          }
+          className="text-xs px-3 py-1 rounded border border-gray-200 hover:bg-black/5"
+        >
+          ⬇ Download all pages as Markdown
+        </button>
       </section>
 
       {stats && (
@@ -223,6 +252,67 @@ export function SettingsClient({
           )}
         </section>
       )}
+
+      <section>
+        <h2 className="text-sm font-medium text-gray-700 mb-2">API tokens ({tokens.length})</h2>
+        <p className="text-xs text-gray-500 mb-2">
+          Personal access tokens for the public REST API (<code>/api/v1/pages</code>).
+          Send as <code>Authorization: Bearer &lt;token&gt;</code>.
+        </p>
+        <div className="flex gap-1 mb-2">
+          <input
+            value={tokenName}
+            onChange={(e) => setTokenName(e.target.value)}
+            placeholder="Token name (e.g. CLI)"
+            className="flex-1 border border-gray-200 rounded px-2 py-1 text-sm outline-none"
+          />
+          <button
+            onClick={() =>
+              start(async () => {
+                const t = await createApiToken(tokenName || "Untitled");
+                setNewToken(t);
+                setTokenName("");
+              })
+            }
+            className="text-xs px-3 py-1 rounded bg-gray-900 text-white"
+          >
+            Create
+          </button>
+        </div>
+        {newToken && (
+          <div className="mb-2 text-xs bg-yellow-50 border border-yellow-200 rounded px-2 py-1">
+            <strong>Copy now — it won't be shown again:</strong>
+            <code className="block break-all mt-1 select-all">{newToken}</code>
+            <button
+              onClick={() => setNewToken(null)}
+              className="mt-1 text-gray-500 hover:text-gray-900"
+            >
+              Dismiss
+            </button>
+          </div>
+        )}
+        {tokens.length > 0 && (
+          <ul className="border border-gray-200 rounded divide-y divide-gray-100">
+            {tokens.map((t) => (
+              <li key={t.id} className="flex items-center gap-2 px-3 py-2 text-sm">
+                <span className="flex-1 truncate">{t.name}</span>
+                <span className="text-xs text-gray-400">
+                  {t.lastUsedAt ? "used " + new Date(t.lastUsedAt).toLocaleDateString() : "never used"}
+                </span>
+                <button
+                  onClick={() => {
+                    if (!confirm("Revoke this token?")) return;
+                    start(() => deleteApiToken(t.id));
+                  }}
+                  className="text-xs text-gray-400 hover:text-red-600"
+                >
+                  Revoke
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
 
       {isOwner && (
         <section className="border border-red-200 bg-red-50/30 rounded p-3">

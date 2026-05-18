@@ -22,6 +22,20 @@ model User {
   notifications Notification[]   @relation("NotifRecipient")
   notifsSent   Notification[]    @relation("NotifActor")
   pagePermissions PagePermission[]
+  apiTokens    ApiToken[]
+}
+
+model ApiToken {
+  id         String   @id @default(cuid())
+  userId     String
+  name       String
+  token      String   @unique
+  lastUsedAt DateTime?
+  createdAt  DateTime @default(now())
+
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model Workspace {

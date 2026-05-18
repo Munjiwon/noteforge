@@ -73,6 +73,43 @@ export async function removeMember(slug: string, userId: string) {
   revalidatePath(`/w/${slug}/settings`);
 }
 
+export async function exportWorkspaceMarkdown(slug: string): Promise<string> {
+  const ctx = await requireWorkspaceMember(slug);
+  const pages = await prisma.page.findMany({
+    where: { workspaceId: ctx.workspace.id, deletedAt: null },
+    orderBy: [{ parentId: "asc" }, { position: "asc" }, { createdAt: "asc" }],
+    select: { id: true, title: true, icon: true, kind: true, parentId: true, content: true },
+  });
+  const byParent = new Map<string | null, typeof pages>();
+  for (const p of pages) {
+    const k = p.parentId;
+    if (!byParent.has(k)) byParent.set(k, []);
+    byParent.get(k)!.push(p);
+  }
+  const { blocksToMarkdown } = await import("@/lib/markdown");
+  const out: string[] = [`# ${ctx.workspace.icon ?? "📒"} ${ctx.workspace.name}`, ""];
+  const walk = (parentId: string | null, depth: number) => {
+    const list = byParent.get(parentId) ?? [];
+    for (const p of list) {
+      const head = "#".repeat(Math.min(6, depth + 2));
+      const icon = p.icon ?? (p.kind === "database" ? "📊" : "📄");
+      out.push(`${head} ${icon} ${p.title || "Untitled"}`);
+      try {
+        const blocks = JSON.parse(p.content || "[]");
+        if (Array.isArray(blocks) && blocks.length > 0) {
+          out.push(blocksToMarkdown(blocks));
+        }
+      } catch {
+        // ignore
+      }
+      out.push("");
+      walk(p.id, depth + 1);
+    }
+  };
+  walk(null, 0);
+  return out.join("\n");
+}
+
 export async function deleteWorkspace(slug: string, confirmName: string) {
   const ctx = await assertOwner(slug);
   if (confirmName !== ctx.workspace.name) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import clsx from "clsx";
 import {
   createComment,
@@ -139,7 +139,8 @@ export function CommentsPanel({
             placeholder="Add a comment… (@ to mention, ⌘+Enter to send)"
             minHeight={60}
           />
-          <div className="flex justify-end mt-1">
+          <div className="flex justify-end items-center gap-1 mt-1">
+            <AttachButton onAppend={(md) => setDraft((d) => (d ? d + "\n" : "") + md)} />
             <button
               onClick={submit}
               disabled={!draft.trim()}
@@ -499,6 +500,39 @@ function Reactions({
         )}
       </div>
     </div>
+  );
+}
+
+function AttachButton({ onAppend }: { onAppend: (md: string) => void }) {
+  const fileRef = useRef<HTMLInputElement>(null);
+  return (
+    <>
+      <button
+        onClick={() => fileRef.current?.click()}
+        className="text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
+        title="Attach a file"
+      >
+        📎
+      </button>
+      <input
+        ref={fileRef}
+        type="file"
+        className="hidden"
+        onChange={async (e) => {
+          const f = e.target.files?.[0];
+          e.target.value = "";
+          if (!f) return;
+          const form = new FormData();
+          form.append("file", f);
+          const res = await fetch("/api/upload", { method: "POST", body: form });
+          if (!res.ok) return;
+          const data = (await res.json()) as { url: string; name?: string; type?: string };
+          const isImage = data.type?.startsWith("image/");
+          const md = isImage ? `![${data.name ?? "image"}](${data.url})` : `[${data.name ?? "file"}](${data.url})`;
+          onAppend(md);
+        }}
+      />
+    </>
   );
 }
 

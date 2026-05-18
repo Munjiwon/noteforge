@@ -8,11 +8,14 @@ export default auth((req) => {
     nextUrl.pathname.startsWith("/login") || nextUrl.pathname.startsWith("/signup");
 
   const isPublicShare = nextUrl.pathname.startsWith("/share/");
+  const isPublicApi =
+    nextUrl.pathname.startsWith("/api/auth") ||
+    nextUrl.pathname.startsWith("/api/v1");
   if (
     !isAuthed &&
     !isAuthPage &&
     !isPublicShare &&
-    !nextUrl.pathname.startsWith("/api/auth")
+    !isPublicApi
   ) {
     const url = new URL("/login", nextUrl);
     return NextResponse.redirect(url);

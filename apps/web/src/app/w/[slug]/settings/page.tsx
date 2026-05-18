@@ -10,6 +10,11 @@ export default async function SettingsPage({
   params: { slug: string };
 }) {
   const ctx = await requireWorkspaceMember(params.slug);
+  const tokens = await prisma.apiToken.findMany({
+    where: { userId: ctx.user.id },
+    orderBy: { createdAt: "desc" },
+    select: { id: true, name: true, lastUsedAt: true, createdAt: true },
+  });
   const [members, invites, pageCount, commentCount, lastActivity] = await Promise.all([
     prisma.workspaceMember.findMany({
       where: { workspaceId: ctx.workspace.id },
@@ -57,6 +62,12 @@ export default async function SettingsPage({
         commentCount,
         lastActivityAt: lastActivity?.createdAt.toISOString() ?? null,
       }}
+      tokens={tokens.map((t) => ({
+        id: t.id,
+        name: t.name,
+        lastUsedAt: t.lastUsedAt?.toISOString() ?? null,
+        createdAt: t.createdAt.toISOString(),
+      }))}
     />
   );
 }
