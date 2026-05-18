@@ -604,8 +604,16 @@ export async function toggleFavorite(slug: string, pageId: string) {
 
 const SNAPSHOT_INTERVAL_MS = 60 * 60 * 1000; // 1 hour
 
+const SUBSCRIPTION_NOTIFY_QUIET_MS = 30 * 60 * 1000; // 30 minutes
+
 export async function saveContent(slug: string, pageId: string, content: string) {
   const ctx = await assertEditor(slug);
+  // Capture previous updatedAt + title so we know whether this is a new "edit
+  // session" (used to debounce subscription notifications).
+  const before = await prisma.page.findFirst({
+    where: { id: pageId, workspaceId: ctx.workspace.id },
+    select: { updatedAt: true, title: true },
+  });
   await prisma.page.updateMany({
     where: { id: pageId, workspaceId: ctx.workspace.id },
     data: { content },
@@ -622,6 +630,49 @@ export async function saveContent(slug: string, pageId: string, content: string)
       data: { pageId, content, authorId: ctx.user.id },
     });
   }
+  // Notify subscribers on the first edit after a quiet period — batches a
+  // continuous editing session into one notification per author.
+  if (
+    before &&
+    Date.now() - before.updatedAt.getTime() > SUBSCRIPTION_NOTIFY_QUIET_MS
+  ) {
+    const subs = await prisma.pageSubscription.findMany({
+      where: { pageId, userId: { not: ctx.user.id } },
+      select: { userId: true },
+    });
+    if (subs.length > 0) {
+      await prisma.notification.createMany({
+        data: subs.map((s) => ({
+          recipientId: s.userId,
+          actorId: ctx.user.id,
+          workspaceId: ctx.workspace.id,
+          pageId,
+          kind: "page_updated",
+          preview: `${ctx.user.name} edited "${before.title || "Untitled"}"`,
+        })),
+      });
+    }
+  }
+}
+
+export async function togglePageSubscription(slug: string, pageId: string) {
+  const ctx = await requireWorkspaceMember(slug);
+  const page = await prisma.page.findFirst({
+    where: { id: pageId, workspaceId: ctx.workspace.id },
+    select: { id: true },
+  });
+  if (!page) throw new Error("not found");
+  const existing = await prisma.pageSubscription.findUnique({
+    where: { pageId_userId: { pageId, userId: ctx.user.id } },
+  });
+  if (existing) {
+    await prisma.pageSubscription.delete({ where: { id: existing.id } });
+  } else {
+    await prisma.pageSubscription.create({
+      data: { pageId, userId: ctx.user.id },
+    });
+  }
+  revalidatePath(`/w/${slug}/p/${pageId}`);
 }
 
 export async function takeSnapshot(slug: string, pageId: string) {

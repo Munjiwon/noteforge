@@ -105,6 +105,8 @@ export function NotificationsButton({
                   ? "mentioned you"
                   : toast.kind === "comment_reply"
                   ? "replied"
+                  : toast.kind === "page_updated"
+                  ? "edited a page you follow"
                   : "commented"
               }
             </div>
@@ -214,6 +216,8 @@ function NotifRow({
       ? "mentioned you"
       : n.kind === "comment_reply"
       ? "replied to your thread"
+      : n.kind === "page_updated"
+      ? "edited a page you follow"
       : "commented";
   const href =
     n.workspaceSlug && n.pageId

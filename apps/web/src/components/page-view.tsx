@@ -18,6 +18,7 @@ import { EmojiPicker } from "./emoji-picker";
 import { PageOutline } from "./page-outline";
 import { PageTags, parseTags } from "./page-tags";
 import { PageReactions, type PageReactionGroup } from "./page-reactions";
+import { SubscribeButton } from "./subscribe-button";
 import { AskAiPanel } from "./ask-ai-panel";
 import type { PermItem } from "./share-button";
 
@@ -40,6 +41,7 @@ export function PageView({
   ancestors,
   rowContext,
   reactions = [],
+  subscribed = false,
   canChangeSettings = false,
 }: {
   slug: string;
@@ -84,6 +86,7 @@ export function PageView({
     dataValues?: Record<string, unknown>;
   } | null;
   reactions?: PageReactionGroup[];
+  subscribed?: boolean;
 }) {
   const [title, setTitle] = useState(page.title);
   const [icon, setIcon] = useState(page.icon);
@@ -250,6 +253,7 @@ export function PageView({
             🖨 Print
           </button>
           <PageInfo info={info} />
+          <SubscribeButton slug={slug} pageId={page.id} subscribed={subscribed} />
           <ExportButton slug={slug} pageId={page.id} title={page.title} />
           <PageStyleMenu
             slug={slug}

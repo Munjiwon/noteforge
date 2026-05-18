@@ -252,6 +252,9 @@ export default async function PageRoute({
       include: { user: { select: { id: true, name: true } } },
     }),
   ]);
+  const subscribed = !!(await prisma.pageSubscription.findUnique({
+    where: { pageId_userId: { pageId: page.id, userId: ctx.user.id } },
+  }));
   const reactionGroupsMap = new Map<
     string,
     { emoji: string; users: { id: string; name: string }[]; reactedByMe: boolean }
@@ -335,6 +338,7 @@ export default async function PageRoute({
         ancestors={ancestors}
         rowContext={rowContext}
         reactions={reactionGroups}
+        subscribed={subscribed}
       />
     </>
   );

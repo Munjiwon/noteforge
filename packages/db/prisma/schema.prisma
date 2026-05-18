@@ -24,6 +24,7 @@ model User {
   pagePermissions PagePermission[]
   apiTokens    ApiToken[]
   pageReactions PageReaction[]
+  pageSubscriptions PageSubscription[]
 }
 
 model ApiToken {
@@ -109,6 +110,7 @@ model Page {
   permissions PagePermission[]
   activities  PageActivity[]
   reactions   PageReaction[]
+  subscriptions PageSubscription[]
 
   @@index([workspaceId, parentId])
 }
@@ -196,6 +198,19 @@ model PageReaction {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([pageId, userId, emoji])
+  @@index([pageId])
+}
+
+model PageSubscription {
+  id        String   @id @default(cuid())
+  pageId    String
+  userId    String
+  createdAt DateTime @default(now())
+
+  page      Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([pageId, userId])
   @@index([pageId])
 }
 
