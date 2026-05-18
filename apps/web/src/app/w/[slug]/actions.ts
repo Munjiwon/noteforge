@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "db";
 import { requireWorkspaceMember } from "@/lib/workspace";
 import { randomBytes } from "node:crypto";
-import { blocksToMarkdown, markdownToBlocks } from "@/lib/markdown";
+import { blocksToHtml, blocksToMarkdown, markdownToBlocks } from "@/lib/markdown";
 import { PAGE_TEMPLATES } from "@/lib/page-templates";
 
 async function assertEditor(slug: string) {
@@ -361,16 +361,27 @@ export async function incrementPageView(slug: string, pageId: string) {
   });
 }
 
-export async function togglePageLock(slug: string, pageId: string) {
+export async function togglePageLock(
+  slug: string,
+  pageId: string,
+  durationHours?: number,
+) {
   const ctx = await assertEditor(slug);
   const row = await prisma.page.findFirst({
     where: { id: pageId, workspaceId: ctx.workspace.id },
     select: { locked: true },
   });
   if (!row) throw new Error("not found");
+  const newLocked = !row.locked;
   await prisma.page.update({
     where: { id: pageId },
-    data: { locked: !row.locked },
+    data: {
+      locked: newLocked,
+      lockedUntil:
+        newLocked && durationHours && durationHours > 0
+          ? new Date(Date.now() + durationHours * 3600 * 1000)
+          : null,
+    },
   });
   revalidatePath(`/w/${slug}/p/${pageId}`);
 }
@@ -570,6 +581,39 @@ export async function exportPageMarkdown(slug: string, pageId: string) {
   const body = blocksToMarkdown(Array.isArray(blocks) ? (blocks as never[]) : []);
   const head = (page.icon ? `${page.icon} ` : "") + (page.title || "Untitled");
   return `# ${head}\n\n${body}\n`;
+}
+
+export async function exportPageHtml(slug: string, pageId: string) {
+  const ctx = await requireWorkspaceMember(slug);
+  const page = await prisma.page.findFirst({
+    where: { id: pageId, workspaceId: ctx.workspace.id },
+    select: { title: true, content: true, icon: true },
+  });
+  if (!page) throw new Error("not found");
+  let blocks: unknown = [];
+  try {
+    blocks = JSON.parse(page.content || "[]");
+  } catch {}
+  const body = blocksToHtml(Array.isArray(blocks) ? (blocks as never[]) : []);
+  const titleText = (page.icon ? `${page.icon} ` : "") + (page.title || "Untitled");
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>${titleText.replace(/[<>]/g, "")}</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; color: #1f2937; }
+  pre { background: #f6f7f9; padding: 0.75rem 1rem; border-radius: 6px; overflow-x: auto; }
+  blockquote { border-left: 3px solid #e5e7eb; padding-left: 1rem; color: #4b5563; }
+  .callout { background: #fef9c3; border: 1px solid #fde68a; border-radius: 6px; padding: 0.75rem 1rem; }
+  img { max-width: 100%; }
+</style>
+</head>
+<body>
+<h1>${titleText.replace(/[<>]/g, "")}</h1>
+${body}
+</body>
+</html>`;
 }
 
 export async function importPageMarkdown(

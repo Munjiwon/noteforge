@@ -1,10 +1,34 @@
 import path from "node:path";
-import { mkdir } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 
 export const UPLOAD_DIR = path.join(process.cwd(), ".uploads");
+export const UPLOAD_BACKEND = (process.env.UPLOAD_BACKEND ?? "local") as
+  | "local"
+  | "s3";
 
 export async function ensureUploadDir() {
   await mkdir(UPLOAD_DIR, { recursive: true });
+}
+
+/**
+ * Store an uploaded buffer and return a URL the client can use to fetch it.
+ * Defaults to the local-disk backend. When UPLOAD_BACKEND=s3 is configured
+ * the s3 branch should upload to the configured bucket; until that's wired,
+ * we fall back to local storage so dev environments keep working.
+ */
+export async function storeUpload(
+  storedName: string,
+  buffer: Buffer,
+): Promise<string> {
+  if (UPLOAD_BACKEND === "s3") {
+    // TODO: AWS SDK integration. Falling back to local-disk for now.
+    console.warn(
+      "[uploads] UPLOAD_BACKEND=s3 is set but no S3 client is wired; storing locally.",
+    );
+  }
+  await ensureUploadDir();
+  await writeFile(path.join(UPLOAD_DIR, storedName), buffer);
+  return `/api/files/${storedName}`;
 }
 
 const SAFE_NAME = /^[a-zA-Z0-9._-]+$/;

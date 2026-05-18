@@ -55,6 +55,7 @@ export default async function PageRoute({
       publicSlug: true,
       publicViewCount: true,
       locked: true,
+      lockedUntil: true,
       width: true,
       font: true,
       tags: true,
@@ -66,22 +67,34 @@ export default async function PageRoute({
   if (!page) notFound();
 
   const trashed = page.deletedAt !== null;
-  const effectiveRole = (trashed || page.locked)
+  // honor lockedUntil: if expiry passed, treat as unlocked at read time
+  const lockExpired =
+    page.locked && page.lockedUntil && page.lockedUntil.getTime() < Date.now();
+  const effectivelyLocked = page.locked && !lockExpired;
+  const effectiveRole = (trashed || effectivelyLocked)
     ? "viewer"
     : (ctx.role as "owner" | "editor" | "viewer");
   const canChangePageSettings = !trashed && ctx.role !== "viewer";
 
   // Detect "this page is a database row" — parent is a database
-  const parentDb = page.kind === "doc" && (await prisma.page.findUnique({
-    where: { id: (await prisma.page.findUnique({ where: { id: page.id }, select: { parentId: true } }))?.parentId ?? "__none__" },
-    select: { id: true, title: true, icon: true, kind: true, dbSchema: true },
+  const parentIdRow = (await prisma.page.findUnique({
+    where: { id: page.id },
+    select: { parentId: true, dataValues: true },
   }));
+  const parentDb = page.kind === "doc" && parentIdRow?.parentId
+    ? await prisma.page.findUnique({
+        where: { id: parentIdRow.parentId },
+        select: { id: true, title: true, icon: true, kind: true, dbSchema: true },
+      })
+    : null;
   const rowContext =
     parentDb && parentDb.kind === "database"
       ? {
           dbId: parentDb.id,
           dbTitle: parentDb.title,
           dbIcon: parentDb.icon,
+          schema: parseSchema(parentDb.dbSchema),
+          dataValues: parseValues(parentIdRow?.dataValues ?? null),
         }
       : null;
 

@@ -85,6 +85,7 @@ model Page {
   tags        String    @default("[]") // JSON array of strings
   favorite    Boolean   @default(false)
   locked      Boolean   @default(false)
+  lockedUntil DateTime?
   width       String    @default("normal") // "normal" | "wide" | "full"
   font        String    @default("default") // "default" | "serif" | "mono"
   viewCount   Int       @default(0)

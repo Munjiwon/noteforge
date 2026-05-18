@@ -21,7 +21,7 @@ export type NotifItem = {
 };
 
 export function NotificationsButton({
-  notifications,
+  notifications: initialNotifications,
   workspaceSlug,
 }: {
   notifications: NotifItem[];
@@ -31,6 +31,45 @@ export function NotificationsButton({
   const [unreadOnly, setUnreadOnly] = useState(false);
   const [, start] = useTransition();
   const ref = useRef<HTMLDivElement>(null);
+  // Polling state — keep an up-to-date view of notifications so a toast
+  // can appear when something new arrives without a full refresh.
+  const [notifications, setNotifications] = useState<NotifItem[]>(initialNotifications);
+  const [toast, setToast] = useState<NotifItem | null>(null);
+  const knownIds = useRef<Set<string>>(new Set(initialNotifications.map((n) => n.id)));
+  useEffect(() => {
+    let cancelled = false;
+    const tick = async () => {
+      try {
+        const res = await fetch(
+          `/api/notifications/recent?workspace=${encodeURIComponent(workspaceSlug)}`,
+        );
+        if (!res.ok) return;
+        const data = (await res.json()) as {
+          unread: number;
+          notifications: Array<Omit<NotifItem, "workspaceSlug">>;
+        };
+        if (cancelled) return;
+        const fresh = data.notifications.map((n) => ({ ...n, workspaceSlug }));
+        // detect new
+        const newOnes = fresh.filter((n) => !knownIds.current.has(n.id));
+        for (const n of newOnes) knownIds.current.add(n.id);
+        if (newOnes.length > 0) setToast(newOnes[0]);
+        setNotifications(fresh);
+      } catch {
+        /* ignore */
+      }
+    };
+    const t = setInterval(tick, 60_000);
+    return () => {
+      cancelled = true;
+      clearInterval(t);
+    };
+  }, [workspaceSlug]);
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(null), 5000);
+    return () => clearTimeout(t);
+  }, [toast]);
 
   useEffect(() => {
     if (!open) return;
@@ -47,6 +86,35 @@ export function NotificationsButton({
 
   return (
     <div className="relative" ref={ref}>
+      {toast && (
+        <div className="fixed bottom-4 right-4 z-50 bg-white border border-gray-200 shadow-lg rounded-md px-3 py-2 text-xs max-w-[280px] flex items-start gap-2">
+          {toast.actor ? (
+            <span
+              className="inline-flex items-center justify-center w-5 h-5 rounded-full text-white text-[10px] font-medium shrink-0"
+              style={{ background: toast.actor.color }}
+            >
+              {toast.actor.name.slice(0, 1).toUpperCase()}
+            </span>
+          ) : (
+            <span className="w-5" />
+          )}
+          <div className="flex-1 min-w-0">
+            <div className="font-medium truncate">
+              {toast.actor?.name ?? "Someone"} {
+                toast.kind === "mention"
+                  ? "mentioned you"
+                  : toast.kind === "comment_reply"
+                  ? "replied"
+                  : "commented"
+              }
+            </div>
+            <div className="text-gray-500 truncate">{toast.preview}</div>
+          </div>
+          <button onClick={() => setToast(null)} className="text-gray-400 hover:text-gray-900">
+            ✕
+          </button>
+        </div>
+      )}
       <button
         onClick={() => setOpen((v) => !v)}
         className="relative px-2 py-1 rounded hover:bg-black/5"

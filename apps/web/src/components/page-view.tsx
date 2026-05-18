@@ -72,7 +72,13 @@ export function PageView({
   };
   permissions: PermItem[];
   ancestors?: { id: string; title: string; icon: string | null }[];
-  rowContext?: { dbId: string; dbTitle: string; dbIcon: string | null } | null;
+  rowContext?: {
+    dbId: string;
+    dbTitle: string;
+    dbIcon: string | null;
+    schema?: { props: { id: string; name: string; type: string; options?: { id: string; name: string; color: string }[] }[] };
+    dataValues?: Record<string, unknown>;
+  } | null;
 }) {
   const [title, setTitle] = useState(page.title);
   const [icon, setIcon] = useState(page.icon);
@@ -143,14 +149,66 @@ export function PageView({
       />
       <div className={`${widthClass(width)} mx-auto px-12 md:px-24 py-10`}>
         {rowContext && (
-          <div className="mb-2 text-xs text-gray-500 inline-flex items-center gap-1 no-print">
+          <div className="mb-2 no-print">
             <a
               href={`/w/${slug}/p/${rowContext.dbId}`}
-              className="inline-flex items-center gap-1 hover:text-gray-900"
+              className="text-xs text-gray-500 inline-flex items-center gap-1 hover:text-gray-900"
             >
               <span>{rowContext.dbIcon ?? "📊"}</span>
               <span>Row in {rowContext.dbTitle || "Untitled database"}</span>
             </a>
+            {rowContext.schema && rowContext.dataValues && (
+              <div className="mt-1 flex flex-wrap gap-1">
+                {rowContext.schema.props
+                  .filter((p) => p.id !== "p_title")
+                  .slice(0, 6)
+                  .map((p) => {
+                    const v = rowContext.dataValues![p.id];
+                    if (v === null || v === undefined || v === "") return null;
+                    let display: React.ReactNode = String(v);
+                    if (p.type === "select" || p.type === "status") {
+                      const opt = p.options?.find((o) => o.id === v);
+                      if (!opt) return null;
+                      display = (
+                        <span
+                          className="inline-block px-1.5 py-0.5 rounded text-[10px]"
+                          style={{ background: opt.color }}
+                        >
+                          {opt.name}
+                        </span>
+                      );
+                    } else if (p.type === "checkbox") {
+                      display = v ? "☑" : "☐";
+                    } else if (p.type === "multi_select" && Array.isArray(v)) {
+                      display = (
+                        <span className="flex flex-wrap gap-0.5">
+                          {(v as string[]).map((id) => {
+                            const opt = p.options?.find((o) => o.id === id);
+                            return opt ? (
+                              <span
+                                key={id}
+                                className="inline-block px-1.5 py-0.5 rounded text-[10px]"
+                                style={{ background: opt.color }}
+                              >
+                                {opt.name}
+                              </span>
+                            ) : null;
+                          })}
+                        </span>
+                      );
+                    }
+                    return (
+                      <span
+                        key={p.id}
+                        className="inline-flex items-center gap-1 text-[11px] text-gray-600"
+                      >
+                        <span className="text-gray-400">{p.name}:</span>
+                        {display}
+                      </span>
+                    );
+                  })}
+              </div>
+            )}
           </div>
         )}
         {ancestors && ancestors.length > 0 && (

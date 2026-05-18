@@ -40,6 +40,7 @@ export function CalendarView({
   });
   const [dragRow, setDragRow] = useState<string | null>(null);
   const [expandedDay, setExpandedDay] = useState<string | null>(null);
+  const [mode, setMode] = useState<"month" | "week">("month");
 
   const dateProp = useMemo(() => {
     if (!schema.calendarDateBy) return null;
@@ -56,16 +57,26 @@ export function CalendarView({
     );
   }
 
-  // Build a 6-row grid starting from the Sunday of the first week.
+  // Build the visible grid. Month: 6-row grid from the Sunday of the
+  // first week. Week: 7 days starting at the Sunday of the cursor.
   const monthStart = cursor;
-  const monthEnd = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0);
-  const gridStart = new Date(monthStart);
-  gridStart.setDate(monthStart.getDate() - monthStart.getDay());
   const days: Date[] = [];
-  for (let i = 0; i < 42; i++) {
-    const d = new Date(gridStart);
-    d.setDate(gridStart.getDate() + i);
-    days.push(d);
+  if (mode === "month") {
+    const gridStart = new Date(monthStart);
+    gridStart.setDate(monthStart.getDate() - monthStart.getDay());
+    for (let i = 0; i < 42; i++) {
+      const d = new Date(gridStart);
+      d.setDate(gridStart.getDate() + i);
+      days.push(d);
+    }
+  } else {
+    const weekStart = new Date(cursor);
+    weekStart.setDate(cursor.getDate() - cursor.getDay());
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(weekStart);
+      d.setDate(weekStart.getDate() + i);
+      days.push(d);
+    }
   }
 
   // Bucket rows by their date string.
@@ -90,7 +101,15 @@ export function CalendarView({
     <div>
       <div className="flex items-center gap-2 mb-3">
         <button
-          onClick={() => setCursor(new Date(cursor.getFullYear(), cursor.getMonth() - 1, 1))}
+          onClick={() => {
+            if (mode === "month") {
+              setCursor(new Date(cursor.getFullYear(), cursor.getMonth() - 1, 1));
+            } else {
+              const d = new Date(cursor);
+              d.setDate(cursor.getDate() - 7);
+              setCursor(d);
+            }
+          }}
           className="px-2 py-0.5 text-sm rounded hover:bg-black/5"
         >
           ‹
@@ -98,19 +117,45 @@ export function CalendarView({
         <button
           onClick={() => {
             const d = new Date();
-            setCursor(new Date(d.getFullYear(), d.getMonth(), 1));
+            setCursor(
+              mode === "month"
+                ? new Date(d.getFullYear(), d.getMonth(), 1)
+                : d,
+            );
           }}
           className="px-2 py-0.5 text-xs rounded border border-gray-200 hover:bg-black/5"
         >
           Today
         </button>
         <button
-          onClick={() => setCursor(new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1))}
+          onClick={() => {
+            if (mode === "month") {
+              setCursor(new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1));
+            } else {
+              const d = new Date(cursor);
+              d.setDate(cursor.getDate() + 7);
+              setCursor(d);
+            }
+          }}
           className="px-2 py-0.5 text-sm rounded hover:bg-black/5"
         >
           ›
         </button>
         <span className="font-medium text-sm">{monthLabel}</span>
+        <div className="ml-auto inline-flex border border-gray-200 rounded overflow-hidden text-xs">
+          <button
+            onClick={() => setMode("month")}
+            className={"px-2 py-0.5 " + (mode === "month" ? "bg-gray-900 text-white" : "hover:bg-black/5")}
+          >
+            Month
+          </button>
+          <button
+            onClick={() => setMode("week")}
+            className={"px-2 py-0.5 " + (mode === "week" ? "bg-gray-900 text-white" : "hover:bg-black/5")}
+          >
+            Week
+          </button>
+        </div>
       </div>
       <div className="grid grid-cols-7 border border-gray-200 rounded overflow-hidden">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((w) => (
@@ -123,7 +168,7 @@ export function CalendarView({
         ))}
         {days.map((d) => {
           const key = ymd(d);
-          const inMonth = d.getMonth() === monthStart.getMonth();
+          const inMonth = mode === "week" ? true : d.getMonth() === monthStart.getMonth();
           const isToday = key === ymd(new Date());
           const items = byDate.get(key) ?? [];
           return (

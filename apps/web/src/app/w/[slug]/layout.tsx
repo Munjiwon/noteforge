@@ -39,6 +39,17 @@ export default async function WorkspaceLayout({
   children: React.ReactNode;
 }) {
   const ctx = await requireWorkspaceMember(params.slug);
+  // Best-effort auto-expire: delete read notifications older than 30 days
+  // (cheap to run as part of the normal layout fetch; runs in background).
+  prisma.notification
+    .deleteMany({
+      where: {
+        recipientId: ctx.user.id,
+        read: true,
+        createdAt: { lt: new Date(Date.now() - 30 * 24 * 3600 * 1000) },
+      },
+    })
+    .catch(() => {});
   const [allPages, trashedPages, workspaces, memberCount, notifRows, recentRows] = await Promise.all([
     prisma.page.findMany({
       where: { workspaceId: ctx.workspace.id, deletedAt: null },

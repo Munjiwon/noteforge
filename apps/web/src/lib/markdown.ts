@@ -246,6 +246,78 @@ export function markdownToBlocks(md: string): AnyBlock[] {
   return out;
 }
 
+function escHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function inlineMdToHtml(s: string): string {
+  return escHtml(s)
+    .replace(/`([^`]+)`/g, "<code>$1</code>")
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*([^*]+)\*/g, "<em>$1</em>")
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+}
+
+export function blocksToHtml(blocks: AnyBlock[]): string {
+  const out: string[] = [];
+  for (const b of blocks) {
+    const text = inlineToText(b.content);
+    switch (b.type) {
+      case "heading": {
+        const lvl = Math.min(3, Math.max(1, Number((b.props as { level?: number } | undefined)?.level ?? 1)));
+        out.push(`<h${lvl}>${inlineMdToHtml(text)}</h${lvl}>`);
+        break;
+      }
+      case "paragraph":
+        out.push(`<p>${inlineMdToHtml(text)}</p>`);
+        break;
+      case "bulletListItem":
+        out.push(`<ul><li>${inlineMdToHtml(text)}</li></ul>`);
+        break;
+      case "numberedListItem":
+        out.push(`<ol><li>${inlineMdToHtml(text)}</li></ol>`);
+        break;
+      case "checkListItem": {
+        const checked = (b.props as { checked?: boolean } | undefined)?.checked;
+        out.push(`<p><label><input type="checkbox" ${checked ? "checked" : ""} disabled /> ${inlineMdToHtml(text)}</label></p>`);
+        break;
+      }
+      case "codeBlock":
+      case "code": {
+        const lang = (b.props as { language?: string } | undefined)?.language ?? "";
+        out.push(`<pre><code class="language-${escHtml(lang)}">${escHtml(text)}</code></pre>`);
+        break;
+      }
+      case "quote":
+        out.push(`<blockquote>${inlineMdToHtml(text)}</blockquote>`);
+        break;
+      case "callout": {
+        const emoji = (b.props as { emoji?: string } | undefined)?.emoji ?? "💡";
+        out.push(`<aside class="callout">${escHtml(emoji)} ${inlineMdToHtml(text)}</aside>`);
+        break;
+      }
+      case "image":
+      case "file": {
+        const url = (b.props as { url?: string } | undefined)?.url ?? "";
+        const caption = (b.props as { caption?: string } | undefined)?.caption ?? "";
+        out.push(`<figure><img src="${escHtml(url)}" alt="${escHtml(caption)}" /><figcaption>${escHtml(caption)}</figcaption></figure>`);
+        break;
+      }
+      case "divider":
+        out.push("<hr />");
+        break;
+      default:
+        if (text) out.push(`<p>${inlineMdToHtml(text)}</p>`);
+    }
+    if (b.children?.length) out.push(blocksToHtml(b.children));
+  }
+  return out.join("\n");
+}
+
 function isBlockStart(line: string): boolean {
   const t = line.trimStart();
   return (

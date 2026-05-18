@@ -1,13 +1,11 @@
 import { NextResponse } from "next/server";
 import path from "node:path";
-import { writeFile } from "node:fs/promises";
 import { randomBytes } from "node:crypto";
 import { auth } from "@/lib/auth";
 import {
-  UPLOAD_DIR,
-  ensureUploadDir,
   MAX_UPLOAD_BYTES,
   isAllowedExt,
+  storeUpload,
 } from "@/lib/uploads";
 
 export const runtime = "nodejs";
@@ -33,8 +31,6 @@ export async function POST(req: Request) {
     );
   }
 
-  await ensureUploadDir();
-
   const origName = file.name ?? "file";
   const ext = path.extname(origName).toLowerCase().slice(0, 16);
   if (!isAllowedExt(ext)) {
@@ -45,10 +41,10 @@ export async function POST(req: Request) {
   }
   const stored = `${randomBytes(10).toString("hex")}${ext}`;
   const buf = Buffer.from(await file.arrayBuffer());
-  await writeFile(path.join(UPLOAD_DIR, stored), buf);
+  const url = await storeUpload(stored, buf);
 
   return NextResponse.json({
-    url: `/api/files/${stored}`,
+    url,
     name: origName,
     size,
     type: file.type ?? "application/octet-stream",

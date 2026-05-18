@@ -306,75 +306,60 @@ export function Editor({
                 icon: <span>▦</span>,
                 onItemClick: insert("columns", { count: "3" }),
               },
-              {
-                title: "AI · Summarize page",
-                subtext: "Insert a summary placeholder (manual fill for now)",
-                aliases: ["ai", "summarize", "summary", "요약"],
-                group: "AI",
-                icon: <span>✨</span>,
-                onItemClick: () => {
-                  editor.insertBlocks(
-                    [
+              ...(["summarize", "translate", "improve"] as const).map(
+                (action): DefaultReactSuggestionItem => {
+                  const meta = {
+                    summarize: { title: "AI · Summarize", emoji: "✨", color: "blue", aliases: ["ai", "summarize", "summary", "요약"] },
+                    translate: { title: "AI · Translate", emoji: "🌐", color: "purple", aliases: ["ai", "translate", "번역"] },
+                    improve: { title: "AI · Improve writing", emoji: "📝", color: "green", aliases: ["ai", "improve", "rewrite", "교정"] },
+                  }[action];
+                  return {
+                    title: meta.title,
+                    subtext: "Sends the surrounding text to /api/ai",
+                    aliases: meta.aliases,
+                    group: "AI",
+                    icon: <span>{meta.emoji}</span>,
+                    onItemClick: async () => {
+                      // collect text from the current and nearby blocks (up to ~600 chars)
+                      const cur = editor.getTextCursorPosition().block;
+                      const blocks = editor.document;
+                      const idx = blocks.findIndex((b) => b.id === cur?.id);
+                      const slice = idx >= 0 ? blocks.slice(Math.max(0, idx - 5), idx + 1) : blocks.slice(-6);
+                      const text = slice
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        .map((b: any) => (Array.isArray(b.content) ? b.content.map((c: any) => (typeof c === "object" && c && "text" in c ? c.text : "")).join("") : ""))
+                        .join("\n")
+                        .slice(0, 1500);
+
+                      const placeholder = {
+                        type: "callout" as const,
+                        props: { emoji: meta.emoji, color: meta.color } as Record<string, unknown>,
+                        content: [{ type: "text", text: `${meta.title}: thinking…`, styles: {} }] as unknown,
+                      };
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      {
-                        type: "callout" as any,
-                        props: { emoji: "✨", color: "blue" } as any,
-                        content: [
-                          { type: "text", text: "AI summary placeholder — fill in once an AI provider is connected.", styles: {} },
-                        ] as any,
-                      },
-                    ],
-                    editor.getTextCursorPosition().block,
-                    "after",
-                  );
+                      const [inserted] = editor.insertBlocks([placeholder as any], cur ?? blocks[blocks.length - 1], "after");
+                      try {
+                        const res = await fetch("/api/ai", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ action, text }),
+                        });
+                        const data = (await res.json()) as { output?: string; error?: string };
+                        const out = data.output || data.error || "(no response)";
+                        editor.updateBlock(inserted, {
+                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                          content: [{ type: "text", text: out, styles: {} }] as any,
+                        });
+                      } catch (e) {
+                        editor.updateBlock(inserted, {
+                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                          content: [{ type: "text", text: `AI request failed: ${(e as Error).message}`, styles: {} }] as any,
+                        });
+                      }
+                    },
+                  };
                 },
-              },
-              {
-                title: "AI · Translate selection",
-                subtext: "Insert a translation placeholder",
-                aliases: ["ai", "translate", "번역"],
-                group: "AI",
-                icon: <span>🌐</span>,
-                onItemClick: () => {
-                  editor.insertBlocks(
-                    [
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      {
-                        type: "callout" as any,
-                        props: { emoji: "🌐", color: "purple" } as any,
-                        content: [
-                          { type: "text", text: "AI translation placeholder.", styles: {} },
-                        ] as any,
-                      },
-                    ],
-                    editor.getTextCursorPosition().block,
-                    "after",
-                  );
-                },
-              },
-              {
-                title: "AI · Improve writing",
-                subtext: "Insert a writing-improvement placeholder",
-                aliases: ["ai", "improve", "rewrite", "교정"],
-                group: "AI",
-                icon: <span>📝</span>,
-                onItemClick: () => {
-                  editor.insertBlocks(
-                    [
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      {
-                        type: "callout" as any,
-                        props: { emoji: "📝", color: "green" } as any,
-                        content: [
-                          { type: "text", text: "AI suggestion placeholder.", styles: {} },
-                        ] as any,
-                      },
-                    ],
-                    editor.getTextCursorPosition().block,
-                    "after",
-                  );
-                },
-              },
+              ),
               {
                 title: "Linked database",
                 subtext: "Embed an existing database view",
