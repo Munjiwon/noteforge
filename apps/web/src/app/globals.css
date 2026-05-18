@@ -55,6 +55,30 @@ body {
   background: #1a1a1a;
   color: #e5e7eb;
 }
+
+/* Shiki-highlighted code block (post-rendered in static editor). */
+pre.nf-shiki {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  font-size: 13px;
+  border-radius: 6px;
+  padding: 12px 14px;
+  margin: 8px 0;
+  overflow-x: auto;
+  border: 1px solid #e5e7eb;
+}
+pre.nf-shiki code {
+  background: transparent;
+  padding: 0;
+}
+.dark pre.nf-shiki {
+  border-color: #2a2a2a;
+}
+.dark pre.nf-shiki,
+.dark pre.nf-shiki code,
+.dark pre.nf-shiki span {
+  color: var(--shiki-dark) !important;
+  background: var(--shiki-dark-bg) !important;
+}
 .dark .bn-container,
 .dark .bn-editor {
   color: #e5e7eb;
