@@ -511,6 +511,44 @@ export async function addRow(slug: string, dbId: string) {
   return row.id;
 }
 
+export async function addRowFromTemplate(
+  slug: string,
+  dbId: string,
+  templateRowId: string,
+) {
+  const ctx = await assertEditor(slug);
+  const tpl = await prisma.page.findFirst({
+    where: {
+      id: templateRowId,
+      parentId: dbId,
+      workspaceId: ctx.workspace.id,
+      isTemplate: true,
+    },
+  });
+  if (!tpl) throw new Error("template not found");
+  const max = await prisma.page.aggregate({
+    where: { workspaceId: ctx.workspace.id, parentId: dbId },
+    _max: { position: true },
+  });
+  const row = await prisma.page.create({
+    data: {
+      workspaceId: ctx.workspace.id,
+      parentId: dbId,
+      kind: "doc",
+      title: tpl.title,
+      icon: tpl.icon,
+      cover: tpl.cover,
+      content: tpl.content,
+      dataValues: tpl.dataValues ?? "{}",
+      position: (max._max.position ?? 0) + 1,
+      authorId: ctx.user.id,
+      isTemplate: false,
+    },
+  });
+  revalidatePath(`/w/${slug}/p/${dbId}`);
+  return row.id;
+}
+
 export async function updateCell(
   slug: string,
   rowId: string,

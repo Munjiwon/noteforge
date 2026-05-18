@@ -14,6 +14,7 @@ import { MentionInline } from "./mention-inline";
 import { TocBlock } from "./toc-block";
 import { ColumnsBlock } from "./columns-block";
 import { DbViewBlock } from "./dbview-block";
+import { BookmarkBlock } from "./bookmark-block";
 
 export const editorSchema = BlockNoteSchema.create({
   blockSpecs: {
@@ -26,6 +27,7 @@ export const editorSchema = BlockNoteSchema.create({
     toc: TocBlock,
     columns: ColumnsBlock,
     dbView: DbViewBlock,
+    bookmark: BookmarkBlock,
   },
   inlineContentSpecs: {
     ...defaultInlineContentSpecs,

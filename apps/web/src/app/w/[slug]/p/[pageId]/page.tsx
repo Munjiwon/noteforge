@@ -129,11 +129,26 @@ export default async function PageRoute({
   }));
 
   if (page.kind === "database") {
-    const rows = await prisma.page.findMany({
-      where: { parentId: page.id, deletedAt: null },
-      orderBy: [{ position: "asc" }, { createdAt: "asc" }],
-      select: { id: true, title: true, cover: true, dataValues: true },
-    });
+    const [rows, rowTemplates] = await Promise.all([
+      prisma.page.findMany({
+        where: {
+          parentId: page.id,
+          deletedAt: null,
+          isTemplate: false,
+        },
+        orderBy: [{ position: "asc" }, { createdAt: "asc" }],
+        select: { id: true, title: true, cover: true, dataValues: true },
+      }),
+      prisma.page.findMany({
+        where: {
+          parentId: page.id,
+          deletedAt: null,
+          isTemplate: true,
+        },
+        orderBy: { updatedAt: "desc" },
+        select: { id: true, title: true, icon: true },
+      }),
+    ]);
     return (
       <>
         {trashed && (
@@ -168,6 +183,7 @@ export default async function PageRoute({
             cover: r.cover,
             dataValues: parseValues(r.dataValues),
           }))}
+          rowTemplates={rowTemplates}
           role={effectiveRole}
         />
       </>

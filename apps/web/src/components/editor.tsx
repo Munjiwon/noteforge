@@ -311,6 +311,14 @@ export function Editor({
                 onItemClick: insert("toggle", { open: true }),
               },
               {
+                title: "Bookmark",
+                subtext: "Link preview card",
+                aliases: ["bookmark", "link", "preview", "북마크"],
+                group: "Media",
+                icon: <span>🔖</span>,
+                onItemClick: insert("bookmark", { url: "" }),
+              },
+              {
                 title: "2 columns",
                 subtext: "Two side-by-side columns",
                 aliases: ["columns", "2col", "two columns", "컬럼"],

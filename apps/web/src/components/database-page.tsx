@@ -6,7 +6,13 @@ import { PeekModal } from "./peek-modal";
 import { PageStyleMenu, fontClass, widthClass } from "./page-style-menu";
 import { EmojiPicker } from "./emoji-picker";
 import { DbExportCsvButton } from "./db-export-csv";
-import { setKanbanGroup, setView } from "@/app/w/[slug]/database-actions";
+import {
+  addRow,
+  addRowFromTemplate,
+  setKanbanGroup,
+  setView,
+} from "@/app/w/[slug]/database-actions";
+import { useRouter } from "next/navigation";
 import { DatabaseView } from "./database-view";
 import { KanbanView } from "./kanban-view";
 import { GalleryView } from "./gallery-view";
@@ -25,6 +31,7 @@ export function DatabasePage({
   slug,
   db,
   rows,
+  rowTemplates = [],
   role,
   canChangeSettings = false,
 }: {
@@ -45,9 +52,11 @@ export function DatabasePage({
     font?: "default" | "serif" | "mono";
   };
   rows: { id: string; parentId: string; title: string; cover?: string | null; dataValues: Record<string, unknown> }[];
+  rowTemplates?: { id: string; title: string; icon: string | null }[];
   role: "owner" | "editor" | "viewer";
   canChangeSettings?: boolean;
 }) {
+  const router = useRouter();
   const [title, setTitle] = useState(db.title);
   const [icon, setIcon] = useState(db.icon);
   const [pickerOpen, setPickerOpen] = useState(false);
@@ -229,6 +238,14 @@ export function DatabasePage({
           placeholder="Search rows…"
           className="text-xs border border-gray-200 rounded px-2 py-1 outline-none w-32"
         />
+        {!readOnly && (
+          <RowAddMenu
+            slug={slug}
+            dbId={db.id}
+            templates={rowTemplates}
+            onCreated={(id) => router.push(`/w/${slug}/p/${id}`)}
+          />
+        )}
         <span className="text-[11px] text-gray-400 ml-auto">
           {visibleRows.length === rows.length
             ? `${rows.length} row${rows.length === 1 ? "" : "s"}`
@@ -305,6 +322,86 @@ export function DatabasePage({
       )}
       </div>
       <PeekModal pageId={peekId} onClose={() => setPeekId(null)} />
+    </div>
+  );
+}
+
+function RowAddMenu({
+  slug,
+  dbId,
+  templates,
+  onCreated,
+}: {
+  slug: string;
+  dbId: string;
+  templates: { id: string; title: string; icon: string | null }[];
+  onCreated: (id: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [, start] = useTransition();
+  if (templates.length === 0) {
+    return (
+      <button
+        onClick={() =>
+          start(async () => {
+            const id = await addRow(slug, dbId);
+            if (id) onCreated(id);
+          })
+        }
+        className="text-xs px-2 py-1 rounded bg-gray-900 text-white hover:opacity-90"
+      >
+        + New
+      </button>
+    );
+  }
+  return (
+    <div className="relative">
+      <div className="inline-flex">
+        <button
+          onClick={() =>
+            start(async () => {
+              const id = await addRow(slug, dbId);
+              if (id) onCreated(id);
+            })
+          }
+          className="text-xs px-2 py-1 rounded-l bg-gray-900 text-white hover:opacity-90 border-r border-white/20"
+        >
+          + New
+        </button>
+        <button
+          onClick={() => setOpen((v) => !v)}
+          className="text-xs px-1.5 py-1 rounded-r bg-gray-900 text-white hover:opacity-90"
+          title="New from template"
+        >
+          ▾
+        </button>
+      </div>
+      {open && (
+        <div
+          className="absolute right-0 top-full mt-1 z-20 bg-white border border-gray-200 rounded-md shadow-lg w-56 py-1"
+          onMouseLeave={() => setOpen(false)}
+        >
+          <div className="text-[10px] uppercase text-gray-500 px-3 py-1">
+            New from template
+          </div>
+          {templates.map((tpl) => (
+            <button
+              key={tpl.id}
+              onClick={() => {
+                setOpen(false);
+                start(async () => {
+                  const id = await addRowFromTemplate(slug, dbId, tpl.id);
+                  if (id) onCreated(id);
+                });
+              }}
+              className="w-full text-left text-xs px-3 py-1.5 hover:bg-black/5 flex items-center gap-2"
+            >
+              <span>{tpl.icon ?? "📄"}</span>
+              <span className="truncate flex-1">{tpl.title || "Untitled"}</span>
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

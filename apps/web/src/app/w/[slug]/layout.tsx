@@ -160,7 +160,7 @@ export default async function WorkspaceLayout({
   // count children for sidebar badges (db rows for databases, sub-pages otherwise)
   const childCount = new Map<string, number>();
   for (const p of allPages) {
-    if (p.parentId) {
+    if (p.parentId && !p.isTemplate) {
       childCount.set(p.parentId, (childCount.get(p.parentId) ?? 0) + 1);
     }
   }
