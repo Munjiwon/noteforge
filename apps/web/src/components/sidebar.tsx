@@ -894,6 +894,12 @@ export function Sidebar({
 
       <div className="border-t border-black/10 p-3 space-y-2">
         <Link
+          href={`/w/${currentSlug}/today`}
+          className="block text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
+        >
+          ☀️ Today
+        </Link>
+        <Link
           href={`/w/${currentSlug}/activity`}
           className="block text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
         >
