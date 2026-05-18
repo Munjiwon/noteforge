@@ -319,6 +319,14 @@ export function Editor({
                 onItemClick: insert("bookmark", { url: "" }),
               },
               {
+                title: "Audio",
+                subtext: "Record or upload a voice memo",
+                aliases: ["audio", "voice", "record", "음성"],
+                group: "Media",
+                icon: <span>🎤</span>,
+                onItemClick: insert("audio", { url: "" }),
+              },
+              {
                 title: "2 columns",
                 subtext: "Two side-by-side columns",
                 aliases: ["columns", "2col", "two columns", "컬럼"],
