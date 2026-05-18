@@ -39,6 +39,17 @@ export default async function WorkspaceLayout({
   children: React.ReactNode;
 }) {
   const ctx = await requireWorkspaceMember(params.slug);
+  // Best-effort auto-purge: hard-delete pages that have been in the trash
+  // longer than 30 days. The Page.parentId cascade takes care of descendants
+  // and PageActivity/PageSnapshot/Comment/etc. rows.
+  prisma.page
+    .deleteMany({
+      where: {
+        workspaceId: ctx.workspace.id,
+        deletedAt: { lt: new Date(Date.now() - 30 * 24 * 3600 * 1000) },
+      },
+    })
+    .catch(() => {});
   // Best-effort auto-expire: delete read notifications older than 30 days
   // (cheap to run as part of the normal layout fetch; runs in background).
   prisma.notification
@@ -63,6 +74,7 @@ export default async function WorkspaceLayout({
         kind: true,
         favorite: true,
         content: true,
+        isTemplate: true,
       },
     }),
     prisma.page.findMany({
@@ -109,13 +121,33 @@ export default async function WorkspaceLayout({
     actor: n.actor ? { name: n.actor.name, color: n.actor.color } : null,
   }));
 
-  // Hide database rows (children of database pages) from the sidebar tree.
+  // Hide database rows (children of database pages) from the sidebar tree,
+  // and split off templates into their own section.
   const databaseIds = new Set(allPages.filter((p) => p.kind === "database").map((p) => p.id));
+  const templateIds = new Set(allPages.filter((p) => p.isTemplate).map((p) => p.id));
+  const isUnder = (pid: string | null, set: Set<string>): boolean => {
+    let cur = pid;
+    while (cur) {
+      if (set.has(cur)) return true;
+      cur = allPages.find((x) => x.id === cur)?.parentId ?? null;
+    }
+    return false;
+  };
+  const templatePages = allPages.filter((p) => p.isTemplate);
   const pages = allPages.filter(
-    (p) => !p.parentId || !databaseIds.has(p.parentId),
+    (p) =>
+      !p.isTemplate &&
+      !isUnder(p.parentId, templateIds) &&
+      (!p.parentId || !databaseIds.has(p.parentId)),
   );
   const favorites = allPages
-    .filter((p) => p.favorite && (!p.parentId || !databaseIds.has(p.parentId)))
+    .filter(
+      (p) =>
+        !p.isTemplate &&
+        !isUnder(p.parentId, templateIds) &&
+        p.favorite &&
+        (!p.parentId || !databaseIds.has(p.parentId)),
+    )
     .map((p) => ({
       id: p.id,
       title: p.title,
@@ -158,6 +190,12 @@ export default async function WorkspaceLayout({
         role={ctx.role as any}
         pages={pagesForSidebar}
         favorites={favorites}
+        templates={templatePages.map((p) => ({
+          id: p.id,
+          title: p.title,
+          icon: p.icon,
+          kind: p.kind,
+        }))}
         trashed={trashedPages}
         notifications={notifications}
         recent={recentRows}

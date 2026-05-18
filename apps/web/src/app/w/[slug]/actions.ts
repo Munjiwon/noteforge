@@ -250,6 +250,84 @@ export async function purgePage(slug: string, pageId: string) {
   revalidatePath(`/w/${slug}`, "layout");
 }
 
+export async function setPageAsTemplate(
+  slug: string,
+  pageId: string,
+  on: boolean,
+) {
+  const ctx = await assertEditor(slug);
+  await prisma.page.updateMany({
+    where: { id: pageId, workspaceId: ctx.workspace.id },
+    data: { isTemplate: on },
+  });
+  revalidatePath(`/w/${slug}`, "layout");
+}
+
+export async function createPageFromUserTemplate(
+  slug: string,
+  parentId: string | null,
+  templatePageId: string,
+) {
+  const ctx = await assertEditor(slug);
+  const tpl = await prisma.page.findFirst({
+    where: {
+      id: templatePageId,
+      workspaceId: ctx.workspace.id,
+      isTemplate: true,
+      deletedAt: null,
+    },
+  });
+  if (!tpl) throw new Error("template not found");
+
+  async function copy(
+    node: NonNullable<typeof tpl>,
+    newParent: string | null,
+    isRoot: boolean,
+  ): Promise<{ id: string }> {
+    const max = await prisma.page.aggregate({
+      where: { workspaceId: ctx.workspace.id, parentId: newParent },
+      _max: { position: true },
+    });
+    const created = await prisma.page.create({
+      data: {
+        workspaceId: ctx.workspace.id,
+        parentId: newParent,
+        kind: node.kind,
+        title: node.title,
+        icon: node.icon,
+        cover: node.cover,
+        coverPos: node.coverPos,
+        tags: node.tags,
+        width: node.width,
+        font: node.font,
+        content: node.content,
+        dbSchema: node.dbSchema,
+        dataValues: node.dataValues,
+        position: isRoot ? (max._max.position ?? 0) + 1 : node.position,
+        authorId: ctx.user.id,
+        isTemplate: false,
+      },
+    });
+    const children = await prisma.page.findMany({
+      where: {
+        workspaceId: ctx.workspace.id,
+        parentId: node.id,
+        deletedAt: null,
+      },
+      orderBy: { position: "asc" },
+    });
+    for (const c of children) {
+      await copy(c, created.id, false);
+    }
+    return { id: created.id };
+  }
+
+  const cloned = await copy(tpl, parentId, true);
+  await logActivity(cloned.id, ctx.user.id, "created_from_template");
+  revalidatePath(`/w/${slug}`, "layout");
+  redirect(`/w/${slug}/p/${cloned.id}`);
+}
+
 export async function duplicatePage(slug: string, pageId: string) {
   const ctx = await assertEditor(slug);
   const src = await prisma.page.findFirst({
@@ -270,6 +348,11 @@ export async function duplicatePage(slug: string, pageId: string) {
         title: node.title + (newParent === node.parentId ? " (copy)" : ""),
         icon: node.icon,
         cover: node.cover,
+        coverPos: node.coverPos,
+        tags: node.tags,
+        width: node.width,
+        font: node.font,
+        wordGoal: node.wordGoal,
         content: node.content,
         dbSchema: node.dbSchema,
         dataValues: node.dataValues,
@@ -446,6 +529,37 @@ export async function deleteSnapshot(slug: string, snapshotId: string) {
   if (!snap || snap.page.workspaceId !== ctx.workspace.id) throw new Error("not found");
   await prisma.pageSnapshot.delete({ where: { id: snapshotId } });
   revalidatePath(`/w/${slug}/p/${snap.pageId}`);
+}
+
+export async function restoreSnapshot(slug: string, snapshotId: string) {
+  const ctx = await assertEditor(slug);
+  const snap = await prisma.pageSnapshot.findUnique({
+    where: { id: snapshotId },
+    select: {
+      id: true,
+      content: true,
+      pageId: true,
+      page: { select: { workspaceId: true, content: true } },
+    },
+  });
+  if (!snap || snap.page.workspaceId !== ctx.workspace.id) throw new Error("not found");
+
+  // Take a safety snapshot of the current content before overwriting so
+  // restores remain reversible.
+  await prisma.pageSnapshot.create({
+    data: {
+      pageId: snap.pageId,
+      content: snap.page.content,
+      authorId: ctx.user.id,
+    },
+  });
+  await prisma.page.update({
+    where: { id: snap.pageId },
+    data: { content: snap.content },
+  });
+  await logActivity(snap.pageId, ctx.user.id, "restore_snapshot");
+  revalidatePath(`/w/${slug}/p/${snap.pageId}`);
+  return snap.pageId;
 }
 
 export async function setPagePublic(

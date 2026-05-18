@@ -9,6 +9,7 @@ import {
   bulkFavoritePages,
   createPage,
   createPageFromTemplate,
+  createPageFromUserTemplate,
   deletePage,
   duplicatePage,
   emptyTrash,
@@ -73,6 +74,7 @@ export function Sidebar({
   role,
   pages,
   favorites,
+  templates,
   trashed,
   notifications,
   recent,
@@ -88,6 +90,7 @@ export function Sidebar({
   role: "owner" | "editor" | "viewer";
   pages: SidebarPage[];
   favorites: SidebarPage[];
+  templates?: { id: string; title: string; icon: string | null; kind: string }[];
   trashed: TrashItem[];
   notifications: NotifItem[];
   recent: TrashItem[];
@@ -763,6 +766,44 @@ export function Sidebar({
         </div>
       )}
       <ul className="flex-1 overflow-auto pb-2">{tree.map((n) => renderNode(n, 0))}</ul>
+
+      {templates && templates.length > 0 && (
+        <details className="border-t border-black/10 px-3 py-2 group">
+          <summary className="text-xs uppercase tracking-wide text-gray-500 cursor-pointer flex items-center gap-1 list-none">
+            <span className="text-gray-400 group-open:rotate-90 transition inline-block">▸</span>
+            Templates
+            <span className="ml-1 text-gray-400">({templates.length})</span>
+          </summary>
+          <ul className="mt-1 space-y-0.5">
+            {templates.map((tpl) => (
+              <li key={tpl.id} className="group flex items-center gap-1">
+                <Link
+                  href={`/w/${currentSlug}/p/${tpl.id}`}
+                  className="flex-1 text-xs text-gray-700 hover:bg-black/5 rounded px-2 py-1 truncate"
+                >
+                  <span className="mr-1">
+                    {tpl.icon ?? (tpl.kind === "database" ? "📊" : "📄")}
+                  </span>
+                  {tpl.title || "Untitled"}
+                </Link>
+                {role !== "viewer" && (
+                  <button
+                    onClick={() =>
+                      startTransition(() => {
+                        createPageFromUserTemplate(currentSlug, null, tpl.id);
+                      })
+                    }
+                    title="Create a new page from this template"
+                    className="opacity-0 group-hover:opacity-100 text-[10px] text-gray-400 hover:text-gray-900 px-1"
+                  >
+                    Use
+                  </button>
+                )}
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
 
       {trashed.length > 0 && (
         <details className="border-t border-black/10 px-3 py-2 group">

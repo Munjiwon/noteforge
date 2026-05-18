@@ -18,6 +18,9 @@ export async function GET(req: NextRequest) {
 
   const slug = req.nextUrl.searchParams.get("ws");
   const q = (req.nextUrl.searchParams.get("q") ?? "").trim();
+  const authorId = req.nextUrl.searchParams.get("author") || null;
+  const sinceParam = req.nextUrl.searchParams.get("since"); // "7d" | "30d" | "90d" | ISO date
+  const tagParam = (req.nextUrl.searchParams.get("tag") ?? "").trim();
   if (!slug || q.length < 1) return NextResponse.json({ hits: [] });
 
   const ws = await prisma.workspace.findUnique({
@@ -28,12 +31,36 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ hits: [] }, { status: 403 });
   }
 
+  let since: Date | null = null;
+  if (sinceParam) {
+    const m = /^(\d+)d$/.exec(sinceParam);
+    if (m) {
+      since = new Date(Date.now() - Number(m[1]) * 24 * 3600 * 1000);
+    } else {
+      const dt = new Date(sinceParam);
+      if (!Number.isNaN(dt.getTime())) since = dt;
+    }
+  }
+
+  const where: Record<string, unknown> = {
+    workspaceId: ws.id,
+    deletedAt: null,
+    OR: [{ title: { contains: q } }, { content: { contains: q } }],
+  };
+  if (authorId) where.authorId = authorId;
+  if (since) where.updatedAt = { gte: since };
+  // tags are stored as JSON arrays in a single string column — fall back to
+  // a substring search of the encoded array so any "tag1" or "tag with space"
+  // match works without a relational table.
+  if (tagParam) {
+    const tagFilter = { contains: JSON.stringify(tagParam).slice(1, -1) };
+    // combine title/content OR with tags AND via wrapping
+    where.AND = [{ OR: where.OR }, { tags: tagFilter }];
+    delete (where as { OR?: unknown }).OR;
+  }
+
   const rows = await prisma.page.findMany({
-    where: {
-      workspaceId: ws.id,
-      deletedAt: null,
-      OR: [{ title: { contains: q } }, { content: { contains: q } }],
-    },
+    where: where as never,
     take: 20,
     orderBy: { updatedAt: "desc" },
     select: {

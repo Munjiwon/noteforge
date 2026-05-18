@@ -95,6 +95,7 @@ model Page {
   publicSlug  String?   @unique
   publicAccess String   @default("none") // "none" | "view"
   slug        String?   // optional human-readable URL alias (unique per workspace)
+  isTemplate  Boolean   @default(false)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 

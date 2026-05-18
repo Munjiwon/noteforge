@@ -154,6 +154,26 @@ export function Editor({
     else provider.once("sync", onSynced);
   }, [provider, doc, editor, initialContent]);
 
+  // Listen for restore-snapshot events from the History dialog and overwrite
+  // the live editor (and therefore the Yjs doc) with the restored content.
+  useEffect(() => {
+    if (!editor) return;
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<{ pageId: string; content: string }>).detail;
+      if (!detail || detail.pageId !== pageId || !detail.content) return;
+      try {
+        const blocks = JSON.parse(detail.content);
+        if (Array.isArray(blocks) && blocks.length > 0) {
+          editor.replaceBlocks(editor.document, blocks);
+        }
+      } catch (err) {
+        console.warn("restore replace error", err);
+      }
+    };
+    window.addEventListener("noteforge:restore-snapshot", handler);
+    return () => window.removeEventListener("noteforge:restore-snapshot", handler);
+  }, [editor, pageId]);
+
   // Debounced save of JSON snapshot to DB.
   useEffect(() => {
     if (!editor) return;

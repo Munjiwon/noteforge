@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import {
+  setPageAsTemplate,
   setPageFont,
   setPageWidth,
   togglePageLock,
@@ -16,6 +17,7 @@ export function PageStyleMenu({
   width,
   font,
   locked,
+  isTemplate = false,
   canEdit,
 }: {
   slug: string;
@@ -23,6 +25,7 @@ export function PageStyleMenu({
   width: PageWidth;
   font: PageFont;
   locked: boolean;
+  isTemplate?: boolean;
   canEdit: boolean;
 }) {
   const [open, setOpen] = useState(false);
@@ -86,12 +89,29 @@ export function PageStyleMenu({
             ))}
           </div>
           {canEdit && (
-            <button
-              onClick={() => start(() => togglePageLock(slug, pageId))}
-              className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center"
-            >
-              {locked ? "🔓 Unlock page" : "🔒 Lock page"}
-            </button>
+            <>
+              <button
+                onClick={() => start(() => togglePageLock(slug, pageId))}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+              >
+                {locked ? "🔓 Unlock page" : "🔒 Lock page"}
+              </button>
+              <button
+                onClick={() =>
+                  start(async () => {
+                    await setPageAsTemplate(slug, pageId, !isTemplate);
+                  })
+                }
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center"
+                title={
+                  isTemplate
+                    ? "Remove from Templates section"
+                    : "Move this page into the Templates section so it can be used as a starting point"
+                }
+              >
+                {isTemplate ? "✕ Remove as template" : "📋 Save as template"}
+              </button>
+            </>
           )}
         </div>
       )}

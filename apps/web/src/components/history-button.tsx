@@ -2,7 +2,11 @@
 
 import { useEffect, useState, useTransition } from "react";
 import dynamic from "next/dynamic";
-import { deleteSnapshot, takeSnapshot } from "@/app/w/[slug]/actions";
+import {
+  deleteSnapshot,
+  restoreSnapshot,
+  takeSnapshot,
+} from "@/app/w/[slug]/actions";
 
 const StaticEditor = dynamic(
   () => import("./static-editor").then((m) => m.StaticEditor),
@@ -150,8 +154,37 @@ export function HistoryButton({
                   <p className="text-xs text-gray-400">Select a version on the left.</p>
                 )}
               </div>
-              <div className="px-4 py-2 border-t border-gray-100 text-[11px] text-gray-400">
-                Read-only preview. To restore, copy text from here and paste into the page.
+              <div className="px-4 py-2 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-400">
+                <span>
+                  {canEdit
+                    ? "Restoring replaces the current content. A backup snapshot is created first."
+                    : "Read-only preview."}
+                </span>
+                {canEdit && current && (
+                  <button
+                    onClick={() => {
+                      if (
+                        !confirm(
+                          "Restore this version? The current content will be saved as a snapshot first.",
+                        )
+                      )
+                        return;
+                      const restoredContent = current.content;
+                      start(async () => {
+                        await restoreSnapshot(slug, current.id);
+                        window.dispatchEvent(
+                          new CustomEvent("noteforge:restore-snapshot", {
+                            detail: { pageId, content: restoredContent },
+                          }),
+                        );
+                        setOpen(false);
+                      });
+                    }}
+                    className="text-xs px-3 py-1 rounded bg-accent text-white hover:opacity-90"
+                  >
+                    Restore this version
+                  </button>
+                )}
               </div>
             </main>
           </div>

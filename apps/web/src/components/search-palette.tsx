@@ -37,6 +37,8 @@ export function SearchPalette({ slug }: { slug: string }) {
   const [highlight, setHighlight] = useState(0);
   const [loading, setLoading] = useState(false);
   const [kindFilter, setKindFilter] = useState<"all" | "doc" | "database">("all");
+  const [since, setSince] = useState<"any" | "7d" | "30d" | "90d">("any");
+  const [tag, setTag] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
@@ -78,10 +80,15 @@ export function SearchPalette({ slug }: { slug: string }) {
     const ctrl = new AbortController();
     const t = setTimeout(async () => {
       try {
-        const res = await fetch(
-          `/api/search?ws=${encodeURIComponent(slug)}&q=${encodeURIComponent(q.trim())}`,
-          { signal: ctrl.signal },
-        );
+        const params = new URLSearchParams({
+          ws: slug,
+          q: q.trim(),
+        });
+        if (since !== "any") params.set("since", since);
+        if (tag.trim()) params.set("tag", tag.trim());
+        const res = await fetch(`/api/search?${params.toString()}`, {
+          signal: ctrl.signal,
+        });
         if (!res.ok) return;
         const data = (await res.json()) as { hits: Hit[] };
         setHits(data.hits);
@@ -96,7 +103,7 @@ export function SearchPalette({ slug }: { slug: string }) {
       ctrl.abort();
       clearTimeout(t);
     };
-  }, [q, open, slug]);
+  }, [q, open, slug, since, tag]);
 
   const choose = (hit: Hit) => {
     setOpen(false);
@@ -151,6 +158,41 @@ export function SearchPalette({ slug }: { slug: string }) {
             }}
           />
           <kbd className="text-[10px] text-gray-400 border border-gray-200 rounded px-1">esc</kbd>
+        </div>
+        <div className="border-b border-gray-100 px-3 py-1.5 flex items-center gap-2 text-[10px] text-gray-500">
+          <span>Updated</span>
+          {(["any", "7d", "30d", "90d"] as const).map((s) => (
+            <button
+              key={s}
+              onClick={() => setSince(s)}
+              className={
+                "px-1.5 py-0.5 rounded " +
+                (since === s
+                  ? "bg-gray-900 text-white"
+                  : "hover:bg-black/5 text-gray-500")
+              }
+            >
+              {s === "any" ? "Any time" : "Last " + s}
+            </button>
+          ))}
+          <span className="ml-2">Tag</span>
+          <input
+            value={tag}
+            onChange={(e) => setTag(e.target.value)}
+            placeholder="e.g. design"
+            className="border rounded px-1.5 py-0.5 text-[11px] outline-none focus:border-gray-400 w-28"
+          />
+          {(since !== "any" || tag) && (
+            <button
+              onClick={() => {
+                setSince("any");
+                setTag("");
+              }}
+              className="ml-auto text-gray-400 hover:text-gray-700"
+            >
+              Clear
+            </button>
+          )}
         </div>
         <div className="max-h-[60vh] overflow-y-auto">
           {q.trim() === "" ? (

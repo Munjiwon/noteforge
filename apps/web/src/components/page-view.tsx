@@ -54,6 +54,7 @@ export function PageView({
     locked?: boolean;
     width?: "normal" | "wide" | "full";
     font?: "default" | "serif" | "mono";
+    isTemplate?: boolean;
   };
   canChangeSettings?: boolean;
   user: { id: string; name: string; color: string };
@@ -252,6 +253,7 @@ export function PageView({
             width={width}
             font={font}
             locked={page.locked ?? false}
+            isTemplate={page.isTemplate ?? false}
             canEdit={canChangeSettings}
           />
           <HistoryButton
