@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
       where,
       orderBy: { createdAt: "desc" },
       take: 10,
-      include: { actor: { select: { name: true, color: true } } },
+      include: { actor: { select: { name: true, color: true, avatarUrl: true } } },
     }),
     prisma.notification.count({ where: { ...where, read: false } }),
   ]);
@@ -39,7 +39,9 @@ export async function GET(req: NextRequest) {
       createdAt: n.createdAt.toISOString(),
       pageId: n.pageId,
       commentId: n.commentId,
-      actor: n.actor ? { name: n.actor.name, color: n.actor.color } : null,
+      actor: n.actor
+        ? { name: n.actor.name, color: n.actor.color, avatarUrl: n.actor.avatarUrl }
+        : null,
     })),
   });
 }

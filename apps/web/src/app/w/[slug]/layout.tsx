@@ -181,7 +181,7 @@ export default async function WorkspaceLayout({
       orderBy: { createdAt: "desc" },
       take: 20,
       include: {
-        actor: { select: { name: true, color: true } },
+        actor: { select: { name: true, color: true, avatarUrl: true } },
       },
     }),
     prisma.page.findMany({
@@ -210,7 +210,9 @@ export default async function WorkspaceLayout({
     pageId: n.pageId,
     commentId: n.commentId,
     workspaceSlug: ctx.workspace.slug,
-    actor: n.actor ? { name: n.actor.name, color: n.actor.color } : null,
+    actor: n.actor
+      ? { name: n.actor.name, color: n.actor.color, avatarUrl: n.actor.avatarUrl }
+      : null,
   }));
 
   // Hide database rows (children of database pages) from the sidebar tree,

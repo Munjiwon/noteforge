@@ -11,6 +11,7 @@ import {
 } from "@/app/w/[slug]/comment-actions";
 import { MentionTextarea } from "./mention-textarea";
 import { MentionBody } from "./mention-body";
+import { Avatar } from "./avatar";
 
 export type CommentItem = {
   id: string;
@@ -19,7 +20,7 @@ export type CommentItem = {
   blockId: string | null;
   threadId: string | null;
   createdAt: string;
-  author: { id: string; name: string; color: string };
+  author: { id: string; name: string; color: string; avatarUrl?: string | null };
   reactions?: { userId: string; emoji: string }[];
 };
 
@@ -343,12 +344,7 @@ function CommentRow({
   return (
     <div data-comment-id={comment.id}>
       <div className="flex items-center gap-2 text-xs">
-        <span
-          className="inline-flex items-center justify-center w-6 h-6 rounded-full text-white text-[10px] font-medium"
-          style={{ background: comment.author.color }}
-        >
-          {initials(comment.author.name)}
-        </span>
+        <Avatar user={comment.author} size="sm" />
         <span className="font-medium text-gray-800">{comment.author.name}</span>
         <span className="text-gray-400">{relative(comment.createdAt)}</span>
         {comment.blockId && (

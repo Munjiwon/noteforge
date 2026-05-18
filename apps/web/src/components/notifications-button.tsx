@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useTransition } from "react";
 import Link from "next/link";
 import clsx from "clsx";
+import { Avatar } from "./avatar";
 import {
   markAllNotificationsRead,
   markNotificationRead,
@@ -17,7 +18,7 @@ export type NotifItem = {
   pageId: string | null;
   commentId: string | null;
   workspaceSlug: string | null;
-  actor: { name: string; color: string } | null;
+  actor: { name: string; color: string; avatarUrl?: string | null } | null;
 };
 
 export function NotificationsButton({
@@ -89,12 +90,7 @@ export function NotificationsButton({
       {toast && (
         <div className="fixed bottom-4 right-4 z-50 bg-white border border-gray-200 shadow-lg rounded-md px-3 py-2 text-xs max-w-[280px] flex items-start gap-2">
           {toast.actor ? (
-            <span
-              className="inline-flex items-center justify-center w-5 h-5 rounded-full text-white text-[10px] font-medium shrink-0"
-              style={{ background: toast.actor.color }}
-            >
-              {toast.actor.name.slice(0, 1).toUpperCase()}
-            </span>
+            <Avatar user={toast.actor} size="xs" />
           ) : (
             <span className="w-5" />
           )}
@@ -236,12 +232,7 @@ function NotifRow({
     >
       <div className="flex items-start gap-2">
         {n.actor ? (
-          <span
-            className="inline-flex items-center justify-center w-6 h-6 rounded-full text-white text-[10px] font-medium shrink-0"
-            style={{ background: n.actor.color }}
-          >
-            {n.actor.name.slice(0, 1).toUpperCase()}
-          </span>
+          <Avatar user={n.actor} size="sm" />
         ) : (
           <span className="w-6" />
         )}

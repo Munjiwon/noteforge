@@ -61,7 +61,7 @@ export default async function PageRoute({
       tags: true,
       viewCount: true,
       wordGoal: true,
-      author: { select: { name: true, color: true } },
+      author: { select: { name: true, color: true, avatarUrl: true } },
     },
   });
   if (!page) notFound();
@@ -144,7 +144,7 @@ export default async function PageRoute({
           dataValues: true,
           createdAt: true,
           updatedAt: true,
-          author: { select: { id: true, name: true, color: true } },
+          author: { select: { id: true, name: true, color: true, avatarUrl: true } },
         },
       }),
       prisma.page.findMany({
@@ -206,7 +206,7 @@ export default async function PageRoute({
       where: { pageId: page.id },
       orderBy: { createdAt: "asc" },
       include: {
-        author: { select: { id: true, name: true, color: true } },
+        author: { select: { id: true, name: true, color: true, avatarUrl: true } },
         reactions: { select: { userId: true, emoji: true } },
       },
     }),
