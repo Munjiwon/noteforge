@@ -134,6 +134,47 @@ export async function setPageTags(
   revalidatePath(`/w/${slug}/p/${pageId}`);
 }
 
+export async function renameTagAcrossWorkspace(
+  slug: string,
+  oldName: string,
+  newName: string,
+) {
+  const ctx = await assertEditor(slug);
+  const cleanedOld = oldName.trim();
+  const cleanedNew = newName.trim();
+  if (!cleanedOld) throw new Error("empty tag");
+  // Pull all tagged pages, parse and rewrite per row. Tag count is small so
+  // the in-memory rewrite is cheap.
+  const pages = await prisma.page.findMany({
+    where: {
+      workspaceId: ctx.workspace.id,
+      tags: { contains: JSON.stringify(cleanedOld).slice(1, -1) },
+    },
+    select: { id: true, tags: true },
+  });
+  for (const p of pages) {
+    let arr: string[] = [];
+    try {
+      const v = JSON.parse(p.tags ?? "[]");
+      if (Array.isArray(v)) arr = v.filter((x) => typeof x === "string");
+    } catch {}
+    if (!arr.includes(cleanedOld)) continue;
+    const next = cleanedNew
+      ? Array.from(new Set(arr.map((t) => (t === cleanedOld ? cleanedNew : t))))
+      : arr.filter((t) => t !== cleanedOld);
+    await prisma.page.update({
+      where: { id: p.id },
+      data: { tags: JSON.stringify(next) },
+    });
+  }
+  revalidatePath(`/w/${slug}`, "layout");
+  revalidatePath(`/w/${slug}/tags`);
+}
+
+export async function deleteTagAcrossWorkspace(slug: string, name: string) {
+  await renameTagAcrossWorkspace(slug, name, "");
+}
+
 export async function setPageCoverPos(
   slug: string,
   pageId: string,
