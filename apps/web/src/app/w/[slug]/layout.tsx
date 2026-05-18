@@ -57,7 +57,7 @@ export default async function WorkspaceLayout({
     prisma.page.findMany({
       where: { workspaceId: ctx.workspace.id, deletedAt: { not: null } },
       orderBy: { deletedAt: "desc" },
-      select: { id: true, title: true, icon: true, kind: true },
+      select: { id: true, title: true, icon: true, kind: true, deletedAt: true },
     }),
     getWorkspacesForUser(ctx.user.id),
     prisma.workspaceMember.count({ where: { workspaceId: ctx.workspace.id } }),
@@ -70,7 +70,16 @@ export default async function WorkspaceLayout({
       },
     }),
     prisma.page.findMany({
-      where: { workspaceId: ctx.workspace.id, deletedAt: null, parentId: null },
+      where: {
+        workspaceId: ctx.workspace.id,
+        deletedAt: null,
+        parentId: null,
+        OR: [
+          { title: { not: "" } },
+          // include recently-updated empty-title pages (within last day)
+          { updatedAt: { gt: new Date(Date.now() - 24 * 3600 * 1000) } },
+        ],
+      },
       orderBy: { updatedAt: "desc" },
       take: 5,
       select: { id: true, title: true, icon: true, kind: true },
@@ -139,6 +148,7 @@ export default async function WorkspaceLayout({
         trashed={trashedPages}
         notifications={notifications}
         recent={recentRows}
+        trashStaleCount={trashedPages.filter((t) => t.deletedAt && Date.now() - t.deletedAt.getTime() > 30 * 24 * 3600 * 1000).length}
         user={ctx.user}
       />
       <main className="flex-1 overflow-auto bg-white">

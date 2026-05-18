@@ -5,6 +5,7 @@ import { renamePage, setPageIcon } from "@/app/w/[slug]/actions";
 import { PeekModal } from "./peek-modal";
 import { PageStyleMenu, fontClass, widthClass } from "./page-style-menu";
 import { EmojiPicker } from "./emoji-picker";
+import { DbExportCsvButton } from "./db-export-csv";
 import { setKanbanGroup, setView } from "@/app/w/[slug]/database-actions";
 import { DatabaseView } from "./database-view";
 import { KanbanView } from "./kanban-view";
@@ -91,6 +92,7 @@ export function DatabasePage({
           </div>
         ) : null}
         <div className="flex justify-end gap-2 mb-2">
+          <DbExportCsvButton title={db.title} schema={db.schema} rows={visibleRows} />
           <PageStyleMenu
             slug={slug}
             pageId={db.id}

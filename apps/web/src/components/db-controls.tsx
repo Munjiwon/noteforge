@@ -6,6 +6,7 @@ import {
   setFilters,
   setHiddenColumns,
   setSort,
+  setTableGroup,
 } from "@/app/w/[slug]/database-actions";
 import type {
   DbFilter,
@@ -121,6 +122,29 @@ export function DbControls({
           />
         )}
       </div>
+
+      <label className="inline-flex items-center gap-1">
+        <span className="text-gray-400">Group:</span>
+        <select
+          disabled={readOnly}
+          value={schema.tableGroupBy ?? ""}
+          onChange={(e) =>
+            start(() =>
+              setTableGroup(slug, dbId, e.target.value || null),
+            )
+          }
+          className="border border-gray-200 rounded px-1 py-0.5 text-xs bg-white"
+        >
+          <option value="">None</option>
+          {schema.props
+            .filter((p) => p.type === "select" || p.type === "status")
+            .map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.name}
+              </option>
+            ))}
+        </select>
+      </label>
 
       <div className="relative">
         <button

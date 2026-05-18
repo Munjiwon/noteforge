@@ -168,15 +168,30 @@ export function Editor({
   return (
     <div>
       <PresenceBar self={user} peers={peers} />
-      {!readOnly && (
+      <div className="flex gap-2 mb-2">
+        {!readOnly && (
+          <button
+            onClick={commentOnCurrentBlock}
+            className="text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
+            title="Add a comment anchored to the block your cursor is on"
+          >
+            💬 Comment on this block
+          </button>
+        )}
         <button
-          onClick={commentOnCurrentBlock}
-          className="text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5 mb-2"
-          title="Add a comment anchored to the block your cursor is on"
+          onClick={() => {
+            const cur = editor.getTextCursorPosition().block;
+            if (!cur) return;
+            const u = new URL(window.location.href);
+            u.searchParams.set("b", cur.id);
+            void navigator.clipboard?.writeText(u.toString());
+          }}
+          className="text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
+          title="Copy a link that jumps directly to the block your cursor is on"
         >
-          💬 Comment on this block
+          🔗 Copy block link
         </button>
-      )}
+      </div>
       <BlockNoteView
         editor={editor}
         editable={!readOnly}

@@ -13,6 +13,7 @@ export function PageInfo({
     commentCount: number;
     backlinkCount: number;
     childrenCount: number;
+    viewCount?: number;
     activity?: {
       id: string;
       action: string;
@@ -70,6 +71,12 @@ export function PageInfo({
             <span className="text-right">{info.commentCount}</span>
             <span className="text-gray-500">Backlinks</span>
             <span className="text-right">{info.backlinkCount}</span>
+            {typeof info.viewCount === "number" && (
+              <>
+                <span className="text-gray-500">Views</span>
+                <span className="text-right">{info.viewCount.toLocaleString()}</span>
+              </>
+            )}
           </div>
           {info.activity && info.activity.length > 0 && (
             <div className="border-t border-gray-100 pt-2">

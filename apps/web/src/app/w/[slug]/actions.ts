@@ -315,6 +315,14 @@ export async function setPageFont(
   revalidatePath(`/w/${slug}/p/${pageId}`);
 }
 
+export async function incrementPageView(slug: string, pageId: string) {
+  const ctx = await requireWorkspaceMember(slug);
+  await prisma.page.updateMany({
+    where: { id: pageId, workspaceId: ctx.workspace.id },
+    data: { viewCount: { increment: 1 } },
+  });
+}
+
 export async function togglePageLock(slug: string, pageId: string) {
   const ctx = await assertEditor(slug);
   const row = await prisma.page.findFirst({

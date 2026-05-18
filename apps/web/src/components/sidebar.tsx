@@ -64,6 +64,7 @@ export function Sidebar({
   trashed,
   notifications,
   recent,
+  trashStaleCount,
   user,
 }: {
   workspaces: { slug: string; name: string }[];
@@ -78,6 +79,7 @@ export function Sidebar({
   trashed: TrashItem[];
   notifications: NotifItem[];
   recent: TrashItem[];
+  trashStaleCount?: number;
   user: { id: string; name: string; color: string };
 }) {
   const params = useParams<{ pageId?: string }>();
@@ -159,6 +161,7 @@ export function Sidebar({
   const [dropTarget, setDropTarget] = useState<{ id: string; where: "into" | "before" | "after" } | null>(null);
   const [movingId, setMovingId] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [trashQ, setTrashQ] = useState("");
   const [collapsed, setCollapsed] = useState(false);
   useEffect(() => {
     try {
@@ -678,8 +681,25 @@ export function Sidebar({
               </button>
             )}
           </summary>
+          {(trashStaleCount ?? 0) > 0 && (
+            <p className="mt-1 text-[10px] text-gray-500 leading-tight">
+              {trashStaleCount} page(s) older than 30 days. Click <strong>Empty</strong> to clean up.
+            </p>
+          )}
+          {trashed.length > 6 && (
+            <input
+              value={trashQ}
+              onChange={(e) => setTrashQ(e.target.value)}
+              placeholder="Filter trash…"
+              className="mt-1 mb-1 w-full text-xs border border-gray-200 rounded px-2 py-0.5 outline-none bg-white"
+            />
+          )}
           <ul className="mt-1 space-y-0.5 text-sm">
-            {trashed.map((t) => (
+            {trashed
+              .filter((t) =>
+                !trashQ ? true : (t.title || "Untitled").toLowerCase().includes(trashQ.toLowerCase()),
+              )
+              .map((t) => (
               <li
                 key={t.id}
                 className="group/row flex items-center gap-1 px-2 py-0.5 rounded hover:bg-black/5"

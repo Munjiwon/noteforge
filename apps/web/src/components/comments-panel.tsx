@@ -124,6 +124,11 @@ export function CommentsPanel({
         </div>
       )}
 
+      {readOnly && comments.length > 0 && (
+        <p className="text-[11px] text-gray-500 mb-3">
+          You're viewing this page read-only — new comments are disabled.
+        </p>
+      )}
       {!readOnly && (
         <div className="mb-4">
           <MentionTextarea

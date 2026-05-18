@@ -1,8 +1,12 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useState, useTransition } from "react";
-import { renamePage, setPageIcon } from "@/app/w/[slug]/actions";
+import { useEffect, useState, useTransition } from "react";
+import {
+  incrementPageView,
+  renamePage,
+  setPageIcon,
+} from "@/app/w/[slug]/actions";
 import { CommentsPanel, type CommentItem } from "./comments-panel";
 import { ShareButton } from "./share-button";
 import { PageCover } from "./page-cover";
@@ -67,6 +71,36 @@ export function PageView({
   const [pickerOpen, setPickerOpen] = useState(false);
   const [, start] = useTransition();
   const readOnly = role === "viewer";
+
+  // Increment view count once per session per page.
+  useEffect(() => {
+    const key = `viewed:${page.id}`;
+    try {
+      if (sessionStorage.getItem(key)) return;
+      sessionStorage.setItem(key, "1");
+    } catch {}
+    void incrementPageView(slug, page.id);
+  }, [page.id, slug]);
+
+  // Auto-scroll to anchored block if URL has ?b=<id>
+  useEffect(() => {
+    const u = new URL(window.location.href);
+    const b = u.searchParams.get("b");
+    if (!b) return;
+    let attempts = 0;
+    const tick = () => {
+      const el = document.querySelector(`[data-id="${b}"]`) as HTMLElement | null;
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.classList.add("ring-2", "ring-blue-300", "rounded");
+        setTimeout(() => el.classList.remove("ring-2", "ring-blue-300", "rounded"), 2000);
+        return;
+      }
+      attempts++;
+      if (attempts < 20) setTimeout(tick, 200);
+    };
+    tick();
+  }, [page.id]);
 
   const width = page.width ?? "normal";
   const font = page.font ?? "default";

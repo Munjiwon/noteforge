@@ -72,6 +72,32 @@ const TYPE_ICONS: Record<DbPropType, string> = {
   rollup: "Σ",
   formula: "ƒ",
 };
+function columnStat(prop: DbProp, rows: Row[]): string {
+  const total = rows.length;
+  const values = rows.map((r) =>
+    prop.id === "p_title" ? r.title : r.dataValues[prop.id],
+  );
+  const nonEmpty = values.filter(
+    (v) => v !== null && v !== undefined && v !== "" && !(Array.isArray(v) && v.length === 0),
+  );
+  if (prop.type === "number") {
+    const nums = nonEmpty.map(Number).filter((n) => !Number.isNaN(n));
+    if (nums.length === 0) return `${total} rows`;
+    const sum = nums.reduce((a, b) => a + b, 0);
+    const avg = sum / nums.length;
+    return `Σ ${sum.toLocaleString()} · avg ${avg.toLocaleString(undefined, { maximumFractionDigits: 1 })}`;
+  }
+  if (prop.type === "checkbox") {
+    const checked = values.filter((v) => v === true).length;
+    return `☑ ${checked}/${total}`;
+  }
+  if (prop.type === "select" || prop.type === "status") {
+    const distinct = new Set(values.filter((v) => v !== null && v !== undefined && v !== "")).size;
+    return `${distinct} value${distinct === 1 ? "" : "s"}`;
+  }
+  return `${nonEmpty.length}/${total}`;
+}
+
 const TYPE_GROUP: Record<DbPropType, "Basic" | "Advanced" | "Computed"> = {
   text: "Basic",
   number: "Basic",
@@ -213,25 +239,88 @@ export function DatabaseView({
             </tr>
           </thead>
           <tbody>
-            {rows.map((row, idx) => (
-              <RowRow
-                key={row.id}
-                row={row}
-                schema={schema}
-                slug={slug}
-                readOnly={readOnly}
-                draggable={!readOnly}
-                isDragging={dragRowId === row.id}
-                isDropOver={dragOverRowId === row.id}
-                onDragStart={() => setDragRowId(row.id)}
-                onDragOver={() => setDragOverRowId(row.id)}
-                onDragEnd={() => {
-                  setDragRowId(null);
-                  setDragOverRowId(null);
-                }}
-                onDrop={() => onDropOnRow(idx)}
-              />
-            ))}
+            {(() => {
+              const groupBy = schema.tableGroupBy
+                ? schema.props.find((p) => p.id === schema.tableGroupBy)
+                : null;
+              if (!groupBy || (groupBy.type !== "select" && groupBy.type !== "status")) {
+                return rows.map((row, idx) => (
+                  <RowRow
+                    key={row.id}
+                    row={row}
+                    schema={schema}
+                    slug={slug}
+                    readOnly={readOnly}
+                    draggable={!readOnly}
+                    isDragging={dragRowId === row.id}
+                    isDropOver={dragOverRowId === row.id}
+                    onDragStart={() => setDragRowId(row.id)}
+                    onDragOver={() => setDragOverRowId(row.id)}
+                    onDragEnd={() => {
+                      setDragRowId(null);
+                      setDragOverRowId(null);
+                    }}
+                    onDrop={() => onDropOnRow(idx)}
+                  />
+                ));
+              }
+              const buckets = new Map<string, Row[]>();
+              for (const opt of groupBy.options) buckets.set(opt.id, []);
+              buckets.set("__none__", []);
+              for (const row of rows) {
+                const v = row.dataValues[groupBy.id];
+                const key =
+                  typeof v === "string" && buckets.has(v) ? v : "__none__";
+                buckets.get(key)!.push(row);
+              }
+              const out: React.ReactNode[] = [];
+              for (const [key, list] of buckets.entries()) {
+                if (list.length === 0) continue;
+                const opt =
+                  key === "__none__"
+                    ? { name: "No " + groupBy.name, color: "#f3f4f6" }
+                    : groupBy.options.find((o) => o.id === key)!;
+                out.push(
+                  <tr key={`g-${key}`} className="bg-gray-50">
+                    <td
+                      colSpan={visibleProps.length + (readOnly ? 0 : 1)}
+                      className="px-3 py-1 text-xs"
+                    >
+                      <span
+                        className="inline-block px-2 py-0.5 rounded"
+                        style={{ background: opt.color }}
+                      >
+                        {opt.name}
+                      </span>
+                      <span className="ml-2 text-gray-400">{list.length}</span>
+                    </td>
+                  </tr>,
+                );
+                for (const row of list) {
+                  const idx = rows.indexOf(row);
+                  out.push(
+                    <RowRow
+                      key={row.id}
+                      row={row}
+                      schema={schema}
+                      slug={slug}
+                      readOnly={readOnly}
+                      draggable={!readOnly}
+                      isDragging={dragRowId === row.id}
+                      isDropOver={dragOverRowId === row.id}
+                      onDragStart={() => setDragRowId(row.id)}
+                      onDragOver={() => setDragOverRowId(row.id)}
+                      onDragEnd={() => {
+                        setDragRowId(null);
+                        setDragOverRowId(null);
+                      }}
+                      onDrop={() => onDropOnRow(idx)}
+                    />,
+                  );
+                }
+              }
+              return out;
+            })()}
             {rows.length === 0 && (
               <tr>
                 <td
@@ -243,6 +332,21 @@ export function DatabaseView({
               </tr>
             )}
           </tbody>
+          {rows.length > 0 && (
+            <tfoot>
+              <tr className="bg-gray-50/70 border-t border-gray-200 text-[11px] text-gray-500">
+                {visibleProps.map((p) => (
+                  <td
+                    key={p.id}
+                    className="px-3 py-1 border-r border-gray-100 text-right"
+                  >
+                    {columnStat(p, rows)}
+                  </td>
+                ))}
+                {!readOnly && <td />}
+              </tr>
+            </tfoot>
+          )}
         </table>
       </div>
 

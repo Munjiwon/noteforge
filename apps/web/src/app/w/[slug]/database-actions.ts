@@ -213,6 +213,25 @@ export async function setColumnOrder(
   revalidatePath(`/w/${slug}/p/${dbId}`);
 }
 
+export async function setTableGroup(
+  slug: string,
+  dbId: string,
+  propId: string | null,
+) {
+  const { schema } = await loadDb(slug, dbId);
+  if (propId) {
+    const p = schema.props.find((x) => x.id === propId);
+    if (!p || (p.type !== "select" && p.type !== "status")) {
+      throw new Error("group-by must be a select or status column");
+    }
+    schema.tableGroupBy = propId;
+  } else {
+    schema.tableGroupBy = undefined;
+  }
+  await saveSchema(dbId, schema);
+  revalidatePath(`/w/${slug}/p/${dbId}`);
+}
+
 export async function setColumnWidth(
   slug: string,
   dbId: string,
