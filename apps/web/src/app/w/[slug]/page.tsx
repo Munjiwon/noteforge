@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { requireWorkspaceMember } from "@/lib/workspace";
 import { prisma } from "db";
+import { parseSchema } from "@/lib/database";
 import { TemplateGalleryButton } from "@/components/template-gallery";
 
 function greeting(): string {
@@ -20,7 +21,11 @@ export default async function WorkspaceHome({
   const start = new Date();
   start.setHours(0, 0, 0, 0);
 
-  const [recents, favorites, totals, dueCount] = await Promise.all([
+  const weekEnd = new Date();
+  weekEnd.setDate(weekEnd.getDate() + 7);
+  weekEnd.setHours(23, 59, 59, 999);
+
+  const [recents, favorites, totals, dueCount, comingReminders, dateDatabases] = await Promise.all([
     prisma.page.findMany({
       where: {
         workspaceId: ctx.workspace.id,
@@ -73,8 +78,88 @@ export default async function WorkspaceHome({
         read: false,
       },
     }),
+    prisma.reminder.findMany({
+      where: {
+        userId: ctx.user.id,
+        workspaceId: ctx.workspace.id,
+        sentAt: null,
+        dueAt: { lte: weekEnd },
+      },
+      orderBy: { dueAt: "asc" },
+      take: 5,
+      include: {
+        page: { select: { id: true, title: true, icon: true } },
+      },
+    }),
+    prisma.page.findMany({
+      where: {
+        workspaceId: ctx.workspace.id,
+        kind: "database",
+        deletedAt: null,
+      },
+      select: { id: true, title: true, dbSchema: true },
+    }),
   ]);
   const [pageTotal, dbTotal, memberTotal] = totals;
+
+  type Upcoming = {
+    when: Date;
+    label: string;
+    pageId: string;
+    pageTitle: string;
+    pageIcon: string | null;
+    kind: "reminder" | "row";
+  };
+  const upcoming: Upcoming[] = [];
+  const now = new Date();
+  for (const r of comingReminders) {
+    upcoming.push({
+      when: r.dueAt,
+      label: r.note ?? "Reminder",
+      pageId: r.page.id,
+      pageTitle: r.page.title || "Untitled",
+      pageIcon: r.page.icon,
+      kind: "reminder",
+    });
+  }
+  for (const db of dateDatabases) {
+    const schema = parseSchema(db.dbSchema);
+    const dateProps = schema.props.filter((p) => p.type === "date");
+    if (dateProps.length === 0) continue;
+    const rows = await prisma.page.findMany({
+      where: {
+        workspaceId: ctx.workspace.id,
+        parentId: db.id,
+        deletedAt: null,
+        isTemplate: false,
+      },
+      select: { id: true, title: true, icon: true, dataValues: true },
+      take: 200,
+    });
+    for (const r of rows) {
+      let vals: Record<string, unknown> = {};
+      try {
+        vals = JSON.parse(r.dataValues ?? "{}");
+      } catch {}
+      for (const p of dateProps) {
+        const raw = vals[p.id];
+        if (!raw || typeof raw !== "string") continue;
+        const dt = new Date(raw);
+        if (Number.isNaN(dt.getTime())) continue;
+        if (dt >= now && dt <= weekEnd) {
+          upcoming.push({
+            when: dt,
+            label: `${db.title} · ${p.name}`,
+            pageId: r.id,
+            pageTitle: r.title || "Untitled",
+            pageIcon: r.icon,
+            kind: "row",
+          });
+        }
+      }
+    }
+  }
+  upcoming.sort((a, b) => a.when.getTime() - b.when.getTime());
 
   return (
     <div>
@@ -166,6 +251,39 @@ export default async function WorkspaceHome({
         </Card>
       </section>
 
+      {upcoming.length > 0 && (
+        <section className="mb-8">
+          <h2 className="text-xs uppercase tracking-wide text-gray-500 mb-2">
+            Coming up this week
+          </h2>
+          <ul className="border border-gray-200 rounded-md divide-y divide-gray-100">
+            {upcoming.slice(0, 8).map((u, i) => (
+              <li key={i}>
+                <Link
+                  href={`/w/${params.slug}/p/${u.pageId}`}
+                  className="flex items-center gap-2 text-sm text-gray-800 hover:bg-black/5 px-3 py-1.5"
+                >
+                  <span className="text-[11px] text-gray-400 w-16 shrink-0">
+                    {fmtShort(u.when)}
+                  </span>
+                  <span>
+                    {u.kind === "reminder" ? "⏰" : u.pageIcon ?? "📄"}
+                  </span>
+                  <span className="flex-1 truncate">
+                    {u.kind === "reminder"
+                      ? `${u.label} — ${u.pageTitle}`
+                      : `${u.pageTitle}`}
+                  </span>
+                  {u.kind === "row" && (
+                    <span className="text-[11px] text-gray-400 truncate">{u.label}</span>
+                  )}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       <section className="grid grid-cols-3 gap-3 text-center text-xs text-gray-500">
         <div className="border border-gray-200 rounded p-3">
           <div className="text-xl font-semibold text-gray-900">{pageTotal}</div>
@@ -235,6 +353,21 @@ function Card({
       )}
     </div>
   );
+}
+
+function fmtShort(d: Date): string {
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+  const sameDay = (a: Date, b: Date) =>
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate();
+  if (sameDay(d, today))
+    return "Today " + d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  if (sameDay(d, tomorrow))
+    return "Tmrw " + d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
 }
 
 function timeAgo(d: Date): string {

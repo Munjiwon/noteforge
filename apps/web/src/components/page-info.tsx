@@ -69,6 +69,10 @@ export function PageInfo({
               {info.wordCount.toLocaleString()}
               {info.wordGoal ? ` / ${info.wordGoal.toLocaleString()}` : ""}
             </span>
+            <span className="text-gray-500">Read time</span>
+            <span className="text-right">
+              {Math.max(1, Math.round(info.wordCount / 200))} min
+            </span>
             <span className="text-gray-500">Sub-pages</span>
             <span className="text-right">{info.childrenCount}</span>
             <span className="text-gray-500">Comments</span>

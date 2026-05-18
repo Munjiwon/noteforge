@@ -83,12 +83,14 @@ async function buildWorkspaceContext(
   return { context: context.trim(), sources };
 }
 
-const ACTION_PROMPT: Record<string, (text: string) => string> = {
+const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = {
   summarize: (text) => `Summarize the following in 2-3 sentences:\n\n${text}`,
   translate: (text) => `Translate the following to Korean (or to English if it's already Korean):\n\n${text}`,
   improve: (text) => `Rewrite the following more clearly, keep the same meaning:\n\n${text}`,
   continue: (text) =>
     `You are continuing the following text. Write 2-4 sentences that flow naturally from where it ends. Match the tone and language. Do not repeat the existing text.\n\n${text}`,
+  edit: (text, instr) =>
+    `Apply this instruction to the text below, returning only the revised text (no preamble):\n\nInstruction: ${instr ?? "Improve."}\n\nText:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
@@ -100,6 +102,7 @@ export async function POST(req: NextRequest) {
         text?: string;
         question?: string;
         workspaceSlug?: string;
+        instruction?: string;
       }
     | null;
   if (!body || !body.action) {
@@ -147,7 +150,10 @@ export async function POST(req: NextRequest) {
     if (!body.text) {
       return NextResponse.json({ error: "missing text" }, { status: 400 });
     }
-    userMessage = promptFn(body.text);
+    userMessage = promptFn(
+      body.text,
+      (body as { instruction?: string }).instruction,
+    );
   }
 
   const key = process.env.OPENAI_API_KEY;

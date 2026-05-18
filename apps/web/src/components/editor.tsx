@@ -372,13 +372,14 @@ export function Editor({
                 icon: <span>▦</span>,
                 onItemClick: insert("columns", { count: "3" }),
               },
-              ...(["summarize", "translate", "improve", "continue"] as const).map(
+              ...(["summarize", "translate", "improve", "continue", "edit"] as const).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {
                     summarize: { title: "AI · Summarize", emoji: "✨", color: "blue", aliases: ["ai", "summarize", "summary", "요약"] },
                     translate: { title: "AI · Translate", emoji: "🌐", color: "purple", aliases: ["ai", "translate", "번역"] },
                     improve: { title: "AI · Improve writing", emoji: "📝", color: "green", aliases: ["ai", "improve", "rewrite", "교정"] },
                     continue: { title: "AI · Continue writing", emoji: "➡️", color: "yellow", aliases: ["ai", "continue", "write more", "이어쓰기"] },
+                    edit: { title: "AI · Edit (custom)", emoji: "🪄", color: "red", aliases: ["ai", "edit", "custom", "transform"] },
                   }[action];
                   return {
                     title: meta.title,
@@ -387,6 +388,14 @@ export function Editor({
                     group: "AI",
                     icon: <span>{meta.emoji}</span>,
                     onItemClick: async () => {
+                      let instruction: string | null = null;
+                      if (action === "edit") {
+                        instruction = window.prompt(
+                          "What should AI do with the surrounding text?",
+                          "Make it more concise",
+                        );
+                        if (!instruction || !instruction.trim()) return;
+                      }
                       // collect text from the current and nearby blocks (up to ~600 chars)
                       const cur = editor.getTextCursorPosition().block;
                       const blocks = editor.document;
@@ -409,7 +418,7 @@ export function Editor({
                         const res = await fetch("/api/ai", {
                           method: "POST",
                           headers: { "Content-Type": "application/json" },
-                          body: JSON.stringify({ action, text }),
+                          body: JSON.stringify({ action, text, instruction }),
                         });
                         const data = (await res.json()) as { output?: string; error?: string };
                         const out = data.output || data.error || "(no response)";
