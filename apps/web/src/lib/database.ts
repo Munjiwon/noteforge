@@ -16,7 +16,10 @@ export type DbPropType =
   | "files"
   | "relation"
   | "rollup"
-  | "formula";
+  | "formula"
+  | "created_at"
+  | "updated_at"
+  | "created_by";
 
 export type StatusGroup = "todo" | "in_progress" | "complete";
 
@@ -61,7 +64,10 @@ export type DbProp =
   | { id: string; name: string; description?: string; type: "files" }
   | { id: string; name: string; description?: string; type: "relation"; targetDbId: string }
   | { id: string; name: string; description?: string; type: "rollup"; relationPropId: string; targetPropId: string; aggregate: RollupAggregate }
-  | { id: string; name: string; description?: string; type: "formula"; expr: string };
+  | { id: string; name: string; description?: string; type: "formula"; expr: string }
+  | { id: string; name: string; description?: string; type: "created_at"; format?: DateFormat }
+  | { id: string; name: string; description?: string; type: "updated_at"; format?: DateFormat }
+  | { id: string; name: string; description?: string; type: "created_by" };
 
 export type DbFilterOp =
   | "eq"

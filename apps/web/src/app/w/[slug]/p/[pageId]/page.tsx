@@ -137,7 +137,15 @@ export default async function PageRoute({
           isTemplate: false,
         },
         orderBy: [{ position: "asc" }, { createdAt: "asc" }],
-        select: { id: true, title: true, cover: true, dataValues: true },
+        select: {
+          id: true,
+          title: true,
+          cover: true,
+          dataValues: true,
+          createdAt: true,
+          updatedAt: true,
+          author: { select: { id: true, name: true, color: true } },
+        },
       }),
       prisma.page.findMany({
         where: {
@@ -182,6 +190,9 @@ export default async function PageRoute({
             title: r.title,
             cover: r.cover,
             dataValues: parseValues(r.dataValues),
+            createdAt: r.createdAt.toISOString(),
+            updatedAt: r.updatedAt.toISOString(),
+            author: r.author,
           }))}
           rowTemplates={rowTemplates}
           role={effectiveRole}

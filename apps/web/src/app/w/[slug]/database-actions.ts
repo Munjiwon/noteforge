@@ -95,6 +95,9 @@ const TYPE_DEFAULT_NAME: Record<DbPropType, string> = {
   relation: "Relation",
   rollup: "Rollup",
   formula: "Formula",
+  created_at: "Created at",
+  updated_at: "Updated at",
+  created_by: "Created by",
 };
 
 function uniqueName(base: string, existing: Set<string>): string {
@@ -140,6 +143,12 @@ export async function addColumn(slug: string, dbId: string, type: DbPropType, na
       ? { id, name: chosen, type: "rollup", relationPropId: "", targetPropId: "", aggregate: "count" }
       : type === "formula"
       ? { id, name: chosen, type: "formula", expr: "" }
+      : type === "created_at"
+      ? { id, name: chosen, type: "created_at" }
+      : type === "updated_at"
+      ? { id, name: chosen, type: "updated_at" }
+      : type === "created_by"
+      ? { id, name: chosen, type: "created_by" }
       : { id, name: chosen, type: "text" };
   schema.props.push(prop);
   await saveSchema(dbId, schema);

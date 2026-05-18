@@ -41,6 +41,9 @@ type Row = {
   parentId: string;
   title: string;
   dataValues: Record<string, unknown>;
+  createdAt?: string;
+  updatedAt?: string;
+  author?: { id: string; name: string; color: string } | null;
 };
 
 const TYPE_LABELS: Record<DbPropType, string> = {
@@ -59,6 +62,9 @@ const TYPE_LABELS: Record<DbPropType, string> = {
   relation: "Relation",
   rollup: "Rollup",
   formula: "Formula",
+  created_at: "Created at",
+  updated_at: "Updated at",
+  created_by: "Created by",
 };
 const TYPE_ICONS: Record<DbPropType, string> = {
   text: "A",
@@ -76,6 +82,9 @@ const TYPE_ICONS: Record<DbPropType, string> = {
   relation: "↔",
   rollup: "Σ",
   formula: "ƒ",
+  created_at: "🕐",
+  updated_at: "🕑",
+  created_by: "👤",
 };
 function columnStat(prop: DbProp, rows: Row[]): string {
   const total = rows.length;
@@ -119,6 +128,9 @@ const TYPE_GROUP: Record<DbPropType, "Basic" | "Advanced" | "Computed"> = {
   relation: "Computed",
   rollup: "Computed",
   formula: "Computed",
+  created_at: "Computed",
+  updated_at: "Computed",
+  created_by: "Computed",
 };
 
 export function DatabaseView({
@@ -896,6 +908,32 @@ function Cell({
 
   if (prop.type === "formula") {
     return <FormulaCell expr={prop.expr} row={row} props={schema.props} />;
+  }
+
+  if (prop.type === "created_at" || prop.type === "updated_at") {
+    const iso = prop.type === "created_at" ? row.createdAt : row.updatedAt;
+    return (
+      <div className="px-3 py-2 text-sm text-gray-500" title={iso}>
+        {iso ? formatDate(iso, prop.format) : ""}
+      </div>
+    );
+  }
+
+  if (prop.type === "created_by") {
+    if (!row.author) {
+      return <div className="px-3 py-2 text-sm text-gray-400">—</div>;
+    }
+    return (
+      <div className="px-3 py-2 text-sm text-gray-700 flex items-center gap-2">
+        <span
+          className="inline-flex items-center justify-center w-5 h-5 rounded-full text-white text-[9px] font-medium"
+          style={{ background: row.author.color }}
+        >
+          {row.author.name.slice(0, 1).toUpperCase()}
+        </span>
+        <span className="truncate">{row.author.name}</span>
+      </div>
+    );
   }
 
   if (prop.type === "date") {

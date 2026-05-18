@@ -51,7 +51,16 @@ export function DatabasePage({
     width?: "normal" | "wide" | "full";
     font?: "default" | "serif" | "mono";
   };
-  rows: { id: string; parentId: string; title: string; cover?: string | null; dataValues: Record<string, unknown> }[];
+  rows: {
+    id: string;
+    parentId: string;
+    title: string;
+    cover?: string | null;
+    dataValues: Record<string, unknown>;
+    createdAt?: string;
+    updatedAt?: string;
+    author?: { id: string; name: string; color: string } | null;
+  }[];
   rowTemplates?: { id: string; title: string; icon: string | null }[];
   role: "owner" | "editor" | "viewer";
   canChangeSettings?: boolean;
