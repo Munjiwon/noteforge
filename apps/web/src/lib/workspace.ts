@@ -20,7 +20,14 @@ export async function requireWorkspaceMember(slug: string) {
 
   return {
     user: { id: userId, name: session.user.name!, color: (session.user as any).color as string },
-    workspace: { id: ws.id, slug: ws.slug, name: ws.name, icon: ws.icon, color: ws.color },
+    workspace: {
+      id: ws.id,
+      slug: ws.slug,
+      name: ws.name,
+      icon: ws.icon,
+      color: ws.color,
+      defaultFont: ws.defaultFont,
+    },
     role: ws.members[0].role,
   };
 }

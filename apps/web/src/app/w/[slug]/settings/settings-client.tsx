@@ -9,6 +9,7 @@ import {
   renameWorkspace,
   revokeInvite,
   setWorkspaceColor,
+  setWorkspaceDefaultFont,
   setWorkspaceIcon,
   updateMemberRole,
 } from "./actions";
@@ -28,6 +29,7 @@ export function SettingsClient({
   workspaceName,
   workspaceIcon,
   workspaceColor,
+  workspaceDefaultFont = "default",
   currentUserId,
   role,
   members,
@@ -40,6 +42,7 @@ export function SettingsClient({
   workspaceName: string;
   workspaceIcon: string | null;
   workspaceColor: string | null;
+  workspaceDefaultFont?: "default" | "serif" | "mono";
   currentUserId: string;
   role: Role;
   members: {
@@ -139,6 +142,31 @@ export function SettingsClient({
                     Clear icon
                   </button>
                 )}
+              </div>
+            )}
+            {isOwner && (
+              <div className="flex items-center gap-2 mt-2 text-xs">
+                <span className="text-gray-500">Default font:</span>
+                {(["default", "serif", "mono"] as const).map((f) => (
+                  <button
+                    key={f}
+                    onClick={() => start(() => setWorkspaceDefaultFont(slug, f))}
+                    className={
+                      "px-2 py-0.5 rounded border " +
+                      (workspaceDefaultFont === f
+                        ? "bg-gray-900 text-white border-gray-900"
+                        : "border-gray-200 hover:bg-black/5") +
+                      " " +
+                      (f === "serif"
+                        ? "font-serif"
+                        : f === "mono"
+                          ? "font-mono"
+                          : "font-sans")
+                    }
+                  >
+                    {f}
+                  </button>
+                ))}
               </div>
             )}
           </div>

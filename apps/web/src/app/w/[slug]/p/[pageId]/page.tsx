@@ -61,6 +61,7 @@ export default async function PageRoute({
       tags: true,
       viewCount: true,
       wordGoal: true,
+      favorite: true,
       author: { select: { name: true, color: true, avatarUrl: true } },
     },
   });
@@ -366,6 +367,12 @@ export default async function PageRoute({
           note: r.note,
           repeatRule: r.repeatRule,
         }))}
+        workspaceDefaultFont={
+          (ctx.workspace.defaultFont === "serif" ||
+          ctx.workspace.defaultFont === "mono"
+            ? ctx.workspace.defaultFont
+            : "default") as "default" | "serif" | "mono"
+        }
       />
     </>
   );

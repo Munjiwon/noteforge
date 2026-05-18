@@ -107,7 +107,26 @@ export async function highlightAll(root: HTMLElement): Promise<void> {
           }
         }
         shikiPre.classList.add("nf-shiki");
-        pre.replaceWith(shikiPre);
+        // Wrap so we can absolutely-position a Copy button.
+        const wrap = document.createElement("div");
+        wrap.className = "nf-shiki-wrap";
+        const btn = document.createElement("button");
+        btn.className = "nf-shiki-copy";
+        btn.type = "button";
+        btn.textContent = "Copy";
+        btn.addEventListener("click", (ev) => {
+          ev.preventDefault();
+          navigator.clipboard
+            .writeText(text)
+            .then(() => {
+              btn.textContent = "Copied!";
+              setTimeout(() => (btn.textContent = "Copy"), 1200);
+            })
+            .catch(() => {});
+        });
+        wrap.appendChild(shikiPre);
+        wrap.appendChild(btn);
+        pre.replaceWith(wrap);
         const newCode = shikiPre.querySelector("code");
         if (newCode) APPLIED.set(newCode as HTMLElement, key);
       } else {

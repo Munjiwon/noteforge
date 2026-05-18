@@ -49,6 +49,12 @@ export default async function SettingsPage({
       workspaceName={ctx.workspace.name}
       workspaceIcon={ctx.workspace.icon}
       workspaceColor={ctx.workspace.color}
+      workspaceDefaultFont={
+        (ctx.workspace.defaultFont === "serif" ||
+        ctx.workspace.defaultFont === "mono"
+          ? ctx.workspace.defaultFont
+          : "default") as "default" | "serif" | "mono"
+      }
       currentUserId={ctx.user.id}
       role={ctx.role as "owner" | "editor" | "viewer"}
       members={members.map((m) => ({

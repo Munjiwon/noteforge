@@ -39,6 +39,18 @@ export async function setWorkspaceColor(slug: string, color: string | null) {
   revalidatePath(`/w/${slug}`, "layout");
 }
 
+export async function setWorkspaceDefaultFont(
+  slug: string,
+  font: "default" | "serif" | "mono",
+) {
+  const ctx = await assertOwner(slug);
+  await prisma.workspace.update({
+    where: { id: ctx.workspace.id },
+    data: { defaultFont: font },
+  });
+  revalidatePath(`/w/${slug}`, "layout");
+}
+
 export async function updateMemberRole(
   slug: string,
   userId: string,

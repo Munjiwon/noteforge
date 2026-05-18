@@ -6,6 +6,7 @@ import {
   incrementPageView,
   renamePage,
   setPageIcon,
+  toggleFavorite,
 } from "@/app/w/[slug]/actions";
 import { CommentsPanel, type CommentItem } from "./comments-panel";
 import { ShareButton } from "./share-button";
@@ -45,6 +46,7 @@ export function PageView({
   reactions = [],
   subscribed = false,
   reminders = [],
+  workspaceDefaultFont = "default",
   canChangeSettings = false,
 }: {
   slug: string;
@@ -63,6 +65,7 @@ export function PageView({
     width?: "normal" | "wide" | "full";
     font?: "default" | "serif" | "mono";
     isTemplate?: boolean;
+    favorite?: boolean;
   };
   canChangeSettings?: boolean;
   user: { id: string; name: string; color: string };
@@ -91,6 +94,7 @@ export function PageView({
   reactions?: PageReactionGroup[];
   subscribed?: boolean;
   reminders?: PendingReminder[];
+  workspaceDefaultFont?: "default" | "serif" | "mono";
 }) {
   const [title, setTitle] = useState(page.title);
   const [icon, setIcon] = useState(page.icon);
@@ -144,7 +148,10 @@ export function PageView({
   }, [page.id]);
 
   const width = page.width ?? "normal";
-  const font = page.font ?? "default";
+  // page.font="default" means "follow workspace default"
+  const effFont =
+    page.font && page.font !== "default" ? page.font : workspaceDefaultFont;
+  const font = effFont ?? "default";
   return (
     <div className={fontClass(font)}>
       <PageOutline content={page.content} />
@@ -306,17 +313,28 @@ export function PageView({
           />
         )}
       </div>
-      <input
-        ref={titleRef}
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        onBlur={() => {
-          if (title !== page.title) start(() => renamePage(slug, page.id, title));
-        }}
-        disabled={readOnly}
-        placeholder="Untitled"
-        className="w-full text-4xl font-bold outline-none bg-transparent placeholder-gray-300 mb-3"
-      />
+      <div className="flex items-center gap-2 mb-3">
+        <input
+          ref={titleRef}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          onBlur={() => {
+            if (title !== page.title) start(() => renamePage(slug, page.id, title));
+          }}
+          disabled={readOnly}
+          placeholder="Untitled"
+          className="flex-1 text-4xl font-bold outline-none bg-transparent placeholder-gray-300"
+        />
+        {!readOnly && (
+          <button
+            onClick={() => start(() => toggleFavorite(slug, page.id))}
+            className="text-2xl text-gray-300 hover:text-yellow-500 transition leading-none"
+            title={page.favorite ? "Unfavorite" : "Favorite (Cmd+Shift+B)"}
+          >
+            {page.favorite ? "★" : "☆"}
+          </button>
+        )}
+      </div>
       <PageReactions
         slug={slug}
         pageId={page.id}
