@@ -268,6 +268,7 @@ export function PageView({
             slug={slug}
             pageId={page.id}
             snapshots={snapshots}
+            currentContent={page.content}
             canEdit={!readOnly}
           />
           <ShareButton

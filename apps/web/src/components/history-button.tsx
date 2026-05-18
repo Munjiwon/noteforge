@@ -7,6 +7,7 @@ import {
   restoreSnapshot,
   takeSnapshot,
 } from "@/app/w/[slug]/actions";
+import { SnapshotDiff } from "./snapshot-diff";
 
 const StaticEditor = dynamic(
   () => import("./static-editor").then((m) => m.StaticEditor),
@@ -24,15 +25,18 @@ export function HistoryButton({
   slug,
   pageId,
   snapshots,
+  currentContent,
   canEdit,
 }: {
   slug: string;
   pageId: string;
   snapshots: SnapshotItem[];
+  currentContent: string;
   canEdit: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<string | null>(null);
+  const [mode, setMode] = useState<"preview" | "diff">("preview");
   const [, start] = useTransition();
 
   useEffect(() => {
@@ -137,19 +141,52 @@ export function HistoryButton({
               <div className="px-4 py-2 border-b border-gray-100 flex items-center justify-between">
                 <span className="text-sm font-medium">
                   {current
-                    ? `Preview · ${new Date(current.createdAt).toLocaleString()}`
+                    ? `${mode === "diff" ? "Diff" : "Preview"} · ${new Date(current.createdAt).toLocaleString()}`
                     : "Preview"}
                 </span>
-                <button
-                  onClick={() => setOpen(false)}
-                  className="text-gray-400 hover:text-gray-900"
-                >
-                  ✕
-                </button>
+                <div className="flex items-center gap-1">
+                  <div className="flex text-[10px] border border-gray-200 rounded overflow-hidden">
+                    <button
+                      onClick={() => setMode("preview")}
+                      className={
+                        "px-2 py-0.5 " +
+                        (mode === "preview"
+                          ? "bg-gray-900 text-white"
+                          : "hover:bg-black/5 text-gray-500")
+                      }
+                    >
+                      Preview
+                    </button>
+                    <button
+                      onClick={() => setMode("diff")}
+                      className={
+                        "px-2 py-0.5 " +
+                        (mode === "diff"
+                          ? "bg-gray-900 text-white"
+                          : "hover:bg-black/5 text-gray-500")
+                      }
+                    >
+                      Compare
+                    </button>
+                  </div>
+                  <button
+                    onClick={() => setOpen(false)}
+                    className="text-gray-400 hover:text-gray-900 px-1"
+                  >
+                    ✕
+                  </button>
+                </div>
               </div>
               <div className="flex-1 overflow-y-auto p-6">
                 {current ? (
-                  <StaticEditor content={current.content} />
+                  mode === "diff" ? (
+                    <SnapshotDiff
+                      oldContent={current.content}
+                      newContent={currentContent}
+                    />
+                  ) : (
+                    <StaticEditor content={current.content} />
+                  )
                 ) : (
                   <p className="text-xs text-gray-400">Select a version on the left.</p>
                 )}
