@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { randomBytes } from "node:crypto";
+import { randomBytes } from "crypto";
 import { prisma } from "db";
 import { auth } from "@/lib/auth";
 

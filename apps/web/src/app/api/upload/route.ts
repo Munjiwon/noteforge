@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import path from "node:path";
-import { randomBytes } from "node:crypto";
+import { randomBytes } from "crypto";
 import { auth } from "@/lib/auth";
 import {
   MAX_UPLOAD_BYTES,

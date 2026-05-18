@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "db";
 import { requireWorkspaceMember } from "@/lib/workspace";
-import { randomBytes } from "node:crypto";
+import { randomBytes } from "crypto";
 import { blocksToHtml, blocksToMarkdown, markdownToBlocks } from "@/lib/markdown";
 import { PAGE_TEMPLATES } from "@/lib/page-templates";
 

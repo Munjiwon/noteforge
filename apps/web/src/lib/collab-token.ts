@@ -1,4 +1,4 @@
-import { createHmac } from "node:crypto";
+import { createHmac } from "crypto";
 
 export type CollabTokenPayload = {
   uid: string;

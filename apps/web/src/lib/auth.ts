@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
-import { randomBytes } from "node:crypto";
+import { randomBytes } from "crypto";
 import { prisma } from "db";
 import { z } from "zod";
 
