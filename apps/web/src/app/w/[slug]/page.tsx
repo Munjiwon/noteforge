@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { requireWorkspaceMember } from "@/lib/workspace";
 import { prisma } from "db";
+import { TemplateGalleryButton } from "@/components/template-gallery";
 
 function greeting(): string {
   const h = new Date().getHours();
@@ -91,7 +92,7 @@ export default async function WorkspaceHome({
         </p>
       </header>
 
-      <section className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+      <section className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-8">
         <DashLink
           href={`/w/${params.slug}/today`}
           icon="☀️"
@@ -113,6 +114,7 @@ export default async function WorkspaceHome({
           icon="🏷"
           label="Tags"
         />
+        <TemplateGalleryButton slug={params.slug} />
       </section>
 
       <section className="grid sm:grid-cols-2 gap-6 mb-8">
