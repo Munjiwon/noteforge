@@ -15,6 +15,7 @@ import {
   configureRollup,
   deleteColumn,
   deleteRow,
+  recreateRow,
   renameColumn,
   setColumnDescription,
   setColumnWidth,
@@ -139,6 +140,14 @@ export function DatabaseView({
   const [dragRowId, setDragRowId] = useState<string | null>(null);
   const [dragOverRowId, setDragOverRowId] = useState<string | null>(null);
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
+  const [lastDeleted, setLastDeleted] = useState<
+    { title: string; dataValues: Record<string, unknown> } | null
+  >(null);
+  useEffect(() => {
+    if (!lastDeleted) return;
+    const t = setTimeout(() => setLastDeleted(null), 5000);
+    return () => clearTimeout(t);
+  }, [lastDeleted]);
   const toggleRowSelected = (id: string) =>
     setSelectedRows((prev) => {
       const next = new Set(prev);
@@ -166,6 +175,23 @@ export function DatabaseView({
 
   return (
     <div className="w-full">
+      {lastDeleted && !readOnly && (
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-gray-900 text-white text-xs rounded-lg shadow-lg px-3 py-2 flex items-center gap-2">
+          <span>Row deleted — "{lastDeleted.title || "Untitled"}"</span>
+          <button
+            onClick={() => {
+              const d = lastDeleted;
+              setLastDeleted(null);
+              start(async () => {
+                await recreateRow(slug, dbId, d.title, d.dataValues);
+              });
+            }}
+            className="px-2 py-0.5 rounded bg-white/20 hover:bg-white/30"
+          >
+            Undo
+          </button>
+        </div>
+      )}
       {selectedRows.size > 0 && !readOnly && (
         <div className="mb-2 flex items-center gap-2 text-xs bg-blue-50 border border-blue-200 rounded px-3 py-1.5">
           <span className="text-blue-700">{selectedRows.size} selected</span>
@@ -290,6 +316,8 @@ export function DatabaseView({
                 isDropOver: dragOverRowId === row.id,
                 isSelected: selectedRows.has(row.id),
                 onToggleSelected: () => toggleRowSelected(row.id),
+                onBeforeDelete: (r: Row) =>
+                  setLastDeleted({ title: r.title, dataValues: r.dataValues }),
                 onDragStart: () => setDragRowId(row.id),
                 onDragOver: () => setDragOverRowId(row.id),
                 onDragEnd: () => {
@@ -616,6 +644,7 @@ function RowRow({
   isDropOver,
   isSelected,
   onToggleSelected,
+  onBeforeDelete,
   onDragStart,
   onDragOver,
   onDragEnd,
@@ -630,6 +659,7 @@ function RowRow({
   isDropOver?: boolean;
   isSelected?: boolean;
   onToggleSelected?: () => void;
+  onBeforeDelete?: (row: Row) => void;
   onDragStart?: () => void;
   onDragOver?: () => void;
   onDragEnd?: () => void;
@@ -730,9 +760,9 @@ function RowRow({
             <button
               className="text-xs text-gray-400 hover:text-red-600 px-2"
               onClick={() => {
-                if (confirm("Delete this row?")) {
-                  start(() => deleteRow(slug, row.id));
-                }
+                if (!confirm("Delete this row?")) return;
+                onBeforeDelete?.(row);
+                start(() => deleteRow(slug, row.id));
               }}
             >
               ✕

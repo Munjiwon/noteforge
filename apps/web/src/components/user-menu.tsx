@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { signOut } from "next-auth/react";
 import { ThemeToggle } from "./theme-toggle";
 import { updateUserProfile } from "@/app/notification-actions";
+import { useLang } from "@/lib/i18n";
 
 const COLORS = [
   "#3b82f6", "#10b981", "#f59e0b", "#ef4444",
@@ -12,6 +13,7 @@ const COLORS = [
 
 export function UserMenu({ user }: { user: { name: string; color: string } }) {
   const [editing, setEditing] = useState(false);
+  const [lang, setLang] = useLang();
   return (
     <div className="flex items-center gap-2">
       <button
@@ -27,6 +29,13 @@ export function UserMenu({ user }: { user: { name: string; color: string } }) {
         className="flex-1 text-sm truncate text-left hover:underline"
       >
         {user.name}
+      </button>
+      <button
+        onClick={() => setLang(lang === "en" ? "ko" : "en")}
+        className="text-[10px] text-gray-500 hover:text-gray-900 uppercase"
+        title="Toggle language"
+      >
+        {lang}
       </button>
       <ThemeToggle />
       <button

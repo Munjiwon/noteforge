@@ -24,6 +24,7 @@ import { UserMenu } from "./user-menu";
 import { NotificationsButton, type NotifItem } from "./notifications-button";
 import { ImportButton } from "./import-button";
 import { PageMovePicker } from "./page-move-picker";
+import { t, useLang } from "@/lib/i18n";
 
 type SidebarPage = {
   id: string;
@@ -95,6 +96,7 @@ export function Sidebar({
 }) {
   const params = useParams<{ pageId?: string }>();
   const activePageId = params.pageId;
+  const [lang] = useLang();
   const [filterQ, setFilterQ] = useState("");
   const filteredPages = useMemo(() => {
     const q = filterQ.trim().toLowerCase();
@@ -538,7 +540,7 @@ export function Sidebar({
           className="flex-1 flex items-center gap-2 px-2 py-1.5 rounded hover:bg-black/5 text-sm text-gray-600"
         >
           <span className="text-gray-400">🔎</span>
-          <span className="flex-1 text-left">Search</span>
+          <span className="flex-1 text-left">{t("Search", lang)}</span>
           <kbd className="text-[10px] text-gray-400 border border-gray-200 rounded px-1">⌘K</kbd>
         </button>
         <NotificationsButton notifications={notifications} workspaceSlug={currentSlug} />
@@ -547,7 +549,7 @@ export function Sidebar({
       {recent.length > 0 && (
         <>
           <div className="px-3 pt-3 pb-1 text-xs uppercase tracking-wide text-gray-500">
-            Recent
+            {t("Recent", lang)}
           </div>
           <ul className="pb-1">
             {recent.map((r) => (
@@ -575,7 +577,7 @@ export function Sidebar({
       {favorites.length > 0 && (
         <>
           <div className="px-3 pt-3 pb-1 text-xs uppercase tracking-wide text-gray-500">
-            Favorites
+            {t("Favorites", lang)}
           </div>
           <ul className="pb-1">
             {orderedFavorites.map((f, i) => (
@@ -629,7 +631,7 @@ export function Sidebar({
 
       <div className="flex items-center justify-between px-3 pt-2 pb-1 text-xs uppercase tracking-wide text-gray-500">
         <span className="flex items-center gap-2">
-          Pages
+          {t("Pages", lang)}
           {role !== "viewer" && (
             <button
               onClick={() => {
@@ -740,7 +742,7 @@ export function Sidebar({
         <details className="border-t border-black/10 px-3 py-2 group">
           <summary className="text-xs uppercase tracking-wide text-gray-500 cursor-pointer flex items-center gap-1 list-none">
             <span className="text-gray-400 group-open:rotate-90 transition inline-block">▸</span>
-            🗑 Trash
+            {t("🗑 Trash", lang)}
             <span className="ml-1 text-gray-400">({trashed.length})</span>
             {role !== "viewer" && trashed.length > 0 && (
               <button
@@ -821,13 +823,13 @@ export function Sidebar({
           href={`/w/${currentSlug}/activity`}
           className="block text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
         >
-          📜 Activity
+          {t("📜 Activity", lang)}
         </Link>
         <Link
           href={`/w/${currentSlug}/settings`}
           className="block text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
         >
-          ⚙ Settings
+          {t("⚙ Settings", lang)}
         </Link>
         {role !== "viewer" && <ImportButton slug={currentSlug} />}
         {role === "owner" && <InviteButton slug={currentSlug} />}

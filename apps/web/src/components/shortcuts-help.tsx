@@ -46,6 +46,7 @@ const GROUPS: { name: string; items: { keys: string; desc: string }[] }[] = [
   {
     name: "Sidebar",
     items: [
+      { keys: "Tab", desc: "Cycle through sidebar pages (browser default focus)" },
       { keys: "Hover ★", desc: "Toggle favorite on a page" },
       { keys: "+", desc: "Add sub-page or sub-database" },
       { keys: "Drag page", desc: "Reorder or nest under another page" },

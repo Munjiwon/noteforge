@@ -109,6 +109,35 @@ export async function setPageCover(slug: string, pageId: string, cover: string |
   revalidatePath(`/w/${slug}/p/${pageId}`);
 }
 
+export async function setPageTags(
+  slug: string,
+  pageId: string,
+  tags: string[],
+) {
+  const ctx = await assertEditor(slug);
+  const cleaned = Array.from(
+    new Set(tags.map((t) => t.trim()).filter(Boolean).slice(0, 20)),
+  );
+  await prisma.page.updateMany({
+    where: { id: pageId, workspaceId: ctx.workspace.id },
+    data: { tags: JSON.stringify(cleaned) },
+  });
+  revalidatePath(`/w/${slug}/p/${pageId}`);
+}
+
+export async function setPageCoverPos(
+  slug: string,
+  pageId: string,
+  pos: "top" | "center" | "bottom",
+) {
+  const ctx = await assertEditor(slug);
+  await prisma.page.updateMany({
+    where: { id: pageId, workspaceId: ctx.workspace.id },
+    data: { coverPos: pos },
+  });
+  revalidatePath(`/w/${slug}/p/${pageId}`);
+}
+
 async function collectDescendantIds(workspaceId: string, rootId: string): Promise<string[]> {
   const ids: string[] = [rootId];
   let frontier = [rootId];

@@ -81,6 +81,8 @@ model Page {
   position    Float     @default(0)
   authorId    String?
   cover       String?
+  coverPos    String    @default("center") // "top" | "center" | "bottom"
+  tags        String    @default("[]") // JSON array of strings
   favorite    Boolean   @default(false)
   locked      Boolean   @default(false)
   width       String    @default("normal") // "normal" | "wide" | "full"

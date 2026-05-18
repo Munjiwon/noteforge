@@ -49,6 +49,7 @@ export function SettingsClient({
   const [deleteConfirm, setDeleteConfirm] = useState("");
   const [tokenName, setTokenName] = useState("");
   const [newToken, setNewToken] = useState<string | null>(null);
+  const [memberQ, setMemberQ] = useState("");
   const isOwner = role === "owner";
   const PRESET_COLORS = ["#111111", "#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899", "#0ea5e9"];
 
@@ -176,8 +177,18 @@ export function SettingsClient({
 
       <section>
         <h2 className="text-sm font-medium text-gray-700 mb-2">Members ({members.length})</h2>
+        {members.length > 6 && (
+          <input
+            value={memberQ}
+            onChange={(e) => setMemberQ(e.target.value)}
+            placeholder="Search members…"
+            className="w-full text-sm border border-gray-200 rounded px-2 py-1 outline-none mb-2"
+          />
+        )}
         <ul className="border border-gray-200 rounded divide-y divide-gray-100">
-          {members.map((m) => {
+          {members
+            .filter((m) => !memberQ ? true : (m.name + " " + m.email).toLowerCase().includes(memberQ.toLowerCase()))
+            .map((m) => {
             const isMe = m.userId === currentUserId;
             return (
               <li key={m.userId} className="flex items-center gap-3 px-3 py-2">

@@ -16,6 +16,7 @@ import { PageInfo } from "./page-info";
 import { PageStyleMenu, fontClass, widthClass } from "./page-style-menu";
 import { EmojiPicker } from "./emoji-picker";
 import { PageOutline } from "./page-outline";
+import { PageTags, parseTags } from "./page-tags";
 import type { PermItem } from "./share-button";
 
 const Editor = dynamic(() => import("./editor").then((m) => m.Editor), {
@@ -44,6 +45,8 @@ export function PageView({
     icon: string | null;
     content: string;
     cover?: string | null;
+    coverPos?: string | null;
+    tags?: string | null;
     publicAccess?: "none" | "view";
     publicSlug?: string | null;
     locked?: boolean;
@@ -128,6 +131,11 @@ export function PageView({
         slug={slug}
         pageId={page.id}
         cover={page.cover ?? null}
+        coverPos={
+          page.coverPos === "top" || page.coverPos === "bottom"
+            ? page.coverPos
+            : "center"
+        }
         readOnly={readOnly}
       />
       <div className={`${widthClass(width)} mx-auto px-12 md:px-24 py-10`}>
@@ -217,7 +225,13 @@ export function PageView({
         }}
         disabled={readOnly}
         placeholder="Untitled"
-        className="w-full text-4xl font-bold outline-none bg-transparent placeholder-gray-300 mb-4"
+        className="w-full text-4xl font-bold outline-none bg-transparent placeholder-gray-300 mb-3"
+      />
+      <PageTags
+        slug={slug}
+        pageId={page.id}
+        initial={parseTags(page.tags ?? null)}
+        readOnly={readOnly}
       />
       <Editor
         pageId={page.id}

@@ -74,6 +74,25 @@ export function Editor({
   }, [pageId, provider]);
 
   const [peers, setPeers] = useState<Peer[]>([]);
+  const [syncStatus, setSyncStatus] = useState<"offline" | "connecting" | "syncing" | "synced">(
+    "offline",
+  );
+  useEffect(() => {
+    const onStatus = (ev: { status: "connected" | "disconnected" | "connecting" }) => {
+      if (ev.status === "connected") setSyncStatus("syncing");
+      else if (ev.status === "disconnected") setSyncStatus("offline");
+      else if (ev.status === "connecting") setSyncStatus("connecting");
+    };
+    const onSync = (synced: boolean) => {
+      setSyncStatus(synced ? "synced" : "syncing");
+    };
+    provider.on("status", onStatus);
+    provider.on("sync", onSync);
+    return () => {
+      provider.off("status", onStatus);
+      provider.off("sync", onSync);
+    };
+  }, [provider]);
 
   useEffect(() => {
     const update = () => {
@@ -167,7 +186,7 @@ export function Editor({
 
   return (
     <div>
-      <PresenceBar self={user} peers={peers} />
+      <PresenceBar self={user} peers={peers} syncStatus={syncStatus} />
       <div className="flex gap-2 mb-2">
         {!readOnly && (
           <button
@@ -544,10 +563,19 @@ export function Editor({
 function PresenceBar({
   self,
   peers,
+  syncStatus,
 }: {
   self: { name: string; color: string };
   peers: Peer[];
+  syncStatus?: "offline" | "connecting" | "syncing" | "synced";
 }) {
+  const statusDot: Record<NonNullable<typeof syncStatus>, { color: string; label: string }> = {
+    offline: { color: "bg-gray-400", label: "Offline" },
+    connecting: { color: "bg-yellow-400", label: "Connecting…" },
+    syncing: { color: "bg-yellow-400 animate-pulse", label: "Syncing…" },
+    synced: { color: "bg-emerald-500", label: "Synced" },
+  };
+  const dot = syncStatus ? statusDot[syncStatus] : null;
   return (
     <div className="flex items-center gap-1 mb-3 -ml-2">
       <Avatar name={self.name} color={self.color} title={`${self.name} (you)`} />
@@ -557,6 +585,15 @@ function PresenceBar({
       {peers.length > 0 && (
         <span className="ml-2 text-xs text-gray-500">
           {peers.length + 1} editing
+        </span>
+      )}
+      {dot && (
+        <span
+          className="ml-auto inline-flex items-center gap-1 text-[11px] text-gray-500"
+          title={dot.label}
+        >
+          <span className={`w-2 h-2 rounded-full ${dot.color}`} />
+          {dot.label}
         </span>
       )}
     </div>

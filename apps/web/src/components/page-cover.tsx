@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import { setPageCover } from "@/app/w/[slug]/actions";
+import { setPageCover, setPageCoverPos } from "@/app/w/[slug]/actions";
 
 const PRESET_COVERS = [
   "https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=1600&q=70",
@@ -31,11 +31,13 @@ export function PageCover({
   slug,
   pageId,
   cover,
+  coverPos,
   readOnly,
 }: {
   slug: string;
   pageId: string;
   cover: string | null;
+  coverPos?: "top" | "center" | "bottom";
   readOnly: boolean;
 }) {
   const [open, setOpen] = useState(false);
@@ -95,6 +97,7 @@ export function PageCover({
     );
   }
 
+  const pos = coverPos ?? "center";
   return (
     <div className="relative group">
       {isGradient(cover) ? (
@@ -107,7 +110,24 @@ export function PageCover({
           src={cover}
           alt=""
           className="w-full h-[200px] md:h-[260px] object-cover"
+          style={{ objectPosition: pos === "top" ? "top" : pos === "bottom" ? "bottom" : "center" }}
         />
+      )}
+      {!readOnly && !isGradient(cover) && (
+        <div className="absolute right-4 top-4 opacity-0 group-hover:opacity-100 flex gap-0.5 bg-white/80 backdrop-blur rounded text-xs border border-gray-200">
+          {(["top", "center", "bottom"] as const).map((p) => (
+            <button
+              key={p}
+              onClick={() => start(() => setPageCoverPos(slug, pageId, p))}
+              className={
+                "px-1.5 py-0.5 " + (pos === p ? "bg-gray-900 text-white" : "text-gray-600 hover:bg-black/5")
+              }
+              title={`Align cover ${p}`}
+            >
+              {p === "top" ? "⬆" : p === "bottom" ? "⬇" : "⬌"}
+            </button>
+          ))}
+        </div>
       )}
       {!readOnly && (
         <div className="absolute right-4 bottom-4 opacity-0 group-hover:opacity-100 flex gap-1">

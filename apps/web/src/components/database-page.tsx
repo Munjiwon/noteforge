@@ -35,6 +35,7 @@ export function DatabasePage({
     icon: string | null;
     schema: DbSchema;
     cover?: string | null;
+    coverPos?: string | null;
     publicAccess?: "none" | "view";
     publicSlug?: string | null;
     permissions?: PermItem[];
@@ -80,6 +81,9 @@ export function DatabasePage({
         slug={slug}
         pageId={db.id}
         cover={db.cover ?? null}
+        coverPos={
+          db.coverPos === "top" || db.coverPos === "bottom" ? db.coverPos : "center"
+        }
         readOnly={readOnly}
       />
       <div className={`${width === "full" ? "max-w-none" : width === "wide" ? "max-w-7xl" : "max-w-6xl"} mx-auto px-12 py-10`}>
