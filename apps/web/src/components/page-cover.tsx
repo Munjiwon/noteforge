@@ -10,6 +10,23 @@ const PRESET_COVERS = [
   "https://images.unsplash.com/photo-1518562180175-34a163b1a9a6?w=1600&q=70",
 ];
 
+const PRESET_GRADIENTS = [
+  "gradient:linear-gradient(135deg,#fbcfe8 0%,#a78bfa 100%)",
+  "gradient:linear-gradient(135deg,#fde68a 0%,#fb7185 100%)",
+  "gradient:linear-gradient(135deg,#bae6fd 0%,#6366f1 100%)",
+  "gradient:linear-gradient(135deg,#bbf7d0 0%,#14b8a6 100%)",
+  "gradient:linear-gradient(135deg,#fed7aa 0%,#f43f5e 100%)",
+  "gradient:linear-gradient(135deg,#111827 0%,#374151 100%)",
+];
+
+export function isGradient(cover: string | null): boolean {
+  return !!cover && cover.startsWith("gradient:");
+}
+
+export function gradientStyle(cover: string): React.CSSProperties {
+  return { background: cover.slice("gradient:".length) };
+}
+
 export function PageCover({
   slug,
   pageId,
@@ -80,11 +97,18 @@ export function PageCover({
 
   return (
     <div className="relative group">
-      <img
-        src={cover}
-        alt=""
-        className="w-full h-[200px] md:h-[260px] object-cover"
-      />
+      {isGradient(cover) ? (
+        <div
+          className="w-full h-[200px] md:h-[260px]"
+          style={gradientStyle(cover)}
+        />
+      ) : (
+        <img
+          src={cover}
+          alt=""
+          className="w-full h-[200px] md:h-[260px] object-cover"
+        />
+      )}
       {!readOnly && (
         <div className="absolute right-4 bottom-4 opacity-0 group-hover:opacity-100 flex gap-1">
           <button
@@ -147,6 +171,18 @@ function CoverPickerInline({
           >
             <img src={url} alt="" className="w-full h-full object-cover" />
           </button>
+        ))}
+      </div>
+      <div className="text-[10px] uppercase text-gray-500 px-1 mt-2 mb-1">Gradients</div>
+      <div className="grid grid-cols-6 gap-1">
+        {PRESET_GRADIENTS.map((g) => (
+          <button
+            key={g}
+            onClick={() => onPick(g)}
+            className="aspect-[16/9] overflow-hidden rounded hover:ring-2 hover:ring-gray-400"
+            style={gradientStyle(g)}
+            aria-label="gradient cover"
+          />
         ))}
       </div>
       <button

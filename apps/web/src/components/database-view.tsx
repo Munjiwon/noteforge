@@ -48,6 +48,7 @@ const TYPE_LABELS: Record<DbPropType, string> = {
   checkbox: "Checkbox",
   url: "URL",
   email: "Email",
+  phone: "Phone",
   person: "Person",
   files: "Files",
   relation: "Relation",
@@ -64,11 +65,29 @@ const TYPE_ICONS: Record<DbPropType, string> = {
   checkbox: "☑",
   url: "🔗",
   email: "✉",
+  phone: "☎",
   person: "👤",
   files: "📎",
   relation: "↔",
   rollup: "Σ",
   formula: "ƒ",
+};
+const TYPE_GROUP: Record<DbPropType, "Basic" | "Advanced" | "Computed"> = {
+  text: "Basic",
+  number: "Basic",
+  select: "Basic",
+  multi_select: "Basic",
+  status: "Basic",
+  date: "Basic",
+  checkbox: "Basic",
+  url: "Advanced",
+  email: "Advanced",
+  phone: "Advanced",
+  person: "Advanced",
+  files: "Advanced",
+  relation: "Computed",
+  rollup: "Computed",
+  formula: "Computed",
 };
 
 export function DatabaseView({
@@ -151,24 +170,37 @@ export function DatabaseView({
                       + Add column
                     </button>
                     {addingType && (
-                      <div className="absolute top-full left-0 z-30 bg-white shadow-lg border rounded p-1 min-w-[150px]">
-                        {(Object.keys(TYPE_LABELS) as DbPropType[]).map((t) => (
-                          <button
-                            key={t}
-                            className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded"
-                            onClick={() => {
-                              callAddColumn(t);
-                              setAddingType(null);
-                            }}
-                          >
-                            <span className="inline-block w-5 text-gray-500">
-                              {TYPE_ICONS[t]}
-                            </span>
-                            {TYPE_LABELS[t]}
-                          </button>
-                        ))}
+                      <div className="absolute top-full left-0 z-30 bg-white shadow-lg border rounded p-1 min-w-[180px] max-h-80 overflow-y-auto">
+                        {(["Basic", "Advanced", "Computed"] as const).map((group) => {
+                          const types = (Object.keys(TYPE_LABELS) as DbPropType[]).filter(
+                            (t) => TYPE_GROUP[t] === group,
+                          );
+                          if (types.length === 0) return null;
+                          return (
+                            <div key={group} className="mb-1 last:mb-0">
+                              <div className="text-[10px] uppercase text-gray-500 px-2 py-0.5">
+                                {group}
+                              </div>
+                              {types.map((t) => (
+                                <button
+                                  key={t}
+                                  className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded"
+                                  onClick={() => {
+                                    callAddColumn(t);
+                                    setAddingType(null);
+                                  }}
+                                >
+                                  <span className="inline-block w-5 text-gray-500">
+                                    {TYPE_ICONS[t]}
+                                  </span>
+                                  {TYPE_LABELS[t]}
+                                </button>
+                              ))}
+                            </div>
+                          );
+                        })}
                         <button
-                          className="block w-full text-left px-2 py-1 text-xs text-gray-500 hover:bg-black/5 rounded"
+                          className="block w-full text-left px-2 py-1 text-xs text-gray-500 hover:bg-black/5 rounded border-t mt-1 pt-1"
                           onClick={() => setAddingType(null)}
                         >
                           Cancel
@@ -684,6 +716,25 @@ function Cell({
         disabled={readOnly}
         placeholder="name@example.com"
         className="px-3 py-2 text-sm bg-transparent outline-none w-full"
+        onBlur={(e) => {
+          const v = e.target.value;
+          if (v !== (value ?? "")) {
+            start(() => updateCell(slug, rowId, prop.id, v || null));
+          }
+        }}
+      />
+    );
+  }
+
+  if (prop.type === "phone") {
+    const str = typeof value === "string" ? value : "";
+    return (
+      <input
+        type="tel"
+        defaultValue={str}
+        disabled={readOnly}
+        placeholder="+1 555-0100"
+        className="px-3 py-2 text-sm bg-transparent outline-none w-full tabular-nums"
         onBlur={(e) => {
           const v = e.target.value;
           if (v !== (value ?? "")) {

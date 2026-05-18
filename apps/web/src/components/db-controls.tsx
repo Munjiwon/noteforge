@@ -28,6 +28,7 @@ const OPS_BY_TYPE: Record<DbProp["type"], DbFilterOp[]> = {
   date: ["eq", "before", "after", "empty", "not_empty"],
   checkbox: ["checked", "unchecked"],
   person: ["eq", "ne", "empty", "not_empty"],
+  phone: ["contains", "eq", "ne", "empty", "not_empty"],
   files: ["empty", "not_empty"],
   relation: ["empty", "not_empty"],
   rollup: ["eq", "ne", "empty", "not_empty"],

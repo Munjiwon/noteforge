@@ -7,6 +7,7 @@ const GROUPS: { name: string; items: { keys: string; desc: string }[] }[] = [
     name: "Navigation",
     items: [
       { keys: "⌘ K", desc: "Open search palette" },
+      { keys: "⌘ ⇧ L", desc: "Switch workspace" },
       { keys: "?", desc: "Show this help" },
       { keys: "Esc", desc: "Close dialogs / palettes" },
     ],

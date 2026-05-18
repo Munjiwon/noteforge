@@ -11,6 +11,7 @@ import {
   createPageFromTemplate,
   deletePage,
   duplicatePage,
+  emptyTrash,
   purgePage,
   reorderPage,
   restorePage,
@@ -32,6 +33,7 @@ type SidebarPage = {
   kind: string;
   favorite?: boolean;
   preview?: string;
+  count?: number;
 };
 
 type TrashItem = { id: string; title: string; icon: string | null; kind: string };
@@ -169,6 +171,35 @@ export function Sidebar({
       localStorage.setItem("collab-notion-sidebar-collapsed", collapsed ? "1" : "0");
     } catch {}
   }, [collapsed]);
+
+  const [favOrder, setFavOrder] = useState<string[]>([]);
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("collab-notion-fav-order");
+      if (raw) setFavOrder(JSON.parse(raw));
+    } catch {}
+  }, []);
+  const orderedFavorites = useMemo(() => {
+    const byId = new Map(favorites.map((f) => [f.id, f]));
+    const ordered = favOrder
+      .filter((id) => byId.has(id))
+      .map((id) => byId.get(id)!);
+    const rest = favorites.filter((f) => !favOrder.includes(f.id));
+    return [...ordered, ...rest];
+  }, [favorites, favOrder]);
+  const moveFav = (id: string, dir: -1 | 1) => {
+    const ids = orderedFavorites.map((f) => f.id);
+    const idx = ids.indexOf(id);
+    const ni = idx + dir;
+    if (ni < 0 || ni >= ids.length) return;
+    const next = [...ids];
+    next.splice(idx, 1);
+    next.splice(ni, 0, id);
+    setFavOrder(next);
+    try {
+      localStorage.setItem("collab-notion-fav-order", JSON.stringify(next));
+    } catch {}
+  };
   const [selectMode, setSelectMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const toggleSelected = (id: string) =>
@@ -278,12 +309,19 @@ export function Sidebar({
           )}
           <Link
             href={`/w/${currentSlug}/p/${node.id}`}
-            className="flex-1 truncate text-sm py-0.5"
+            className="flex-1 truncate text-sm py-0.5 flex items-center"
           >
             <span className="mr-1">
               {node.icon ?? (node.kind === "database" ? "📊" : "📄")}
             </span>
-            {node.title || (node.kind === "database" ? "Untitled database" : "Untitled")}
+            <span className="truncate flex-1">
+              {node.title || (node.kind === "database" ? "Untitled database" : "Untitled")}
+            </span>
+            {typeof node.count === "number" && node.count > 0 && (
+              <span className="text-[10px] text-gray-400 ml-1 shrink-0">
+                {node.count}
+              </span>
+            )}
           </Link>
           <button
             onClick={() => onToggleFav(node.id)}
@@ -469,13 +507,13 @@ export function Sidebar({
             Favorites
           </div>
           <ul className="pb-1">
-            {favorites.map((f) => (
-              <li key={f.id}>
+            {orderedFavorites.map((f, i) => (
+              <li key={f.id} className="group/fav flex items-center pr-2">
                 <Link
                   href={`/w/${currentSlug}/p/${f.id}`}
                   title={f.preview || undefined}
                   className={clsx(
-                    "flex items-center gap-1 px-3 py-1 rounded hover:bg-black/5 text-sm",
+                    "flex-1 flex items-center gap-1 px-3 py-1 rounded hover:bg-black/5 text-sm",
                     f.id === activePageId && "bg-black/10",
                   )}
                 >
@@ -487,6 +525,22 @@ export function Sidebar({
                     {f.title || (f.kind === "database" ? "Untitled database" : "Untitled")}
                   </span>
                 </Link>
+                <span className="opacity-0 group-hover/fav:opacity-100 flex gap-0.5">
+                  <button
+                    onClick={() => moveFav(f.id, -1)}
+                    disabled={i === 0}
+                    className="text-[10px] text-gray-400 hover:text-gray-900 disabled:opacity-20"
+                  >
+                    ↑
+                  </button>
+                  <button
+                    onClick={() => moveFav(f.id, 1)}
+                    disabled={i === orderedFavorites.length - 1}
+                    className="text-[10px] text-gray-400 hover:text-gray-900 disabled:opacity-20"
+                  >
+                    ↓
+                  </button>
+                </span>
               </li>
             ))}
           </ul>
@@ -608,6 +662,21 @@ export function Sidebar({
             <span className="text-gray-400 group-open:rotate-90 transition inline-block">▸</span>
             🗑 Trash
             <span className="ml-1 text-gray-400">({trashed.length})</span>
+            {role !== "viewer" && trashed.length > 0 && (
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (!confirm(`Permanently delete all ${trashed.length} trashed page(s)?`)) return;
+                  startTransition(() => {
+                    emptyTrash(currentSlug);
+                  });
+                }}
+                className="ml-auto text-[10px] normal-case tracking-normal text-red-600 hover:underline"
+              >
+                Empty
+              </button>
+            )}
           </summary>
           <ul className="mt-1 space-y-0.5 text-sm">
             {trashed.map((t) => (

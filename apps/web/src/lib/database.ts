@@ -11,6 +11,7 @@ export type DbPropType =
   | "checkbox"
   | "url"
   | "email"
+  | "phone"
   | "person"
   | "files"
   | "relation"
@@ -55,6 +56,7 @@ export type DbProp =
   | { id: string; name: string; description?: string; type: "checkbox" }
   | { id: string; name: string; description?: string; type: "url" }
   | { id: string; name: string; description?: string; type: "email" }
+  | { id: string; name: string; description?: string; type: "phone" }
   | { id: string; name: string; description?: string; type: "person" }
   | { id: string; name: string; description?: string; type: "files" }
   | { id: string; name: string; description?: string; type: "relation"; targetDbId: string }

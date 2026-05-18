@@ -59,3 +59,22 @@ body {
 .dark .bn-editor {
   color: #e5e7eb;
 }
+
+@media print {
+  aside,
+  .no-print,
+  .bn-side-menu,
+  .bn-formatting-toolbar,
+  .mobile-only,
+  button[title="Page info"],
+  button[title="Page style"] {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+    color: #000;
+  }
+  main {
+    overflow: visible !important;
+  }
+}

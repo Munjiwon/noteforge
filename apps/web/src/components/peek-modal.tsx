@@ -94,7 +94,14 @@ export function PeekModal({
         {data && (
           <div>
             {data.cover && (
-              <img src={data.cover} alt="" className="w-full h-[160px] object-cover" />
+              data.cover.startsWith("gradient:") ? (
+                <div
+                  className="w-full h-[160px]"
+                  style={{ background: data.cover.slice("gradient:".length) }}
+                />
+              ) : (
+                <img src={data.cover} alt="" className="w-full h-[160px] object-cover" />
+              )
             )}
             <div className="px-6 py-6">
               <div className="text-4xl leading-none mb-2">{data.icon ?? (data.kind === "database" ? "📊" : "📄")}</div>

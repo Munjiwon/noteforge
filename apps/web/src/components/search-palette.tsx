@@ -12,6 +12,23 @@ type Hit = {
   snippet: string | null;
 };
 
+function markMatch(text: string, q: string): React.ReactNode {
+  const needle = q.trim();
+  if (!needle) return text;
+  const re = new RegExp(`(${escapeReg(needle)})`, "gi");
+  const parts = text.split(re);
+  return parts.map((p, i) =>
+    p.toLowerCase() === needle.toLowerCase() ? (
+      <mark key={i} className="bg-yellow-100 rounded px-0.5">{p}</mark>
+    ) : (
+      <span key={i}>{p}</span>
+    ),
+  );
+}
+function escapeReg(s: string) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 export function SearchPalette({ slug }: { slug: string }) {
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState("");
@@ -145,11 +162,11 @@ export function SearchPalette({ slug }: { slug: string }) {
                     </span>
                     <span className="flex-1 min-w-0">
                       <span className="text-sm text-gray-900 truncate block">
-                        {h.title || "Untitled"}
+                        {markMatch(h.title || "Untitled", q)}
                       </span>
                       {h.snippet && (
                         <span className="text-xs text-gray-500 truncate block">
-                          {h.snippet}
+                          {markMatch(h.snippet, q)}
                         </span>
                       )}
                     </span>

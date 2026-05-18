@@ -4,6 +4,7 @@ import { Sidebar } from "@/components/sidebar";
 import { SearchPalette } from "@/components/search-palette";
 import { ShortcutsHelp } from "@/components/shortcuts-help";
 import { MobileSidebarToggle } from "@/components/mobile-sidebar-toggle";
+import { WorkspaceSwitcher } from "@/components/workspace-switcher";
 
 function extractPreview(content: string): string {
   try {
@@ -103,6 +104,13 @@ export default async function WorkspaceLayout({
       favorite: p.favorite,
       preview: extractPreview(p.content),
     }));
+  // count children for sidebar badges (db rows for databases, sub-pages otherwise)
+  const childCount = new Map<string, number>();
+  for (const p of allPages) {
+    if (p.parentId) {
+      childCount.set(p.parentId, (childCount.get(p.parentId) ?? 0) + 1);
+    }
+  }
   const pagesForSidebar = pages.map((p) => ({
     id: p.id,
     title: p.title,
@@ -110,6 +118,7 @@ export default async function WorkspaceLayout({
     parentId: p.parentId,
     kind: p.kind,
     favorite: p.favorite,
+    count: childCount.get(p.id) ?? 0,
   }));
 
   return (
@@ -138,6 +147,13 @@ export default async function WorkspaceLayout({
       </main>
       <SearchPalette slug={ctx.workspace.slug} />
       <ShortcutsHelp />
+      <WorkspaceSwitcher
+        workspaces={workspaces.map((m) => ({
+          slug: m.workspace.slug,
+          name: m.workspace.name,
+        }))}
+        currentSlug={ctx.workspace.slug}
+      />
     </div>
   );
 }

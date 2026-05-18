@@ -10,6 +10,19 @@ async function currentUserId(): Promise<string> {
   return (session.user as { id: string }).id;
 }
 
+export async function updateUserProfile(name: string, color: string) {
+  const userId = await currentUserId();
+  const trimmedName = name.trim();
+  const trimmedColor = color.trim();
+  if (!trimmedName) throw new Error("name required");
+  if (!/^#[0-9a-fA-F]{6}$/.test(trimmedColor)) throw new Error("invalid color");
+  await prisma.user.update({
+    where: { id: userId },
+    data: { name: trimmedName, color: trimmedColor },
+  });
+  revalidatePath("/", "layout");
+}
+
 export async function markNotificationRead(id: string) {
   const userId = await currentUserId();
   await prisma.notification.updateMany({

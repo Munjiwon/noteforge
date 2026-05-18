@@ -39,11 +39,18 @@ export function PublicDatabaseView({
         </a>
       </header>
       {cover && (
-        <img
-          src={cover}
-          alt=""
-          className="w-full h-[200px] md:h-[260px] object-cover"
-        />
+        cover.startsWith("gradient:") ? (
+          <div
+            className="w-full h-[200px] md:h-[260px]"
+            style={{ background: cover.slice("gradient:".length) }}
+          />
+        ) : (
+          <img
+            src={cover}
+            alt=""
+            className="w-full h-[200px] md:h-[260px] object-cover"
+          />
+        )
       )}
       <div className="max-w-6xl mx-auto px-6 md:px-12 py-10">
         <div className="text-4xl leading-none mb-2">{icon ?? "📊"}</div>

@@ -11,6 +11,7 @@ import { ExportButton } from "./export-button";
 import { PageInfo } from "./page-info";
 import { PageStyleMenu, fontClass, widthClass } from "./page-style-menu";
 import { EmojiPicker } from "./emoji-picker";
+import { PageOutline } from "./page-outline";
 import type { PermItem } from "./share-button";
 
 const Editor = dynamic(() => import("./editor").then((m) => m.Editor), {
@@ -71,6 +72,7 @@ export function PageView({
   const font = page.font ?? "default";
   return (
     <div className={fontClass(font)}>
+      <PageOutline content={page.content} />
       <PageCover
         slug={slug}
         pageId={page.id}
@@ -87,7 +89,14 @@ export function PageView({
             👁 Read-only view
           </div>
         ) : null}
-        <div className="flex justify-end gap-2 mb-2">
+        <div className="flex justify-end gap-2 mb-2 no-print">
+          <button
+            onClick={() => window.print()}
+            className="text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5"
+            title="Print or save as PDF"
+          >
+            🖨 Print
+          </button>
           <PageInfo info={info} />
           <ExportButton slug={slug} pageId={page.id} title={page.title} />
           <PageStyleMenu

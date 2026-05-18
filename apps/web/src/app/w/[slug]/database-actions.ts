@@ -99,6 +99,8 @@ export async function addColumn(slug: string, dbId: string, type: DbPropType, na
       ? { id, name: name ?? "URL", type: "url" }
       : type === "email"
       ? { id, name: name ?? "Email", type: "email" }
+      : type === "phone"
+      ? { id, name: name ?? "Phone", type: "phone" }
       : type === "person"
       ? { id, name: name ?? "Person", type: "person" }
       : type === "files"
