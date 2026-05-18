@@ -6,6 +6,14 @@ import { ShortcutsHelp } from "@/components/shortcuts-help";
 import { MobileSidebarToggle } from "@/components/mobile-sidebar-toggle";
 import { WorkspaceSwitcher } from "@/components/workspace-switcher";
 
+function hexToRgbTriplet(hex: string | null | undefined): string | null {
+  if (!hex) return null;
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex.trim());
+  if (!m) return null;
+  const n = parseInt(m[1], 16);
+  return `${(n >> 16) & 0xff} ${(n >> 8) & 0xff} ${n & 0xff}`;
+}
+
 function nextDue(prev: Date, rule: string): Date | null {
   const d = new Date(prev);
   if (rule === "daily") {
@@ -251,8 +259,10 @@ export default async function WorkspaceLayout({
     preview: extractPreview(p.content),
   }));
 
+  const accentRgb = hexToRgbTriplet(ctx.workspace.color);
+
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen" style={accentRgb ? { ["--accent" as any]: accentRgb } : undefined}>
       <Sidebar
         workspaces={workspaces.map((m) => ({
           slug: m.workspace.slug,

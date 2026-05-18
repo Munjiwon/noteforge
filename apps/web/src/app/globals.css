@@ -5,6 +5,12 @@
 @import "../../../../node_modules/@blocknote/core/dist/style.css";
 @import "../../../../node_modules/@blocknote/mantine/dist/style.css";
 
+:root {
+  /* Default accent (matches the old hard-coded #2383e2). The workspace layout
+     overrides this via inline style based on workspace.color. */
+  --accent: 35 131 226;
+}
+
 html, body { height: 100%; }
 body {
   color: #37352f;

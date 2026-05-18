@@ -8,7 +8,7 @@ const config: Config = {
       colors: {
         sidebar: "#f7f7f5",
         ink: "#37352f",
-        accent: "#2383e2",
+        accent: "rgb(var(--accent) / <alpha-value>)",
       },
       fontFamily: {
         sans: [
