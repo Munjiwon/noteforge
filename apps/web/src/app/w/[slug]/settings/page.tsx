@@ -55,6 +55,7 @@ export default async function SettingsPage({
           ? ctx.workspace.defaultFont
           : "default") as "default" | "serif" | "mono"
       }
+      workspaceBannerUrl={ctx.workspace.bannerUrl ?? null}
       currentUserId={ctx.user.id}
       role={ctx.role as "owner" | "editor" | "viewer"}
       members={members.map((m) => ({

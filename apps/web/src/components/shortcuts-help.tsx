@@ -10,8 +10,9 @@ const GROUPS: { name: string; items: { keys: string; desc: string }[] }[] = [
       { keys: "⌘ F", desc: "Find within the current page (browser)" },
       { keys: "⌘ ⇧ L", desc: "Switch workspace" },
       { keys: "⌘ ⇧ B", desc: "Toggle favorite on current page" },
+      { keys: "⌘ ⇧ I", desc: "Quick-capture a note into 📥 Inbox" },
       { keys: "?", desc: "Show this help" },
-      { keys: "Esc", desc: "Close dialogs / palettes" },
+      { keys: "Esc", desc: "Close dialogs / palettes / exit read mode" },
     ],
   },
   {
@@ -25,6 +26,18 @@ const GROUPS: { name: string; items: { keys: string; desc: string }[] }[] = [
       { keys: "⌘ E", desc: "Inline code" },
       { keys: "⌘ Z / ⌘ Shift Z", desc: "Undo / Redo" },
       { keys: "Tab / Shift Tab", desc: "Indent / outdent block" },
+      { keys: "/ai", desc: "AI: Summarize · Translate · Improve · Continue" },
+    ],
+  },
+  {
+    name: "Page",
+    items: [
+      { keys: "Click ☆ next to title", desc: "Star this page (= add to Favorites)" },
+      { keys: "📖 Read", desc: "Distraction-free reading mode" },
+      { keys: "🤖 (bottom-right)", desc: "Open Ask AI — scope: this page / workspace" },
+      { keys: "⏰ Remind", desc: "Schedule a reminder (one-off or recurring)" },
+      { keys: "🔔 Subscribe", desc: "Get notified on first edit after idle" },
+      { keys: "📦 Archive", desc: "Hide from sidebar without trashing" },
     ],
   },
   {

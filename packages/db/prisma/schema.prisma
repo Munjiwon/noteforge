@@ -48,6 +48,7 @@ model Workspace {
   slug      String            @unique
   icon      String?           // emoji
   color     String?           // hex
+  bannerUrl String?
   defaultFont String          @default("default") // "default" | "serif" | "mono"
   createdAt DateTime          @default(now())
 

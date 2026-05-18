@@ -39,6 +39,16 @@ export async function setWorkspaceColor(slug: string, color: string | null) {
   revalidatePath(`/w/${slug}`, "layout");
 }
 
+export async function setWorkspaceBanner(slug: string, url: string | null) {
+  const ctx = await assertOwner(slug);
+  const safe = url && url.startsWith("/api/files/") ? url : null;
+  await prisma.workspace.update({
+    where: { id: ctx.workspace.id },
+    data: { bannerUrl: safe },
+  });
+  revalidatePath(`/w/${slug}`, "layout");
+}
+
 export async function setWorkspaceDefaultFont(
   slug: string,
   font: "default" | "serif" | "mono",

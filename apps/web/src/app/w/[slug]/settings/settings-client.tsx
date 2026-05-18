@@ -8,6 +8,7 @@ import {
   removeMember,
   renameWorkspace,
   revokeInvite,
+  setWorkspaceBanner,
   setWorkspaceColor,
   setWorkspaceDefaultFont,
   setWorkspaceIcon,
@@ -30,6 +31,7 @@ export function SettingsClient({
   workspaceIcon,
   workspaceColor,
   workspaceDefaultFont = "default",
+  workspaceBannerUrl = null,
   currentUserId,
   role,
   members,
@@ -43,6 +45,7 @@ export function SettingsClient({
   workspaceIcon: string | null;
   workspaceColor: string | null;
   workspaceDefaultFont?: "default" | "serif" | "mono";
+  workspaceBannerUrl?: string | null;
   currentUserId: string;
   role: Role;
   members: {
@@ -168,6 +171,12 @@ export function SettingsClient({
                   </button>
                 ))}
               </div>
+            )}
+            {isOwner && (
+              <BannerRow
+                slug={slug}
+                initialUrl={workspaceBannerUrl}
+              />
             )}
           </div>
         </div>
@@ -413,6 +422,71 @@ export function SettingsClient({
           </div>
         </section>
       )}
+    </div>
+  );
+}
+
+function BannerRow({
+  slug,
+  initialUrl,
+}: {
+  slug: string;
+  initialUrl: string | null;
+}) {
+  const [url, setUrl] = useState(initialUrl);
+  const [uploading, setUploading] = useState(false);
+  const [, start] = useTransition();
+  async function onFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    setUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append("file", f);
+      const res = await fetch("/api/upload", { method: "POST", body: fd });
+      if (!res.ok) throw new Error(await res.text());
+      const data = (await res.json()) as { url: string };
+      setUrl(data.url);
+      await setWorkspaceBanner(slug, data.url);
+    } catch (err) {
+      alert("Upload failed: " + (err as Error).message);
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
+  }
+  return (
+    <div className="mt-2 text-xs">
+      <div className="text-gray-500 mb-1">Banner</div>
+      {url && (
+        <div
+          className="w-full h-20 rounded-md mb-1 bg-center bg-cover border border-gray-200"
+          style={{ backgroundImage: `url("${url}")` }}
+        />
+      )}
+      <div className="flex items-center gap-2">
+        <label className="px-2 py-1 rounded border border-gray-200 hover:bg-black/5 cursor-pointer">
+          {uploading ? "Uploading…" : url ? "Replace banner" : "Upload banner"}
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            disabled={uploading}
+            onChange={onFile}
+          />
+        </label>
+        {url && (
+          <button
+            onClick={() => {
+              setUrl(null);
+              start(() => setWorkspaceBanner(slug, null));
+            }}
+            className="text-gray-500 hover:text-red-600"
+          >
+            Remove
+          </button>
+        )}
+      </div>
     </div>
   );
 }

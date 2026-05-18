@@ -372,12 +372,13 @@ export function Editor({
                 icon: <span>▦</span>,
                 onItemClick: insert("columns", { count: "3" }),
               },
-              ...(["summarize", "translate", "improve"] as const).map(
+              ...(["summarize", "translate", "improve", "continue"] as const).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {
                     summarize: { title: "AI · Summarize", emoji: "✨", color: "blue", aliases: ["ai", "summarize", "summary", "요약"] },
                     translate: { title: "AI · Translate", emoji: "🌐", color: "purple", aliases: ["ai", "translate", "번역"] },
                     improve: { title: "AI · Improve writing", emoji: "📝", color: "green", aliases: ["ai", "improve", "rewrite", "교정"] },
+                    continue: { title: "AI · Continue writing", emoji: "➡️", color: "yellow", aliases: ["ai", "continue", "write more", "이어쓰기"] },
                   }[action];
                   return {
                     title: meta.title,
