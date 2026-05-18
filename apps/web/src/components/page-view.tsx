@@ -20,6 +20,7 @@ import { PageTags, parseTags } from "./page-tags";
 import { PageReactions, type PageReactionGroup } from "./page-reactions";
 import { SubscribeButton } from "./subscribe-button";
 import { ReminderButton, type PendingReminder } from "./reminder-button";
+import { ReadModeButton } from "./read-mode-button";
 import { AskAiPanel } from "./ask-ai-panel";
 import type { PermItem } from "./share-button";
 
@@ -248,6 +249,7 @@ export function PageView({
           </div>
         ) : null}
         <div className="flex justify-end gap-2 mb-2 no-print">
+          <ReadModeButton />
           <button
             onClick={() => window.print()}
             className="text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5"

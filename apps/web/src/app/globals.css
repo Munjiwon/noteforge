@@ -90,6 +90,21 @@ pre.nf-shiki code {
   color: #e5e7eb;
 }
 
+/* Distraction-free read mode — hides workspace chrome around the page body. */
+body.read-mode aside,
+body.read-mode .no-print,
+body.read-mode .bn-side-menu,
+body.read-mode .bn-formatting-toolbar {
+  display: none !important;
+}
+body.read-mode main {
+  width: 100% !important;
+}
+body.read-mode .read-mode-keep {
+  /* opt-in escape hatch — components that *should* stay visible in read mode */
+  display: revert !important;
+}
+
 @media print {
   aside,
   .no-print,
