@@ -51,6 +51,7 @@ export default async function SettingsPage({
         email: m.user.email,
         color: m.user.color,
         role: m.role as "owner" | "editor" | "viewer",
+        lastActiveAt: m.lastActiveAt ? m.lastActiveAt.toISOString() : null,
       }))}
       invites={invites.map((i) => ({
         token: i.token,

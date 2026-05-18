@@ -35,7 +35,14 @@ export function SettingsClient({
   workspaceColor: string | null;
   currentUserId: string;
   role: Role;
-  members: { userId: string; name: string; email: string; color: string; role: Role }[];
+  members: {
+    userId: string;
+    name: string;
+    email: string;
+    color: string;
+    role: Role;
+    lastActiveAt: string | null;
+  }[];
   invites: { token: string; role: string; createdAt: string }[];
   stats?: { pageCount: number; commentCount: number; lastActivityAt: string | null };
   tokens?: { id: string; name: string; lastUsedAt: string | null; createdAt: string }[];
@@ -199,7 +206,14 @@ export function SettingsClient({
                   {m.name.slice(0, 1).toUpperCase()}
                 </span>
                 <div className="flex-1 min-w-0">
-                  <div className="text-sm">{m.name} {isMe && <span className="text-xs text-gray-400">(you)</span>}</div>
+                  <div className="text-sm">
+                    {m.name} {isMe && <span className="text-xs text-gray-400">(you)</span>}
+                    {m.lastActiveAt && (
+                      <span className="ml-2 text-[10px] text-gray-400">
+                        · {presence(m.lastActiveAt)}
+                      </span>
+                    )}
+                  </div>
                   <div className="text-xs text-gray-500 truncate">{m.email}</div>
                 </div>
                 {isOwner ? (
@@ -363,6 +377,16 @@ export function SettingsClient({
       )}
     </div>
   );
+}
+
+function presence(iso: string): string {
+  const d = new Date(iso);
+  const diff = (Date.now() - d.getTime()) / 1000;
+  if (diff < 60) return "active now";
+  if (diff < 3600) return `active ${Math.floor(diff / 60)}m ago`;
+  if (diff < 86400) return `active ${Math.floor(diff / 3600)}h ago`;
+  if (diff < 86400 * 7) return `active ${Math.floor(diff / 86400)}d ago`;
+  return `last seen ${d.toLocaleDateString()}`;
 }
 
 function ClipperHint({ slug }: { slug: string }) {

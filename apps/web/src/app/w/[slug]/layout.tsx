@@ -70,6 +70,14 @@ export default async function WorkspaceLayout({
   children: React.ReactNode;
 }) {
   const ctx = await requireWorkspaceMember(params.slug);
+  // Refresh the current member's lastActiveAt so the team can see who's
+  // active. Best-effort, fire and forget.
+  prisma.workspaceMember
+    .updateMany({
+      where: { workspaceId: ctx.workspace.id, userId: ctx.user.id },
+      data: { lastActiveAt: new Date() },
+    })
+    .catch(() => {});
   // Best-effort auto-purge: hard-delete pages that have been in the trash
   // longer than 30 days. The Page.parentId cascade takes care of descendants
   // and PageActivity/PageSnapshot/Comment/etc. rows.

@@ -61,6 +61,7 @@ model WorkspaceMember {
   userId      String
   workspaceId String
   role        String    @default("editor") // "owner" | "editor" | "viewer"
+  lastActiveAt DateTime?
   createdAt   DateTime  @default(now())
 
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
