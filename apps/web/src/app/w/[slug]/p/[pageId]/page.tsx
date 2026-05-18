@@ -59,6 +59,7 @@ export default async function PageRoute({
       font: true,
       tags: true,
       viewCount: true,
+      wordGoal: true,
       author: { select: { name: true, color: true } },
     },
   });
@@ -233,6 +234,7 @@ export default async function PageRoute({
     backlinkCount: backlinkRows.length,
     childrenCount: childCount,
     viewCount: page.viewCount,
+    wordGoal: page.wordGoal,
     activity: activityRows.map((a) => ({
       id: a.id,
       action: a.action,

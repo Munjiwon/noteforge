@@ -326,8 +326,10 @@ export async function changeColumnType(
   const p = schema.props.find((x) => x.id === propId);
   if (!p) throw new Error("not found");
   if (p.type === newType) return;
+  const idx = schema.props.findIndex((x) => x.id === propId);
+
+  // text-family <-> text-family
   if (TEXTY.includes(p.type) && TEXTY.includes(newType)) {
-    // values stay as strings; just update the prop discriminator
     const cleaned: DbProp = (
       newType === "text"
         ? { id: p.id, name: p.name, description: p.description, type: "text" }
@@ -337,13 +339,85 @@ export async function changeColumnType(
         ? { id: p.id, name: p.name, description: p.description, type: "email" }
         : { id: p.id, name: p.name, description: p.description, type: "phone" }
     ) as DbProp;
-    const idx = schema.props.findIndex((x) => x.id === propId);
     schema.props[idx] = cleaned;
     await saveSchema(dbId, schema);
     revalidatePath(`/w/${slug}/p/${dbId}`);
     return;
   }
-  throw new Error("Only text / url / email / phone columns can be converted between each other right now");
+
+  // number <-> text family: rebuild prop. Values cast lazily in cells.
+  if ((p.type === "number" && TEXTY.includes(newType)) || (TEXTY.includes(p.type) && newType === "number")) {
+    if (newType === "number") {
+      // text -> number: rewrite dataValues so parseable strings become numbers.
+      const rows = await prisma.page.findMany({
+        where: { parentId: dbId },
+        select: { id: true, dataValues: true },
+      });
+      for (const r of rows) {
+        const v = parseValues(r.dataValues);
+        const raw = v[propId];
+        if (typeof raw === "string") {
+          const n = Number(raw);
+          if (!Number.isNaN(n)) v[propId] = n;
+          else delete v[propId];
+        } else if (typeof raw !== "number") {
+          delete v[propId];
+        }
+        await prisma.page.update({
+          where: { id: r.id },
+          data: { dataValues: JSON.stringify(v) },
+        });
+      }
+      schema.props[idx] = { id: p.id, name: p.name, description: p.description, type: "number" };
+    } else {
+      // number -> text family: numbers become strings; just rewrap prop type.
+      const target = newType as "text" | "url" | "email" | "phone";
+      schema.props[idx] = {
+        id: p.id,
+        name: p.name,
+        description: p.description,
+        type: target,
+      } as DbProp;
+    }
+    await saveSchema(dbId, schema);
+    revalidatePath(`/w/${slug}/p/${dbId}`);
+    return;
+  }
+
+  // select <-> multi_select: keep options, convert values single<->array
+  if (
+    (p.type === "select" && newType === "multi_select") ||
+    (p.type === "multi_select" && newType === "select")
+  ) {
+    const options = (p as { options: { id: string; name: string; color: string }[] }).options;
+    schema.props[idx] =
+      newType === "multi_select"
+        ? { id: p.id, name: p.name, description: p.description, type: "multi_select", options }
+        : { id: p.id, name: p.name, description: p.description, type: "select", options };
+    await saveSchema(dbId, schema);
+    const rows = await prisma.page.findMany({
+      where: { parentId: dbId },
+      select: { id: true, dataValues: true },
+    });
+    for (const r of rows) {
+      const v = parseValues(r.dataValues);
+      const raw = v[propId];
+      if (newType === "multi_select") {
+        v[propId] = typeof raw === "string" ? [raw] : Array.isArray(raw) ? raw : [];
+      } else {
+        v[propId] = Array.isArray(raw) ? raw[0] ?? null : raw ?? null;
+        if (v[propId] === null) delete v[propId];
+      }
+      await prisma.page.update({
+        where: { id: r.id },
+        data: { dataValues: JSON.stringify(v) },
+      });
+    }
+    revalidatePath(`/w/${slug}/p/${dbId}`);
+    return;
+  }
+
+  throw new Error("That column type conversion isn't supported yet");
 }
 
 export async function renameColumn(slug: string, dbId: string, propId: string, name: string) {

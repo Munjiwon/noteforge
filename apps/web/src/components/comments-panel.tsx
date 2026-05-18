@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import clsx from "clsx";
 import {
   createComment,
@@ -39,7 +39,22 @@ export function CommentsPanel({
   readOnly: boolean;
 }) {
   const [showResolved, setShowResolved] = useState(false);
-  const [sortDir, setSortDir] = useState<"newest" | "oldest">("newest");
+  const [sortDir, setSortDirState] = useState<"newest" | "oldest">("newest");
+  useEffect(() => {
+    try {
+      const v = localStorage.getItem("collab-notion-comments-sort");
+      if (v === "oldest") setSortDirState("oldest");
+    } catch {}
+  }, []);
+  const setSortDir = (v: "newest" | "oldest" | ((p: "newest" | "oldest") => "newest" | "oldest")) => {
+    setSortDirState((prev) => {
+      const next = typeof v === "function" ? v(prev) : v;
+      try {
+        localStorage.setItem("collab-notion-comments-sort", next);
+      } catch {}
+      return next;
+    });
+  };
   const [draft, setDraft] = useState("");
   const [, start] = useTransition();
 

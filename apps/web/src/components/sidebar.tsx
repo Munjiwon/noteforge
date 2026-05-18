@@ -447,6 +447,16 @@ export function Sidebar({
                     >
                       ↪ Move to…
                     </button>
+                    <button
+                      className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded"
+                      onClick={() => {
+                        setAddMenuFor(null);
+                        const url = `${window.location.origin}/w/${currentSlug}/p/${node.id}`;
+                        void navigator.clipboard?.writeText(url);
+                      }}
+                    >
+                      🔗 Copy link
+                    </button>
                   </div>
                 )}
               </div>

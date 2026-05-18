@@ -14,6 +14,7 @@ export function PageInfo({
     backlinkCount: number;
     childrenCount: number;
     viewCount?: number;
+    wordGoal?: number | null;
     activity?: {
       id: string;
       action: string;
@@ -64,7 +65,10 @@ export function PageInfo({
           )}
           <div className="border-t border-gray-100 pt-2 grid grid-cols-2 gap-y-1 text-xs">
             <span className="text-gray-500">Words</span>
-            <span className="text-right">{info.wordCount.toLocaleString()}</span>
+            <span className="text-right">
+              {info.wordCount.toLocaleString()}
+              {info.wordGoal ? ` / ${info.wordGoal.toLocaleString()}` : ""}
+            </span>
             <span className="text-gray-500">Sub-pages</span>
             <span className="text-right">{info.childrenCount}</span>
             <span className="text-gray-500">Comments</span>

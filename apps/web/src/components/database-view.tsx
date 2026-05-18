@@ -541,30 +541,36 @@ function ColumnHeader({
               </button>
             </>
           )}
-          {(prop.type === "text" ||
-            prop.type === "url" ||
-            prop.type === "email" ||
-            prop.type === "phone") && (
-            <div className="px-2 py-1 text-xs text-gray-500">
-              Change type:
-              <div className="flex gap-1 mt-1">
-                {(["text", "url", "email", "phone"] as const).map((t) =>
-                  t === prop.type ? null : (
-                    <button
-                      key={t}
-                      onClick={() => {
-                        start(() => changeColumnType(slug, dbId, prop.id, t));
-                        onOpen(false);
-                      }}
-                      className="text-[10px] px-1 py-0.5 rounded border border-gray-200 hover:bg-black/5"
-                    >
-                      {t}
-                    </button>
-                  ),
-                )}
+          {(() => {
+            const textFamily: DbPropType[] = ["text", "url", "email", "phone"];
+            let options: DbPropType[] = [];
+            if (textFamily.includes(prop.type)) options = [...textFamily, "number"];
+            else if (prop.type === "number") options = ["number", ...textFamily];
+            else if (prop.type === "select") options = ["select", "multi_select"];
+            else if (prop.type === "multi_select") options = ["multi_select", "select"];
+            if (options.length === 0) return null;
+            return (
+              <div className="px-2 py-1 text-xs text-gray-500">
+                Change type:
+                <div className="flex flex-wrap gap-1 mt-1">
+                  {options.map((t) =>
+                    t === prop.type ? null : (
+                      <button
+                        key={t}
+                        onClick={() => {
+                          start(() => changeColumnType(slug, dbId, prop.id, t));
+                          onOpen(false);
+                        }}
+                        className="text-[10px] px-1 py-0.5 rounded border border-gray-200 hover:bg-black/5"
+                      >
+                        {t.replace("_", " ")}
+                      </button>
+                    ),
+                  )}
+                </div>
               </div>
-            </div>
-          )}
+            );
+          })()}
           <button
             className="block w-full text-left px-2 py-1 text-sm text-red-600 hover:bg-red-50 rounded"
             onClick={() => {

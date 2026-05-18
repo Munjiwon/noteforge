@@ -109,6 +109,15 @@ export async function setPageCover(slug: string, pageId: string, cover: string |
   revalidatePath(`/w/${slug}/p/${pageId}`);
 }
 
+export async function setPageWordGoal(slug: string, pageId: string, goal: number | null) {
+  const ctx = await assertEditor(slug);
+  await prisma.page.updateMany({
+    where: { id: pageId, workspaceId: ctx.workspace.id },
+    data: { wordGoal: goal && goal > 0 ? Math.round(goal) : null },
+  });
+  revalidatePath(`/w/${slug}/p/${pageId}`);
+}
+
 export async function setPageTags(
   slug: string,
   pageId: string,

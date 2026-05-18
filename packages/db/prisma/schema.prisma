@@ -89,6 +89,7 @@ model Page {
   font        String    @default("default") // "default" | "serif" | "mono"
   viewCount   Int       @default(0)
   publicViewCount Int   @default(0)
+  wordGoal    Int?
   deletedAt   DateTime?
   publicSlug  String?   @unique
   publicAccess String   @default("none") // "none" | "view"
