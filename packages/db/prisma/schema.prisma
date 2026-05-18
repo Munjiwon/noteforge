@@ -53,6 +53,7 @@ model Workspace {
   pages     Page[]
   invites   Invite[]
   reminders Reminder[]
+  syncedBlocks SyncedBlock[]
 }
 
 model WorkspaceMember {
@@ -215,6 +216,19 @@ model PageSubscription {
 
   @@unique([pageId, userId])
   @@index([pageId])
+}
+
+model SyncedBlock {
+  id          String   @id @default(cuid())
+  workspaceId String
+  content     String   @default("")
+  createdById String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
 }
 
 model Reminder {

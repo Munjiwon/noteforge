@@ -335,6 +335,28 @@ export function Editor({
                 onItemClick: insert("pageEmbed", { pageId: "" }),
               },
               {
+                title: "Synced block",
+                subtext: "Shared text mirrored across pages",
+                aliases: ["synced", "sync", "shared", "동기화"],
+                group: "Basic blocks",
+                icon: <span>🔗</span>,
+                onItemClick: insert("synced", { syncedBlockId: "" }),
+              },
+              {
+                title: "Synced block (existing)",
+                subtext: "Reuse a synced block by its reference ID",
+                aliases: ["synced", "existing", "reference", "참조"],
+                group: "Basic blocks",
+                icon: <span>🔁</span>,
+                onItemClick: () => {
+                  const ref = window.prompt(
+                    "Paste the synced block reference ID:",
+                  )?.trim();
+                  if (!ref) return;
+                  insert("synced", { syncedBlockId: ref })();
+                },
+              },
+              {
                 title: "2 columns",
                 subtext: "Two side-by-side columns",
                 aliases: ["columns", "2col", "two columns", "컬럼"],
