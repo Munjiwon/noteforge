@@ -16,6 +16,7 @@ import { ColumnsBlock } from "./columns-block";
 import { DbViewBlock } from "./dbview-block";
 import { BookmarkBlock } from "./bookmark-block";
 import { AudioBlock } from "./audio-block";
+import { PageEmbedBlock } from "./page-embed-block";
 
 export const editorSchema = BlockNoteSchema.create({
   blockSpecs: {
@@ -30,6 +31,7 @@ export const editorSchema = BlockNoteSchema.create({
     dbView: DbViewBlock,
     bookmark: BookmarkBlock,
     audio: AudioBlock,
+    pageEmbed: PageEmbedBlock,
   },
   inlineContentSpecs: {
     ...defaultInlineContentSpecs,

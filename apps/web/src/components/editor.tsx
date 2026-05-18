@@ -327,6 +327,14 @@ export function Editor({
                 onItemClick: insert("audio", { url: "" }),
               },
               {
+                title: "Embed page",
+                subtext: "Pull another page's content read-only",
+                aliases: ["page", "embed", "reference", "transclude", "임베드", "참조"],
+                group: "Media",
+                icon: <span>📑</span>,
+                onItemClick: insert("pageEmbed", { pageId: "" }),
+              },
+              {
                 title: "2 columns",
                 subtext: "Two side-by-side columns",
                 aliases: ["columns", "2col", "two columns", "컬럼"],
