@@ -36,9 +36,20 @@ type SidebarPage = {
   count?: number;
 };
 
-type TrashItem = { id: string; title: string; icon: string | null; kind: string };
+type TrashItem = { id: string; title: string; icon: string | null; kind: string; deletedAt?: Date | string | null };
 
 type Tree = SidebarPage & { children: Tree[] };
+
+function trashAge(d: Date | string): string {
+  const t = typeof d === "string" ? new Date(d).getTime() : d.getTime();
+  const diff = (Date.now() - t) / 1000;
+  if (diff < 60) return "just now";
+  if (diff < 3600) return `${Math.floor(diff / 60)}m`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)}h`;
+  if (diff < 86400 * 7) return `${Math.floor(diff / 86400)}d`;
+  if (diff < 86400 * 30) return `${Math.floor(diff / 86400 / 7)}w`;
+  return `${Math.floor(diff / 86400 / 30)}mo`;
+}
 
 function toTree(pages: SidebarPage[]): Tree[] {
   const byId = new Map<string, Tree>();
@@ -222,6 +233,29 @@ export function Sidebar({
   useEffect(() => {
     setMobileOpen(false);
   }, [activePageId]);
+
+  // Cmd+Shift+B (or Ctrl+Shift+B): toggle favorite for the active page
+  useEffect(() => {
+    if (!activePageId) return;
+    const onKey = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      const inForm =
+        target && (
+          target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable
+        );
+      if (inForm) return;
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === "b") {
+        e.preventDefault();
+        startTransition(() => {
+          toggleFavorite(currentSlug, activePageId);
+        });
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [activePageId, currentSlug]);
 
   const [addMenuFor, setAddMenuFor] = useState<string | "root" | null>(null);
 
@@ -710,6 +744,11 @@ export function Sidebar({
                 <span className="flex-1 truncate text-gray-500 line-through">
                   {t.title || "Untitled"}
                 </span>
+                {t.deletedAt && (
+                  <span className="text-[10px] text-gray-400 mr-1 shrink-0">
+                    {trashAge(t.deletedAt)}
+                  </span>
+                )}
                 {role !== "viewer" && (
                   <>
                     <button

@@ -73,6 +73,15 @@ export async function removeMember(slug: string, userId: string) {
   revalidatePath(`/w/${slug}/settings`);
 }
 
+export async function deleteWorkspace(slug: string, confirmName: string) {
+  const ctx = await assertOwner(slug);
+  if (confirmName !== ctx.workspace.name) {
+    throw new Error("Workspace name did not match");
+  }
+  await prisma.workspace.delete({ where: { id: ctx.workspace.id } });
+  revalidatePath("/", "layout");
+}
+
 export async function revokeInvite(slug: string, token: string) {
   const ctx = await assertOwner(slug);
   await prisma.invite.deleteMany({

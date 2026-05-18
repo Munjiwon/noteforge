@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import {
+  deleteWorkspace,
   removeMember,
   renameWorkspace,
   revokeInvite,
@@ -22,6 +24,7 @@ export function SettingsClient({
   role,
   members,
   invites,
+  stats,
 }: {
   slug: string;
   workspaceName: string;
@@ -31,12 +34,15 @@ export function SettingsClient({
   role: Role;
   members: { userId: string; name: string; email: string; color: string; role: Role }[];
   invites: { token: string; role: string; createdAt: string }[];
+  stats?: { pageCount: number; commentCount: number; lastActivityAt: string | null };
 }) {
   const [name, setName] = useState(workspaceName);
   const [icon, setIcon] = useState(workspaceIcon);
   const [color, setColor] = useState(workspaceColor ?? "#111111");
   const [iconOpen, setIconOpen] = useState(false);
   const [, start] = useTransition();
+  const router = useRouter();
+  const [deleteConfirm, setDeleteConfirm] = useState("");
   const isOwner = role === "owner";
   const PRESET_COLORS = ["#111111", "#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899", "#0ea5e9"];
 
@@ -115,6 +121,30 @@ export function SettingsClient({
         </div>
       </section>
 
+      {stats && (
+        <section>
+          <h2 className="text-sm font-medium text-gray-700 mb-2">At a glance</h2>
+          <div className="grid grid-cols-3 gap-2 text-sm">
+            <div className="border border-gray-200 rounded p-3">
+              <div className="text-xs text-gray-500">Pages</div>
+              <div className="text-2xl font-semibold">{stats.pageCount}</div>
+            </div>
+            <div className="border border-gray-200 rounded p-3">
+              <div className="text-xs text-gray-500">Comments</div>
+              <div className="text-2xl font-semibold">{stats.commentCount}</div>
+            </div>
+            <div className="border border-gray-200 rounded p-3">
+              <div className="text-xs text-gray-500">Last activity</div>
+              <div className="text-sm font-medium">
+                {stats.lastActivityAt
+                  ? new Date(stats.lastActivityAt).toLocaleString()
+                  : "—"}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       <section>
         <h2 className="text-sm font-medium text-gray-700 mb-2">Members ({members.length})</h2>
         <ul className="border border-gray-200 rounded divide-y divide-gray-100">
@@ -191,6 +221,42 @@ export function SettingsClient({
               ))}
             </ul>
           )}
+        </section>
+      )}
+
+      {isOwner && (
+        <section className="border border-red-200 bg-red-50/30 rounded p-3">
+          <h2 className="text-sm font-medium text-red-700 mb-1">Danger zone</h2>
+          <p className="text-xs text-gray-600 mb-2">
+            Permanently delete this workspace and all of its pages, comments,
+            and data. This action cannot be undone.
+          </p>
+          <p className="text-xs text-gray-600 mb-1">
+            Type <code className="bg-white border border-gray-200 px-1 rounded">{workspaceName}</code> to
+            confirm.
+          </p>
+          <div className="flex gap-2">
+            <input
+              value={deleteConfirm}
+              onChange={(e) => setDeleteConfirm(e.target.value)}
+              placeholder="Workspace name"
+              className="flex-1 border border-gray-200 rounded px-2 py-1 text-sm outline-none"
+            />
+            <button
+              onClick={() => {
+                if (deleteConfirm !== workspaceName) return;
+                if (!confirm("This will permanently delete the workspace. Continue?")) return;
+                start(async () => {
+                  await deleteWorkspace(slug, deleteConfirm);
+                  router.push("/");
+                });
+              }}
+              disabled={deleteConfirm !== workspaceName}
+              className="text-xs px-3 py-1 rounded bg-red-600 text-white hover:bg-red-700 disabled:opacity-30"
+            >
+              Delete workspace
+            </button>
+          </div>
         </section>
       )}
     </div>

@@ -261,12 +261,28 @@ function Thread({
               </div>
             </div>
           ) : (
-            <button
-              onClick={() => setReplying(true)}
-              className="text-xs text-gray-500 hover:text-gray-900"
-            >
-              Reply
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setReplying(true)}
+                className="text-xs text-gray-500 hover:text-gray-900"
+              >
+                Reply
+              </button>
+              <button
+                onClick={() => {
+                  const excerpt = top.body
+                    .replace(/@\[[^|]+\|([^\]]+)\]/g, "@$1")
+                    .slice(0, 80);
+                  const suffix = top.body.length > 80 ? "…" : "";
+                  setReply(`> ${excerpt}${suffix}\n\n`);
+                  setReplying(true);
+                }}
+                className="text-xs text-gray-500 hover:text-gray-900"
+                title="Reply quoting the original"
+              >
+                ↩ Quote
+              </button>
+            </div>
           )}
         </div>
       )}

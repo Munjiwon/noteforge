@@ -258,6 +258,39 @@ export async function setSort(slug: string, dbId: string, sort: DbSort[]) {
   revalidatePath(`/w/${slug}/p/${dbId}`);
 }
 
+const TEXTY: DbPropType[] = ["text", "url", "email", "phone"];
+
+export async function changeColumnType(
+  slug: string,
+  dbId: string,
+  propId: string,
+  newType: DbPropType,
+) {
+  if (propId === "p_title") throw new Error("cannot change title column type");
+  const { schema } = await loadDb(slug, dbId);
+  const p = schema.props.find((x) => x.id === propId);
+  if (!p) throw new Error("not found");
+  if (p.type === newType) return;
+  if (TEXTY.includes(p.type) && TEXTY.includes(newType)) {
+    // values stay as strings; just update the prop discriminator
+    const cleaned: DbProp = (
+      newType === "text"
+        ? { id: p.id, name: p.name, description: p.description, type: "text" }
+        : newType === "url"
+        ? { id: p.id, name: p.name, description: p.description, type: "url" }
+        : newType === "email"
+        ? { id: p.id, name: p.name, description: p.description, type: "email" }
+        : { id: p.id, name: p.name, description: p.description, type: "phone" }
+    ) as DbProp;
+    const idx = schema.props.findIndex((x) => x.id === propId);
+    schema.props[idx] = cleaned;
+    await saveSchema(dbId, schema);
+    revalidatePath(`/w/${slug}/p/${dbId}`);
+    return;
+  }
+  throw new Error("Only text / url / email / phone columns can be converted between each other right now");
+}
+
 export async function renameColumn(slug: string, dbId: string, propId: string, name: string) {
   const { schema } = await loadDb(slug, dbId);
   const p = schema.props.find((x) => x.id === propId);

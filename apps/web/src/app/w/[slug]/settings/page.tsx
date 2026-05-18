@@ -10,7 +10,7 @@ export default async function SettingsPage({
   params: { slug: string };
 }) {
   const ctx = await requireWorkspaceMember(params.slug);
-  const [members, invites] = await Promise.all([
+  const [members, invites, pageCount, commentCount, lastActivity] = await Promise.all([
     prisma.workspaceMember.findMany({
       where: { workspaceId: ctx.workspace.id },
       include: { user: { select: { id: true, name: true, email: true, color: true } } },
@@ -19,6 +19,17 @@ export default async function SettingsPage({
     prisma.invite.findMany({
       where: { workspaceId: ctx.workspace.id },
       orderBy: { createdAt: "desc" },
+    }),
+    prisma.page.count({
+      where: { workspaceId: ctx.workspace.id, deletedAt: null },
+    }),
+    prisma.comment.count({
+      where: { page: { workspaceId: ctx.workspace.id } },
+    }),
+    prisma.pageActivity.findFirst({
+      where: { page: { workspaceId: ctx.workspace.id } },
+      orderBy: { createdAt: "desc" },
+      select: { createdAt: true },
     }),
   ]);
   return (
@@ -41,6 +52,11 @@ export default async function SettingsPage({
         role: i.role,
         createdAt: i.createdAt.toISOString(),
       }))}
+      stats={{
+        pageCount,
+        commentCount,
+        lastActivityAt: lastActivity?.createdAt.toISOString() ?? null,
+      }}
     />
   );
 }

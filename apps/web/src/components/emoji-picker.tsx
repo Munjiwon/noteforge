@@ -57,6 +57,17 @@ export function EmojiPicker({
           className="flex-1 text-xs border border-gray-200 rounded px-2 py-0.5 outline-none"
         />
         <button
+          onClick={() => {
+            const pool = CATEGORIES.flatMap((c) => c.emojis);
+            onPick(pool[Math.floor(Math.random() * pool.length)]);
+            onClose();
+          }}
+          className="text-xs text-gray-500 hover:text-gray-900 px-1"
+          title="Random emoji"
+        >
+          🎲
+        </button>
+        <button
           onClick={onClose}
           className="text-xs text-gray-400 hover:text-gray-900 px-1"
         >

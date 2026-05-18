@@ -40,7 +40,8 @@ export function SearchPalette({ slug }: { slug: string }) {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+      const k = e.key.toLowerCase();
+      if ((e.metaKey || e.ctrlKey) && (k === "k" || k === "p")) {
         e.preventDefault();
         setOpen((o) => !o);
       } else if (e.key === "Escape" && open) {

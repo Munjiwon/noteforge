@@ -83,7 +83,7 @@ export type DbFilter = {
 
 export type DbSort = { propId: string; dir: "asc" | "desc" };
 
-export type DbView = "table" | "kanban" | "gallery" | "calendar" | "timeline";
+export type DbView = "table" | "kanban" | "gallery" | "calendar" | "timeline" | "list";
 
 export type DbSchema = {
   props: DbProp[];
@@ -168,7 +168,7 @@ export function parseSchema(s: string | null | undefined): DbSchema {
     const p = JSON.parse(s);
     if (p && Array.isArray(p.props)) {
       const schema = p as DbSchema;
-      const allowed: DbView[] = ["kanban", "gallery", "calendar", "timeline"];
+      const allowed: DbView[] = ["kanban", "gallery", "calendar", "timeline", "list"];
       if (!allowed.includes(schema.view as DbView)) schema.view = "table";
       return schema;
     }

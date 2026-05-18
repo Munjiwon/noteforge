@@ -71,6 +71,9 @@ export function DbControls({
   const sort = schema.sort ?? [];
   const filterableProps = schema.props;
   const sortableProps = schema.props;
+  const view = schema.view ?? "table";
+  // Group + Columns only make sense in Table view; hide in list/calendar/timeline.
+  const showGroupAndColumns = view === "table";
 
   const updateFilters = (next: DbFilter[]) =>
     start(() => setFilters(slug, dbId, next));
@@ -123,29 +126,32 @@ export function DbControls({
         )}
       </div>
 
-      <label className="inline-flex items-center gap-1">
-        <span className="text-gray-400">Group:</span>
-        <select
-          disabled={readOnly}
-          value={schema.tableGroupBy ?? ""}
-          onChange={(e) =>
-            start(() =>
-              setTableGroup(slug, dbId, e.target.value || null),
-            )
-          }
-          className="border border-gray-200 rounded px-1 py-0.5 text-xs bg-white"
-        >
-          <option value="">None</option>
-          {schema.props
-            .filter((p) => p.type === "select" || p.type === "status")
-            .map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.name}
-              </option>
-            ))}
-        </select>
-      </label>
+      {showGroupAndColumns && (
+        <label className="inline-flex items-center gap-1">
+          <span className="text-gray-400">Group:</span>
+          <select
+            disabled={readOnly}
+            value={schema.tableGroupBy ?? ""}
+            onChange={(e) =>
+              start(() =>
+                setTableGroup(slug, dbId, e.target.value || null),
+              )
+            }
+            className="border border-gray-200 rounded px-1 py-0.5 text-xs bg-white"
+          >
+            <option value="">None</option>
+            {schema.props
+              .filter((p) => p.type === "select" || p.type === "status")
+              .map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.name}
+                </option>
+              ))}
+          </select>
+        </label>
+      )}
 
+      {showGroupAndColumns && (
       <div className="relative">
         <button
           onClick={() => setOpenColumns((v) => !v)}
@@ -164,6 +170,7 @@ export function DbControls({
           />
         )}
       </div>
+      )}
     </div>
   );
 }

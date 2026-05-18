@@ -12,6 +12,7 @@ import { KanbanView } from "./kanban-view";
 import { GalleryView } from "./gallery-view";
 import { CalendarView } from "./calendar-view";
 import { TimelineView } from "./timeline-view";
+import { ListView } from "./list-view";
 import { PageCover } from "./page-cover";
 import { ShareButton } from "./share-button";
 import { DbControls } from "./db-controls";
@@ -202,6 +203,18 @@ export function DatabasePage({
           >
             Timeline
           </button>
+          <button
+            className={
+              "px-2 py-1 " +
+              (view === "list" ? "bg-gray-900 text-white" : "hover:bg-black/5")
+            }
+            disabled={readOnly}
+            onClick={() => {
+              if (view !== "list") start(() => setView(slug, db.id, "list"));
+            }}
+          >
+            List
+          </button>
         </div>
         <DbControls slug={slug} dbId={db.id} schema={db.schema} readOnly={readOnly} />
         <input
@@ -256,6 +269,14 @@ export function DatabasePage({
         />
       ) : view === "timeline" ? (
         <TimelineView
+          slug={slug}
+          dbId={db.id}
+          schema={db.schema}
+          rows={visibleRows}
+          readOnly={readOnly}
+        />
+      ) : view === "list" ? (
+        <ListView
           slug={slug}
           dbId={db.id}
           schema={db.schema}
