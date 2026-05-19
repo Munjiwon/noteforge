@@ -216,5 +216,20 @@ export async function setCommentResolved(
   revalidatePath(`/w/${slug}/p/${c.pageId}`);
 }
 
+export async function resolveAllComments(slug: string, pageId: string) {
+  const ctx = await requireWorkspaceMember(slug);
+  if (ctx.role === "viewer") throw new Error("forbidden");
+  const page = await prisma.page.findFirst({
+    where: { id: pageId, workspaceId: ctx.workspace.id },
+    select: { id: true },
+  });
+  if (!page) throw new Error("not found");
+  await prisma.comment.updateMany({
+    where: { pageId, resolved: false },
+    data: { resolved: true },
+  });
+  revalidatePath(`/w/${slug}/p/${pageId}`);
+}
+
 // Silence unused warning for assertPageVisible (reserved for future viewer-friendly actions)
 export { assertPageVisible };

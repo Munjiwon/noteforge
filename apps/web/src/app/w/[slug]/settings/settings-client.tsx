@@ -8,6 +8,7 @@ import {
   removeMember,
   renameWorkspace,
   revokeInvite,
+  setWorkspaceAnnouncement,
   setWorkspaceBanner,
   setWorkspaceColor,
   setWorkspaceDefaultFont,
@@ -32,6 +33,7 @@ export function SettingsClient({
   workspaceColor,
   workspaceDefaultFont = "default",
   workspaceBannerUrl = null,
+  workspaceAnnouncement = null,
   currentUserId,
   role,
   members,
@@ -46,6 +48,7 @@ export function SettingsClient({
   workspaceColor: string | null;
   workspaceDefaultFont?: "default" | "serif" | "mono";
   workspaceBannerUrl?: string | null;
+  workspaceAnnouncement?: string | null;
   currentUserId: string;
   role: Role;
   members: {
@@ -176,6 +179,12 @@ export function SettingsClient({
               <BannerRow
                 slug={slug}
                 initialUrl={workspaceBannerUrl}
+              />
+            )}
+            {isOwner && (
+              <AnnouncementRow
+                slug={slug}
+                initial={workspaceAnnouncement}
               />
             )}
           </div>
@@ -422,6 +431,50 @@ export function SettingsClient({
           </div>
         </section>
       )}
+    </div>
+  );
+}
+
+function AnnouncementRow({
+  slug,
+  initial,
+}: {
+  slug: string;
+  initial: string | null;
+}) {
+  const [value, setValue] = useState(initial ?? "");
+  const [, start] = useTransition();
+  return (
+    <div className="mt-2 text-xs">
+      <div className="text-gray-500 mb-1">Announcement banner</div>
+      <textarea
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder="Pinned message shown at the top of the sidebar for every member"
+        rows={2}
+        className="w-full border border-gray-200 rounded px-2 py-1 outline-none focus:border-gray-400 text-xs"
+      />
+      <div className="flex gap-2 mt-1">
+        <button
+          onClick={() =>
+            start(() => setWorkspaceAnnouncement(slug, value || null))
+          }
+          className="px-2 py-1 rounded border border-gray-200 hover:bg-black/5"
+        >
+          Save
+        </button>
+        {initial && (
+          <button
+            onClick={() => {
+              setValue("");
+              start(() => setWorkspaceAnnouncement(slug, null));
+            }}
+            className="text-gray-500 hover:text-red-600"
+          >
+            Clear
+          </button>
+        )}
+      </div>
     </div>
   );
 }

@@ -153,14 +153,33 @@ body.read-mode .read-mode-keep {
   .bn-formatting-toolbar,
   .mobile-only,
   button[title="Page info"],
-  button[title="Page style"] {
+  button[title="Page style"],
+  .read-mode-keep,
+  .nf-shiki-copy {
     display: none !important;
   }
   body {
     background: #fff;
     color: #000;
+    font-size: 12pt;
   }
   main {
     overflow: visible !important;
+  }
+  /* Tighter, more book-like layout */
+  h1 { font-size: 22pt; margin: 18pt 0 8pt; }
+  h2 { font-size: 16pt; margin: 14pt 0 6pt; }
+  h3 { font-size: 13pt; margin: 12pt 0 4pt; }
+  p, li { line-height: 1.55; }
+  pre, code { font-size: 10pt; }
+  /* Avoid awkward page-breaks inside common blocks */
+  h1, h2, h3, blockquote, pre, .bn-block { break-inside: avoid; }
+  a {
+    color: #000 !important;
+    text-decoration: none !important;
+  }
+  /* Hide the cover image to save toner */
+  .page-cover {
+    display: none !important;
   }
 }

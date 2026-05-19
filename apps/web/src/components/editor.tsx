@@ -204,6 +204,81 @@ export function Editor({
     await createComment(slug, pageId, body, { blockId: cur.id });
   };
 
+  // ⌘J — AI Edit on current selection (or surrounding paragraph if no selection)
+  useEffect(() => {
+    if (!editor || readOnly) return;
+    const onKey = async (e: KeyboardEvent) => {
+      if (!(e.metaKey || e.ctrlKey)) return;
+      if (e.shiftKey || e.altKey) return;
+      if (e.key.toLowerCase() !== "j") return;
+      const sel = window.getSelection()?.toString() ?? "";
+      const instruction = window.prompt(
+        sel
+          ? `AI · transform selection ('${sel.slice(0, 40)}…'). What should AI do?`
+          : "AI · transform surrounding text. What should AI do?",
+        "Improve clarity",
+      );
+      if (!instruction || !instruction.trim()) return;
+      e.preventDefault();
+      // Use selection if non-empty, else surrounding blocks.
+      let text = sel;
+      if (!text) {
+        const cur = editor.getTextCursorPosition().block;
+        const blocks = editor.document;
+        const idx = blocks.findIndex((b: { id: string }) => b.id === cur?.id);
+        const slice =
+          idx >= 0
+            ? blocks.slice(Math.max(0, idx - 3), idx + 1)
+            : blocks.slice(-3);
+        text = slice
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          .map((b: any) =>
+            Array.isArray(b.content)
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              ? b.content
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  .map((c: any) =>
+                    typeof c === "object" && c && "text" in c ? c.text : "",
+                  )
+                  .join("")
+              : "",
+          )
+          .join("\n")
+          .slice(0, 1500);
+      }
+      const placeholder = {
+        type: "callout" as const,
+        props: { emoji: "🪄", color: "red" } as Record<string, unknown>,
+        content: [
+          { type: "text", text: "AI · Edit: thinking…", styles: {} },
+        ] as unknown,
+      };
+      const cur = editor.getTextCursorPosition().block;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const [inserted] = editor.insertBlocks([placeholder as any], cur, "after");
+      try {
+        const res = await fetch("/api/ai", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "edit", text, instruction }),
+        });
+        const data = (await res.json()) as { output?: string; error?: string };
+        const out = data.output || data.error || "(no response)";
+        editor.updateBlock(inserted, {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          content: [{ type: "text", text: out, styles: {} }] as any,
+        });
+      } catch (err) {
+        editor.updateBlock(inserted, {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          content: [{ type: "text", text: `AI failed: ${(err as Error).message}`, styles: {} }] as any,
+        });
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [editor, readOnly]);
+
   return (
     <div>
       <PresenceBar self={user} peers={peers} syncStatus={syncStatus} />

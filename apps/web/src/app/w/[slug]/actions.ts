@@ -175,6 +175,19 @@ export async function deleteTagAcrossWorkspace(slug: string, name: string) {
   await renameTagAcrossWorkspace(slug, name, "");
 }
 
+export async function setPageCoverCaption(
+  slug: string,
+  pageId: string,
+  caption: string | null,
+) {
+  const ctx = await assertEditor(slug);
+  await prisma.page.updateMany({
+    where: { id: pageId, workspaceId: ctx.workspace.id },
+    data: { coverCaption: caption?.trim() ? caption.trim().slice(0, 200) : null },
+  });
+  revalidatePath(`/w/${slug}/p/${pageId}`);
+}
+
 export async function setPageCoverPos(
   slug: string,
   pageId: string,
@@ -411,6 +424,20 @@ export async function setPageExpiry(
     data: { expiresAt: d },
   });
   revalidatePath(`/w/${slug}/p/${pageId}`);
+}
+
+export async function togglePagePinned(slug: string, pageId: string) {
+  const ctx = await assertEditor(slug);
+  const row = await prisma.page.findFirst({
+    where: { id: pageId, workspaceId: ctx.workspace.id },
+    select: { pinned: true },
+  });
+  if (!row) throw new Error("not found");
+  await prisma.page.update({
+    where: { id: pageId },
+    data: { pinned: !row.pinned },
+  });
+  revalidatePath(`/w/${slug}`, "layout");
 }
 
 export async function archivePage(slug: string, pageId: string) {

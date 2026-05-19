@@ -6,6 +6,54 @@ import { parseSchema, parseValues } from "@/lib/database";
 
 export const dynamic = "force-dynamic";
 
+export async function generateMetadata({
+  params,
+}: {
+  params: { token: string };
+}) {
+  const p = await prisma.page.findFirst({
+    where: { publicSlug: params.token, publicAccess: "view", deletedAt: null },
+    select: { title: true, icon: true, content: true },
+  });
+  if (!p) return { title: "Shared page" };
+  const title = (p.title || "Untitled").slice(0, 80);
+  let description = "";
+  try {
+    const blocks = JSON.parse(p.content) as unknown;
+    if (Array.isArray(blocks)) {
+      const parts: string[] = [];
+      const walk = (b: unknown) => {
+        if (!b || typeof b !== "object") return;
+        const n = b as { content?: unknown; children?: unknown };
+        if (Array.isArray(n.content)) {
+          for (const it of n.content) {
+            if (
+              it &&
+              typeof it === "object" &&
+              "text" in it &&
+              typeof (it as { text: unknown }).text === "string"
+            ) {
+              parts.push((it as { text: string }).text);
+            }
+          }
+        }
+        if (Array.isArray(n.children)) for (const c of n.children) walk(c);
+      };
+      for (const b of blocks) walk(b);
+      description = parts.join(" ").slice(0, 200).trim();
+    }
+  } catch {}
+  return {
+    title: p.icon ? `${p.icon} ${title}` : title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "article",
+    },
+  };
+}
+
 export default async function PublicSharedPage({
   params,
 }: {

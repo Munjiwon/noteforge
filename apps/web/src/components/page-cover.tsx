@@ -1,7 +1,11 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import { setPageCover, setPageCoverPos } from "@/app/w/[slug]/actions";
+import {
+  setPageCover,
+  setPageCoverCaption,
+  setPageCoverPos,
+} from "@/app/w/[slug]/actions";
 
 const PRESET_COVERS = [
   "https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=1600&q=70",
@@ -32,12 +36,14 @@ export function PageCover({
   pageId,
   cover,
   coverPos,
+  caption,
   readOnly,
 }: {
   slug: string;
   pageId: string;
   cover: string | null;
   coverPos?: "top" | "center" | "bottom";
+  caption?: string | null;
   readOnly: boolean;
 }) {
   const [open, setOpen] = useState(false);
@@ -112,6 +118,25 @@ export function PageCover({
           className="w-full h-[200px] md:h-[260px] object-cover"
           style={{ objectPosition: pos === "top" ? "top" : pos === "bottom" ? "bottom" : "center" }}
         />
+      )}
+      {caption && (
+        <div className="absolute left-4 bottom-3 text-xs text-white drop-shadow bg-black/40 backdrop-blur rounded px-2 py-0.5 max-w-[60%] truncate">
+          {caption}
+        </div>
+      )}
+      {!readOnly && (
+        <button
+          onClick={() => {
+            const next = prompt("Cover caption (empty to remove)", caption ?? "");
+            if (next === null) return;
+            start(() => setPageCoverCaption(slug, pageId, next || null));
+          }}
+          className="absolute left-4 bottom-3 opacity-0 group-hover:opacity-100 text-[10px] bg-white/80 border border-gray-200 rounded px-2 py-0.5"
+          style={{ display: caption ? "none" : undefined }}
+          title="Add a caption shown on the cover"
+        >
+          + Caption
+        </button>
       )}
       {!readOnly && !isGradient(cover) && (
         <div className="absolute right-4 top-4 opacity-0 group-hover:opacity-100 flex gap-0.5 bg-white/80 backdrop-blur rounded text-xs border border-gray-200">

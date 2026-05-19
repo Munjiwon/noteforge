@@ -66,8 +66,10 @@ export function PageView({
     font?: "default" | "serif" | "mono";
     isTemplate?: boolean;
     favorite?: boolean;
+    pinned?: boolean;
     slug?: string | null;
     expiresAt?: string | null;
+    coverCaption?: string | null;
   };
   canChangeSettings?: boolean;
   user: { id: string; name: string; color: string };
@@ -184,6 +186,7 @@ export function PageView({
             ? page.coverPos
             : "center"
         }
+        caption={page.coverCaption ?? null}
         readOnly={readOnly}
       />
       <div className={`${widthClass(width)} mx-auto px-12 md:px-24 py-10`}>
@@ -297,6 +300,7 @@ export function PageView({
             isTemplate={page.isTemplate ?? false}
             customSlug={page.slug ?? null}
             expiresAt={page.expiresAt ?? null}
+            pinned={page.pinned ?? false}
             canEdit={canChangeSettings}
           />
           <HistoryButton

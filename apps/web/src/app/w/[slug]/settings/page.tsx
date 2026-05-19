@@ -56,6 +56,7 @@ export default async function SettingsPage({
           : "default") as "default" | "serif" | "mono"
       }
       workspaceBannerUrl={ctx.workspace.bannerUrl ?? null}
+      workspaceAnnouncement={ctx.workspace.announcement ?? null}
       currentUserId={ctx.user.id}
       role={ctx.role as "owner" | "editor" | "viewer"}
       members={members.map((m) => ({

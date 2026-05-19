@@ -178,6 +178,7 @@ export default async function WorkspaceLayout({
         position: true,
         kind: true,
         favorite: true,
+        pinned: true,
         content: true,
         isTemplate: true,
       },
@@ -290,10 +291,19 @@ export default async function WorkspaceLayout({
     parentId: p.parentId,
     kind: p.kind,
     favorite: p.favorite,
+    pinned: p.pinned,
     count: childCount.get(p.id) ?? 0,
     openComments: commentCountByPage.get(p.id) ?? 0,
     preview: extractPreview(p.content),
   }));
+  const pinned = pages
+    .filter((p) => p.pinned && !p.parentId)
+    .map((p) => ({
+      id: p.id,
+      title: p.title,
+      icon: p.icon,
+      kind: p.kind,
+    }));
 
   const accentRgb = hexToRgbTriplet(ctx.workspace.color);
   const userRow = await prisma.user.findUnique({
@@ -324,10 +334,12 @@ export default async function WorkspaceLayout({
         currentName={ctx.workspace.name}
         currentIcon={ctx.workspace.icon}
         currentColor={ctx.workspace.color}
+        announcement={ctx.workspace.announcement}
         memberCount={memberCount}
         role={ctx.role as any}
         pages={pagesForSidebar}
         favorites={favorites}
+        pinned={pinned}
         templates={templatePages.map((p) => ({
           id: p.id,
           title: p.title,

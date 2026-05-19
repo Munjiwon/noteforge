@@ -28,6 +28,7 @@ const GROUPS: { name: string; items: { keys: string; desc: string }[] }[] = [
       { keys: "⌘ Z / ⌘ Shift Z", desc: "Undo / Redo" },
       { keys: "Tab / Shift Tab", desc: "Indent / outdent block" },
       { keys: "/ai", desc: "AI: Summarize · Translate · Improve · Continue" },
+      { keys: "⌘ J", desc: "AI · Edit current selection (or surrounding text)" },
     ],
   },
   {

@@ -77,11 +77,13 @@ export function Sidebar({
   pages,
   favorites,
   templates,
+  pinned = [],
   trashed,
   notifications,
   recent,
   trashStaleCount,
   user,
+  announcement,
 }: {
   workspaces: { slug: string; name: string }[];
   currentSlug: string;
@@ -93,11 +95,13 @@ export function Sidebar({
   pages: SidebarPage[];
   favorites: SidebarPage[];
   templates?: { id: string; title: string; icon: string | null; kind: string }[];
+  pinned?: { id: string; title: string; icon: string | null; kind: string }[];
   trashed: TrashItem[];
   notifications: NotifItem[];
   recent: TrashItem[];
   trashStaleCount?: number;
   user: { id: string; name: string; color: string; avatarUrl?: string | null };
+  announcement?: string | null;
 }) {
   const params = useParams<{ pageId?: string }>();
   const activePageId = params.pageId;
@@ -616,6 +620,12 @@ export function Sidebar({
         </details>
       </div>
 
+      {announcement && (
+        <div className="mx-3 mt-2 bg-amber-50 border border-amber-200 text-amber-900 rounded-md px-2 py-1.5 text-[11px]">
+          📣 {announcement}
+        </div>
+      )}
+
       <div className="mx-3 mt-2 flex items-center gap-1">
         <button
           onClick={() => window.dispatchEvent(new Event("search-open"))}
@@ -648,6 +658,34 @@ export function Sidebar({
                   </span>
                   <span className="truncate">
                     {r.title || (r.kind === "database" ? "Untitled database" : "Untitled")}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+
+      {pinned.length > 0 && (
+        <>
+          <div className="px-3 pt-3 pb-1 text-xs uppercase tracking-wide text-gray-500">
+            📌 Pinned
+          </div>
+          <ul className="pb-1">
+            {pinned.map((p) => (
+              <li key={p.id}>
+                <Link
+                  href={`/w/${currentSlug}/p/${p.id}`}
+                  className={
+                    "flex items-center gap-1 px-3 py-1 text-sm hover:bg-black/5 " +
+                    (activePageId === p.id ? "bg-black/10" : "")
+                  }
+                >
+                  <span>
+                    {p.icon ?? (p.kind === "database" ? "📊" : "📄")}
+                  </span>
+                  <span className="truncate flex-1">
+                    {p.title || "Untitled"}
                   </span>
                 </Link>
               </li>
@@ -702,13 +740,23 @@ export function Sidebar({
         </>
       )}
 
-      <div className="px-3 pt-2 pb-1">
+      <div className="px-3 pt-2 pb-1 relative">
         <input
           value={filterQ}
           onChange={(e) => setFilterQ(e.target.value)}
           placeholder="Filter pages…"
-          className="w-full text-xs border border-gray-200 rounded px-2 py-1 outline-none focus:border-gray-400 bg-white/60"
+          className="w-full text-xs border border-gray-200 rounded px-2 py-1 pr-6 outline-none focus:border-gray-400 bg-white/60"
         />
+        {filterQ && (
+          <button
+            type="button"
+            onClick={() => setFilterQ("")}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-900 text-xs"
+            title="Clear filter"
+          >
+            ✕
+          </button>
+        )}
       </div>
 
       <div className="flex items-center justify-between px-3 pt-2 pb-1 text-xs uppercase tracking-wide text-gray-500">

@@ -9,6 +9,7 @@ import {
   setPageSlug,
   setPageWidth,
   togglePageLock,
+  togglePagePinned,
 } from "@/app/w/[slug]/actions";
 import { useRouter } from "next/navigation";
 
@@ -24,6 +25,7 @@ export function PageStyleMenu({
   isTemplate = false,
   customSlug = null,
   expiresAt = null,
+  pinned = false,
   canEdit,
 }: {
   slug: string;
@@ -34,6 +36,7 @@ export function PageStyleMenu({
   isTemplate?: boolean;
   customSlug?: string | null;
   expiresAt?: string | null;
+  pinned?: boolean;
   canEdit: boolean;
 }) {
   const [open, setOpen] = useState(false);
@@ -109,6 +112,12 @@ export function PageStyleMenu({
               ) : (
                 <LockRow slug={slug} pageId={pageId} />
               )}
+              <button
+                onClick={() => start(() => togglePagePinned(slug, pageId))}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+              >
+                {pinned ? "📌 Unpin from sidebar" : "📌 Pin to sidebar"}
+              </button>
               <button
                 onClick={() =>
                   start(async () => {

@@ -28,6 +28,7 @@ export async function requireWorkspaceMember(slug: string) {
       color: ws.color,
       defaultFont: ws.defaultFont,
       bannerUrl: ws.bannerUrl,
+      announcement: ws.announcement,
     },
     role: ws.members[0].role,
   };

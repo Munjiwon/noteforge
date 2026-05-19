@@ -6,6 +6,7 @@ import {
   createComment,
   deleteComment,
   editComment,
+  resolveAllComments,
   setCommentResolved,
   toggleReaction,
 } from "@/app/w/[slug]/comment-actions";
@@ -117,6 +118,17 @@ export function CommentsPanel({
               className="text-xs text-gray-500 hover:text-gray-900"
             >
               {showResolved ? "Hide resolved" : "Show resolved"}
+            </button>
+          )}
+          {!readOnly && openCount > 1 && (
+            <button
+              onClick={() => {
+                if (!confirm(`Resolve all ${openCount} open comments?`)) return;
+                start(() => resolveAllComments(slug, pageId));
+              }}
+              className="text-xs text-gray-500 hover:text-gray-900"
+            >
+              ✓ Resolve all
             </button>
           )}
         </div>

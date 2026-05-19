@@ -49,6 +49,7 @@ model Workspace {
   icon      String?           // emoji
   color     String?           // hex
   bannerUrl String?
+  announcement String?
   defaultFont String          @default("default") // "default" | "serif" | "mono"
   createdAt DateTime          @default(now())
 
@@ -91,8 +92,10 @@ model Page {
   authorId    String?
   cover       String?
   coverPos    String    @default("center") // "top" | "center" | "bottom"
+  coverCaption String?
   tags        String    @default("[]") // JSON array of strings
   favorite    Boolean   @default(false)
+  pinned      Boolean   @default(false)
   locked      Boolean   @default(false)
   lockedUntil DateTime?
   width       String    @default("normal") // "normal" | "wide" | "full"
