@@ -316,6 +316,26 @@ export function Sidebar({
         startTransition(() => {
           duplicatePage(currentSlug, activePageId);
         });
+      } else if (
+        (e.metaKey || e.ctrlKey) &&
+        !e.shiftKey &&
+        !e.altKey &&
+        e.key.toLowerCase() === "n"
+      ) {
+        // ⌘N — new page at workspace root
+        e.preventDefault();
+        startTransition(() => {
+          createPage(currentSlug, null);
+        });
+      } else if (
+        (e.metaKey || e.ctrlKey) &&
+        !e.shiftKey &&
+        !e.altKey &&
+        (e.key === "\\" || e.code === "Backslash")
+      ) {
+        // ⌘\ — collapse/expand sidebar
+        e.preventDefault();
+        setCollapsed((v) => !v);
       }
     };
     window.addEventListener("keydown", onKey);
@@ -1013,6 +1033,12 @@ export function Sidebar({
           className="block text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
         >
           📁 Files
+        </Link>
+        <Link
+          href={`/w/${currentSlug}/all`}
+          className="block text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
+        >
+          📄 All pages
         </Link>
         <Link
           href={`/w/${currentSlug}/archive`}

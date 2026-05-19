@@ -4,10 +4,12 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import {
   deleteWorkspace,
+  exportWorkspaceJson,
   exportWorkspaceMarkdown,
   removeMember,
   renameWorkspace,
   revokeInvite,
+  setMutedNotificationKinds,
   setWorkspaceAnnouncement,
   setWorkspaceBanner,
   setWorkspaceColor,
@@ -34,6 +36,7 @@ export function SettingsClient({
   workspaceDefaultFont = "default",
   workspaceBannerUrl = null,
   workspaceAnnouncement = null,
+  mutedKinds = [],
   currentUserId,
   role,
   members,
@@ -49,6 +52,7 @@ export function SettingsClient({
   workspaceDefaultFont?: "default" | "serif" | "mono";
   workspaceBannerUrl?: string | null;
   workspaceAnnouncement?: string | null;
+  mutedKinds?: string[];
   currentUserId: string;
   role: Role;
   members: {
@@ -82,6 +86,8 @@ export function SettingsClient({
       <h1 className="text-2xl font-bold">Workspace settings</h1>
 
       {profile && <ProfileSection profile={profile} />}
+
+      <NotificationPrefs slug={slug} mutedKinds={mutedKinds} />
 
       <section>
         <h2 className="text-sm font-medium text-gray-700 mb-2">General</h2>
@@ -193,25 +199,49 @@ export function SettingsClient({
 
       <section>
         <h2 className="text-sm font-medium text-gray-700 mb-2">Export</h2>
-        <button
-          onClick={() =>
-            start(async () => {
-              const md = await exportWorkspaceMarkdown(slug);
-              const blob = new Blob([md], { type: "text/markdown" });
-              const url = URL.createObjectURL(blob);
-              const a = document.createElement("a");
-              a.href = url;
-              a.download = workspaceName.replace(/[^\w\d-]+/g, "_") + ".md";
-              document.body.appendChild(a);
-              a.click();
-              a.remove();
-              URL.revokeObjectURL(url);
-            })
-          }
-          className="text-xs px-3 py-1 rounded border border-gray-200 hover:bg-black/5"
-        >
-          ⬇ Download all pages as Markdown
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() =>
+              start(async () => {
+                const md = await exportWorkspaceMarkdown(slug);
+                const blob = new Blob([md], { type: "text/markdown" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = workspaceName.replace(/[^\w\d-]+/g, "_") + ".md";
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(url);
+              })
+            }
+            className="text-xs px-3 py-1 rounded border border-gray-200 hover:bg-black/5"
+          >
+            ⬇ Markdown
+          </button>
+          <button
+            onClick={() =>
+              start(async () => {
+                const json = await exportWorkspaceJson(slug);
+                const blob = new Blob([json], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = workspaceName.replace(/[^\w\d-]+/g, "_") + ".json";
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(url);
+              })
+            }
+            className="text-xs px-3 py-1 rounded border border-gray-200 hover:bg-black/5"
+          >
+            ⬇ JSON
+          </button>
+        </div>
+        <p className="text-[11px] text-gray-400 mt-1">
+          Markdown is human-readable; JSON keeps full block + database schema for re-import.
+        </p>
       </section>
 
       {stats && (
@@ -432,6 +462,63 @@ export function SettingsClient({
         </section>
       )}
     </div>
+  );
+}
+
+const NOTIF_KINDS: { id: string; label: string; desc: string }[] = [
+  { id: "mention", label: "Mentions", desc: "Someone @-mentions you" },
+  { id: "comment_reply", label: "Comment replies", desc: "Replies in threads you started" },
+  { id: "comment_new", label: "New comments", desc: "Top-level comments on pages you author" },
+  { id: "page_updated", label: "Page updates", desc: "Edits to pages you subscribed to" },
+  { id: "reminder", label: "Reminders", desc: "Your scheduled reminders" },
+];
+
+function NotificationPrefs({
+  slug,
+  mutedKinds,
+}: {
+  slug: string;
+  mutedKinds: string[];
+}) {
+  const [muted, setMuted] = useState<string[]>(mutedKinds);
+  const [, start] = useTransition();
+  function toggle(id: string) {
+    const next = muted.includes(id)
+      ? muted.filter((x) => x !== id)
+      : [...muted, id];
+    setMuted(next);
+    start(() => setMutedNotificationKinds(slug, next));
+  }
+  return (
+    <section>
+      <h2 className="text-sm font-medium text-gray-700 mb-2">
+        Notification preferences
+      </h2>
+      <ul className="border border-gray-200 rounded divide-y divide-gray-100">
+        {NOTIF_KINDS.map((k) => {
+          const isMuted = muted.includes(k.id);
+          return (
+            <li key={k.id} className="flex items-center gap-3 px-3 py-2">
+              <div className="flex-1 min-w-0">
+                <div className="text-sm">{k.label}</div>
+                <div className="text-[11px] text-gray-500">{k.desc}</div>
+              </div>
+              <button
+                onClick={() => toggle(k.id)}
+                className={
+                  "text-xs px-2 py-1 rounded border " +
+                  (isMuted
+                    ? "border-gray-300 text-gray-500"
+                    : "border-emerald-200 bg-emerald-50 text-emerald-700")
+                }
+              >
+                {isMuted ? "🔕 Muted" : "🔔 On"}
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
   );
 }
 

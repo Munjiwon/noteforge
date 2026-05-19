@@ -10,15 +10,23 @@ export async function GET(req: NextRequest) {
   const ws = slug
     ? await prisma.workspace.findUnique({
         where: { slug },
-        include: { members: { where: { userId }, select: { id: true } } },
+        include: { members: { where: { userId }, select: { id: true, mutedKinds: true } } },
       })
     : null;
   if (slug && (!ws || ws.members.length === 0)) {
     return NextResponse.json({ error: "forbidden" }, { status: 403 });
   }
+  let muted: string[] = [];
+  if (ws?.members[0]) {
+    try {
+      const v = JSON.parse(ws.members[0].mutedKinds ?? "[]");
+      if (Array.isArray(v)) muted = v.filter((x) => typeof x === "string");
+    } catch {}
+  }
   const where = {
     recipientId: userId,
     ...(ws ? { workspaceId: ws.id } : {}),
+    ...(muted.length > 0 ? { kind: { notIn: muted } } : {}),
   };
   const [latest, unread] = await Promise.all([
     prisma.notification.findMany({

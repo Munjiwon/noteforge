@@ -10,7 +10,7 @@ export default async function SettingsPage({
   params: { slug: string };
 }) {
   const ctx = await requireWorkspaceMember(params.slug);
-  const [tokens, currentUserRow] = await Promise.all([
+  const [tokens, currentUserRow, currentMember] = await Promise.all([
     prisma.apiToken.findMany({
       where: { userId: ctx.user.id },
       orderBy: { createdAt: "desc" },
@@ -20,7 +20,16 @@ export default async function SettingsPage({
       where: { id: ctx.user.id },
       select: { id: true, name: true, color: true, avatarUrl: true },
     }),
+    prisma.workspaceMember.findFirst({
+      where: { workspaceId: ctx.workspace.id, userId: ctx.user.id },
+      select: { mutedKinds: true },
+    }),
   ]);
+  let muted: string[] = [];
+  try {
+    const v = JSON.parse(currentMember?.mutedKinds ?? "[]");
+    if (Array.isArray(v)) muted = v.filter((x: unknown) => typeof x === "string");
+  } catch {}
   const [members, invites, pageCount, commentCount, lastActivity] = await Promise.all([
     prisma.workspaceMember.findMany({
       where: { workspaceId: ctx.workspace.id },
@@ -57,6 +66,7 @@ export default async function SettingsPage({
       }
       workspaceBannerUrl={ctx.workspace.bannerUrl ?? null}
       workspaceAnnouncement={ctx.workspace.announcement ?? null}
+      mutedKinds={muted}
       currentUserId={ctx.user.id}
       role={ctx.role as "owner" | "editor" | "viewer"}
       members={members.map((m) => ({

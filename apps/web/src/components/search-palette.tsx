@@ -39,6 +39,7 @@ export function SearchPalette({ slug }: { slug: string }) {
   const [kindFilter, setKindFilter] = useState<"all" | "doc" | "database">("all");
   const [since, setSince] = useState<"any" | "7d" | "30d" | "90d">("any");
   const [tag, setTag] = useState("");
+  const [sortBy, setSortBy] = useState<"recent" | "relevance">("recent");
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
@@ -86,6 +87,7 @@ export function SearchPalette({ slug }: { slug: string }) {
         });
         if (since !== "any") params.set("since", since);
         if (tag.trim()) params.set("tag", tag.trim());
+        if (sortBy !== "recent") params.set("sort", sortBy);
         const res = await fetch(`/api/search?${params.toString()}`, {
           signal: ctrl.signal,
         });
@@ -103,7 +105,7 @@ export function SearchPalette({ slug }: { slug: string }) {
       ctrl.abort();
       clearTimeout(t);
     };
-  }, [q, open, slug, since, tag]);
+  }, [q, open, slug, since, tag, sortBy]);
 
   const choose = (hit: Hit) => {
     setOpen(false);
@@ -173,6 +175,21 @@ export function SearchPalette({ slug }: { slug: string }) {
               }
             >
               {s === "any" ? "Any time" : "Last " + s}
+            </button>
+          ))}
+          <span className="ml-2">Sort</span>
+          {(["recent", "relevance"] as const).map((s) => (
+            <button
+              key={s}
+              onClick={() => setSortBy(s)}
+              className={
+                "px-1.5 py-0.5 rounded " +
+                (sortBy === s
+                  ? "bg-gray-900 text-white"
+                  : "hover:bg-black/5 text-gray-500")
+              }
+            >
+              {s === "recent" ? "Recent" : "Relevance"}
             </button>
           ))}
           <span className="ml-2">Tag</span>

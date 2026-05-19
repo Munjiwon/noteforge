@@ -246,6 +246,8 @@ export function Editor({
           .join("\n")
           .slice(0, 1500);
       }
+      // Remember whether to replace the live selection with the result.
+      const replaceSelection = sel.length > 0;
       const placeholder = {
         type: "callout" as const,
         props: { emoji: "🪄", color: "red" } as Record<string, unknown>,
@@ -264,6 +266,24 @@ export function Editor({
         });
         const data = (await res.json()) as { output?: string; error?: string };
         const out = data.output || data.error || "(no response)";
+        if (replaceSelection && data.output) {
+          // Replace the visible selection in-place with the result, then drop
+          // the placeholder callout.
+          try {
+            // restore focus into the editor
+            const root = document.querySelector(".bn-editor") as HTMLElement | null;
+            root?.focus();
+            // execCommand is deprecated but still the simplest way to replace a
+            // contentEditable selection without re-implementing it.
+            const ok = document.execCommand("insertText", false, out);
+            if (ok) {
+              editor.removeBlocks([inserted]);
+              return;
+            }
+          } catch {
+            /* fall through to keep the callout */
+          }
+        }
         editor.updateBlock(inserted, {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           content: [{ type: "text", text: out, styles: {} }] as any,

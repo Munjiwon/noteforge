@@ -190,14 +190,29 @@ export default async function WorkspaceLayout({
     }),
     getWorkspacesForUser(ctx.user.id),
     prisma.workspaceMember.count({ where: { workspaceId: ctx.workspace.id } }),
-    prisma.notification.findMany({
-      where: { recipientId: ctx.user.id, workspaceId: ctx.workspace.id },
-      orderBy: { createdAt: "desc" },
-      take: 20,
-      include: {
-        actor: { select: { name: true, color: true, avatarUrl: true } },
-      },
-    }),
+    (async () => {
+      const m = await prisma.workspaceMember.findFirst({
+        where: { workspaceId: ctx.workspace.id, userId: ctx.user.id },
+        select: { mutedKinds: true },
+      });
+      let muted: string[] = [];
+      try {
+        const v = JSON.parse(m?.mutedKinds ?? "[]");
+        if (Array.isArray(v)) muted = v.filter((x: unknown) => typeof x === "string");
+      } catch {}
+      return prisma.notification.findMany({
+        where: {
+          recipientId: ctx.user.id,
+          workspaceId: ctx.workspace.id,
+          ...(muted.length > 0 ? { kind: { notIn: muted } } : {}),
+        },
+        orderBy: { createdAt: "desc" },
+        take: 20,
+        include: {
+          actor: { select: { name: true, color: true, avatarUrl: true } },
+        },
+      });
+    })(),
     prisma.page.findMany({
       where: {
         workspaceId: ctx.workspace.id,

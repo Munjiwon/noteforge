@@ -39,6 +39,19 @@ export async function setWorkspaceColor(slug: string, color: string | null) {
   revalidatePath(`/w/${slug}`, "layout");
 }
 
+export async function setMutedNotificationKinds(
+  slug: string,
+  kinds: string[],
+) {
+  const ctx = await requireWorkspaceMember(slug);
+  const clean = Array.from(new Set(kinds.filter((k) => typeof k === "string"))).slice(0, 20);
+  await prisma.workspaceMember.updateMany({
+    where: { workspaceId: ctx.workspace.id, userId: ctx.user.id },
+    data: { mutedKinds: JSON.stringify(clean) },
+  });
+  revalidatePath(`/w/${slug}`, "layout");
+}
+
 export async function setWorkspaceAnnouncement(
   slug: string,
   text: string | null,
@@ -106,6 +119,80 @@ export async function removeMember(slug: string, userId: string) {
     where: { workspaceId: ctx.workspace.id, userId },
   });
   revalidatePath(`/w/${slug}/settings`);
+}
+
+export async function exportWorkspaceJson(slug: string): Promise<string> {
+  const ctx = await requireWorkspaceMember(slug);
+  const pages = await prisma.page.findMany({
+    where: { workspaceId: ctx.workspace.id, deletedAt: null },
+    orderBy: [{ parentId: "asc" }, { position: "asc" }, { createdAt: "asc" }],
+    select: {
+      id: true,
+      title: true,
+      icon: true,
+      kind: true,
+      parentId: true,
+      content: true,
+      dbSchema: true,
+      dataValues: true,
+      tags: true,
+      slug: true,
+      isTemplate: true,
+      createdAt: true,
+      updatedAt: true,
+      author: { select: { id: true, name: true, email: true } },
+    },
+  });
+  const payload = {
+    workspace: {
+      slug: ctx.workspace.slug,
+      name: ctx.workspace.name,
+      icon: ctx.workspace.icon,
+      color: ctx.workspace.color,
+      exportedAt: new Date().toISOString(),
+    },
+    pages: pages.map((p) => {
+      let content: unknown = null;
+      try {
+        content = JSON.parse(p.content);
+      } catch {
+        content = null;
+      }
+      let dbSchema: unknown = null;
+      if (p.dbSchema) {
+        try {
+          dbSchema = JSON.parse(p.dbSchema);
+        } catch {}
+      }
+      let dataValues: unknown = null;
+      if (p.dataValues) {
+        try {
+          dataValues = JSON.parse(p.dataValues);
+        } catch {}
+      }
+      let tags: unknown = [];
+      try {
+        tags = JSON.parse(p.tags ?? "[]");
+      } catch {}
+      return {
+        id: p.id,
+        title: p.title,
+        icon: p.icon,
+        kind: p.kind,
+        parentId: p.parentId,
+        slug: p.slug,
+        isTemplate: p.isTemplate,
+        tags,
+        author: p.author,
+        createdAt: p.createdAt.toISOString(),
+        updatedAt: p.updatedAt.toISOString(),
+        content,
+        dbSchema,
+        dataValues,
+      };
+    }),
+  };
+  return JSON.stringify(payload, null, 2);
 }
 
 export async function exportWorkspaceMarkdown(slug: string): Promise<string> {

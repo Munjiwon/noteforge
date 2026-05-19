@@ -21,6 +21,7 @@ export async function GET(req: NextRequest) {
   const authorId = req.nextUrl.searchParams.get("author") || null;
   const sinceParam = req.nextUrl.searchParams.get("since"); // "7d" | "30d" | "90d" | ISO date
   const tagParam = (req.nextUrl.searchParams.get("tag") ?? "").trim();
+  const sortParam = req.nextUrl.searchParams.get("sort"); // "recent" | "relevance"
   if (!slug || q.length < 1) return NextResponse.json({ hits: [] });
 
   const ws = await prisma.workspace.findUnique({
@@ -74,12 +75,21 @@ export async function GET(req: NextRequest) {
   });
 
   const lower = q.toLowerCase();
-  const hits: SearchHit[] = rows.map((p) => {
+  type Scored = SearchHit & { _score: number };
+  const hits: Scored[] = rows.map((p) => {
     let snippet: string | null = null;
+    let score = 0;
+    const tLower = p.title.toLowerCase();
+    if (tLower === lower) score += 100;
+    else if (tLower.startsWith(lower)) score += 60;
+    else if (tLower.includes(lower)) score += 30;
     if (p.kind === "doc" && p.content) {
       const text = stripBlockNoteJson(p.content);
       const idx = text.toLowerCase().indexOf(lower);
       if (idx >= 0) {
+        score += 10;
+        // earlier hit = better
+        score += Math.max(0, 10 - Math.floor(idx / 100));
         const start = Math.max(0, idx - 30);
         const end = Math.min(text.length, idx + q.length + 60);
         snippet = (start > 0 ? "…" : "") + text.slice(start, end) + (end < text.length ? "…" : "");
@@ -94,10 +104,19 @@ export async function GET(req: NextRequest) {
       kind: p.kind,
       snippet,
       parentTitle: p.parent?.title ?? null,
+      _score: score,
     };
   });
+  if (sortParam === "relevance") {
+    hits.sort((a, b) => b._score - a._score);
+  }
 
-  return NextResponse.json({ hits });
+  return NextResponse.json({
+    hits: hits.map(({ _score, ...rest }) => {
+      void _score;
+      return rest;
+    }),
+  });
 }
 
 function stripBlockNoteJson(json: string): string {

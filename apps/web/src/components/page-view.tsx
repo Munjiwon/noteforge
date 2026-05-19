@@ -6,6 +6,7 @@ import {
   incrementPageView,
   renamePage,
   setPageIcon,
+  togglePageLock,
   toggleFavorite,
 } from "@/app/w/[slug]/actions";
 import { CommentsPanel, type CommentItem } from "./comments-panel";
@@ -270,8 +271,16 @@ export function PageView({
           </nav>
         )}
         {page.locked ? (
-          <div className="mb-3 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-3 py-1 inline-flex items-center gap-1">
-            🔒 Page locked — read-only
+          <div className="mb-3 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-3 py-1 inline-flex items-center gap-2">
+            <span>🔒 Page locked — read-only</span>
+            {canChangeSettings && (
+              <button
+                onClick={() => start(() => togglePageLock(slug, page.id))}
+                className="text-amber-900 hover:underline"
+              >
+                Unlock
+              </button>
+            )}
           </div>
         ) : readOnly ? (
           <div className="mb-3 text-xs text-gray-600 bg-gray-100 border border-gray-200 rounded px-3 py-1 inline-flex items-center gap-1">
