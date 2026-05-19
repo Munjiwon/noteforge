@@ -650,6 +650,61 @@ export function Editor({
                 icon: <span>▦</span>,
                 onItemClick: insert("columns", { count: "3" }),
               },
+              {
+                title: "AI · Suggest title",
+                subtext: "Read the page and propose a short title",
+                aliases: ["ai", "title", "rename", "제목"],
+                group: "AI",
+                icon: <span>🏷</span>,
+                onItemClick: async () => {
+                  const blocks = editor.document;
+                  const text = blocks
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    .map((b: any) =>
+                      Array.isArray(b.content)
+                        ? b.content
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            .map((c: any) =>
+                              typeof c === "object" && c && "text" in c
+                                ? c.text
+                                : "",
+                            )
+                            .join("")
+                        : "",
+                    )
+                    .join("\n")
+                    .slice(0, 3000);
+                  if (!text.trim()) {
+                    alert("No content to summarize yet.");
+                    return;
+                  }
+                  const res = await fetch("/api/ai", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ action: "title", text }),
+                  });
+                  const data = (await res.json()) as { output?: string; error?: string };
+                  const out = (data.output ?? "").trim().replace(/^[\"'`]|[\"'`]$/g, "");
+                  if (!out) {
+                    alert(data.error ?? "(no response)");
+                    return;
+                  }
+                  const titleEl = document.querySelector(
+                    'input[placeholder="Untitled"]',
+                  ) as HTMLInputElement | null;
+                  if (titleEl) {
+                    if (confirm(`Use this title?\n\n${out}`)) {
+                      titleEl.focus();
+                      titleEl.select();
+                      document.execCommand("insertText", false, out);
+                      titleEl.blur();
+                    }
+                  } else {
+                    navigator.clipboard.writeText(out);
+                    alert(`Title copied:\n\n${out}`);
+                  }
+                },
+              },
               ...(["summarize", "translate", "improve", "continue", "edit"] as const).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {

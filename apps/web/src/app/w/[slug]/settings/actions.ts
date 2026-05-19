@@ -107,6 +107,21 @@ export async function updateMemberRole(
   revalidatePath(`/w/${slug}/settings`);
 }
 
+export async function restoreWorkspaceDefaults(slug: string) {
+  const ctx = await assertOwner(slug);
+  await prisma.workspace.update({
+    where: { id: ctx.workspace.id },
+    data: {
+      icon: null,
+      color: null,
+      bannerUrl: null,
+      announcement: null,
+      defaultFont: "default",
+    },
+  });
+  revalidatePath(`/w/${slug}`, "layout");
+}
+
 export async function inviteWorkspaceMembersByEmail(
   slug: string,
   raw: string,

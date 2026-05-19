@@ -90,6 +90,7 @@ export function PageView({
     commentCount: number;
     backlinkCount: number;
     childrenCount: number;
+    subscriberCount?: number;
     lastEditor?: { name: string; color: string; avatarUrl?: string | null } | null;
   };
   permissions: PermItem[];

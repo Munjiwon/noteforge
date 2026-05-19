@@ -94,6 +94,8 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `You are continuing the following text. Write 2-4 sentences that flow naturally from where it ends. Match the tone and language. Do not repeat the existing text.\n\n${text}`,
   edit: (text, instr) =>
     `Apply this instruction to the text below, returning only the revised text (no preamble):\n\nInstruction: ${instr ?? "Improve."}\n\nText:\n${text}`,
+  title: (text) =>
+    `Suggest a single short title (under 60 chars) for the document below. Reply with the title text only, no quotes, no period.\n\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

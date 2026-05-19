@@ -280,6 +280,26 @@ export function DatabasePage({
           </label>
         )}
       </div>
+      {rows.length === 0 && !readOnly && (
+        <div className="border border-dashed border-gray-200 rounded-md p-8 text-center mb-3">
+          <div className="text-3xl mb-1">📊</div>
+          <p className="text-sm text-gray-700 mb-1">No rows yet</p>
+          <p className="text-xs text-gray-400 mb-3">
+            Get started by adding your first row or pick a template above.
+          </p>
+          <button
+            onClick={() =>
+              start(async () => {
+                const id = await addRow(slug, db.id);
+                if (id) router.push(`/w/${slug}/p/${id}`);
+              })
+            }
+            className="text-xs px-3 py-1 rounded bg-gray-900 text-white hover:opacity-90"
+          >
+            + Add first row
+          </button>
+        </div>
+      )}
       {view === "kanban" ? (
         <KanbanView
           slug={slug}

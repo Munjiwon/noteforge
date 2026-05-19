@@ -70,7 +70,12 @@ export async function GET(req: NextRequest) {
       icon: true,
       kind: true,
       content: true,
-      parent: { select: { title: true } },
+      parent: {
+        select: {
+          title: true,
+          parent: { select: { title: true } },
+        },
+      },
     },
   });
 
@@ -97,13 +102,19 @@ export async function GET(req: NextRequest) {
         snippet = text.slice(0, 80) + (text.length > 80 ? "…" : "");
       }
     }
+    const grandparent = p.parent?.parent?.title;
+    const parentTitle = p.parent?.title
+      ? grandparent
+        ? `${grandparent} / ${p.parent.title}`
+        : p.parent.title
+      : null;
     return {
       id: p.id,
       title: p.title,
       icon: p.icon,
       kind: p.kind,
       snippet,
-      parentTitle: p.parent?.title ?? null,
+      parentTitle,
       _score: score,
     };
   });

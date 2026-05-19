@@ -297,9 +297,14 @@ export default async function PageRoute({
         })
       : Promise.resolve([] as { id: string; title: string; icon: string | null; kind: string }[]),
   ]);
-  const subscribed = !!(await prisma.pageSubscription.findUnique({
-    where: { pageId_userId: { pageId: page.id, userId: ctx.user.id } },
-  }));
+  const [subscribed, subscriberCount] = await Promise.all([
+    prisma.pageSubscription
+      .findUnique({
+        where: { pageId_userId: { pageId: page.id, userId: ctx.user.id } },
+      })
+      .then((r) => !!r),
+    prisma.pageSubscription.count({ where: { pageId: page.id } }),
+  ]);
   const pendingReminders = await prisma.reminder.findMany({
     where: {
       userId: ctx.user.id,
@@ -348,6 +353,7 @@ export default async function PageRoute({
     viewCount: page.viewCount,
     wordGoal: page.wordGoal,
     lastEditor: lastEditor ? userMap.get(lastEditor) ?? null : null,
+    subscriberCount,
     activity: activityRows.map((a) => ({
       id: a.id,
       action: a.action,

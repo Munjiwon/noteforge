@@ -8,6 +8,7 @@ import {
   exportWorkspaceMarkdown,
   inviteWorkspaceMembersByEmail,
   leaveWorkspace,
+  restoreWorkspaceDefaults,
   removeMember,
   renameWorkspace,
   revokeInvite,
@@ -194,6 +195,18 @@ export function SettingsClient({
                 slug={slug}
                 initial={workspaceAnnouncement}
               />
+            )}
+            {isOwner && (
+              <button
+                onClick={() => {
+                  if (!confirm("Reset icon, color, banner, announcement, and default font?"))
+                    return;
+                  start(() => restoreWorkspaceDefaults(slug));
+                }}
+                className="mt-2 text-[11px] text-gray-500 hover:text-gray-900"
+              >
+                ↺ Restore default appearance
+              </button>
             )}
           </div>
         </div>

@@ -225,7 +225,7 @@ export default async function WorkspaceLayout({
         ],
       },
       orderBy: { updatedAt: "desc" },
-      take: 5,
+      take: 20,
       select: { id: true, title: true, icon: true, kind: true },
     }),
   ]);

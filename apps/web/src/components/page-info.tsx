@@ -10,6 +10,7 @@ export function PageInfo({
     createdAt: string;
     updatedAt: string;
     wordCount: number;
+    subscriberCount?: number;
     commentCount: number;
     backlinkCount: number;
     childrenCount: number;
@@ -83,6 +84,12 @@ export function PageInfo({
               <>
                 <span className="text-gray-500">Views</span>
                 <span className="text-right">{info.viewCount.toLocaleString()}</span>
+              </>
+            )}
+            {typeof info.subscriberCount === "number" && info.subscriberCount > 0 && (
+              <>
+                <span className="text-gray-500">Subscribers</span>
+                <span className="text-right">{info.subscriberCount}</span>
               </>
             )}
           </div>

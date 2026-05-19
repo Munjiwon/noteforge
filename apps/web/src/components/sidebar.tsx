@@ -192,6 +192,8 @@ export function Sidebar({
   const [dragId, setDragId] = useState<string | null>(null);
   const [dropTarget, setDropTarget] = useState<{ id: string; where: "into" | "before" | "after" } | null>(null);
   const [movingId, setMovingId] = useState<string | null>(null);
+  const [recentExpanded, setRecentExpanded] = useState(false);
+  const [recentQ, setRecentQ] = useState("");
   useEffect(() => {
     const onOpen = (e: Event) => {
       const detail = (e as CustomEvent<{ pageId?: string }>).detail;
@@ -721,11 +723,37 @@ export function Sidebar({
 
       {recent.length > 0 && (
         <>
-          <div className="px-3 pt-3 pb-1 text-xs uppercase tracking-wide text-gray-500">
-            {t("Recent", lang)}
+          <div className="px-3 pt-3 pb-1 text-xs uppercase tracking-wide text-gray-500 flex items-center justify-between">
+            <span>{t("Recent", lang)}</span>
+            {recent.length > 5 && (
+              <button
+                onClick={() => setRecentExpanded((v) => !v)}
+                className="text-[9px] normal-case tracking-normal text-gray-400 hover:text-gray-700"
+              >
+                {recentExpanded ? "Show less" : `Show all (${recent.length})`}
+              </button>
+            )}
           </div>
+          {recentExpanded && recent.length > 8 && (
+            <div className="px-3 pb-1">
+              <input
+                value={recentQ}
+                onChange={(e) => setRecentQ(e.target.value)}
+                placeholder="Filter recent…"
+                className="w-full text-[11px] border border-gray-200 rounded px-2 py-0.5 outline-none focus:border-gray-400"
+              />
+            </div>
+          )}
           <ul className="pb-1">
-            {recent.map((r) => (
+            {(recentExpanded ? recent : recent.slice(0, 5))
+              .filter((r) =>
+                recentQ.trim()
+                  ? (r.title || "Untitled")
+                      .toLowerCase()
+                      .includes(recentQ.trim().toLowerCase())
+                  : true,
+              )
+              .map((r) => (
               <li key={r.id}>
                 <Link
                   href={`/w/${currentSlug}/p/${r.id}`}
