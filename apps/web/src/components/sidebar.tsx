@@ -663,7 +663,13 @@ export function Sidebar({
               {currentIcon ?? currentName.slice(0, 1).toUpperCase()}
             </div>
             <div className="flex-1">
-              <div className="text-sm font-medium truncate">{currentName}</div>
+              <Link
+                href={`/w/${currentSlug}`}
+                onClick={(e) => e.stopPropagation()}
+                className="text-sm font-medium truncate hover:underline block"
+              >
+                {currentName}
+              </Link>
               <div className="text-xs text-gray-500">
                 {memberCount} member{memberCount !== 1 && "s"}
               </div>
@@ -1093,10 +1099,10 @@ export function Sidebar({
                   <>
                     <button
                       onClick={() => onRestore(t.id)}
-                      className="opacity-0 group-hover/row:opacity-100 text-xs text-gray-500 hover:text-emerald-600"
+                      className="opacity-0 group-hover/row:opacity-100 text-[10px] text-gray-500 hover:text-emerald-600 px-1"
                       title="Restore"
                     >
-                      ↺
+                      ↺ Restore
                     </button>
                     <button
                       onClick={() => onPurge(t.id)}

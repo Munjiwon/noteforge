@@ -68,7 +68,7 @@ export function PageCover({
   if (!cover) {
     if (readOnly) return null;
     return (
-      <div className="max-w-3xl mx-auto px-24 pt-4">
+      <div className="max-w-3xl mx-auto px-24 pt-4 flex gap-3">
         <button
           onClick={() => {
             const url = prompt("Image URL (or cancel for presets)");
@@ -81,6 +81,19 @@ export function PageCover({
           className="text-xs text-gray-400 hover:text-gray-700"
         >
           + Add cover
+        </button>
+        <button
+          onClick={() => {
+            // Click the icon picker button to open the existing emoji picker.
+            (
+              document.querySelector(
+                "button[aria-label='change icon']",
+              ) as HTMLButtonElement | null
+            )?.click();
+          }}
+          className="text-xs text-gray-400 hover:text-gray-700"
+        >
+          + Add icon
         </button>
         {open && (
           <CoverPickerInline
@@ -156,6 +169,20 @@ export function PageCover({
       )}
       {!readOnly && (
         <div className="absolute right-4 bottom-4 opacity-0 group-hover:opacity-100 flex gap-1">
+          <button
+            onClick={() => {
+              // Random across both presets and gradients.
+              const pool = [...PRESET_COVERS, ...PRESET_GRADIENTS].filter(
+                (c) => c !== cover,
+              );
+              const next = pool[Math.floor(Math.random() * pool.length)];
+              if (next) setCover(next);
+            }}
+            className="text-xs bg-white/90 border border-gray-200 rounded px-2 py-1"
+            title="Pick a random cover"
+          >
+            🎲 Random
+          </button>
           <button
             onClick={() => {
               const url = prompt("New cover URL", cover);

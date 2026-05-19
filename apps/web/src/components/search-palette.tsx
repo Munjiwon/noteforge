@@ -53,7 +53,12 @@ export function SearchPalette({ slug }: { slug: string }) {
         setOpen(false);
       }
     };
-    const onTrigger = () => setOpen(true);
+    const onTrigger = (e: Event) => {
+      const detail = (e as CustomEvent<{ tag?: string; q?: string }>).detail;
+      if (detail?.tag) setTag(detail.tag);
+      if (typeof detail?.q === "string") setQ(detail.q);
+      setOpen(true);
+    };
     window.addEventListener("keydown", onKey);
     window.addEventListener("search-open", onTrigger as EventListener);
     return () => {
@@ -65,15 +70,17 @@ export function SearchPalette({ slug }: { slug: string }) {
   useEffect(() => {
     if (open) {
       setTimeout(() => inputRef.current?.focus(), 0);
-      setQ("");
+      // Only reset q when there's no pre-set tag filter (preserves the
+      // search-open detail.tag case so users can immediately see matches).
+      if (!tag) setQ("");
       setHits([]);
       setHighlight(0);
     }
-  }, [open]);
+  }, [open, tag]);
 
   useEffect(() => {
     if (!open) return;
-    if (!q.trim()) {
+    if (!q.trim() && !tag.trim() && since === "any") {
       setHits([]);
       return;
     }

@@ -96,6 +96,8 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Apply this instruction to the text below, returning only the revised text (no preamble):\n\nInstruction: ${instr ?? "Improve."}\n\nText:\n${text}`,
   title: (text) =>
     `Suggest a single short title (under 60 chars) for the document below. Reply with the title text only, no quotes, no period.\n\n${text}`,
+  one_liner: (text) =>
+    `Compress the following into a single concise sentence. Reply with the sentence only.\n\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

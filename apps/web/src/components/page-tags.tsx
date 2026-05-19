@@ -54,7 +54,18 @@ export function PageTags({
           key={t}
           className="inline-flex items-center gap-1 text-[11px] bg-gray-100 text-gray-700 rounded px-2 py-0.5"
         >
-          #{t}
+          <button
+            type="button"
+            onClick={() =>
+              window.dispatchEvent(
+                new CustomEvent("search-open", { detail: { tag: t } }),
+              )
+            }
+            title="Find pages with this tag"
+            className="hover:underline"
+          >
+            #{t}
+          </button>
           {!readOnly && (
             <button
               onClick={() => commit(tags.filter((x) => x !== t))}

@@ -705,10 +705,11 @@ export function Editor({
                   }
                 },
               },
-              ...(["summarize", "translate", "improve", "continue", "edit"] as const).map(
+              ...(["summarize", "one_liner", "translate", "improve", "continue", "edit"] as const).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {
                     summarize: { title: "AI · Summarize", emoji: "✨", color: "blue", aliases: ["ai", "summarize", "summary", "요약"] },
+                    one_liner: { title: "AI · One-liner", emoji: "💡", color: "blue", aliases: ["ai", "concise", "tldr", "한줄"] },
                     translate: { title: "AI · Translate", emoji: "🌐", color: "purple", aliases: ["ai", "translate", "번역"] },
                     improve: { title: "AI · Improve writing", emoji: "📝", color: "green", aliases: ["ai", "improve", "rewrite", "교정"] },
                     continue: { title: "AI · Continue writing", emoji: "➡️", color: "yellow", aliases: ["ai", "continue", "write more", "이어쓰기"] },

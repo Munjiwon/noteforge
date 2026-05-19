@@ -22,7 +22,10 @@ export async function GET(req: NextRequest) {
   const sinceParam = req.nextUrl.searchParams.get("since"); // "7d" | "30d" | "90d" | ISO date
   const tagParam = (req.nextUrl.searchParams.get("tag") ?? "").trim();
   const sortParam = req.nextUrl.searchParams.get("sort"); // "recent" | "relevance"
-  if (!slug || q.length < 1) return NextResponse.json({ hits: [] });
+  if (!slug) return NextResponse.json({ hits: [] });
+  if (q.length < 1 && !tagParam && !authorId && !sinceParam) {
+    return NextResponse.json({ hits: [] });
+  }
 
   const ws = await prisma.workspace.findUnique({
     where: { slug },

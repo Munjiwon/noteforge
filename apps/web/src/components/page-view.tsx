@@ -441,26 +441,7 @@ export function PageView({
         readOnly={readOnly}
       />
       {subPages.length > 0 && (
-        <details className="mb-3 border border-gray-100 rounded-md">
-          <summary className="cursor-pointer px-3 py-1.5 text-xs uppercase tracking-wide text-gray-500 list-none flex items-center gap-1">
-            <span className="text-gray-400">▸</span>
-            Sub-pages
-            <span className="text-gray-400 ml-1">({subPages.length})</span>
-          </summary>
-          <ul className="px-2 pb-2 grid sm:grid-cols-2 gap-1">
-            {subPages.map((sp) => (
-              <li key={sp.id}>
-                <a
-                  href={`/w/${slug}/p/${sp.id}`}
-                  className="flex items-center gap-2 px-2 py-1 rounded text-sm text-gray-800 hover:bg-black/5"
-                >
-                  <span>{sp.icon ?? (sp.kind === "database" ? "📊" : "📄")}</span>
-                  <span className="truncate flex-1">{sp.title || "Untitled"}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </details>
+        <SubPagesSection slug={slug} subPages={subPages} />
       )}
       <Editor
         pageId={page.id}
@@ -500,6 +481,54 @@ export function PageView({
       </div>
       <AskAiPanel slug={slug} getPageText={() => extractText(page.content, title)} />
     </div>
+  );
+}
+
+function SubPagesSection({
+  slug,
+  subPages,
+}: {
+  slug: string;
+  subPages: { id: string; title: string; icon: string | null; kind: string }[];
+}) {
+  const [sort, setSort] = useState<"original" | "alpha">("original");
+  const sorted =
+    sort === "alpha"
+      ? [...subPages].sort((a, b) =>
+          (a.title || "Untitled").localeCompare(b.title || "Untitled"),
+        )
+      : subPages;
+  return (
+    <details className="mb-3 border border-gray-100 rounded-md">
+      <summary className="cursor-pointer px-3 py-1.5 text-xs uppercase tracking-wide text-gray-500 list-none flex items-center gap-1">
+        <span className="text-gray-400">▸</span>
+        Sub-pages
+        <span className="text-gray-400 ml-1">({subPages.length})</span>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setSort(sort === "original" ? "alpha" : "original");
+          }}
+          className="ml-auto text-[10px] normal-case tracking-normal text-gray-400 hover:text-gray-700"
+        >
+          {sort === "original" ? "Order ▾" : "A → Z ▾"}
+        </button>
+      </summary>
+      <ul className="px-2 pb-2 grid sm:grid-cols-2 gap-1">
+        {sorted.map((sp) => (
+          <li key={sp.id}>
+            <a
+              href={`/w/${slug}/p/${sp.id}`}
+              className="flex items-center gap-2 px-2 py-1 rounded text-sm text-gray-800 hover:bg-black/5"
+            >
+              <span>{sp.icon ?? (sp.kind === "database" ? "📊" : "📄")}</span>
+              <span className="truncate flex-1">{sp.title || "Untitled"}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </details>
   );
 }
 
