@@ -37,6 +37,7 @@ type SidebarPage = {
   favorite?: boolean;
   preview?: string;
   count?: number;
+  openComments?: number;
 };
 
 type TrashItem = { id: string; title: string; icon: string | null; kind: string; deletedAt?: Date | string | null };
@@ -420,6 +421,14 @@ export function Sidebar({
             {typeof node.count === "number" && node.count > 0 && (
               <span className="text-[10px] text-gray-400 ml-1 shrink-0">
                 {node.count}
+              </span>
+            )}
+            {typeof node.openComments === "number" && node.openComments > 0 && (
+              <span
+                className="text-[10px] text-amber-700 bg-amber-50 border border-amber-200 rounded px-1 ml-1 shrink-0"
+                title={`${node.openComments} unresolved comment${node.openComments === 1 ? "" : "s"}`}
+              >
+                💬 {node.openComments}
               </span>
             )}
           </Link>

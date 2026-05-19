@@ -365,6 +365,39 @@ export async function togglePageReaction(
   revalidatePath(`/w/${slug}/p/${pageId}`);
 }
 
+export async function setPageSlug(
+  slug: string,
+  pageId: string,
+  customSlug: string | null,
+) {
+  const ctx = await assertEditor(slug);
+  const clean = customSlug
+    ? customSlug
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9-]+/g, "-")
+        .replace(/^-+|-+$/g, "")
+        .slice(0, 64)
+    : null;
+  if (clean) {
+    const existing = await prisma.page.findFirst({
+      where: {
+        workspaceId: ctx.workspace.id,
+        slug: clean,
+        NOT: { id: pageId },
+      },
+      select: { id: true },
+    });
+    if (existing) throw new Error("slug already in use in this workspace");
+  }
+  await prisma.page.updateMany({
+    where: { id: pageId, workspaceId: ctx.workspace.id },
+    data: { slug: clean ?? null },
+  });
+  revalidatePath(`/w/${slug}/p/${pageId}`);
+  return clean;
+}
+
 export async function archivePage(slug: string, pageId: string) {
   const ctx = await assertEditor(slug);
   await prisma.page.updateMany({

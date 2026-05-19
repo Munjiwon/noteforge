@@ -78,6 +78,7 @@ export default async function PageRoute({
       viewCount: true,
       wordGoal: true,
       favorite: true,
+      slug: true,
       author: { select: { name: true, color: true, avatarUrl: true } },
     },
   });

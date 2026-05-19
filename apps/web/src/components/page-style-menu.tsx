@@ -5,6 +5,7 @@ import {
   archivePage,
   setPageAsTemplate,
   setPageFont,
+  setPageSlug,
   setPageWidth,
   togglePageLock,
 } from "@/app/w/[slug]/actions";
@@ -20,6 +21,7 @@ export function PageStyleMenu({
   font,
   locked,
   isTemplate = false,
+  customSlug = null,
   canEdit,
 }: {
   slug: string;
@@ -28,6 +30,7 @@ export function PageStyleMenu({
   font: PageFont;
   locked: boolean;
   isTemplate?: boolean;
+  customSlug?: string | null;
   canEdit: boolean;
 }) {
   const [open, setOpen] = useState(false);
@@ -131,6 +134,7 @@ export function PageStyleMenu({
               >
                 📦 Archive
               </button>
+              <SlugRow slug={slug} pageId={pageId} initial={customSlug} />
             </>
           )}
         </div>
@@ -149,4 +153,50 @@ export function widthClass(width: PageWidth): string {
   if (width === "wide") return "max-w-5xl";
   if (width === "full") return "max-w-none";
   return "max-w-3xl";
+}
+
+function SlugRow({
+  slug,
+  pageId,
+  initial,
+}: {
+  slug: string;
+  pageId: string;
+  initial: string | null;
+}) {
+  const [value, setValue] = useState(initial ?? "");
+  const [, start] = useTransition();
+  const [error, setError] = useState<string | null>(null);
+  return (
+    <div className="mt-2 pt-2 border-t border-gray-100">
+      <label className="text-[10px] uppercase text-gray-500 px-1">
+        Custom URL
+      </label>
+      <div className="flex items-center gap-1 mt-1">
+        <span className="text-[10px] text-gray-400">/s/</span>
+        <input
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder="my-page"
+          className="flex-1 border border-gray-200 rounded px-2 py-1 text-xs outline-none focus:border-gray-400"
+        />
+        <button
+          onClick={() =>
+            start(async () => {
+              try {
+                setError(null);
+                await setPageSlug(slug, pageId, value || null);
+              } catch (e) {
+                setError((e as Error).message);
+              }
+            })
+          }
+          className="text-[10px] px-2 py-1 rounded border border-gray-200 hover:bg-black/5"
+        >
+          Save
+        </button>
+      </div>
+      {error && <p className="text-[10px] text-red-600 mt-1">{error}</p>}
+    </div>
+  );
 }

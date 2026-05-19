@@ -259,6 +259,18 @@ export default async function WorkspaceLayout({
       childCount.set(p.parentId, (childCount.get(p.parentId) ?? 0) + 1);
     }
   }
+  // Open comment counts per page (resolved=false).
+  const openComments = await prisma.comment.groupBy({
+    by: ["pageId"],
+    where: {
+      resolved: false,
+      page: { workspaceId: ctx.workspace.id, deletedAt: null },
+    },
+    _count: { _all: true },
+  });
+  const commentCountByPage = new Map<string, number>();
+  for (const r of openComments) commentCountByPage.set(r.pageId, r._count._all);
+
   const pagesForSidebar = pages.map((p) => ({
     id: p.id,
     title: p.title,
@@ -267,6 +279,7 @@ export default async function WorkspaceLayout({
     kind: p.kind,
     favorite: p.favorite,
     count: childCount.get(p.id) ?? 0,
+    openComments: commentCountByPage.get(p.id) ?? 0,
     preview: extractPreview(p.content),
   }));
 

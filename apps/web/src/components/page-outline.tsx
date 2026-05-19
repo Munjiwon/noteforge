@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 type Heading = { id: string; level: number; text: string };
 
@@ -33,31 +33,69 @@ function extract(json: string): Heading[] {
 
 export function PageOutline({ content }: { content: string }) {
   const headings = useMemo(() => extract(content), [content]);
+  // On md and below, allow toggling the outline open/closed via a small button.
+  const [mobileOpen, setMobileOpen] = useState(false);
   if (headings.length === 0) return null;
+
+  const list = (
+    <nav className="text-xs space-y-1 border-l-2 border-gray-200 pl-2">
+      {headings.map((h) => (
+        <a
+          key={h.id}
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            setMobileOpen(false);
+            const el = document.querySelector(
+              `[data-id="${h.id}"]`,
+            ) as HTMLElement | null;
+            if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+          }}
+          className="block text-gray-600 hover:text-blue-600 truncate"
+          style={{ paddingLeft: (h.level - 1) * 10 }}
+        >
+          {h.text || "Untitled heading"}
+        </a>
+      ))}
+    </nav>
+  );
+
   return (
-    <aside className="hidden xl:block fixed right-4 top-32 w-56 no-print">
-      <div className="text-[10px] uppercase text-gray-500 mb-1 tracking-wide">
-        Outline
-      </div>
-      <nav className="text-xs space-y-1 border-l-2 border-gray-200 pl-2">
-        {headings.map((h) => (
-          <a
-            key={h.id}
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              const el = document.querySelector(
-                `[data-id="${h.id}"]`,
-              ) as HTMLElement | null;
-              if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-            }}
-            className="block text-gray-600 hover:text-blue-600 truncate"
-            style={{ paddingLeft: (h.level - 1) * 10 }}
+    <>
+      {/* xl+ desktop: fixed sidebar outline */}
+      <aside className="hidden xl:block fixed right-4 top-32 w-56 no-print">
+        <div className="text-[10px] uppercase text-gray-500 mb-1 tracking-wide">
+          Outline
+        </div>
+        {list}
+      </aside>
+      {/* below xl: floating button + popover */}
+      <div className="xl:hidden fixed bottom-20 right-5 z-30 no-print">
+        {mobileOpen ? (
+          <div className="bg-white border border-gray-200 rounded-md shadow-xl p-3 w-64 max-h-[60vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[10px] uppercase text-gray-500 tracking-wide">
+                Outline
+              </span>
+              <button
+                onClick={() => setMobileOpen(false)}
+                className="text-gray-400 hover:text-gray-900 text-xs"
+              >
+                ✕
+              </button>
+            </div>
+            {list}
+          </div>
+        ) : (
+          <button
+            onClick={() => setMobileOpen(true)}
+            className="w-10 h-10 rounded-full bg-white border border-gray-200 shadow hover:bg-black/5 flex items-center justify-center"
+            title="Page outline"
           >
-            {h.text || "Untitled heading"}
-          </a>
-        ))}
-      </nav>
-    </aside>
+            ☰
+          </button>
+        )}
+      </div>
+    </>
   );
 }
