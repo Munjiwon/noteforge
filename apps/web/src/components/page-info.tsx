@@ -70,6 +70,25 @@ export function PageInfo({
               {info.wordCount.toLocaleString()}
               {info.wordGoal ? ` / ${info.wordGoal.toLocaleString()}` : ""}
             </span>
+            {info.wordGoal ? (
+              <>
+                <span />
+                <span className="block">
+                  <span className="block h-1 rounded bg-gray-100 overflow-hidden">
+                    <span
+                      className="block h-full bg-emerald-500 transition-[width]"
+                      style={{
+                        width:
+                          Math.min(
+                            100,
+                            (info.wordCount / Math.max(1, info.wordGoal)) * 100,
+                          ).toFixed(1) + "%",
+                      }}
+                    />
+                  </span>
+                </span>
+              </>
+            ) : null}
             <span className="text-gray-500">Read time</span>
             <span className="text-right">
               {Math.max(1, Math.round(info.wordCount / 200))} min
@@ -77,7 +96,23 @@ export function PageInfo({
             <span className="text-gray-500">Sub-pages</span>
             <span className="text-right">{info.childrenCount}</span>
             <span className="text-gray-500">Comments</span>
-            <span className="text-right">{info.commentCount}</span>
+            <span className="text-right">
+              {info.commentCount > 0 ? (
+                <button
+                  onClick={() => {
+                    const el = document.querySelector(
+                      "[data-comments-panel]",
+                    ) as HTMLElement | null;
+                    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }}
+                  className="hover:underline"
+                >
+                  {info.commentCount}
+                </button>
+              ) : (
+                info.commentCount
+              )}
+            </span>
             <span className="text-gray-500">Backlinks</span>
             <span className="text-right">{info.backlinkCount}</span>
             {typeof info.viewCount === "number" && (

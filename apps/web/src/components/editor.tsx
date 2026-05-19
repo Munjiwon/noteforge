@@ -613,6 +613,50 @@ export function Editor({
                 },
               ),
               {
+                title: "Snippet · Meeting agenda",
+                subtext: "Quick agenda + action items checklist",
+                aliases: ["meeting", "agenda", "snippet"],
+                group: "Basic blocks",
+                icon: <span>📝</span>,
+                onItemClick: () => {
+                  const cur = editor.getTextCursorPosition().block;
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  editor.insertBlocks(
+                    [
+                      { type: "heading", props: { level: 2 }, content: [{ type: "text", text: "Agenda", styles: {} }] } as any,
+                      { type: "bulletListItem", content: [{ type: "text", text: "", styles: {} }] } as any,
+                      { type: "heading", props: { level: 2 }, content: [{ type: "text", text: "Discussion", styles: {} }] } as any,
+                      { type: "paragraph", content: [{ type: "text", text: "", styles: {} }] } as any,
+                      { type: "heading", props: { level: 2 }, content: [{ type: "text", text: "Action items", styles: {} }] } as any,
+                      { type: "checkListItem", props: { checked: false }, content: [{ type: "text", text: "", styles: {} }] } as any,
+                    ],
+                    cur,
+                    "after",
+                  );
+                },
+              },
+              {
+                title: "Snippet · Pros / Cons",
+                subtext: "Two-column-style decision matrix",
+                aliases: ["pros", "cons", "decision", "snippet"],
+                group: "Basic blocks",
+                icon: <span>⚖️</span>,
+                onItemClick: () => {
+                  const cur = editor.getTextCursorPosition().block;
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  editor.insertBlocks(
+                    [
+                      { type: "heading", props: { level: 3 }, content: [{ type: "text", text: "Pros", styles: {} }] } as any,
+                      { type: "bulletListItem", content: [{ type: "text", text: "", styles: {} }] } as any,
+                      { type: "heading", props: { level: 3 }, content: [{ type: "text", text: "Cons", styles: {} }] } as any,
+                      { type: "bulletListItem", content: [{ type: "text", text: "", styles: {} }] } as any,
+                    ],
+                    cur,
+                    "after",
+                  );
+                },
+              },
+              {
                 title: "Synced block",
                 subtext: "Shared text mirrored across pages",
                 aliases: ["synced", "sync", "shared", "동기화"],
@@ -705,7 +749,7 @@ export function Editor({
                   }
                 },
               },
-              ...(["summarize", "one_liner", "translate", "improve", "continue", "edit"] as const).map(
+              ...(["summarize", "one_liner", "translate", "improve", "continue", "explain", "edit"] as const).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {
                     summarize: { title: "AI · Summarize", emoji: "✨", color: "blue", aliases: ["ai", "summarize", "summary", "요약"] },
@@ -713,6 +757,7 @@ export function Editor({
                     translate: { title: "AI · Translate", emoji: "🌐", color: "purple", aliases: ["ai", "translate", "번역"] },
                     improve: { title: "AI · Improve writing", emoji: "📝", color: "green", aliases: ["ai", "improve", "rewrite", "교정"] },
                     continue: { title: "AI · Continue writing", emoji: "➡️", color: "yellow", aliases: ["ai", "continue", "write more", "이어쓰기"] },
+                    explain: { title: "AI · Explain", emoji: "🔎", color: "blue", aliases: ["ai", "explain", "expand", "설명"] },
                     edit: { title: "AI · Edit (custom)", emoji: "🪄", color: "red", aliases: ["ai", "edit", "custom", "transform"] },
                   }[action];
                   return {

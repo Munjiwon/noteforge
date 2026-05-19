@@ -24,6 +24,7 @@ import { SubscribeButton } from "./subscribe-button";
 import { ReminderButton, type PendingReminder } from "./reminder-button";
 import { Avatar } from "./avatar";
 import { ReadModeButton } from "./read-mode-button";
+import { ReadAloudButton } from "./read-aloud-button";
 import { AskAiPanel } from "./ask-ai-panel";
 import type { PermItem } from "./share-button";
 
@@ -314,6 +315,7 @@ export function PageView({
         ) : null}
         <div className="flex flex-wrap justify-end gap-1.5 mb-2 no-print">
           <ReadModeButton />
+          <ReadAloudButton getText={() => extractText(page.content, title)} />
           <button
             onClick={() => window.print()}
             className="text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5"

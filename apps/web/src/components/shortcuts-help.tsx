@@ -77,6 +77,23 @@ const GROUPS: { name: string; items: { keys: string; desc: string }[] }[] = [
 
 export function ShortcutsHelp() {
   const [open, setOpen] = useState(false);
+  const [hint, setHint] = useState(false);
+  // Show a one-time hint chip suggesting users press '?' for shortcuts.
+  useEffect(() => {
+    try {
+      if (localStorage.getItem("collab-notion-help-hint-seen")) return;
+      const id = setTimeout(() => setHint(true), 1500);
+      return () => clearTimeout(id);
+    } catch {
+      return;
+    }
+  }, []);
+  const dismissHint = () => {
+    setHint(false);
+    try {
+      localStorage.setItem("collab-notion-help-hint-seen", "1");
+    } catch {}
+  };
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -89,6 +106,7 @@ export function ShortcutsHelp() {
         );
       if (!inForm && e.key === "?") {
         e.preventDefault();
+        dismissHint();
         setOpen((v) => !v);
         return;
       }
@@ -98,7 +116,32 @@ export function ShortcutsHelp() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  if (!open) return null;
+  if (!open) {
+    if (!hint) return null;
+    return (
+      <button
+        onClick={() => {
+          dismissHint();
+          setOpen(true);
+        }}
+        className="fixed bottom-5 right-20 z-30 text-xs bg-gray-900 text-white rounded-full px-3 py-1.5 shadow-lg hover:opacity-90 no-print"
+      >
+        Press <kbd className="ml-1 mr-1 px-1 py-0.5 bg-white/10 rounded">?</kbd>{" "}
+        for shortcuts ·{" "}
+        <span
+          role="button"
+          tabIndex={0}
+          onClick={(e) => {
+            e.stopPropagation();
+            dismissHint();
+          }}
+          className="opacity-70 underline"
+        >
+          dismiss
+        </span>
+      </button>
+    );
+  }
 
   return (
     <div

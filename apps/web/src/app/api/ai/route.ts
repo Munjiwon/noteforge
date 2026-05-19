@@ -98,6 +98,8 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Suggest a single short title (under 60 chars) for the document below. Reply with the title text only, no quotes, no period.\n\n${text}`,
   one_liner: (text) =>
     `Compress the following into a single concise sentence. Reply with the sentence only.\n\n${text}`,
+  explain: (text) =>
+    `Explain the following in plain language, expanding on terms and assumptions a beginner might miss. 2-4 sentences.\n\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

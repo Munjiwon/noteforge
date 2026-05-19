@@ -101,7 +101,7 @@ export function CommentsPanel({
   const blockAnchored = tops.filter((t) => t.blockId && !t.resolved);
 
   return (
-    <section className="mt-10 border-t border-gray-200 pt-6">
+    <section data-comments-panel className="mt-10 border-t border-gray-200 pt-6">
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-sm font-semibold text-gray-700">
           Comments
