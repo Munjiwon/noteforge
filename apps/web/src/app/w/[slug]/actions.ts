@@ -426,6 +426,19 @@ export async function setPageExpiry(
   revalidatePath(`/w/${slug}/p/${pageId}`);
 }
 
+export async function setPageStatus(
+  slug: string,
+  pageId: string,
+  status: "draft" | "in_review" | "published" | null,
+) {
+  const ctx = await assertEditor(slug);
+  await prisma.page.updateMany({
+    where: { id: pageId, workspaceId: ctx.workspace.id },
+    data: { status },
+  });
+  revalidatePath(`/w/${slug}/p/${pageId}`);
+}
+
 export async function togglePagePinned(slug: string, pageId: string) {
   const ctx = await assertEditor(slug);
   const row = await prisma.page.findFirst({

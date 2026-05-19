@@ -80,6 +80,7 @@ export default async function PageRoute({
       wordGoal: true,
       favorite: true,
       pinned: true,
+      status: true,
       slug: true,
       expiresAt: true,
       author: { select: { name: true, color: true, avatarUrl: true } },

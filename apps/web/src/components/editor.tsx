@@ -204,6 +204,61 @@ export function Editor({
     await createComment(slug, pageId, body, { blockId: cur.id });
   };
 
+  // File drag overlay — visual cue when the user drags a file onto the page.
+  const [dragOver, setDragOver] = useState(false);
+  useEffect(() => {
+    let counter = 0;
+    const onEnter = (e: DragEvent) => {
+      if (!Array.from(e.dataTransfer?.items ?? []).some((i) => i.kind === "file")) return;
+      counter++;
+      setDragOver(true);
+    };
+    const onLeave = () => {
+      counter = Math.max(0, counter - 1);
+      if (counter === 0) setDragOver(false);
+    };
+    const onDrop = () => {
+      counter = 0;
+      setDragOver(false);
+    };
+    window.addEventListener("dragenter", onEnter);
+    window.addEventListener("dragleave", onLeave);
+    window.addEventListener("drop", onDrop);
+    return () => {
+      window.removeEventListener("dragenter", onEnter);
+      window.removeEventListener("dragleave", onLeave);
+      window.removeEventListener("drop", onDrop);
+    };
+  }, []);
+
+  // Double-click on a heading → copy a direct link (?b=<blockId>) to the
+  // heading. Discoverable without changing the BlockNote DOM.
+  useEffect(() => {
+    const onDbl = (e: MouseEvent) => {
+      const t = e.target as HTMLElement | null;
+      if (!t) return;
+      const block = t.closest(
+        '[data-content-type="heading"]',
+      ) as HTMLElement | null;
+      if (!block) return;
+      const idEl = block.closest("[data-id]") as HTMLElement | null;
+      const blockId = idEl?.getAttribute("data-id");
+      if (!blockId) return;
+      const url = `${window.location.origin}${window.location.pathname}?b=${blockId}`;
+      navigator.clipboard?.writeText(url).then(() => {
+        // Tiny toast — borrow notifications-style transient hint
+        const tip = document.createElement("div");
+        tip.textContent = "Link to heading copied";
+        tip.className =
+          "fixed bottom-4 left-1/2 -translate-x-1/2 z-50 text-xs bg-gray-900 text-white rounded-full px-3 py-1 shadow";
+        document.body.appendChild(tip);
+        setTimeout(() => tip.remove(), 1400);
+      });
+    };
+    window.addEventListener("dblclick", onDbl);
+    return () => window.removeEventListener("dblclick", onDbl);
+  }, []);
+
   // Clipboard image paste: when the user pastes a PNG/JPEG/etc, upload it
   // and insert a real image block instead of letting BlockNote fall back to
   // a noisy data URL.
@@ -369,6 +424,13 @@ export function Editor({
         </button>
       </div>
       {!readOnly && <EmptyHint editor={editor} />}
+      {!readOnly && dragOver && (
+        <div className="fixed inset-x-0 bottom-0 z-40 pointer-events-none flex justify-center pb-12">
+          <div className="bg-gray-900 text-white text-xs px-4 py-2 rounded-full shadow-lg">
+            📥 Drop to upload — it'll become an image / file block
+          </div>
+        </div>
+      )}
       <BlockNoteView
         editor={editor}
         editable={!readOnly}
@@ -565,6 +627,12 @@ export function Editor({
                         instruction = window.prompt(
                           "What should AI do with the surrounding text?",
                           "Make it more concise",
+                        );
+                        if (!instruction || !instruction.trim()) return;
+                      } else if (action === "translate") {
+                        instruction = window.prompt(
+                          "Target language?",
+                          "English",
                         );
                         if (!instruction || !instruction.trim()) return;
                       }

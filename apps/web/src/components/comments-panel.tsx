@@ -41,6 +41,7 @@ export function CommentsPanel({
   readOnly: boolean;
 }) {
   const [showResolved, setShowResolved] = useState(false);
+  const [mentionsOnly, setMentionsOnly] = useState(false);
   const [sortDir, setSortDirState] = useState<"newest" | "oldest">("newest");
   useEffect(() => {
     try {
@@ -70,8 +71,16 @@ export function CommentsPanel({
       tops.push(c);
     }
   }
+  const mentionsMe = (body: string) =>
+    new RegExp(`@\\[u:${currentUserId}\\]`).test(body);
   const visible = tops
     .filter((t) => showResolved || !t.resolved)
+    .filter((t) => {
+      if (!mentionsOnly) return true;
+      if (mentionsMe(t.body)) return true;
+      const replies = threads.get(t.threadId ?? t.id) ?? [];
+      return replies.some((r) => mentionsMe(r.body));
+    })
     .sort((a, b) => {
       const da = new Date(a.createdAt).getTime();
       const db_ = new Date(b.createdAt).getTime();
@@ -111,6 +120,18 @@ export function CommentsPanel({
             title="Toggle sort order"
           >
             {sortDir === "newest" ? "↓ Newest" : "↑ Oldest"}
+          </button>
+          <button
+            onClick={() => setMentionsOnly((v) => !v)}
+            className={
+              "text-xs " +
+              (mentionsOnly
+                ? "text-blue-700 font-medium"
+                : "text-gray-500 hover:text-gray-900")
+            }
+            title="Show only comments that mention you"
+          >
+            @ me
           </button>
           {resolvedCount > 0 && (
             <button

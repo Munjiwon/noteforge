@@ -7,6 +7,7 @@ import {
   setPageExpiry,
   setPageFont,
   setPageSlug,
+  setPageStatus,
   setPageWidth,
   togglePageLock,
   togglePagePinned,
@@ -26,6 +27,7 @@ export function PageStyleMenu({
   customSlug = null,
   expiresAt = null,
   pinned = false,
+  status = null,
   canEdit,
 }: {
   slug: string;
@@ -37,6 +39,7 @@ export function PageStyleMenu({
   customSlug?: string | null;
   expiresAt?: string | null;
   pinned?: boolean;
+  status?: "draft" | "in_review" | "published" | null;
   canEdit: boolean;
 }) {
   const [open, setOpen] = useState(false);
@@ -118,6 +121,34 @@ export function PageStyleMenu({
               >
                 {pinned ? "📌 Unpin from sidebar" : "📌 Pin to sidebar"}
               </button>
+              <div className="mb-1">
+                <label className="text-[10px] uppercase text-gray-500 px-1">
+                  Status
+                </label>
+                <div className="flex gap-1 mt-0.5">
+                  {(
+                    [
+                      { v: null, l: "—" },
+                      { v: "draft", l: "Draft" },
+                      { v: "in_review", l: "Review" },
+                      { v: "published", l: "Published" },
+                    ] as const
+                  ).map((opt) => (
+                    <button
+                      key={opt.l}
+                      onClick={() => start(() => setPageStatus(slug, pageId, opt.v))}
+                      className={
+                        "flex-1 text-[10px] px-1 py-0.5 rounded border " +
+                        ((status ?? null) === opt.v
+                          ? "bg-gray-900 text-white border-gray-900"
+                          : "border-gray-200 hover:bg-black/5")
+                      }
+                    >
+                      {opt.l}
+                    </button>
+                  ))}
+                </div>
+              </div>
               <button
                 onClick={() =>
                   start(async () => {

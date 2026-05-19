@@ -97,6 +97,7 @@ model Page {
   tags        String    @default("[]") // JSON array of strings
   favorite    Boolean   @default(false)
   pinned      Boolean   @default(false)
+  status      String?   // null | "draft" | "in_review" | "published"
   locked      Boolean   @default(false)
   lockedUntil DateTime?
   width       String    @default("normal") // "normal" | "wide" | "full"

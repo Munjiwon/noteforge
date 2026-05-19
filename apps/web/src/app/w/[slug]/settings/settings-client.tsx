@@ -6,6 +6,7 @@ import {
   deleteWorkspace,
   exportWorkspaceJson,
   exportWorkspaceMarkdown,
+  inviteWorkspaceMembersByEmail,
   leaveWorkspace,
   removeMember,
   renameWorkspace,
@@ -271,6 +272,7 @@ export function SettingsClient({
 
       <section>
         <h2 className="text-sm font-medium text-gray-700 mb-2">Members ({members.length})</h2>
+        {isOwner && <InviteByEmail slug={slug} />}
         {members.length > 6 && (
           <input
             value={memberQ}
@@ -489,6 +491,56 @@ export function SettingsClient({
           </div>
         </section>
       )}
+    </div>
+  );
+}
+
+function InviteByEmail({ slug }: { slug: string }) {
+  const [value, setValue] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<string | null>(null);
+  async function send() {
+    if (!value.trim()) return;
+    setBusy(true);
+    setMsg(null);
+    try {
+      const r = await inviteWorkspaceMembersByEmail(slug, value);
+      const parts: string[] = [];
+      if (r.added.length) parts.push(`Added: ${r.added.length}`);
+      if (r.pending.length)
+        parts.push(`Not yet signed up: ${r.pending.join(", ")}`);
+      if (r.errors.length) parts.push(`Errors: ${r.errors.length}`);
+      setMsg(parts.join(" · ") || "Nothing to do.");
+      if (r.added.length) setValue("");
+    } catch (e) {
+      setMsg("Failed: " + (e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+  return (
+    <div className="mb-3 border border-gray-100 rounded p-2 bg-gray-50">
+      <div className="text-xs text-gray-500 mb-1">
+        Add members by email (one per line or comma-separated). They must
+        already have an account.
+      </div>
+      <textarea
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder="alice@example.com, bob@example.com"
+        rows={2}
+        className="w-full text-sm border border-gray-200 rounded px-2 py-1 outline-none focus:border-gray-400"
+      />
+      <div className="flex items-center gap-2 mt-1">
+        <button
+          onClick={send}
+          disabled={busy || !value.trim()}
+          className="text-xs px-3 py-1 rounded bg-gray-900 text-white disabled:opacity-40"
+        >
+          {busy ? "Inviting…" : "Invite"}
+        </button>
+        {msg && <span className="text-[11px] text-gray-500">{msg}</span>}
+      </div>
     </div>
   );
 }

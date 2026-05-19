@@ -107,6 +107,52 @@ export async function updateMemberRole(
   revalidatePath(`/w/${slug}/settings`);
 }
 
+export async function inviteWorkspaceMembersByEmail(
+  slug: string,
+  raw: string,
+): Promise<{ added: string[]; pending: string[]; errors: string[] }> {
+  const ctx = await assertOwner(slug);
+  const emails = Array.from(
+    new Set(
+      raw
+        .split(/[\s,;]+/)
+        .map((e) => e.trim().toLowerCase())
+        .filter((e) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)),
+    ),
+  ).slice(0, 50);
+  const added: string[] = [];
+  const pending: string[] = [];
+  const errors: string[] = [];
+  for (const email of emails) {
+    try {
+      const user = await prisma.user.findUnique({ where: { email } });
+      if (!user) {
+        pending.push(email);
+        continue;
+      }
+      const existing = await prisma.workspaceMember.findFirst({
+        where: { workspaceId: ctx.workspace.id, userId: user.id },
+      });
+      if (existing) {
+        added.push(email + " (already a member)");
+        continue;
+      }
+      await prisma.workspaceMember.create({
+        data: {
+          workspaceId: ctx.workspace.id,
+          userId: user.id,
+          role: "editor",
+        },
+      });
+      added.push(email);
+    } catch (e) {
+      errors.push(`${email}: ${(e as Error).message}`);
+    }
+  }
+  revalidatePath(`/w/${slug}/settings`);
+  return { added, pending, errors };
+}
+
 export async function leaveWorkspace(slug: string) {
   const ctx = await requireWorkspaceMember(slug);
   // Owners can't leave directly — they must transfer ownership first, otherwise

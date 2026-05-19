@@ -85,7 +85,10 @@ async function buildWorkspaceContext(
 
 const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = {
   summarize: (text) => `Summarize the following in 2-3 sentences:\n\n${text}`,
-  translate: (text) => `Translate the following to Korean (or to English if it's already Korean):\n\n${text}`,
+  translate: (text, instr) =>
+    instr
+      ? `Translate the following to ${instr}, preserving meaning and tone. Reply with the translation only:\n\n${text}`
+      : `Translate the following to Korean (or to English if it's already Korean):\n\n${text}`,
   improve: (text) => `Rewrite the following more clearly, keep the same meaning:\n\n${text}`,
   continue: (text) =>
     `You are continuing the following text. Write 2-4 sentences that flow naturally from where it ends. Match the tone and language. Do not repeat the existing text.\n\n${text}`,

@@ -220,9 +220,37 @@ function ColumnsPanel({
     <div className="absolute top-full left-0 z-30 mt-1 bg-white border border-gray-200 rounded shadow-lg p-2 min-w-[260px]">
       <div className="flex items-center justify-between mb-2">
         <span className="text-xs font-medium text-gray-700">Columns</span>
-        <button onClick={onClose} className="text-gray-400 hover:text-gray-900">
-          ✕
-        </button>
+        <div className="flex items-center gap-1">
+          {!readOnly && (
+            <>
+              <button
+                onClick={() =>
+                  start(() => setHiddenColumns(slug, dbId, []))
+                }
+                className="text-[10px] text-gray-500 hover:text-gray-900"
+              >
+                Show all
+              </button>
+              <button
+                onClick={() =>
+                  start(() =>
+                    setHiddenColumns(
+                      slug,
+                      dbId,
+                      schema.props.filter((p) => p.id !== "p_title").map((p) => p.id),
+                    ),
+                  )
+                }
+                className="text-[10px] text-gray-500 hover:text-gray-900"
+              >
+                Hide all
+              </button>
+            </>
+          )}
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-900">
+            ✕
+          </button>
+        </div>
       </div>
       <ul className="space-y-0.5 max-h-72 overflow-y-auto">
         {order.map((id, i) => {

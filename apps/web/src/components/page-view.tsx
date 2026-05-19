@@ -72,6 +72,7 @@ export function PageView({
     slug?: string | null;
     expiresAt?: string | null;
     coverCaption?: string | null;
+    status?: "draft" | "in_review" | "published" | null;
   };
   canChangeSettings?: boolean;
   user: { id: string; name: string; color: string };
@@ -312,6 +313,7 @@ export function PageView({
             customSlug={page.slug ?? null}
             expiresAt={page.expiresAt ?? null}
             pinned={page.pinned ?? false}
+            status={page.status ?? null}
             canEdit={canChangeSettings}
           />
           <HistoryButton
@@ -363,6 +365,24 @@ export function PageView({
           placeholder="Untitled"
           className="flex-1 text-4xl font-bold outline-none bg-transparent placeholder-gray-300"
         />
+        {page.status && (
+          <span
+            className={
+              "text-[10px] uppercase tracking-wide px-2 py-0.5 rounded-full border " +
+              (page.status === "published"
+                ? "bg-emerald-50 border-emerald-200 text-emerald-700"
+                : page.status === "in_review"
+                  ? "bg-amber-50 border-amber-200 text-amber-700"
+                  : "bg-gray-100 border-gray-200 text-gray-600")
+            }
+          >
+            {page.status === "in_review"
+              ? "In review"
+              : page.status === "published"
+                ? "Published"
+                : "Draft"}
+          </span>
+        )}
         {!readOnly && (
           <button
             onClick={() => start(() => toggleFavorite(slug, page.id))}
