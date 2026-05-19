@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import clsx from "clsx";
 import {
   bulkDeletePages,
@@ -177,6 +177,17 @@ export function Sidebar({
   const [dragId, setDragId] = useState<string | null>(null);
   const [dropTarget, setDropTarget] = useState<{ id: string; where: "into" | "before" | "after" } | null>(null);
   const [movingId, setMovingId] = useState<string | null>(null);
+  const [hoverPreviewId, setHoverPreviewId] = useState<string | null>(null);
+  const previewTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const schedulePreview = (id: string) => {
+    if (previewTimer.current) clearTimeout(previewTimer.current);
+    previewTimer.current = setTimeout(() => setHoverPreviewId(id), 280);
+  };
+  const cancelPreview = () => {
+    if (previewTimer.current) clearTimeout(previewTimer.current);
+    previewTimer.current = null;
+    setHoverPreviewId(null);
+  };
   const [mobileOpen, setMobileOpen] = useState(false);
   const [trashQ, setTrashQ] = useState("");
   const [collapsed, setCollapsed] = useState(false);
@@ -383,8 +394,9 @@ export function Sidebar({
           )}
           <Link
             href={`/w/${currentSlug}/p/${node.id}`}
-            title={node.preview || undefined}
-            className="flex-1 truncate text-sm py-0.5 flex items-center"
+            onMouseEnter={() => schedulePreview(node.id)}
+            onMouseLeave={cancelPreview}
+            className="flex-1 truncate text-sm py-0.5 flex items-center relative"
           >
             <span className="mr-1">
               {node.icon ?? (node.kind === "database" ? "📊" : "📄")}
@@ -392,6 +404,19 @@ export function Sidebar({
             <span className="truncate flex-1">
               {node.title || (node.kind === "database" ? "Untitled database" : "Untitled")}
             </span>
+            {hoverPreviewId === node.id && (node.preview || node.title) && (
+              <span
+                className="hidden md:block fixed z-50 ml-2 bg-white border border-gray-200 shadow-lg rounded-md px-3 py-2 text-xs pointer-events-none"
+                style={{ left: "240px", maxWidth: "260px" }}
+              >
+                <span className="block font-medium text-gray-900 mb-0.5 truncate">
+                  {node.title || "Untitled"}
+                </span>
+                <span className="block text-gray-500 line-clamp-3">
+                  {node.preview || "(no content yet)"}
+                </span>
+              </span>
+            )}
             {typeof node.count === "number" && node.count > 0 && (
               <span className="text-[10px] text-gray-400 ml-1 shrink-0">
                 {node.count}

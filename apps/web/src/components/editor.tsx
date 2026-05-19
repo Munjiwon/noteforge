@@ -334,6 +334,40 @@ export function Editor({
                 icon: <span>📑</span>,
                 onItemClick: insert("pageEmbed", { pageId: "" }),
               },
+              ...(["today", "tomorrow", "now"] as const).map(
+                (kind): DefaultReactSuggestionItem => {
+                  const fmt = () => {
+                    const d = new Date();
+                    if (kind === "tomorrow") d.setDate(d.getDate() + 1);
+                    if (kind === "now") {
+                      return d.toLocaleString();
+                    }
+                    return d.toLocaleDateString(undefined, {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    });
+                  };
+                  return {
+                    title: `Date · ${kind}`,
+                    subtext: `Insert ${kind === "now" ? "current date + time" : kind === "today" ? "today's date" : "tomorrow's date"}`,
+                    aliases: [kind, "date", "오늘", "내일", "지금"],
+                    group: "Basic blocks",
+                    icon: <span>📅</span>,
+                    onItemClick: () => {
+                      const text = fmt();
+                      const cur = editor.getTextCursorPosition().block;
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      editor.insertBlocks([
+                        {
+                          type: "paragraph",
+                          content: [{ type: "text", text, styles: {} }],
+                        } as any,
+                      ], cur, "after");
+                    },
+                  };
+                },
+              ),
               {
                 title: "Synced block",
                 subtext: "Shared text mirrored across pages",

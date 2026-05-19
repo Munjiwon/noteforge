@@ -335,6 +335,15 @@ export function PageView({
           </button>
         )}
       </div>
+      <div className="flex items-center gap-2 text-[11px] text-gray-400 mb-1">
+        {info.author && (
+          <span>
+            by {info.author.name}
+          </span>
+        )}
+        <span>· Last edited {relTime(info.updatedAt)}</span>
+        <span>· {Math.max(1, Math.round(info.wordCount / 200))} min read</span>
+      </div>
       <PageReactions
         slug={slug}
         pageId={page.id}
@@ -386,6 +395,16 @@ export function PageView({
       <AskAiPanel slug={slug} getPageText={() => extractText(page.content, title)} />
     </div>
   );
+}
+
+function relTime(iso: string): string {
+  const d = new Date(iso);
+  const s = (Date.now() - d.getTime()) / 1000;
+  if (s < 60) return "just now";
+  if (s < 3600) return `${Math.floor(s / 60)}m ago`;
+  if (s < 86400) return `${Math.floor(s / 3600)}h ago`;
+  if (s < 86400 * 7) return `${Math.floor(s / 86400)}d ago`;
+  return d.toLocaleDateString();
 }
 
 function extractText(json: string, fallbackTitle: string): string {
