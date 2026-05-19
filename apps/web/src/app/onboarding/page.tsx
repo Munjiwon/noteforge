@@ -32,10 +32,72 @@ export default async function OnboardingPage() {
         },
         pages: {
           create: {
-            title: "Getting started",
+            title: "Welcome",
             icon: "👋",
             position: 0,
             authorId: (s.user as any).id,
+            content: JSON.stringify([
+              {
+                type: "heading",
+                props: { level: 1 },
+                content: [{ type: "text", text: `Welcome to ${name}`, styles: {} }],
+              },
+              {
+                type: "paragraph",
+                content: [
+                  {
+                    type: "text",
+                    text: "This is your first page. A few things to try:",
+                    styles: {},
+                  },
+                ],
+              },
+              {
+                type: "bulletListItem",
+                content: [
+                  { type: "text", text: "Type ", styles: {} },
+                  { type: "text", text: "/", styles: { code: true } },
+                  { type: "text", text: " to open the block menu", styles: {} },
+                ],
+              },
+              {
+                type: "bulletListItem",
+                content: [
+                  { type: "text", text: "Press ", styles: {} },
+                  { type: "text", text: "@", styles: { code: true } },
+                  { type: "text", text: " to mention a person or page", styles: {} },
+                ],
+              },
+              {
+                type: "bulletListItem",
+                content: [
+                  { type: "text", text: "Click ", styles: {} },
+                  { type: "text", text: "+", styles: { code: true } },
+                  { type: "text", text: " in the sidebar to add a sub-page", styles: {} },
+                ],
+              },
+              {
+                type: "bulletListItem",
+                content: [
+                  { type: "text", text: "Use ", styles: {} },
+                  { type: "text", text: "⌘K", styles: { code: true } },
+                  { type: "text", text: " for instant search · ", styles: {} },
+                  { type: "text", text: "?", styles: { code: true } },
+                  { type: "text", text: " for keyboard shortcuts", styles: {} },
+                ],
+              },
+              {
+                type: "callout",
+                props: { emoji: "💡", color: "yellow" },
+                content: [
+                  {
+                    type: "text",
+                    text: "Tip: drop a file anywhere on a page to upload it, or paste a URL to create a bookmark card.",
+                    styles: {},
+                  },
+                ],
+              },
+            ]),
           },
         },
       },

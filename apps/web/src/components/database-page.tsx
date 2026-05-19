@@ -115,7 +115,7 @@ export function DatabasePage({
             👁 Read-only view
           </div>
         ) : null}
-        <div className="flex justify-end gap-2 mb-2">
+        <div className="flex flex-wrap justify-end gap-1.5 mb-2">
           <DbExportCsvButton title={db.title} schema={db.schema} rows={visibleRows} />
           <PageStyleMenu
             slug={slug}

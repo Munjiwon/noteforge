@@ -398,6 +398,21 @@ export async function setPageSlug(
   return clean;
 }
 
+export async function setPageExpiry(
+  slug: string,
+  pageId: string,
+  iso: string | null,
+) {
+  const ctx = await assertEditor(slug);
+  const d = iso ? new Date(iso) : null;
+  if (d && Number.isNaN(d.getTime())) throw new Error("invalid date");
+  await prisma.page.updateMany({
+    where: { id: pageId, workspaceId: ctx.workspace.id },
+    data: { expiresAt: d },
+  });
+  revalidatePath(`/w/${slug}/p/${pageId}`);
+}
+
 export async function archivePage(slug: string, pageId: string) {
   const ctx = await assertEditor(slug);
   await prisma.page.updateMany({

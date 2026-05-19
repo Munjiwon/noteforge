@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import {
   archivePage,
   setPageAsTemplate,
+  setPageExpiry,
   setPageFont,
   setPageSlug,
   setPageWidth,
@@ -22,6 +23,7 @@ export function PageStyleMenu({
   locked,
   isTemplate = false,
   customSlug = null,
+  expiresAt = null,
   canEdit,
 }: {
   slug: string;
@@ -31,6 +33,7 @@ export function PageStyleMenu({
   locked: boolean;
   isTemplate?: boolean;
   customSlug?: string | null;
+  expiresAt?: string | null;
   canEdit: boolean;
 }) {
   const [open, setOpen] = useState(false);
@@ -96,12 +99,16 @@ export function PageStyleMenu({
           </div>
           {canEdit && (
             <>
-              <button
-                onClick={() => start(() => togglePageLock(slug, pageId))}
-                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
-              >
-                {locked ? "🔓 Unlock page" : "🔒 Lock page"}
-              </button>
+              {locked ? (
+                <button
+                  onClick={() => start(() => togglePageLock(slug, pageId))}
+                  className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+                >
+                  🔓 Unlock page
+                </button>
+              ) : (
+                <LockRow slug={slug} pageId={pageId} />
+              )}
               <button
                 onClick={() =>
                   start(async () => {
@@ -130,10 +137,11 @@ export function PageStyleMenu({
                     router.push(`/w/${slug}`);
                   });
                 }}
-                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center"
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mt-1"
               >
                 📦 Archive
               </button>
+              <ExpiryRow slug={slug} pageId={pageId} initial={expiresAt} />
               <SlugRow slug={slug} pageId={pageId} initial={customSlug} />
             </>
           )}
@@ -153,6 +161,100 @@ export function widthClass(width: PageWidth): string {
   if (width === "wide") return "max-w-5xl";
   if (width === "full") return "max-w-none";
   return "max-w-3xl";
+}
+
+function LockRow({ slug, pageId }: { slug: string; pageId: string }) {
+  const [open, setOpen] = useState(false);
+  const [, start] = useTransition();
+  const lockFor = (hours?: number) =>
+    start(() => togglePageLock(slug, pageId, hours));
+  return (
+    <div className="relative mb-1">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center justify-center gap-1"
+      >
+        🔒 Lock page {open ? "▴" : "▾"}
+      </button>
+      {open && (
+        <div className="absolute left-0 right-0 top-full mt-1 z-10 bg-white border border-gray-200 rounded shadow-md py-1 text-xs">
+          {[
+            { label: "Lock for 1 hour", hours: 1 },
+            { label: "Lock for 24 hours", hours: 24 },
+            { label: "Lock for 1 week", hours: 24 * 7 },
+            { label: "Lock until unlocked", hours: undefined },
+          ].map((opt) => (
+            <button
+              key={opt.label}
+              onClick={() => {
+                setOpen(false);
+                lockFor(opt.hours);
+              }}
+              className="w-full text-left px-3 py-1 hover:bg-black/5"
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ExpiryRow({
+  slug,
+  pageId,
+  initial,
+}: {
+  slug: string;
+  pageId: string;
+  initial: string | null;
+}) {
+  const [value, setValue] = useState(
+    initial ? new Date(initial).toISOString().slice(0, 16) : "",
+  );
+  const [, start] = useTransition();
+  return (
+    <div className="mt-2 pt-2 border-t border-gray-100">
+      <label className="text-[10px] uppercase text-gray-500 px-1">
+        Auto-archive on
+      </label>
+      <div className="flex items-center gap-1 mt-1">
+        <input
+          type="datetime-local"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          className="flex-1 border border-gray-200 rounded px-2 py-1 text-xs outline-none focus:border-gray-400"
+        />
+        <button
+          onClick={() =>
+            start(async () => {
+              await setPageExpiry(
+                slug,
+                pageId,
+                value ? new Date(value).toISOString() : null,
+              );
+            })
+          }
+          className="text-[10px] px-2 py-1 rounded border border-gray-200 hover:bg-black/5"
+        >
+          Save
+        </button>
+        {initial && (
+          <button
+            onClick={() => {
+              setValue("");
+              start(() => setPageExpiry(slug, pageId, null));
+            }}
+            className="text-[10px] text-gray-500 hover:text-red-600 px-1"
+            title="Cancel auto-archive"
+          >
+            ✕
+          </button>
+        )}
+      </div>
+    </div>
+  );
 }
 
 function SlugRow({

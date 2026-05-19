@@ -79,6 +79,18 @@ export default async function WorkspaceLayout({
       data: { lastActiveAt: new Date() },
     })
     .catch(() => {});
+  // Auto-archive pages whose expiresAt has passed (best-effort).
+  prisma.page
+    .updateMany({
+      where: {
+        workspaceId: ctx.workspace.id,
+        archivedAt: null,
+        deletedAt: null,
+        expiresAt: { lte: new Date(), not: null },
+      },
+      data: { archivedAt: new Date() },
+    })
+    .catch(() => {});
   // Best-effort auto-purge: hard-delete pages that have been in the trash
   // longer than 30 days. The Page.parentId cascade takes care of descendants
   // and PageActivity/PageSnapshot/Comment/etc. rows.

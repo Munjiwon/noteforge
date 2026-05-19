@@ -67,6 +67,7 @@ export function PageView({
     isTemplate?: boolean;
     favorite?: boolean;
     slug?: string | null;
+    expiresAt?: string | null;
   };
   canChangeSettings?: boolean;
   user: { id: string; name: string; color: string };
@@ -274,7 +275,7 @@ export function PageView({
             👁 Read-only view
           </div>
         ) : null}
-        <div className="flex justify-end gap-2 mb-2 no-print">
+        <div className="flex flex-wrap justify-end gap-1.5 mb-2 no-print">
           <ReadModeButton />
           <button
             onClick={() => window.print()}
@@ -295,6 +296,7 @@ export function PageView({
             locked={page.locked ?? false}
             isTemplate={page.isTemplate ?? false}
             customSlug={page.slug ?? null}
+            expiresAt={page.expiresAt ?? null}
             canEdit={canChangeSettings}
           />
           <HistoryButton

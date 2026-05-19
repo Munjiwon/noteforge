@@ -101,6 +101,7 @@ model Page {
   publicViewCount Int   @default(0)
   wordGoal    Int?
   archivedAt  DateTime?
+  expiresAt   DateTime?
   deletedAt   DateTime?
   publicSlug  String?   @unique
   publicAccess String   @default("none") // "none" | "view"
