@@ -68,6 +68,28 @@ export function ExportButton({
           >
             HTML (.html)
           </button>
+          <button
+            onClick={() => {
+              setOpen(false);
+              start(async () => {
+                const md = await exportPageMarkdown(slug, pageId);
+                try {
+                  await navigator.clipboard.writeText(md);
+                  const tip = document.createElement("div");
+                  tip.textContent = "Markdown copied";
+                  tip.className =
+                    "fixed bottom-4 left-1/2 -translate-x-1/2 z-50 text-xs bg-gray-900 text-white rounded-full px-3 py-1 shadow";
+                  document.body.appendChild(tip);
+                  setTimeout(() => tip.remove(), 1400);
+                } catch {
+                  alert("Copy failed — try downloading instead.");
+                }
+              });
+            }}
+            className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded border-t border-gray-100 mt-1 pt-1"
+          >
+            📋 Copy as Markdown
+          </button>
         </div>
       )}
     </div>

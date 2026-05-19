@@ -3,6 +3,7 @@ import { requireWorkspaceMember } from "@/lib/workspace";
 import { prisma } from "db";
 import { parseSchema } from "@/lib/database";
 import { TemplateGalleryButton } from "@/components/template-gallery";
+import { Avatar } from "@/components/avatar";
 
 function greeting(): string {
   const h = new Date().getHours();
@@ -40,7 +41,8 @@ export default async function WorkspaceHome({
 
   const weekAgo = new Date(Date.now() - 7 * 24 * 3600 * 1000);
 
-  const [recents, favorites, totals, dueCount, comingReminders, dateDatabases, recent7] = await Promise.all([
+  const activeSince = new Date(Date.now() - 5 * 60 * 1000);
+  const [recents, favorites, totals, dueCount, comingReminders, dateDatabases, recent7, activeMembers] = await Promise.all([
     prisma.page.findMany({
       where: {
         workspaceId: ctx.workspace.id,
@@ -138,6 +140,14 @@ export default async function WorkspaceHome({
         },
       }),
     ]),
+    prisma.workspaceMember.findMany({
+      where: {
+        workspaceId: ctx.workspace.id,
+        lastActiveAt: { gte: activeSince },
+      },
+      take: 10,
+      include: { user: { select: { name: true, color: true, avatarUrl: true } } },
+    }),
   ]);
   const [newPages7, editedPages7, newComments7] = recent7;
   const [pageTotal, dbTotal, memberTotal] = totals;
@@ -223,6 +233,19 @@ export default async function WorkspaceHome({
           })}
         </p>
       </header>
+
+      {activeMembers.length > 0 && (
+        <section className="mb-4 flex items-center gap-2 text-xs text-gray-500">
+          <span>Active now</span>
+          <span className="flex -space-x-2">
+            {activeMembers.map((m) => (
+              <span key={m.id} className="ring-2 ring-white rounded-full">
+                <Avatar user={m.user} size="sm" />
+              </span>
+            ))}
+          </span>
+        </section>
+      )}
 
       <section className="grid grid-cols-2 sm:grid-cols-7 gap-3 mb-8">
         <DashLink

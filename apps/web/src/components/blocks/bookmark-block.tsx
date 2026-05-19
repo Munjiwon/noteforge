@@ -153,20 +153,51 @@ export const BookmarkBlock = createReactBlockSpec(
               </div>
             )}
           </div>
-          <div className="text-[10px] text-gray-400 px-3 py-1 border-t border-gray-100 flex justify-between">
+          <div className="text-[10px] text-gray-400 px-3 py-1 border-t border-gray-100 flex justify-between gap-2">
             <span className="truncate">{url}</span>
-            <button
-              type="button"
-              onMouseDown={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setDraft(url);
-                setEditing(true);
-              }}
-              className="hover:text-gray-700"
-            >
-              Edit
-            </button>
+            <span className="flex items-center gap-2">
+              <button
+                type="button"
+                onMouseDown={async (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setMeta({ title: null, description: null, image: null, domain: null });
+                  try {
+                    const res = await fetch(
+                      `/api/og?url=${encodeURIComponent(url)}`,
+                    );
+                    if (!res.ok) return;
+                    const data = (await res.json()) as Meta;
+                    setMeta(data);
+                    editor.updateBlock(block, {
+                      props: {
+                        ...(block.props as Record<string, unknown>),
+                        title: data.title ?? "",
+                        description: data.description ?? "",
+                        image: data.image ?? "",
+                        domain: data.domain ?? "",
+                      },
+                    } as never);
+                  } catch {}
+                }}
+                className="hover:text-gray-700"
+                title="Refresh metadata from the URL"
+              >
+                ↻ Refresh
+              </button>
+              <button
+                type="button"
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setDraft(url);
+                  setEditing(true);
+                }}
+                className="hover:text-gray-700"
+              >
+                Edit
+              </button>
+            </span>
           </div>
         </a>
       );

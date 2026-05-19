@@ -174,24 +174,35 @@ export function Editor({
     return () => window.removeEventListener("noteforge:restore-snapshot", handler);
   }, [editor, pageId]);
 
-  // Debounced save of JSON snapshot to DB.
+  // Debounced save of JSON snapshot to DB, with a Saving / Saved indicator.
+  const [saveState, setSaveState] = useState<"idle" | "dirty" | "saving" | "saved">(
+    "idle",
+  );
   useEffect(() => {
     if (!editor) return;
     let timer: ReturnType<typeof setTimeout> | null = null;
+    let savedTimer: ReturnType<typeof setTimeout> | null = null;
     const onChange = () => {
+      setSaveState("dirty");
       if (timer) clearTimeout(timer);
-      timer = setTimeout(() => {
+      timer = setTimeout(async () => {
         try {
           const json = JSON.stringify(editor.document);
-          saveContent(slug, pageId, json);
+          setSaveState("saving");
+          await saveContent(slug, pageId, json);
+          setSaveState("saved");
+          if (savedTimer) clearTimeout(savedTimer);
+          savedTimer = setTimeout(() => setSaveState("idle"), 1200);
         } catch (e) {
           console.error(e);
+          setSaveState("dirty");
         }
       }, 1500);
     };
     const unsubscribe = editor.onChange(onChange);
     return () => {
       if (timer) clearTimeout(timer);
+      if (savedTimer) clearTimeout(savedTimer);
       unsubscribe?.();
     };
   }, [editor, slug, pageId]);
@@ -422,6 +433,23 @@ export function Editor({
         >
           🔗 Copy block link
         </button>
+        {saveState !== "idle" && !readOnly && (
+          <span
+            className={
+              "ml-auto text-[10px] uppercase tracking-wide self-center " +
+              (saveState === "saved"
+                ? "text-emerald-600"
+                : "text-gray-400")
+            }
+            title={saveState === "saving" ? "Saving to server…" : saveState === "saved" ? "All changes saved" : "Pending save"}
+          >
+            {saveState === "saving"
+              ? "Saving…"
+              : saveState === "saved"
+                ? "✓ Saved"
+                : "·"}
+          </span>
+        )}
       </div>
       {!readOnly && <EmptyHint editor={editor} />}
       {!readOnly && dragOver && (
@@ -533,6 +561,22 @@ export function Editor({
                 group: "Media",
                 icon: <span>📑</span>,
                 onItemClick: insert("pageEmbed", { pageId: "" }),
+              },
+              {
+                title: "Divider",
+                subtext: "Horizontal rule (---)",
+                aliases: ["divider", "hr", "horizontal rule", "구분선", "---"],
+                group: "Basic blocks",
+                icon: <span>―</span>,
+                onItemClick: () => {
+                  const cur = editor.getTextCursorPosition().block;
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  editor.insertBlocks(
+                    [{ type: "horizontalRule" } as any],
+                    cur,
+                    "after",
+                  );
+                },
               },
               ...(["today", "tomorrow", "now"] as const).map(
                 (kind): DefaultReactSuggestionItem => {

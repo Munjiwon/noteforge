@@ -192,6 +192,18 @@ export function Sidebar({
   const [dragId, setDragId] = useState<string | null>(null);
   const [dropTarget, setDropTarget] = useState<{ id: string; where: "into" | "before" | "after" } | null>(null);
   const [movingId, setMovingId] = useState<string | null>(null);
+  useEffect(() => {
+    const onOpen = (e: Event) => {
+      const detail = (e as CustomEvent<{ pageId?: string }>).detail;
+      if (detail?.pageId) setMovingId(detail.pageId);
+    };
+    window.addEventListener("noteforge:page-move-open", onOpen as EventListener);
+    return () =>
+      window.removeEventListener(
+        "noteforge:page-move-open",
+        onOpen as EventListener,
+      );
+  }, []);
   const [hoverPreviewId, setHoverPreviewId] = useState<string | null>(null);
   const previewTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const schedulePreview = (id: string) => {

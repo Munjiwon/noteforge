@@ -26,7 +26,7 @@ import {
   updateCell,
 } from "@/app/w/[slug]/database-actions";
 import { SELECT_COLORS } from "@/lib/database";
-import { reorderPage } from "@/app/w/[slug]/actions";
+import { duplicatePage, reorderPage } from "@/app/w/[slug]/actions";
 import type { DbProp, DbPropType, DbSchema } from "@/lib/database";
 import {
   STATUS_GROUP_LABEL,
@@ -780,16 +780,25 @@ function RowRow({
       {!readOnly && (
         <td className="relative" style={{ minWidth: 100 }}>
           {hover && (
-            <button
-              className="text-xs text-gray-400 hover:text-red-600 px-2"
-              onClick={() => {
-                if (!confirm("Delete this row?")) return;
-                onBeforeDelete?.(row);
-                start(() => deleteRow(slug, row.id));
-              }}
-            >
-              ✕
-            </button>
+            <>
+              <button
+                className="text-xs text-gray-400 hover:text-gray-900 px-1"
+                title="Duplicate row"
+                onClick={() => start(() => duplicatePage(slug, row.id))}
+              >
+                ⎘
+              </button>
+              <button
+                className="text-xs text-gray-400 hover:text-red-600 px-2"
+                onClick={() => {
+                  if (!confirm("Delete this row?")) return;
+                  onBeforeDelete?.(row);
+                  start(() => deleteRow(slug, row.id));
+                }}
+              >
+                ✕
+              </button>
+            </>
           )}
         </td>
       )}

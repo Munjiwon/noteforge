@@ -11,6 +11,7 @@ import {
   setPageWidth,
   togglePageLock,
   togglePagePinned,
+  unarchivePage,
 } from "@/app/w/[slug]/actions";
 import { useRouter } from "next/navigation";
 
@@ -121,6 +122,19 @@ export function PageStyleMenu({
               >
                 {pinned ? "📌 Unpin from sidebar" : "📌 Pin to sidebar"}
               </button>
+              <button
+                onClick={() => {
+                  window.dispatchEvent(
+                    new CustomEvent("noteforge:page-move-open", {
+                      detail: { pageId },
+                    }),
+                  );
+                  setOpen(false);
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+              >
+                ↪ Move to…
+              </button>
               <div className="mb-1">
                 <label className="text-[10px] uppercase text-gray-500 px-1">
                   Status
@@ -166,14 +180,10 @@ export function PageStyleMenu({
               </button>
               <button
                 onClick={() => {
-                  if (
-                    !confirm(
-                      "Archive this page? It stays available under Archive but is hidden from the sidebar.",
-                    )
-                  )
-                    return;
                   start(async () => {
                     await archivePage(slug, pageId);
+                    // Show an undo toast for 6 seconds, then navigate home.
+                    showArchiveUndoToast(slug, pageId);
                     router.push(`/w/${slug}`);
                   });
                 }}
@@ -201,6 +211,34 @@ export function widthClass(width: PageWidth): string {
   if (width === "wide") return "max-w-5xl";
   if (width === "full") return "max-w-none";
   return "max-w-3xl";
+}
+
+function showArchiveUndoToast(slug: string, pageId: string) {
+  if (typeof document === "undefined") return;
+  const tip = document.createElement("div");
+  tip.className =
+    "fixed bottom-5 left-1/2 -translate-x-1/2 z-50 text-xs bg-gray-900 text-white rounded-full px-4 py-1.5 shadow-lg flex items-center gap-3";
+  const span = document.createElement("span");
+  span.textContent = "📦 Page archived";
+  const btn = document.createElement("button");
+  btn.textContent = "Restore";
+  btn.className = "underline hover:opacity-80";
+  btn.addEventListener("click", () => {
+    unarchivePage(slug, pageId)
+      .then(() => {
+        tip.textContent = "Restored";
+        setTimeout(() => tip.remove(), 800);
+        // Navigate back to the page
+        window.location.href = `/w/${slug}/p/${pageId}`;
+      })
+      .catch(() => {
+        tip.textContent = "Restore failed";
+      });
+  });
+  tip.appendChild(span);
+  tip.appendChild(btn);
+  document.body.appendChild(tip);
+  setTimeout(() => tip.remove(), 6000);
 }
 
 function LockRow({ slug, pageId }: { slug: string; pageId: string }) {
