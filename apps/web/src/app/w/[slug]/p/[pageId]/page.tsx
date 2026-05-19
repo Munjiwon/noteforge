@@ -273,7 +273,7 @@ export default async function PageRoute({
       })
     : [];
   const authorMap = new Map(authors.map((a) => [a.id, a]));
-  const [childCount, activityRows, reactionRows] = await Promise.all([
+  const [childCount, activityRows, reactionRows, subPages] = await Promise.all([
     prisma.page.count({ where: { parentId: page.id, deletedAt: null } }),
     prisma.pageActivity.findMany({
       where: { pageId: page.id },
@@ -284,6 +284,18 @@ export default async function PageRoute({
       where: { pageId: page.id },
       include: { user: { select: { id: true, name: true } } },
     }),
+    page.kind === "doc"
+      ? prisma.page.findMany({
+          where: {
+            parentId: page.id,
+            deletedAt: null,
+            isTemplate: false,
+          },
+          orderBy: [{ position: "asc" }, { createdAt: "asc" }],
+          take: 12,
+          select: { id: true, title: true, icon: true, kind: true },
+        })
+      : Promise.resolve([] as { id: string; title: string; icon: string | null; kind: string }[]),
   ]);
   const subscribed = !!(await prisma.pageSubscription.findUnique({
     where: { pageId_userId: { pageId: page.id, userId: ctx.user.id } },
@@ -398,6 +410,7 @@ export default async function PageRoute({
             ? ctx.workspace.defaultFont
             : "default") as "default" | "serif" | "mono"
         }
+        subPages={subPages}
       />
     </>
   );

@@ -8,6 +8,7 @@ type PageData = {
   title: string;
   icon: string | null;
   content: string;
+  author?: { name: string; color: string; avatarUrl?: string | null } | null;
 };
 
 export const MentionInline = createReactInlineContentSpec(
@@ -88,6 +89,11 @@ function PageMention({ id, label }: { id: string; label: string }) {
           <span className="block text-sm font-medium text-gray-900 mb-0.5 truncate">
             {data.icon ?? "📄"} {data.title || "Untitled"}
           </span>
+          {data.author && (
+            <span className="block text-[10px] text-gray-400 mb-1">
+              by {data.author.name}
+            </span>
+          )}
           <span className="block text-gray-500 line-clamp-3">
             {previewFrom(data.content) || "(no content)"}
           </span>

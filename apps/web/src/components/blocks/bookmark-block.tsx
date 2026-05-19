@@ -138,11 +138,19 @@ export const BookmarkBlock = createReactBlockSpec(
                 {meta.domain ?? cached.domain ?? safeHost(url)}
               </div>
             </div>
-            {(meta.image ?? cached.image) && (
+            {(meta.image ?? cached.image) ? (
               <div
                 className="w-32 h-24 shrink-0 bg-center bg-cover"
                 style={{ backgroundImage: `url("${meta.image ?? cached.image}")` }}
               />
+            ) : (
+              <div className="w-32 h-24 shrink-0 bg-gray-50 grid place-items-center">
+                <img
+                  src={`https://www.google.com/s2/favicons?sz=64&domain=${encodeURIComponent(meta.domain ?? cached.domain ?? safeHost(url))}`}
+                  alt=""
+                  className="w-8 h-8 opacity-80"
+                />
+              </div>
             )}
           </div>
           <div className="text-[10px] text-gray-400 px-3 py-1 border-t border-gray-100 flex justify-between">

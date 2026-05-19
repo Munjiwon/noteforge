@@ -49,6 +49,7 @@ export function PageView({
   subscribed = false,
   reminders = [],
   workspaceDefaultFont = "default",
+  subPages = [],
   canChangeSettings = false,
 }: {
   slug: string;
@@ -85,6 +86,7 @@ export function PageView({
     createdAt: string;
     updatedAt: string;
     wordCount: number;
+    wordGoal?: number | null;
     commentCount: number;
     backlinkCount: number;
     childrenCount: number;
@@ -103,6 +105,7 @@ export function PageView({
   subscribed?: boolean;
   reminders?: PendingReminder[];
   workspaceDefaultFont?: "default" | "serif" | "mono";
+  subPages?: { id: string; title: string; icon: string | null; kind: string }[];
 }) {
   const [title, setTitle] = useState(page.title);
   const [icon, setIcon] = useState(page.icon);
@@ -146,6 +149,24 @@ export function PageView({
     } catch {}
     void incrementPageView(slug, page.id);
   }, [page.id, slug]);
+
+  // Word goal celebration — fire once per page per session when the count
+  // crosses the goal.
+  useEffect(() => {
+    if (!info.wordGoal) return;
+    if (info.wordCount < info.wordGoal) return;
+    const key = `wordGoal:hit:${page.id}`;
+    try {
+      if (sessionStorage.getItem(key)) return;
+      sessionStorage.setItem(key, "1");
+    } catch {}
+    const tip = document.createElement("div");
+    tip.innerHTML = `🎉 <strong>${info.wordCount}</strong> words — goal reached!`;
+    tip.className =
+      "fixed bottom-20 left-1/2 -translate-x-1/2 z-50 text-sm bg-emerald-600 text-white rounded-full px-4 py-1.5 shadow-lg";
+    document.body.appendChild(tip);
+    setTimeout(() => tip.remove(), 3000);
+  }, [page.id, info.wordCount, info.wordGoal]);
 
   // Auto-scroll to anchored block (?b) or comment (?c)
   useEffect(() => {
@@ -418,6 +439,28 @@ export function PageView({
         initial={parseTags(page.tags ?? null)}
         readOnly={readOnly}
       />
+      {subPages.length > 0 && (
+        <details className="mb-3 border border-gray-100 rounded-md">
+          <summary className="cursor-pointer px-3 py-1.5 text-xs uppercase tracking-wide text-gray-500 list-none flex items-center gap-1">
+            <span className="text-gray-400">▸</span>
+            Sub-pages
+            <span className="text-gray-400 ml-1">({subPages.length})</span>
+          </summary>
+          <ul className="px-2 pb-2 grid sm:grid-cols-2 gap-1">
+            {subPages.map((sp) => (
+              <li key={sp.id}>
+                <a
+                  href={`/w/${slug}/p/${sp.id}`}
+                  className="flex items-center gap-2 px-2 py-1 rounded text-sm text-gray-800 hover:bg-black/5"
+                >
+                  <span>{sp.icon ?? (sp.kind === "database" ? "📊" : "📄")}</span>
+                  <span className="truncate flex-1">{sp.title || "Untitled"}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
       <Editor
         pageId={page.id}
         slug={slug}

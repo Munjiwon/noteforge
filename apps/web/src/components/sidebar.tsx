@@ -45,6 +45,13 @@ type TrashItem = { id: string; title: string; icon: string | null; kind: string;
 
 type Tree = SidebarPage & { children: Tree[] };
 
+function formatBytes(n: number): string {
+  if (n < 1024) return `${n} B`;
+  if (n < 1024 * 1024) return `${(n / 1024).toFixed(0)} KB`;
+  if (n < 1024 * 1024 * 1024) return `${(n / 1024 / 1024).toFixed(1)} MB`;
+  return `${(n / 1024 / 1024 / 1024).toFixed(2)} GB`;
+}
+
 function trashAge(d: Date | string): string {
   const t = typeof d === "string" ? new Date(d).getTime() : d.getTime();
   const diff = (Date.now() - t) / 1000;
@@ -85,6 +92,7 @@ export function Sidebar({
   trashStaleCount,
   user,
   announcement,
+  footerStats,
 }: {
   workspaces: { slug: string; name: string }[];
   currentSlug: string;
@@ -103,6 +111,7 @@ export function Sidebar({
   trashStaleCount?: number;
   user: { id: string; name: string; color: string; avatarUrl?: string | null };
   announcement?: string | null;
+  footerStats?: { pageCount: number; fileBytes: number };
 }) {
   const params = useParams<{ pageId?: string }>();
   const activePageId = params.pageId;
@@ -197,7 +206,9 @@ export function Sidebar({
   const [mobileOpen, setMobileOpen] = useState(false);
   const [trashQ, setTrashQ] = useState("");
   const [collapsed, setCollapsed] = useState(false);
+  const [hoverExpanded, setHoverExpanded] = useState(false);
   const [sidebarWidth, setSidebarWidth] = useState<number>(256);
+  const visuallyCollapsed = collapsed && !hoverExpanded;
   useEffect(() => {
     try {
       const v = localStorage.getItem("collab-notion-sidebar-collapsed");
@@ -602,9 +613,11 @@ export function Sidebar({
       />
     )}
     <aside
-      style={collapsed ? undefined : { width: sidebarWidth }}
+      style={visuallyCollapsed ? undefined : { width: sidebarWidth }}
+      onMouseEnter={() => collapsed && setHoverExpanded(true)}
+      onMouseLeave={() => setHoverExpanded(false)}
       className={clsx(
-        collapsed ? "md:w-12 md:overflow-hidden" : "",
+        visuallyCollapsed ? "md:w-12 md:overflow-hidden" : "",
         "shrink-0 bg-sidebar border-r border-black/10 flex flex-col relative",
         "md:relative md:translate-x-0",
         "fixed inset-y-0 left-0 z-40 transition-[transform,width]",
@@ -612,7 +625,7 @@ export function Sidebar({
         mobileOpen ? "translate-x-0 w-72 max-w-[85vw] md:w-auto md:max-w-none" : "-translate-x-full md:translate-x-0",
       )}
     >
-      {!collapsed && (
+      {!visuallyCollapsed && (
         <div
           onMouseDown={onResizeMouseDown}
           className="hidden md:block absolute top-0 right-0 h-full w-1 cursor-col-resize hover:bg-blue-300/50 z-50"
@@ -1136,6 +1149,12 @@ export function Sidebar({
         {role !== "viewer" && <ImportButton slug={currentSlug} />}
         {role === "owner" && <InviteButton slug={currentSlug} />}
         <UserMenu user={user} />
+        {footerStats && !visuallyCollapsed && (
+          <p className="text-[10px] text-gray-400 px-2 pt-1">
+            {footerStats.pageCount} page{footerStats.pageCount === 1 ? "" : "s"} ·{" "}
+            {formatBytes(footerStats.fileBytes)} uploaded
+          </p>
+        )}
       </div>
       <PageMovePicker
         slug={currentSlug}

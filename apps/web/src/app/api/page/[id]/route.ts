@@ -14,7 +14,7 @@ export async function GET(
     where: { id: params.id },
     include: {
       workspace: { include: { members: { where: { userId } } } },
-      author: { select: { name: true, color: true } },
+      author: { select: { name: true, color: true, avatarUrl: true } },
     },
   });
   if (!page || page.deletedAt) return NextResponse.json({ error: "not found" }, { status: 404 });

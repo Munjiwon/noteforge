@@ -662,10 +662,33 @@ export function Editor({
                         });
                         const data = (await res.json()) as { output?: string; error?: string };
                         const out = data.output || data.error || "(no response)";
+                        // Replace placeholder with a labeled callout (kept brief) +
+                        // the actual paragraph below, which is freely editable. The
+                        // user can delete the callout to "apply" the result.
                         editor.updateBlock(inserted, {
                           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                          content: [{ type: "text", text: out, styles: {} }] as any,
+                          content: [
+                            { type: "text", text: `${meta.title} ✓`, styles: { bold: true } },
+                            { type: "text", text: " — delete this callout to keep just the result below.", styles: {} },
+                          ] as any,
                         });
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        editor.insertBlocks(
+                          [
+                            {
+                              type: "paragraph",
+                              content: out
+                                .split(/\n\n+/)
+                                .map((p, i, arr) => ({
+                                  type: "text",
+                                  text: p + (i < arr.length - 1 ? "\n" : ""),
+                                  styles: {},
+                                })),
+                            } as any,
+                          ],
+                          inserted,
+                          "after",
+                        );
                       } catch (e) {
                         editor.updateBlock(inserted, {
                           // eslint-disable-next-line @typescript-eslint/no-explicit-any

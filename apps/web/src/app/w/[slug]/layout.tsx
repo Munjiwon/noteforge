@@ -326,6 +326,29 @@ export default async function WorkspaceLayout({
     select: { avatarUrl: true },
   });
   const currentUserAvatar = userRow?.avatarUrl ?? null;
+  // Lightweight footer stats: total pages + uploaded file count.
+  const [footerPageCount, footerFileBytes] = await Promise.all([
+    prisma.page.count({
+      where: { workspaceId: ctx.workspace.id, deletedAt: null, isTemplate: false },
+    }),
+    (async () => {
+      try {
+        const fs = await import("node:fs/promises");
+        const path = await import("node:path");
+        const dir = path.join(process.cwd(), ".uploads");
+        const files = await fs.readdir(dir).catch(() => [] as string[]);
+        let total = 0;
+        for (const f of files) {
+          const st = await fs.stat(path.join(dir, f)).catch(() => null);
+          if (st) total += st.size;
+        }
+        return total;
+      } catch {
+        return 0;
+      }
+    })(),
+  ]);
+
   // Page counts per workspace for the switcher chip.
   const allWsIds = workspaces.map((m) => m.workspace.id);
   const groups = allWsIds.length
@@ -366,6 +389,7 @@ export default async function WorkspaceLayout({
         recent={recentRows}
         trashStaleCount={trashedPages.filter((t) => t.deletedAt && Date.now() - t.deletedAt.getTime() > 30 * 24 * 3600 * 1000).length}
         user={{ ...ctx.user, avatarUrl: currentUserAvatar }}
+        footerStats={{ pageCount: footerPageCount, fileBytes: footerFileBytes }}
       />
       <main className="flex-1 overflow-auto bg-white">
         <MobileSidebarToggle />
