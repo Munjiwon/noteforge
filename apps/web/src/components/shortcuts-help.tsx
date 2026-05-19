@@ -14,6 +14,7 @@ const GROUPS: { name: string; items: { keys: string; desc: string }[] }[] = [
       { keys: "⌘ D", desc: "Duplicate the current page (with sub-pages)" },
       { keys: "⌘ N", desc: "Create a new page at workspace root" },
       { keys: "⌘ \\", desc: "Collapse / expand the sidebar" },
+      { keys: "⌘ ⌫", desc: "Archive the current page" },
       { keys: "?", desc: "Show this help" },
       { keys: "Esc", desc: "Close dialogs / palettes / exit read mode" },
     ],

@@ -318,10 +318,12 @@ export default async function PageRoute({
   );
   const activityUsers = await prisma.user.findMany({
     where: { id: { in: activityRows.map((a) => a.userId).filter((id): id is string => !!id) } },
-    select: { id: true, name: true, color: true },
+    select: { id: true, name: true, color: true, avatarUrl: true },
   });
   const userMap = new Map(activityUsers.map((u) => [u.id, u]));
   const wordCount = countWords(page.content);
+  const lastEditor =
+    activityRows.find((a) => a.userId && a.action !== "viewed")?.userId ?? null;
   const info = {
     author: page.author ?? null,
     createdAt: page.createdAt.toISOString(),
@@ -332,6 +334,7 @@ export default async function PageRoute({
     childrenCount: childCount,
     viewCount: page.viewCount,
     wordGoal: page.wordGoal,
+    lastEditor: lastEditor ? userMap.get(lastEditor) ?? null : null,
     activity: activityRows.map((a) => ({
       id: a.id,
       action: a.action,

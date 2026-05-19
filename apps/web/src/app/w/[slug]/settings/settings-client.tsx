@@ -6,6 +6,7 @@ import {
   deleteWorkspace,
   exportWorkspaceJson,
   exportWorkspaceMarkdown,
+  leaveWorkspace,
   removeMember,
   renameWorkspace,
   revokeInvite,
@@ -424,6 +425,33 @@ export function SettingsClient({
           </ul>
         )}
         <ClipperHint slug={slug} />
+      </section>
+
+      <section>
+        <h2 className="text-sm font-medium text-gray-700 mb-2">
+          Membership
+        </h2>
+        <button
+          onClick={() => {
+            if (
+              !confirm(
+                "Leave this workspace? You'll lose access until someone re-invites you.",
+              )
+            )
+              return;
+            start(async () => {
+              try {
+                await leaveWorkspace(slug);
+                router.push("/");
+              } catch (e) {
+                alert((e as Error).message);
+              }
+            });
+          }}
+          className="text-xs px-3 py-1 rounded border border-gray-200 hover:bg-black/5"
+        >
+          🚪 Leave workspace
+        </button>
       </section>
 
       {isOwner && (

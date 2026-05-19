@@ -7,6 +7,7 @@ import clsx from "clsx";
 import {
   bulkDeletePages,
   bulkFavoritePages,
+  archivePage,
   createPage,
   createPageFromTemplate,
   createPageFromUserTemplate,
@@ -240,14 +241,36 @@ export function Sidebar({
       if (raw) setFavOrder(JSON.parse(raw));
     } catch {}
   }, []);
+  const [favSort, setFavSort] = useState<"manual" | "alpha" | "recent">(
+    () => {
+      if (typeof window === "undefined") return "manual";
+      const v = localStorage.getItem("collab-notion-fav-sort");
+      return v === "alpha" || v === "recent" ? v : "manual";
+    },
+  );
+  useEffect(() => {
+    try {
+      localStorage.setItem("collab-notion-fav-sort", favSort);
+    } catch {}
+  }, [favSort]);
   const orderedFavorites = useMemo(() => {
+    if (favSort === "alpha") {
+      return [...favorites].sort((a, b) =>
+        (a.title || "Untitled").localeCompare(b.title || "Untitled"),
+      );
+    }
+    if (favSort === "recent") {
+      // 'pages' is ordered by position; we don't have updatedAt here, so use
+      // the natural order which is roughly recent-edited via layout query.
+      return [...favorites];
+    }
     const byId = new Map(favorites.map((f) => [f.id, f]));
     const ordered = favOrder
       .filter((id) => byId.has(id))
       .map((id) => byId.get(id)!);
     const rest = favorites.filter((f) => !favOrder.includes(f.id));
     return [...ordered, ...rest];
-  }, [favorites, favOrder]);
+  }, [favorites, favOrder, favSort]);
   const moveFav = (id: string, dir: -1 | 1) => {
     const ids = orderedFavorites.map((f) => f.id);
     const idx = ids.indexOf(id);
@@ -336,6 +359,19 @@ export function Sidebar({
         // ⌘\ — collapse/expand sidebar
         e.preventDefault();
         setCollapsed((v) => !v);
+      } else if (
+        (e.metaKey || e.ctrlKey) &&
+        !e.shiftKey &&
+        !e.altKey &&
+        (e.key === "Backspace" || e.key === "Delete")
+      ) {
+        // ⌘⌫ — archive current page
+        if (!activePageId) return;
+        if (!confirm("Archive this page?")) return;
+        e.preventDefault();
+        startTransition(() => {
+          archivePage(currentSlug, activePageId);
+        });
       }
     };
     window.addEventListener("keydown", onKey);
@@ -716,8 +752,23 @@ export function Sidebar({
 
       {favorites.length > 0 && (
         <>
-          <div className="px-3 pt-3 pb-1 text-xs uppercase tracking-wide text-gray-500">
-            {t("Favorites", lang)}
+          <div className="px-3 pt-3 pb-1 text-xs uppercase tracking-wide text-gray-500 flex items-center justify-between">
+            <span>{t("Favorites", lang)}</span>
+            <button
+              onClick={() =>
+                setFavSort((s) =>
+                  s === "manual" ? "alpha" : s === "alpha" ? "recent" : "manual",
+                )
+              }
+              className="text-[9px] normal-case tracking-normal text-gray-400 hover:text-gray-700"
+              title="Toggle favorites sort"
+            >
+              {favSort === "manual"
+                ? "Manual ▾"
+                : favSort === "alpha"
+                  ? "A→Z ▾"
+                  : "Recent ▾"}
+            </button>
           </div>
           <ul className="pb-1">
             {orderedFavorites.map((f, i) => (

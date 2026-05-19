@@ -107,6 +107,30 @@ export async function updateMemberRole(
   revalidatePath(`/w/${slug}/settings`);
 }
 
+export async function leaveWorkspace(slug: string) {
+  const ctx = await requireWorkspaceMember(slug);
+  // Owners can't leave directly — they must transfer ownership first, otherwise
+  // the workspace would be orphaned.
+  if (ctx.role === "owner") {
+    const otherOwners = await prisma.workspaceMember.count({
+      where: {
+        workspaceId: ctx.workspace.id,
+        role: "owner",
+        userId: { not: ctx.user.id },
+      },
+    });
+    if (otherOwners === 0) {
+      throw new Error(
+        "You're the only owner. Promote another member to owner first.",
+      );
+    }
+  }
+  await prisma.workspaceMember.deleteMany({
+    where: { workspaceId: ctx.workspace.id, userId: ctx.user.id },
+  });
+  revalidatePath("/", "layout");
+}
+
 export async function removeMember(slug: string, userId: string) {
   const ctx = await assertOwner(slug);
   if (userId === ctx.user.id) {

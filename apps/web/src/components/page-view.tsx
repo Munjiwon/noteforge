@@ -22,6 +22,7 @@ import { PageTags, parseTags } from "./page-tags";
 import { PageReactions, type PageReactionGroup } from "./page-reactions";
 import { SubscribeButton } from "./subscribe-button";
 import { ReminderButton, type PendingReminder } from "./reminder-button";
+import { Avatar } from "./avatar";
 import { ReadModeButton } from "./read-mode-button";
 import { AskAiPanel } from "./ask-ai-panel";
 import type { PermItem } from "./share-button";
@@ -86,6 +87,7 @@ export function PageView({
     commentCount: number;
     backlinkCount: number;
     childrenCount: number;
+    lastEditor?: { name: string; color: string; avatarUrl?: string | null } | null;
   };
   permissions: PermItem[];
   ancestors?: { id: string; title: string; icon: string | null }[];
@@ -372,12 +374,16 @@ export function PageView({
         )}
       </div>
       <div className="flex items-center gap-2 text-[11px] text-gray-400 mb-1">
-        {info.author && (
-          <span>
-            by {info.author.name}
-          </span>
-        )}
+        {info.author && <span>by {info.author.name}</span>}
         <span>· Last edited {relTime(info.updatedAt)}</span>
+        {info.lastEditor &&
+          info.lastEditor.name !== info.author?.name && (
+            <span className="inline-flex items-center gap-1">
+              · by{" "}
+              <Avatar user={info.lastEditor} size="xs" />
+              {info.lastEditor.name}
+            </span>
+          )}
         <span>· {Math.max(1, Math.round(info.wordCount / 200))} min read</span>
       </div>
       <PageReactions

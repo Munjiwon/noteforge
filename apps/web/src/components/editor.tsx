@@ -204,6 +204,48 @@ export function Editor({
     await createComment(slug, pageId, body, { blockId: cur.id });
   };
 
+  // Clipboard image paste: when the user pastes a PNG/JPEG/etc, upload it
+  // and insert a real image block instead of letting BlockNote fall back to
+  // a noisy data URL.
+  useEffect(() => {
+    if (!editor || readOnly) return;
+    const onPaste = async (e: ClipboardEvent) => {
+      const items = e.clipboardData?.items;
+      if (!items) return;
+      for (const it of Array.from(items)) {
+        if (it.kind === "file" && it.type.startsWith("image/")) {
+          const file = it.getAsFile();
+          if (!file) continue;
+          e.preventDefault();
+          const fd = new FormData();
+          fd.append("file", file, file.name || "paste.png");
+          try {
+            const res = await fetch("/api/upload", { method: "POST", body: fd });
+            if (!res.ok) return;
+            const data = (await res.json()) as { url: string };
+            const cur = editor.getTextCursorPosition().block;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            editor.insertBlocks(
+              [
+                {
+                  type: "image",
+                  props: { url: data.url } as Record<string, unknown>,
+                } as any,
+              ],
+              cur,
+              "after",
+            );
+          } catch {
+            /* swallow */
+          }
+          return;
+        }
+      }
+    };
+    window.addEventListener("paste", onPaste);
+    return () => window.removeEventListener("paste", onPaste);
+  }, [editor, readOnly]);
+
   // ⌘J — AI Edit on current selection (or surrounding paragraph if no selection)
   useEffect(() => {
     if (!editor || readOnly) return;

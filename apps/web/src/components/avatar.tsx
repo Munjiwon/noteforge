@@ -2,6 +2,7 @@ type User = {
   name: string;
   color: string;
   avatarUrl?: string | null;
+  email?: string | null;
 };
 
 const SIZES = {
@@ -27,7 +28,7 @@ export function Avatar({
     return (
       <span
         className={`${s.box} inline-block rounded-full overflow-hidden bg-gray-100 ${className}`}
-        title={user.name}
+        title={user.email ? `${user.name} · ${user.email}` : user.name}
       >
         <img
           src={user.avatarUrl}
@@ -41,7 +42,7 @@ export function Avatar({
     <span
       className={`${s.box} ${s.text} inline-flex items-center justify-center rounded-full text-white font-medium shrink-0 ${className}`}
       style={{ background: user.color }}
-      title={user.name}
+      title={user.email ? `${user.name} · ${user.email}` : user.name}
     >
       {initial}
     </span>

@@ -45,7 +45,12 @@ export function KanbanView({
   if (!groupProp) {
     return (
       <div className="text-sm text-gray-500 border border-dashed rounded p-6 text-center">
-        Kanban view needs a Select column. Add one in Table view, then come back and choose it as the group-by.
+        <div className="text-2xl mb-2">🗂</div>
+        <p className="font-medium text-gray-700">Kanban needs a Select column</p>
+        <p className="text-xs mt-1">
+          Switch to Table view → <span className="text-gray-700">+ Add column</span> → Select.
+          Then return here and pick it as <em>Group by</em>.
+        </p>
       </div>
     );
   }

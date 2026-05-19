@@ -43,6 +43,12 @@ export async function generateMetadata({
       description = parts.join(" ").slice(0, 200).trim();
     }
   } catch {}
+  const iconSvg = p.icon
+    ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><text y="52" font-size="56">${p.icon}</text></svg>`
+    : null;
+  const iconHref = iconSvg
+    ? `data:image/svg+xml;utf8,${encodeURIComponent(iconSvg)}`
+    : null;
   return {
     title: p.icon ? `${p.icon} ${title}` : title,
     description,
@@ -51,6 +57,9 @@ export async function generateMetadata({
       description,
       type: "article",
     },
+    ...(iconHref
+      ? { icons: { icon: [{ url: iconHref, type: "image/svg+xml" }] } }
+      : {}),
   };
 }
 
