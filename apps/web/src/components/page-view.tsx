@@ -111,6 +111,24 @@ export function PageView({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page.id]);
 
+  // Set the browser tab favicon to the page icon while this page is open.
+  useEffect(() => {
+    if (!page.icon) return;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><text y="52" font-size="56">${page.icon}</text></svg>`;
+    const href = `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+    let link = document.querySelector<HTMLLinkElement>("link[rel='icon']");
+    const prev = link?.href ?? null;
+    if (!link) {
+      link = document.createElement("link");
+      link.rel = "icon";
+      document.head.appendChild(link);
+    }
+    link.href = href;
+    return () => {
+      if (link && prev !== null) link.href = prev;
+    };
+  }, [page.icon]);
+
   // Increment view count once per session per page.
   useEffect(() => {
     const key = `viewed:${page.id}`;

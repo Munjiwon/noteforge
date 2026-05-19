@@ -276,6 +276,17 @@ export default async function WorkspaceLayout({
     select: { avatarUrl: true },
   });
   const currentUserAvatar = userRow?.avatarUrl ?? null;
+  // Page counts per workspace for the switcher chip.
+  const allWsIds = workspaces.map((m) => m.workspace.id);
+  const groups = allWsIds.length
+    ? await prisma.page.groupBy({
+        by: ["workspaceId"],
+        where: { workspaceId: { in: allWsIds }, deletedAt: null, isTemplate: false },
+        _count: { _all: true },
+      })
+    : [];
+  const wsPageCount = new Map<string, number>();
+  for (const g of groups) wsPageCount.set(g.workspaceId, g._count._all);
 
   return (
     <div className="flex h-screen" style={accentRgb ? { ["--accent" as any]: accentRgb } : undefined}>
@@ -315,6 +326,7 @@ export default async function WorkspaceLayout({
         workspaces={workspaces.map((m) => ({
           slug: m.workspace.slug,
           name: m.workspace.name,
+          pageCount: wsPageCount.get(m.workspace.id) ?? 0,
         }))}
         currentSlug={ctx.workspace.slug}
       />

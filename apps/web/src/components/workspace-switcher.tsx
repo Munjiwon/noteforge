@@ -7,7 +7,7 @@ export function WorkspaceSwitcher({
   workspaces,
   currentSlug,
 }: {
-  workspaces: { slug: string; name: string }[];
+  workspaces: { slug: string; name: string; pageCount?: number }[];
   currentSlug: string;
 }) {
   const [open, setOpen] = useState(false);
@@ -79,6 +79,11 @@ export function WorkspaceSwitcher({
                 }
               >
                 <span className="flex-1 truncate">{w.name}</span>
+                {typeof w.pageCount === "number" && (
+                  <span className="text-[10px] text-gray-400">
+                    {w.pageCount}
+                  </span>
+                )}
                 {w.slug === currentSlug && (
                   <span className="text-[10px] text-gray-400">current</span>
                 )}
