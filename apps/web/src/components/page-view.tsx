@@ -311,6 +311,7 @@ export function PageView({
             initialPublicSlug={page.publicSlug ?? null}
             initialPermissions={permissions}
             publicViewCount={page.publicViewCount}
+            customSlug={page.slug ?? null}
             canEdit={!readOnly}
           />
         </div>

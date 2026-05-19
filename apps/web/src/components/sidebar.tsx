@@ -279,6 +279,7 @@ export function Sidebar({
 
   // Cmd+Shift+B (or Ctrl+Shift+B): toggle favorite for the active page
   // Cmd+Shift+I (or Ctrl+Shift+I): quick-capture a note into Inbox
+  // Cmd+D (or Ctrl+D): duplicate the active page (override browser bookmark)
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
@@ -299,6 +300,17 @@ export function Sidebar({
         e.preventDefault();
         startTransition(() => {
           quickCapture(currentSlug);
+        });
+      } else if (
+        (e.metaKey || e.ctrlKey) &&
+        !e.shiftKey &&
+        !e.altKey &&
+        e.key.toLowerCase() === "d"
+      ) {
+        if (!activePageId) return;
+        e.preventDefault();
+        startTransition(() => {
+          duplicatePage(currentSlug, activePageId);
         });
       }
     };
@@ -798,12 +810,15 @@ export function Sidebar({
         </div>
       )}
       {tree.length === 0 && (
-        <div className="px-3 py-6 text-center text-xs text-gray-400 italic">
-          No pages yet.
-          <br />
-          Click <span className="text-gray-700">+</span> above to create one.
-          <br />
-          <span className="text-[10px]">Drag a page onto another to nest as a sub-page.</span>
+        <div className="px-3 py-8 text-center">
+          <div className="text-3xl mb-1">📝</div>
+          <p className="text-xs text-gray-500">No pages yet.</p>
+          <p className="text-[10px] text-gray-400 mt-1">
+            Click <span className="text-gray-700">+</span> above to create one.
+          </p>
+          <p className="text-[10px] text-gray-400 mt-0.5">
+            Drag a page onto another to nest as a sub-page.
+          </p>
         </div>
       )}
       <ul className="flex-1 overflow-auto pb-2">{tree.map((n) => renderNode(n, 0))}</ul>

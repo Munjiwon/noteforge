@@ -99,9 +99,15 @@ export default async function InboxPage({
       </div>
       <InboxClient slug={params.slug} />
       {rows.length === 0 ? (
-        <p className="text-sm text-gray-400 text-center py-10">
-          {filter === "unread" ? "All caught up!" : "No notifications yet."}
-        </p>
+        <div className="text-center py-16">
+          <div className="text-5xl mb-2">{filter === "unread" ? "🎉" : "📭"}</div>
+          <p className="text-sm text-gray-700">
+            {filter === "unread" ? "All caught up!" : "No notifications yet."}
+          </p>
+          <p className="text-xs text-gray-400 mt-1">
+            Mentions, replies, and page updates land here.
+          </p>
+        </div>
       ) : (
         <div className="space-y-5">
           {Array.from(groups.entries()).map(([pageId, items]) => {

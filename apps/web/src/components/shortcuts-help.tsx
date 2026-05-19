@@ -11,6 +11,7 @@ const GROUPS: { name: string; items: { keys: string; desc: string }[] }[] = [
       { keys: "⌘ ⇧ L", desc: "Switch workspace" },
       { keys: "⌘ ⇧ B", desc: "Toggle favorite on current page" },
       { keys: "⌘ ⇧ I", desc: "Quick-capture a note into 📥 Inbox" },
+      { keys: "⌘ D", desc: "Duplicate the current page (with sub-pages)" },
       { keys: "?", desc: "Show this help" },
       { keys: "Esc", desc: "Close dialogs / palettes / exit read mode" },
     ],

@@ -231,6 +231,7 @@ export function Editor({
           🔗 Copy block link
         </button>
       </div>
+      {!readOnly && <EmptyHint editor={editor} />}
       <BlockNoteView
         editor={editor}
         editable={!readOnly}
@@ -651,6 +652,44 @@ export function Editor({
           }}
         />
       </BlockNoteView>
+    </div>
+  );
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function EmptyHint({ editor }: { editor: any }) {
+  const [empty, setEmpty] = useState(true);
+  useEffect(() => {
+    if (!editor) return;
+    const check = () => {
+      const doc = editor.document;
+      if (!doc || doc.length === 0) {
+        setEmpty(true);
+        return;
+      }
+      if (doc.length > 1) {
+        setEmpty(false);
+        return;
+      }
+      const only = doc[0];
+      const hasText =
+        Array.isArray(only?.content) &&
+        only.content.some(
+          (c: { text?: unknown }) =>
+            c && typeof c === "object" && typeof c.text === "string" && c.text.length > 0,
+        );
+      setEmpty(!hasText);
+    };
+    check();
+    const un = editor.onChange?.(check);
+    return () => un?.();
+  }, [editor]);
+  if (!empty) return null;
+  return (
+    <div className="text-[11px] text-gray-400 mt-2 mb-1 select-none pointer-events-none">
+      Type <kbd className="px-1 py-0.5 border border-gray-200 rounded text-[10px]">/</kbd>{" "}
+      for commands · <kbd className="px-1 py-0.5 border border-gray-200 rounded text-[10px]">@</kbd>{" "}
+      to mention · drag a file here to upload
     </div>
   );
 }

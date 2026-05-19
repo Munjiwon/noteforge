@@ -23,6 +23,7 @@ export function ShareButton({
   initialPublicSlug,
   initialPermissions,
   publicViewCount,
+  customSlug = null,
   canEdit,
 }: {
   slug: string;
@@ -31,6 +32,7 @@ export function ShareButton({
   initialPublicSlug: string | null;
   initialPermissions: PermItem[];
   publicViewCount?: number;
+  customSlug?: string | null;
   canEdit: boolean;
 }) {
   const [open, setOpen] = useState(false);
@@ -84,6 +86,10 @@ export function ShareButton({
     typeof window !== "undefined" && publicSlug
       ? `${window.location.origin}/share/${publicSlug}`
       : "";
+  const memberUrl =
+    typeof window !== "undefined" && customSlug
+      ? `${window.location.origin}/w/${slug}/s/${customSlug}`
+      : "";
 
   const enable = () =>
     start(async () => {
@@ -119,6 +125,30 @@ export function ShareButton({
             editor / viewer). Use the controls below to grant extra access
             to specific people or anyone with the link.
           </p>
+          {memberUrl && (
+            <section className="mb-3">
+              <div className="text-xs text-gray-500 mb-1">Workspace link</div>
+              <div className="flex gap-1">
+                <input
+                  readOnly
+                  value={memberUrl}
+                  onFocus={(e) => e.currentTarget.select()}
+                  className="flex-1 text-xs border border-gray-200 rounded px-2 py-1 outline-none"
+                />
+                <button
+                  onClick={() => {
+                    void navigator.clipboard?.writeText(memberUrl);
+                  }}
+                  className="text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5"
+                >
+                  Copy
+                </button>
+              </div>
+              <p className="text-[10px] text-gray-400 mt-1">
+                Custom slug — works only for signed-in workspace members.
+              </p>
+            </section>
+          )}
           {canEdit && (
             <section className="mb-3">
               <div className="text-xs text-gray-500 mb-1">Invite by email</div>

@@ -43,9 +43,13 @@ export default async function ArchivePage({
         </Link>
       </div>
       {rows.length === 0 ? (
-        <p className="text-sm text-gray-400">
-          Nothing archived. Open a page → ⋯ Page style → 📦 Archive.
-        </p>
+        <div className="text-center py-16">
+          <div className="text-5xl mb-2">📦</div>
+          <p className="text-sm text-gray-700">No archived pages.</p>
+          <p className="text-xs text-gray-400 mt-1">
+            Open a page → ⋯ Page style → 📦 Archive to put it here.
+          </p>
+        </div>
       ) : (
         <ArchiveList
           slug={params.slug}

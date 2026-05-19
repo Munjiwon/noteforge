@@ -66,6 +66,19 @@ body {
 .nf-shiki-wrap {
   position: relative;
 }
+.nf-shiki-lang {
+  position: absolute;
+  top: 6px;
+  left: 10px;
+  font-size: 10px;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+.dark .nf-shiki-lang {
+  color: #6b7280;
+}
 .nf-shiki-copy {
   position: absolute;
   top: 6px;

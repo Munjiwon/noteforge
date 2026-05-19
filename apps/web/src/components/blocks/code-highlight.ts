@@ -124,6 +124,12 @@ export async function highlightAll(root: HTMLElement): Promise<void> {
             })
             .catch(() => {});
         });
+        if (lang && lang !== "plaintext") {
+          const tag = document.createElement("span");
+          tag.className = "nf-shiki-lang";
+          tag.textContent = lang;
+          wrap.appendChild(tag);
+        }
         wrap.appendChild(shikiPre);
         wrap.appendChild(btn);
         pre.replaceWith(wrap);
