@@ -319,6 +319,63 @@ export function PageStyleMenu({
               </div>
               <button
                 onClick={() => {
+                  try {
+                    const key = `hide-cover:${pageId}`;
+                    const cur = localStorage.getItem(key) === "1";
+                    if (cur) localStorage.removeItem(key);
+                    else localStorage.setItem(key, "1");
+                    window.dispatchEvent(
+                      new CustomEvent("noteforge:cover-hidden-changed", {
+                        detail: { pageId },
+                      }),
+                    );
+                  } catch {}
+                  setOpen(false);
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+                title="Hide or show the cover image for this page on this device"
+              >
+                🚫 Toggle cover (this device)
+              </button>
+              <button
+                onClick={() => {
+                  try {
+                    const key = `hide-wordchip:${pageId}`;
+                    const cur = localStorage.getItem(key) === "1";
+                    if (cur) localStorage.removeItem(key);
+                    else localStorage.setItem(key, "1");
+                    window.dispatchEvent(
+                      new CustomEvent("noteforge:wordchip-changed", {
+                        detail: { pageId },
+                      }),
+                    );
+                  } catch {}
+                  setOpen(false);
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+                title="Hide or show the word count chip below the title"
+              >
+                🔢 Toggle word chip
+              </button>
+              <button
+                onClick={() => {
+                  try {
+                    const cur =
+                      localStorage.getItem("noteforge:comments-compact") === "1";
+                    if (cur)
+                      localStorage.removeItem("noteforge:comments-compact");
+                    else localStorage.setItem("noteforge:comments-compact", "1");
+                    document.body.classList.toggle("comments-compact", !cur);
+                  } catch {}
+                  setOpen(false);
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+                title="Show comments in a tighter layout"
+              >
+                💬 Toggle comments compact
+              </button>
+              <button
+                onClick={() => {
                   void navigator.clipboard?.writeText(pageId).then(() => {
                     const tip = document.createElement("div");
                     tip.textContent = "Page ID copied";

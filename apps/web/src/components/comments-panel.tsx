@@ -49,6 +49,32 @@ export function CommentsPanel({
       const v = localStorage.getItem("collab-notion-comments-sort");
       if (v === "oldest") setSortDirState("oldest");
     } catch {}
+    try {
+      if (localStorage.getItem("noteforge:comments-compact") === "1") {
+        document.body.classList.add("comments-compact");
+      }
+    } catch {}
+    const onKey = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.key !== "c" && e.key !== "C") return;
+      const t = e.target as HTMLElement | null;
+      const inForm =
+        t &&
+        (t.tagName === "INPUT" ||
+          t.tagName === "TEXTAREA" ||
+          t.isContentEditable);
+      if (inForm) return;
+      const ta = document.querySelector<HTMLTextAreaElement>(
+        '[data-comments-panel] textarea',
+      );
+      if (ta) {
+        e.preventDefault();
+        ta.scrollIntoView({ behavior: "smooth", block: "center" });
+        ta.focus();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, []);
   const setSortDir = (v: "newest" | "oldest" | ((p: "newest" | "oldest") => "newest" | "oldest")) => {
     setSortDirState((prev) => {
@@ -284,7 +310,7 @@ function Thread({
   return (
     <div
       className={clsx(
-        "border border-gray-200 rounded-md p-3 bg-white",
+        "border border-gray-200 rounded-md p-3 bg-white comment-item",
         top.resolved && "opacity-60",
       )}
     >

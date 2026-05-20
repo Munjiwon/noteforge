@@ -141,6 +141,16 @@ body.read-mode .bn-formatting-toolbar {
 body.read-mode main {
   width: 100% !important;
 }
+body.comments-compact .comment-item {
+  padding-top: 0.25rem !important;
+  padding-bottom: 0.25rem !important;
+  font-size: 12px !important;
+  line-height: 1.35 !important;
+}
+body.comments-compact .comment-item .comment-author {
+  font-size: 11px !important;
+}
+
 body.read-mode .read-mode-keep {
   /* opt-in escape hatch — components that *should* stay visible in read mode */
   display: revert !important;
@@ -152,6 +162,7 @@ body.read-mode .read-mode-keep {
   .bn-side-menu,
   .bn-formatting-toolbar,
   .mobile-only,
+  .nf-print-hide,
   button[title="Page info"],
   button[title="Page style"],
   .read-mode-keep,

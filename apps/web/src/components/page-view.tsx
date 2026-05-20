@@ -190,6 +190,66 @@ export function PageView({
     setTimeout(() => tip.remove(), 3000);
   }, [page.id, info.wordCount, info.wordGoal]);
 
+  // Word-count chip toggle — persists per page on this device.
+  const [wordChipHidden, setWordChipHidden] = useState(false);
+  useEffect(() => {
+    try {
+      setWordChipHidden(
+        localStorage.getItem(`hide-wordchip:${page.id}`) === "1",
+      );
+    } catch {}
+    const handler = (e: Event) => {
+      const ce = e as CustomEvent<{ pageId?: string }>;
+      if (!ce.detail || ce.detail.pageId === page.id) {
+        try {
+          setWordChipHidden(
+            localStorage.getItem(`hide-wordchip:${page.id}`) === "1",
+          );
+        } catch {}
+      }
+    };
+    window.addEventListener("noteforge:wordchip-changed", handler as EventListener);
+    return () =>
+      window.removeEventListener(
+        "noteforge:wordchip-changed",
+        handler as EventListener,
+      );
+  }, [page.id]);
+
+  // ⌘⇧J — jump to the workspace Inbox (the page slugged 'inbox').
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const mod = e.metaKey || e.ctrlKey;
+      if (!mod || !e.shiftKey) return;
+      if (e.key !== "J" && e.key !== "j") return;
+      const t = e.target as HTMLElement | null;
+      const inForm =
+        t &&
+        (t.tagName === "INPUT" ||
+          t.tagName === "TEXTAREA" ||
+          t.isContentEditable);
+      if (inForm) return;
+      const link = document.querySelector<HTMLAnchorElement>(
+        'aside a[href$="/p/inbox"], aside a[title="Inbox"]',
+      );
+      if (link) {
+        e.preventDefault();
+        link.click();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  // Scroll-to-top floating button on long pages.
+  const [showTop, setShowTop] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setShowTop(window.scrollY > 600);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   // Auto-scroll to anchored block (?b) or comment (?c)
   useEffect(() => {
     const u = new URL(window.location.href);
@@ -515,7 +575,11 @@ export function PageView({
               {info.lastEditor.name}
             </span>
           )}
-        <span>· {Math.max(1, Math.round(info.wordCount / 200))} min read</span>
+        {!wordChipHidden && (
+          <span className="nf-word-chip" data-page-id={page.id}>
+            ⏱ {Math.max(1, Math.round(info.wordCount / 200))} min read · {info.wordCount.toLocaleString()} words
+          </span>
+        )}
       </div>
       <PageReactions
         slug={slug}
@@ -574,6 +638,15 @@ export function PageView({
         </footer>
       </div>
       <ReadingProgress />
+      {showTop && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-20 right-5 z-30 text-xs bg-gray-900 text-white rounded-full px-3 py-1.5 shadow-lg hover:opacity-90 no-print"
+          title="Scroll to top"
+        >
+          ↑ Top
+        </button>
+      )}
       {aiEnabled && (
         <AskAiPanel slug={slug} getPageText={() => extractText(page.content, title)} />
       )}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import {
   setPageCover,
   setPageCoverCaption,
@@ -54,6 +54,43 @@ export function PageCover({
   const [uploading, setUploading] = useState(false);
   const [, start] = useTransition();
   const fileRef = useRef<HTMLInputElement>(null);
+  const [hidden, setHidden] = useState(false);
+  useEffect(() => {
+    try {
+      setHidden(localStorage.getItem(`hide-cover:${pageId}`) === "1");
+    } catch {}
+    const handler = (e: Event) => {
+      const ce = e as CustomEvent<{ pageId?: string }>;
+      if (!ce.detail || ce.detail.pageId === pageId) {
+        try {
+          setHidden(localStorage.getItem(`hide-cover:${pageId}`) === "1");
+        } catch {}
+      }
+    };
+    window.addEventListener("noteforge:cover-hidden-changed", handler as EventListener);
+    return () =>
+      window.removeEventListener("noteforge:cover-hidden-changed", handler as EventListener);
+  }, [pageId]);
+  if (cover && hidden) {
+    return (
+      <div className="max-w-3xl mx-auto px-24 pt-2 no-print">
+        <button
+          onClick={() => {
+            try {
+              localStorage.removeItem(`hide-cover:${pageId}`);
+              window.dispatchEvent(
+                new CustomEvent("noteforge:cover-hidden-changed", { detail: { pageId } }),
+              );
+            } catch {}
+          }}
+          className="text-[11px] text-gray-400 hover:text-gray-700"
+          title="Show the cover image for this page"
+        >
+          ⬇ Show cover
+        </button>
+      </div>
+    );
+  }
 
   const setCover = (url: string | null) =>
     start(() => setPageCover(slug, pageId, url));
@@ -131,7 +168,7 @@ export function PageCover({
 
   const pos = coverPos ?? "center";
   return (
-    <div className="relative group">
+    <div className="relative group nf-print-hide">
       {dim && (
         <div className="absolute inset-0 bg-black/30 pointer-events-none" />
       )}

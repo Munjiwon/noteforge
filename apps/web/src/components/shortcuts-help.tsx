@@ -11,6 +11,8 @@ const GROUPS: { name: string; items: { keys: string; desc: string }[] }[] = [
       { keys: "⌘ ⇧ L", desc: "Switch workspace" },
       { keys: "⌘ ⇧ B", desc: "Toggle favorite on current page" },
       { keys: "⌘ ⇧ I", desc: "Quick-capture a note into 📥 Inbox" },
+      { keys: "⌘ ⇧ J", desc: "Jump to 📥 Inbox" },
+      { keys: "C", desc: "Focus the comment composer" },
       { keys: "⌘ D", desc: "Duplicate the current page (with sub-pages)" },
       { keys: "⌘ N", desc: "Create a new page at workspace root" },
       { keys: "⌘ \\", desc: "Collapse / expand the sidebar" },

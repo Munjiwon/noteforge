@@ -973,7 +973,7 @@ export function Editor({
                 },
               },
               ...(aiEnabled
-                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "sentiment", "next_steps", "critique", "agenda", "eli5", "pros_cons", "risks", "timeline", "faq", "counter", "hashtags", "headlines", "slug", "tweet_thread", "citations", "study_notes", "flashcards", "quiz", "persona", "swot", "release_notes", "objections", "decision_log", "user_stories", "test_cases", "rhyme", "lyrics", "regex", "sql", "commit_msg", "edit"] as const)
+                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "sentiment", "next_steps", "critique", "agenda", "eli5", "pros_cons", "risks", "timeline", "faq", "counter", "hashtags", "headlines", "slug", "tweet_thread", "citations", "study_notes", "flashcards", "quiz", "persona", "swot", "release_notes", "objections", "decision_log", "user_stories", "test_cases", "rhyme", "lyrics", "regex", "sql", "commit_msg", "standup", "retro", "jargon", "mind_map", "elevator_pitch", "job_desc", "follow_up", "edit"] as const)
                 : ([] as const)).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {
@@ -1026,6 +1026,13 @@ export function Editor({
                     regex: { title: "AI · Regex from description", emoji: "🔣", color: "purple", aliases: ["ai", "regex", "pattern", "정규식"] },
                     sql: { title: "AI · SQL from question", emoji: "🗃️", color: "purple", aliases: ["ai", "sql", "query", "쿼리"] },
                     commit_msg: { title: "AI · Commit message", emoji: "📦", color: "green", aliases: ["ai", "commit", "git", "커밋"] },
+                    standup: { title: "AI · Daily standup", emoji: "🕖", color: "blue", aliases: ["ai", "standup", "daily", "스탠드업"] },
+                    retro: { title: "AI · Retrospective (4L)", emoji: "🔄", color: "purple", aliases: ["ai", "retro", "retrospective", "회고"] },
+                    jargon: { title: "AI · Jargon explainer", emoji: "🗣️", color: "yellow", aliases: ["ai", "jargon", "terms", "용어"] },
+                    mind_map: { title: "AI · Mind map", emoji: "🧠", color: "blue", aliases: ["ai", "mind", "map", "마인드맵"] },
+                    elevator_pitch: { title: "AI · Elevator pitch", emoji: "🚀", color: "green", aliases: ["ai", "pitch", "elevator", "피치"] },
+                    job_desc: { title: "AI · Job description", emoji: "💼", color: "purple", aliases: ["ai", "job", "jd", "직무"] },
+                    follow_up: { title: "AI · Follow-up Qs", emoji: "↩️", color: "blue", aliases: ["ai", "follow", "up", "후속"] },
                     edit: { title: "AI · Edit (custom)", emoji: "🪄", color: "red", aliases: ["ai", "edit", "custom", "transform"] },
                   }[action];
                   return {
