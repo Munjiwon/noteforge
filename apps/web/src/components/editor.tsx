@@ -973,7 +973,7 @@ export function Editor({
                 },
               },
               ...(aiEnabled
-                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "sentiment", "next_steps", "critique", "agenda", "eli5", "pros_cons", "risks", "timeline", "faq", "counter", "hashtags", "headlines", "slug", "tweet_thread", "citations", "edit"] as const)
+                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "sentiment", "next_steps", "critique", "agenda", "eli5", "pros_cons", "risks", "timeline", "faq", "counter", "hashtags", "headlines", "slug", "tweet_thread", "citations", "study_notes", "flashcards", "quiz", "persona", "swot", "release_notes", "objections", "decision_log", "user_stories", "test_cases", "rhyme", "lyrics", "regex", "sql", "commit_msg", "edit"] as const)
                 : ([] as const)).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {
@@ -1011,6 +1011,21 @@ export function Editor({
                     slug: { title: "AI · Suggest URL slug", emoji: "🔗", color: "blue", aliases: ["ai", "slug", "url", "주소"] },
                     tweet_thread: { title: "AI · Tweet thread", emoji: "🐦", color: "blue", aliases: ["ai", "tweet", "twitter", "thread", "트윗"] },
                     citations: { title: "AI · Citation check", emoji: "📚", color: "purple", aliases: ["ai", "citations", "sources", "출처"] },
+                    study_notes: { title: "AI · Study notes", emoji: "📒", color: "blue", aliases: ["ai", "study", "notes", "공부"] },
+                    flashcards: { title: "AI · Flashcards (5)", emoji: "🃏", color: "yellow", aliases: ["ai", "flashcards", "cards", "암기"] },
+                    quiz: { title: "AI · Quick quiz (3 Q)", emoji: "🧠", color: "green", aliases: ["ai", "quiz", "test", "퀴즈"] },
+                    persona: { title: "AI · Build persona", emoji: "🧑‍💼", color: "purple", aliases: ["ai", "persona", "user", "페르소나"] },
+                    swot: { title: "AI · SWOT analysis", emoji: "🧭", color: "blue", aliases: ["ai", "swot", "analysis", "분석"] },
+                    release_notes: { title: "AI · Release notes", emoji: "🚀", color: "green", aliases: ["ai", "release", "changelog", "릴리스"] },
+                    objections: { title: "AI · Objections & responses", emoji: "🙅", color: "red", aliases: ["ai", "objections", "rebuttal", "이의"] },
+                    decision_log: { title: "AI · Decision log table", emoji: "📓", color: "purple", aliases: ["ai", "decision", "log", "결정"] },
+                    user_stories: { title: "AI · User stories", emoji: "👤", color: "blue", aliases: ["ai", "stories", "user story", "유저스토리"] },
+                    test_cases: { title: "AI · BDD test cases", emoji: "🧪", color: "green", aliases: ["ai", "tests", "bdd", "테스트"] },
+                    rhyme: { title: "AI · Rhyme it", emoji: "🎵", color: "yellow", aliases: ["ai", "rhyme", "poem", "운율"] },
+                    lyrics: { title: "AI · Song lyrics (4 lines)", emoji: "🎤", color: "yellow", aliases: ["ai", "lyrics", "song", "가사"] },
+                    regex: { title: "AI · Regex from description", emoji: "🔣", color: "purple", aliases: ["ai", "regex", "pattern", "정규식"] },
+                    sql: { title: "AI · SQL from question", emoji: "🗃️", color: "purple", aliases: ["ai", "sql", "query", "쿼리"] },
+                    commit_msg: { title: "AI · Commit message", emoji: "📦", color: "green", aliases: ["ai", "commit", "git", "커밋"] },
                     edit: { title: "AI · Edit (custom)", emoji: "🪄", color: "red", aliases: ["ai", "edit", "custom", "transform"] },
                   }[action];
                   return {
