@@ -399,6 +399,24 @@ function CommentRow({
           <span className="text-[10px] uppercase text-emerald-600 ml-1">resolved</span>
         )}
         <span className="ml-auto flex items-center gap-2 text-gray-400">
+          <button
+            className="hover:text-gray-900"
+            onClick={() => {
+              const u = new URL(window.location.href);
+              u.searchParams.set("c", comment.id);
+              void navigator.clipboard?.writeText(u.toString()).then(() => {
+                const tip = document.createElement("div");
+                tip.textContent = "Comment link copied";
+                tip.className =
+                  "fixed bottom-4 left-1/2 -translate-x-1/2 z-50 text-xs bg-gray-900 text-white rounded-full px-3 py-1 shadow";
+                document.body.appendChild(tip);
+                setTimeout(() => tip.remove(), 1200);
+              });
+            }}
+            title="Copy direct link to this comment"
+          >
+            🔗
+          </button>
           {canResolve && !readOnly && (
             <button
               className="hover:text-emerald-600"

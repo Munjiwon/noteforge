@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type Heading = { id: string; level: number; text: string };
 
@@ -35,6 +35,16 @@ export function PageOutline({ content }: { content: string }) {
   const headings = useMemo(() => extract(content), [content]);
   // On md and below, allow toggling the outline open/closed via a small button.
   const [mobileOpen, setMobileOpen] = useState(false);
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === "o") {
+        e.preventDefault();
+        setMobileOpen((v) => !v);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
   if (headings.length === 0) return null;
 
   const list = (

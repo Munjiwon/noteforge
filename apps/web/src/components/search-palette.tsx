@@ -11,6 +11,7 @@ type Hit = {
   kind: string;
   snippet: string | null;
   parentTitle: string | null;
+  updatedAt?: string;
 };
 
 function markMatch(text: string, q: string): React.ReactNode {
@@ -26,6 +27,16 @@ function markMatch(text: string, q: string): React.ReactNode {
     ),
   );
 }
+function searchRel(iso: string): string {
+  const d = new Date(iso);
+  const s = (Date.now() - d.getTime()) / 1000;
+  if (s < 60) return "just now";
+  if (s < 3600) return `${Math.floor(s / 60)}m`;
+  if (s < 86400) return `${Math.floor(s / 3600)}h`;
+  if (s < 86400 * 7) return `${Math.floor(s / 86400)}d`;
+  return d.toLocaleDateString();
+}
+
 function escapeReg(s: string) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
@@ -264,8 +275,11 @@ export function SearchPalette({ slug }: { slug: string }) {
                         </span>
                       )}
                     </span>
-                    <span className="text-[10px] text-gray-400 uppercase">
-                      {h.kind}
+                    <span className="text-[10px] text-gray-400 uppercase flex flex-col items-end">
+                      <span>{h.kind}</span>
+                      {h.updatedAt && (
+                        <span className="normal-case">{searchRel(h.updatedAt)}</span>
+                      )}
                     </span>
                   </button>
                 </li>

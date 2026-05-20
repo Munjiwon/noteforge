@@ -9,6 +9,7 @@ export type SearchHit = {
   kind: string;
   snippet: string | null;
   parentTitle: string | null;
+  updatedAt: string;
 };
 
 export async function GET(req: NextRequest) {
@@ -73,6 +74,7 @@ export async function GET(req: NextRequest) {
       icon: true,
       kind: true,
       content: true,
+      updatedAt: true,
       parent: {
         select: {
           title: true,
@@ -118,6 +120,7 @@ export async function GET(req: NextRequest) {
       kind: p.kind,
       snippet,
       parentTitle,
+      updatedAt: p.updatedAt.toISOString(),
       _score: score,
     };
   });

@@ -323,7 +323,7 @@ export function PageView({
           >
             🖨 Print
           </button>
-          <PageInfo info={info} />
+          <PageInfo info={info} workspaceSlug={slug} />
           <SubscribeButton slug={slug} pageId={page.id} subscribed={subscribed} />
           <ReminderButton slug={slug} pageId={page.id} pending={reminders} />
           <ExportButton slug={slug} pageId={page.id} title={page.title} />

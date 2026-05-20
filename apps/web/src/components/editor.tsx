@@ -215,6 +215,31 @@ export function Editor({
     await createComment(slug, pageId, body, { blockId: cur.id });
   };
 
+  // Image lightbox: clicking any rendered <img> inside the editor opens a
+  // full-screen viewer. ESC closes.
+  const [lightbox, setLightbox] = useState<string | null>(null);
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      const t = e.target as HTMLElement | null;
+      if (!t) return;
+      const img = t.closest("img") as HTMLImageElement | null;
+      if (!img) return;
+      if (!img.closest('[data-content-type="image"]')) return;
+      if (img.src.startsWith("data:")) return;
+      e.preventDefault();
+      setLightbox(img.src);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLightbox(null);
+    };
+    window.addEventListener("click", onClick);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("click", onClick);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, []);
+
   // File drag overlay — visual cue when the user drags a file onto the page.
   const [dragOver, setDragOver] = useState(false);
   useEffect(() => {
@@ -459,6 +484,25 @@ export function Editor({
           </div>
         </div>
       )}
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-6"
+          onClick={() => setLightbox(null)}
+        >
+          <img
+            src={lightbox}
+            alt=""
+            className="max-w-full max-h-full object-contain shadow-2xl"
+          />
+          <button
+            onClick={() => setLightbox(null)}
+            className="absolute top-4 right-4 text-white/80 hover:text-white text-2xl"
+            aria-label="Close"
+          >
+            ✕
+          </button>
+        </div>
+      )}
       <BlockNoteView
         editor={editor}
         editable={!readOnly}
@@ -561,6 +605,28 @@ export function Editor({
                 group: "Media",
                 icon: <span>📑</span>,
                 onItemClick: insert("pageEmbed", { pageId: "" }),
+              },
+              {
+                title: "Checkbox",
+                subtext: "Single to-do checkbox",
+                aliases: ["check", "checkbox", "todo", "task", "할일", "체크박스"],
+                group: "Basic blocks",
+                icon: <span>☑</span>,
+                onItemClick: () => {
+                  const cur = editor.getTextCursorPosition().block;
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  editor.insertBlocks(
+                    [
+                      {
+                        type: "checkListItem",
+                        props: { checked: false },
+                        content: [{ type: "text", text: "", styles: {} }],
+                      } as any,
+                    ],
+                    cur,
+                    "after",
+                  );
+                },
               },
               {
                 title: "Divider",
@@ -749,7 +815,7 @@ export function Editor({
                   }
                 },
               },
-              ...(["summarize", "one_liner", "translate", "improve", "continue", "explain", "edit"] as const).map(
+              ...(["summarize", "one_liner", "translate", "improve", "continue", "explain", "keywords", "edit"] as const).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {
                     summarize: { title: "AI · Summarize", emoji: "✨", color: "blue", aliases: ["ai", "summarize", "summary", "요약"] },
@@ -758,6 +824,7 @@ export function Editor({
                     improve: { title: "AI · Improve writing", emoji: "📝", color: "green", aliases: ["ai", "improve", "rewrite", "교정"] },
                     continue: { title: "AI · Continue writing", emoji: "➡️", color: "yellow", aliases: ["ai", "continue", "write more", "이어쓰기"] },
                     explain: { title: "AI · Explain", emoji: "🔎", color: "blue", aliases: ["ai", "explain", "expand", "설명"] },
+                    keywords: { title: "AI · Keywords", emoji: "🏷", color: "yellow", aliases: ["ai", "keywords", "tags", "키워드"] },
                     edit: { title: "AI · Edit (custom)", emoji: "🪄", color: "red", aliases: ["ai", "edit", "custom", "transform"] },
                   }[action];
                   return {

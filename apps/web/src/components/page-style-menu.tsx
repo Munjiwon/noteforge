@@ -135,6 +135,23 @@ export function PageStyleMenu({
               >
                 ↪ Move to…
               </button>
+              <button
+                onClick={() => {
+                  void navigator.clipboard?.writeText(pageId).then(() => {
+                    const tip = document.createElement("div");
+                    tip.textContent = "Page ID copied";
+                    tip.className =
+                      "fixed bottom-4 left-1/2 -translate-x-1/2 z-50 text-xs bg-gray-900 text-white rounded-full px-3 py-1 shadow";
+                    document.body.appendChild(tip);
+                    setTimeout(() => tip.remove(), 1200);
+                  });
+                  setOpen(false);
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+                title={`Page ID: ${pageId}`}
+              >
+                🆔 Copy page ID
+              </button>
               <div className="mb-1">
                 <label className="text-[10px] uppercase text-gray-500 px-1">
                   Status

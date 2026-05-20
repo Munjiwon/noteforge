@@ -100,6 +100,8 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Compress the following into a single concise sentence. Reply with the sentence only.\n\n${text}`,
   explain: (text) =>
     `Explain the following in plain language, expanding on terms and assumptions a beginner might miss. 2-4 sentences.\n\n${text}`,
+  keywords: (text) =>
+    `Extract 5-7 short keywords or topics that describe the following document. Reply as a comma-separated list, no quotes, no preamble.\n\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

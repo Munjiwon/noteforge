@@ -4,7 +4,9 @@ import { useEffect, useRef, useState } from "react";
 
 export function PageInfo({
   info,
+  workspaceSlug,
 }: {
+  workspaceSlug?: string;
   info: {
     author: { name: string; color: string } | null;
     createdAt: string;
@@ -154,6 +156,14 @@ export function PageInfo({
                   </li>
                 ))}
               </ul>
+              {workspaceSlug && (
+                <a
+                  href={`/w/${workspaceSlug}/activity`}
+                  className="text-[10px] text-gray-500 hover:text-gray-900 mt-1 inline-block"
+                >
+                  See full activity →
+                </a>
+              )}
             </div>
           )}
         </div>
