@@ -523,6 +523,45 @@ export async function addRow(slug: string, dbId: string) {
   return row.id;
 }
 
+export async function addRowBefore(
+  slug: string,
+  dbId: string,
+  anchorRowId: string,
+) {
+  const ctx = await assertEditor(slug);
+  const anchor = await prisma.page.findFirst({
+    where: { id: anchorRowId, parentId: dbId, workspaceId: ctx.workspace.id },
+    select: { position: true },
+  });
+  if (!anchor) throw new Error("anchor not found");
+  // Find the row immediately before the anchor so we can pick a midpoint.
+  const prev = await prisma.page.findFirst({
+    where: {
+      parentId: dbId,
+      workspaceId: ctx.workspace.id,
+      position: { lt: anchor.position },
+      deletedAt: null,
+    },
+    orderBy: { position: "desc" },
+    select: { position: true },
+  });
+  const pos =
+    prev !== null ? (prev.position + anchor.position) / 2 : anchor.position - 1;
+  const row = await prisma.page.create({
+    data: {
+      workspaceId: ctx.workspace.id,
+      parentId: dbId,
+      kind: "doc",
+      title: "",
+      position: pos,
+      authorId: ctx.user.id,
+      dataValues: "{}",
+    },
+  });
+  revalidatePath(`/w/${slug}/p/${dbId}`);
+  return row.id;
+}
+
 export async function addRowFromTemplate(
   slug: string,
   dbId: string,

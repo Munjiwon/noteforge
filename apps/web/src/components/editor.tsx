@@ -267,6 +267,24 @@ export function Editor({
     };
   }, []);
 
+  // ⌘S — intercept the browser save and show a transient toast since we
+  // auto-save continuously.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "s") {
+        e.preventDefault();
+        const tip = document.createElement("div");
+        tip.textContent = "✓ Auto-saved";
+        tip.className =
+          "fixed bottom-4 left-1/2 -translate-x-1/2 z-50 text-xs bg-emerald-600 text-white rounded-full px-3 py-1 shadow";
+        document.body.appendChild(tip);
+        setTimeout(() => tip.remove(), 1200);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   // Double-click on a heading → copy a direct link (?b=<blockId>) to the
   // heading. Discoverable without changing the BlockNote DOM.
   useEffect(() => {
@@ -826,7 +844,7 @@ export function Editor({
                   }
                 },
               },
-              ...(["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "keywords", "edit"] as const).map(
+              ...(["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "edit"] as const).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {
                     summarize: { title: "AI · Summarize", emoji: "✨", color: "blue", aliases: ["ai", "summarize", "summary", "요약"] },
@@ -836,6 +854,7 @@ export function Editor({
                     proofread: { title: "AI · Proofread", emoji: "✅", color: "green", aliases: ["ai", "proofread", "spellcheck", "맞춤법"] },
                     continue: { title: "AI · Continue writing", emoji: "➡️", color: "yellow", aliases: ["ai", "continue", "write more", "이어쓰기"] },
                     explain: { title: "AI · Explain", emoji: "🔎", color: "blue", aliases: ["ai", "explain", "expand", "설명"] },
+                    outline: { title: "AI · Outline", emoji: "🧱", color: "blue", aliases: ["ai", "outline", "toc", "목차"] },
                     keywords: { title: "AI · Keywords", emoji: "🏷", color: "yellow", aliases: ["ai", "keywords", "tags", "키워드"] },
                     edit: { title: "AI · Edit (custom)", emoji: "🪄", color: "red", aliases: ["ai", "edit", "custom", "transform"] },
                   }[action];

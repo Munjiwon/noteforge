@@ -6,6 +6,7 @@ import { evalFormula } from "@/lib/formula";
 import {
   addColumn,
   addRow,
+  addRowBefore,
   addSelectOption,
   bulkDeleteRows,
   bulkSetCheckboxColumn,
@@ -1162,6 +1163,12 @@ function Cell({
       disabled={readOnly}
       placeholder={prop.id === "p_title" ? "Untitled" : ""}
       className="px-3 py-2 text-sm bg-transparent outline-none w-full"
+      onKeyDown={(e) => {
+        if (prop.id === "p_title" && e.shiftKey && e.key === "Enter") {
+          e.preventDefault();
+          start(() => addRowBefore(slug, dbId, rowId));
+        }
+      }}
       onBlur={(e) => {
         const v = e.target.value;
         const cur = value ?? "";

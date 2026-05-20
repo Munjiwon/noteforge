@@ -49,8 +49,10 @@ export async function generateMetadata({
 
 export default async function PageRoute({
   params,
+  searchParams,
 }: {
   params: { slug: string; pageId: string };
+  searchParams: { preview?: string };
 }) {
   const ctx = await requireWorkspaceMember(params.slug);
   const page = await prisma.page.findFirst({
@@ -93,10 +95,11 @@ export default async function PageRoute({
   const lockExpired =
     page.locked && page.lockedUntil && page.lockedUntil.getTime() < Date.now();
   const effectivelyLocked = page.locked && !lockExpired;
-  const effectiveRole = (trashed || effectivelyLocked)
+  const previewAsViewer = searchParams.preview === "viewer";
+  const effectiveRole = (trashed || effectivelyLocked || previewAsViewer)
     ? "viewer"
     : (ctx.role as "owner" | "editor" | "viewer");
-  const canChangePageSettings = !trashed && ctx.role !== "viewer";
+  const canChangePageSettings = !trashed && !previewAsViewer && ctx.role !== "viewer";
 
   // Detect "this page is a database row" — parent is a database
   const parentIdRow = (await prisma.page.findUnique({

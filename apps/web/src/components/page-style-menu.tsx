@@ -137,6 +137,20 @@ export function PageStyleMenu({
               </button>
               <button
                 onClick={() => {
+                  const u = new URL(window.location.href);
+                  if (u.searchParams.get("preview") === "viewer") {
+                    u.searchParams.delete("preview");
+                  } else {
+                    u.searchParams.set("preview", "viewer");
+                  }
+                  window.location.href = u.toString();
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+              >
+                👁 Preview as viewer
+              </button>
+              <button
+                onClick={() => {
                   void navigator.clipboard?.writeText(pageId).then(() => {
                     const tip = document.createElement("div");
                     tip.textContent = "Page ID copied";

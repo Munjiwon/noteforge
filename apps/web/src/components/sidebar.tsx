@@ -1083,6 +1083,11 @@ export function Sidebar({
               <li
                 key={t.id}
                 className="group/row flex items-center gap-1 px-2 py-0.5 rounded hover:bg-black/5"
+                title={
+                  t.deletedAt
+                    ? `Trashed ${new Date(t.deletedAt).toLocaleString()}`
+                    : undefined
+                }
               >
                 <span className="mr-1 text-gray-400">
                   {t.icon ?? (t.kind === "database" ? "📊" : "📄")}

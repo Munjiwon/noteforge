@@ -104,6 +104,8 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Extract 5-7 short keywords or topics that describe the following document. Reply as a comma-separated list, no quotes, no preamble.\n\n${text}`,
   proofread: (text) =>
     `Fix grammar, spelling, and punctuation in the following text. Change wording only when strictly necessary. Reply with the corrected text only.\n\n${text}`,
+  outline: (text) =>
+    `Create a short hierarchical outline (markdown headings/bullets) of the following document. Reply with only the outline.\n\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

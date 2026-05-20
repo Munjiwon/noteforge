@@ -126,6 +126,16 @@ export function PageView({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page.id]);
 
+  // ?focus=1 enables distraction-free reading mode automatically.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const u = new URL(window.location.href);
+    if (u.searchParams.get("focus") === "1") {
+      document.body.classList.add("read-mode");
+      return () => document.body.classList.remove("read-mode");
+    }
+  }, []);
+
   // Set the browser tab favicon to the page icon while this page is open.
   useEffect(() => {
     if (!page.icon) return;
@@ -487,6 +497,12 @@ export function PageView({
           currentUserId={user.id}
           readOnly={readOnly}
         />
+        <footer className="mt-12 pt-4 border-t border-gray-100 text-[10px] text-gray-400 flex flex-wrap gap-3 no-print">
+          <span>Created {new Date(info.createdAt).toLocaleString()}</span>
+          <span>· Updated {new Date(info.updatedAt).toLocaleString()}</span>
+          <span>· {info.wordCount.toLocaleString()} words</span>
+          <span>· {page.content.length.toLocaleString()} chars</span>
+        </footer>
       </div>
       <ReadingProgress />
       <AskAiPanel slug={slug} getPageText={() => extractText(page.content, title)} />
