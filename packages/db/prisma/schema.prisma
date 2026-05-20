@@ -96,6 +96,7 @@ model Page {
   cover       String?
   coverPos    String    @default("center") // "top" | "center" | "bottom"
   coverCaption String?
+  coverDim    Boolean   @default(false)
   tags        String    @default("[]") // JSON array of strings
   favorite    Boolean   @default(false)
   pinned      Boolean   @default(false)

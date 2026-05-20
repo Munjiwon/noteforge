@@ -65,6 +65,7 @@ export default async function PageRoute({
       cover: true,
       coverPos: true,
       coverCaption: true,
+      coverDim: true,
       content: true,
       dbSchema: true,
       createdAt: true,

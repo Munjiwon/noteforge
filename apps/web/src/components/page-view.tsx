@@ -9,6 +9,7 @@ import {
   setPageIcon,
   setPageStatus,
   togglePageLock,
+  togglePagePinned,
   toggleFavorite,
 } from "@/app/w/[slug]/actions";
 import { CommentsPanel, type CommentItem } from "./comments-panel";
@@ -79,6 +80,7 @@ export function PageView({
     slug?: string | null;
     expiresAt?: string | null;
     coverCaption?: string | null;
+    coverDim?: boolean;
     status?: "draft" | "in_review" | "published" | null;
   };
   canChangeSettings?: boolean;
@@ -234,6 +236,7 @@ export function PageView({
             : "center"
         }
         caption={page.coverCaption ?? null}
+        dim={page.coverDim ?? false}
         readOnly={readOnly}
       />
       <div className={`${widthClass(width)} mx-auto px-12 md:px-24 py-10`}>
@@ -461,6 +464,20 @@ export function PageView({
             title={page.favorite ? "Unfavorite" : "Favorite (Cmd+Shift+B)"}
           >
             {page.favorite ? "★" : "☆"}
+          </button>
+        )}
+        {!readOnly && canChangeSettings && (
+          <button
+            onClick={() => start(() => togglePagePinned(slug, page.id))}
+            className={
+              "text-lg leading-none transition " +
+              (page.pinned
+                ? "text-blue-600 hover:opacity-80"
+                : "text-gray-300 hover:text-blue-500")
+            }
+            title={page.pinned ? "Unpin from sidebar" : "Pin to sidebar"}
+          >
+            📌
           </button>
         )}
       </div>

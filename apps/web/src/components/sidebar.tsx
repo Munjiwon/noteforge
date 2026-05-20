@@ -201,6 +201,18 @@ export function Sidebar({
       ? "alpha"
       : "manual";
   });
+  const [compact, setCompact] = useState(false);
+  useEffect(() => {
+    setCompact(localStorage.getItem("collab-notion-sidebar-compact") === "1");
+  }, []);
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        "collab-notion-sidebar-compact",
+        compact ? "1" : "0",
+      );
+    } catch {}
+  }, [compact]);
   useEffect(() => {
     try {
       localStorage.setItem("collab-notion-pinned-sort", pinnedSort);
@@ -662,8 +674,10 @@ export function Sidebar({
       style={visuallyCollapsed ? undefined : { width: sidebarWidth }}
       onMouseEnter={() => collapsed && setHoverExpanded(true)}
       onMouseLeave={() => setHoverExpanded(false)}
+      data-compact={compact ? "1" : undefined}
       className={clsx(
         visuallyCollapsed ? "md:w-12 md:overflow-hidden" : "",
+        compact && "text-[12px]",
         "shrink-0 bg-sidebar border-r border-black/10 flex flex-col relative",
         "md:relative md:translate-x-0",
         "fixed inset-y-0 left-0 z-40 transition-[transform,width]",
@@ -1280,6 +1294,13 @@ export function Sidebar({
         </Link>
         {role !== "viewer" && <ImportButton slug={currentSlug} />}
         {role === "owner" && <InviteButton slug={currentSlug} />}
+        <button
+          onClick={() => setCompact((v) => !v)}
+          className="block w-full text-left text-[10px] text-gray-400 hover:text-gray-700 px-2"
+          title="Toggle sidebar compact mode"
+        >
+          {compact ? "↧ Cozy spacing" : "↥ Compact"}
+        </button>
         <UserMenu user={user} />
         {footerStats && !visuallyCollapsed && (
           <p className="text-[10px] text-gray-400 px-2 pt-1">

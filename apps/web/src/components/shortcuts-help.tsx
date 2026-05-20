@@ -18,6 +18,8 @@ const GROUPS: { name: string; items: { keys: string; desc: string }[] }[] = [
       { keys: "⌘ ⇧ O", desc: "Toggle the floating page Outline (mobile/medium widths)" },
       { keys: "⌘ S", desc: "Show 'Auto-saved' confirmation (saves happen continuously)" },
       { keys: "⌘ ⇧ D", desc: "Toggle light / dark theme" },
+      { keys: "⌘ ⇧ S", desc: "Take a manual snapshot of the current page" },
+      { keys: "⌘ ⇧ T", desc: "Insert a table block at the cursor" },
       { keys: "Dbl-click heading", desc: "Copy direct link to the heading" },
       { keys: "?", desc: "Show this help" },
       { keys: "Esc", desc: "Close dialogs / palettes / exit read mode" },
@@ -63,6 +65,7 @@ const GROUPS: { name: string; items: { keys: string; desc: string }[] }[] = [
       { keys: "Drag column edge", desc: "Resize Table column width" },
       { keys: "↗ Open", desc: "Open row as full page" },
       { keys: "👁 Peek", desc: "Open row as a side modal preview" },
+      { keys: "T / K / G / C / M / L", desc: "Switch DB view (Table/Kanban/Gallery/Calendar/tiMeline/List)" },
     ],
   },
   {

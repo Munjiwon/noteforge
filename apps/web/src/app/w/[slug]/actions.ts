@@ -175,6 +175,19 @@ export async function deleteTagAcrossWorkspace(slug: string, name: string) {
   await renameTagAcrossWorkspace(slug, name, "");
 }
 
+export async function setPageCoverDim(
+  slug: string,
+  pageId: string,
+  dim: boolean,
+) {
+  const ctx = await assertEditor(slug);
+  await prisma.page.updateMany({
+    where: { id: pageId, workspaceId: ctx.workspace.id },
+    data: { coverDim: dim },
+  });
+  revalidatePath(`/w/${slug}/p/${pageId}`);
+}
+
 export async function setPageCoverCaption(
   slug: string,
   pageId: string,

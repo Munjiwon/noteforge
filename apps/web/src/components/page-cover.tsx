@@ -4,6 +4,7 @@ import { useRef, useState, useTransition } from "react";
 import {
   setPageCover,
   setPageCoverCaption,
+  setPageCoverDim,
   setPageCoverPos,
 } from "@/app/w/[slug]/actions";
 
@@ -37,6 +38,7 @@ export function PageCover({
   cover,
   coverPos,
   caption,
+  dim,
   readOnly,
 }: {
   slug: string;
@@ -44,6 +46,7 @@ export function PageCover({
   cover: string | null;
   coverPos?: "top" | "center" | "bottom";
   caption?: string | null;
+  dim?: boolean;
   readOnly: boolean;
 }) {
   const [open, setOpen] = useState(false);
@@ -129,6 +132,9 @@ export function PageCover({
   const pos = coverPos ?? "center";
   return (
     <div className="relative group">
+      {dim && (
+        <div className="absolute inset-0 bg-black/30 pointer-events-none" />
+      )}
       {isGradient(cover) ? (
         <div
           className="w-full h-[200px] md:h-[260px]"
@@ -185,6 +191,20 @@ export function PageCover({
             </button>
           )}
         </div>
+      )}
+      {!readOnly && (
+        <button
+          onClick={() => start(() => setPageCoverDim(slug, pageId, !dim))}
+          className={
+            "absolute right-4 top-12 opacity-0 group-hover:opacity-100 text-xs rounded px-2 py-0.5 border " +
+            (dim
+              ? "bg-gray-900 text-white border-gray-900"
+              : "bg-white/90 border-gray-200")
+          }
+          title={dim ? "Disable darken" : "Darken cover for readability"}
+        >
+          🌒 Dim
+        </button>
       )}
       {!readOnly && (
         <div className="absolute right-4 bottom-4 opacity-0 group-hover:opacity-100 flex gap-1">

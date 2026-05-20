@@ -243,6 +243,21 @@ export function Editor({
     };
   }, []);
 
+  // ⌘⇧T — insert a table block at the cursor.
+  useEffect(() => {
+    if (!editor || readOnly) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (!(e.metaKey || e.ctrlKey) || !e.shiftKey) return;
+      if (e.key.toLowerCase() !== "t") return;
+      e.preventDefault();
+      const cur = editor.getTextCursorPosition().block;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      editor.insertBlocks([{ type: "table" } as any], cur, "after");
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [editor, readOnly]);
+
   // File drag overlay — visual cue when the user drags a file onto the page.
   const [dragOver, setDragOver] = useState(false);
   useEffect(() => {
@@ -271,22 +286,37 @@ export function Editor({
   }, []);
 
   // ⌘S — intercept the browser save and show a transient toast since we
-  // auto-save continuously.
+  // auto-save continuously. ⌘⇧S explicitly takes a manual snapshot.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "s") {
-        e.preventDefault();
-        const tip = document.createElement("div");
-        tip.textContent = "✓ Auto-saved";
-        tip.className =
-          "fixed bottom-4 left-1/2 -translate-x-1/2 z-50 text-xs bg-emerald-600 text-white rounded-full px-3 py-1 shadow";
-        document.body.appendChild(tip);
-        setTimeout(() => tip.remove(), 1200);
+      if (!(e.metaKey || e.ctrlKey)) return;
+      if (e.key.toLowerCase() !== "s") return;
+      e.preventDefault();
+      if (e.shiftKey) {
+        if (readOnly) return;
+        import("@/app/w/[slug]/actions")
+          .then((m) => m.takeSnapshot(slug, pageId))
+          .then(() => {
+            const tip = document.createElement("div");
+            tip.textContent = "📸 Snapshot saved";
+            tip.className =
+              "fixed bottom-4 left-1/2 -translate-x-1/2 z-50 text-xs bg-blue-600 text-white rounded-full px-3 py-1 shadow";
+            document.body.appendChild(tip);
+            setTimeout(() => tip.remove(), 1400);
+          })
+          .catch(() => {});
+        return;
       }
+      const tip = document.createElement("div");
+      tip.textContent = "✓ Auto-saved";
+      tip.className =
+        "fixed bottom-4 left-1/2 -translate-x-1/2 z-50 text-xs bg-emerald-600 text-white rounded-full px-3 py-1 shadow";
+      document.body.appendChild(tip);
+      setTimeout(() => tip.remove(), 1200);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [readOnly, slug, pageId]);
 
   // Double-click on a heading → copy a direct link (?b=<blockId>) to the
   // heading. Discoverable without changing the BlockNote DOM.
@@ -629,6 +659,18 @@ export function Editor({
                 onItemClick: insert("toggle", { open: true }),
               },
               {
+                title: "Table",
+                subtext: "Spreadsheet-style table block",
+                aliases: ["table", "spreadsheet", "grid", "표"],
+                group: "Basic blocks",
+                icon: <span>▤</span>,
+                onItemClick: () => {
+                  const cur = editor.getTextCursorPosition().block;
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  editor.insertBlocks([{ type: "table" } as any], cur, "after");
+                },
+              },
+              {
                 title: "File / attachment",
                 subtext: "Upload a non-image file",
                 aliases: ["file", "attachment", "upload", "첨부"],
@@ -901,7 +943,7 @@ export function Editor({
                 },
               },
               ...(aiEnabled
-                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "edit"] as const)
+                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "sentiment", "next_steps", "critique", "edit"] as const)
                 : ([] as const)).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {
@@ -924,6 +966,9 @@ export function Editor({
                     longer: { title: "AI · Make longer", emoji: "📏", color: "blue", aliases: ["ai", "longer", "expand", "더 길게"] },
                     shorter: { title: "AI · Make shorter", emoji: "✂️", color: "blue", aliases: ["ai", "shorter", "compress", "더 짧게"] },
                     glossary: { title: "AI · Glossary", emoji: "📖", color: "yellow", aliases: ["ai", "glossary", "terms", "용어"] },
+                    sentiment: { title: "AI · Sentiment", emoji: "😊", color: "blue", aliases: ["ai", "sentiment", "tone", "감정"] },
+                    next_steps: { title: "AI · Next steps", emoji: "🚶", color: "green", aliases: ["ai", "next", "steps", "다음 단계"] },
+                    critique: { title: "AI · Critique", emoji: "🧐", color: "purple", aliases: ["ai", "critique", "review", "피드백"] },
                     edit: { title: "AI · Edit (custom)", emoji: "🪄", color: "red", aliases: ["ai", "edit", "custom", "transform"] },
                   }[action];
                   return {

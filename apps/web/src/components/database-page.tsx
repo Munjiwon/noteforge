@@ -94,6 +94,37 @@ export function DatabasePage({
     return () => window.removeEventListener("db-row-peek", onPeek as EventListener);
   }, []);
 
+  // Single-letter view switch shortcuts (T/K/G/C/L/M) when not in an input.
+  useEffect(() => {
+    if (readOnly) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+      const t = e.target as HTMLElement | null;
+      if (
+        t &&
+        (t.tagName === "INPUT" ||
+          t.tagName === "TEXTAREA" ||
+          t.isContentEditable)
+      )
+        return;
+      const map: Record<string, DbView> = {
+        t: "table",
+        k: "kanban",
+        g: "gallery",
+        c: "calendar",
+        m: "timeline",
+        l: "list",
+      };
+      const next = map[e.key.toLowerCase()];
+      if (next && next !== view) {
+        e.preventDefault();
+        start(() => setView(slug, db.id, next));
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [view, slug, db.id, readOnly, start]);
+
   return (
     <div className={fontClass(font)}>
       <PageCover

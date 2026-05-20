@@ -126,6 +126,12 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Compress the following text to roughly half its length, keeping all key meaning. Reply with just the compressed text.\n\n${text}`,
   glossary: (text) =>
     `Identify 5-8 key terms in the following text and define each in one short sentence. Reply as markdown bullets formatted as '- **term**: definition'.\n\n${text}`,
+  sentiment: (text) =>
+    `Classify the overall tone of the text below as Positive, Neutral, or Negative, then give a one-sentence reason. Reply as 'Label: reason'.\n\n${text}`,
+  next_steps: (text) =>
+    `Given the context, suggest 3-5 concrete next steps. Reply as a markdown numbered list, no preamble.\n\n${text}`,
+  critique: (text) =>
+    `Provide a constructive critique of the following text. Reply as markdown with two sections: '**Strengths**' and '**Improvements**', each with 2-3 bullets.\n\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
