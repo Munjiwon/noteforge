@@ -390,6 +390,11 @@ export default async function PageRoute({
           width: (page.width === "wide" || page.width === "full" ? page.width : "normal") as "normal" | "wide" | "full",
           font: (page.font === "serif" || page.font === "mono" ? page.font : "default") as "default" | "serif" | "mono",
           expiresAt: page.expiresAt ? page.expiresAt.toISOString() : null,
+          lockedUntil: page.lockedUntil ? page.lockedUntil.toISOString() : null,
+          status:
+            page.status === "draft" || page.status === "in_review" || page.status === "published"
+              ? page.status
+              : null,
         }}
         canChangeSettings={canChangePageSettings}
         user={ctx.user}

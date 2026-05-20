@@ -20,6 +20,8 @@ const GROUPS: { name: string; items: { keys: string; desc: string }[] }[] = [
       { keys: "⌘ ⇧ D", desc: "Toggle light / dark theme" },
       { keys: "⌘ ⇧ S", desc: "Take a manual snapshot of the current page" },
       { keys: "⌘ ⇧ T", desc: "Insert a table block at the cursor" },
+      { keys: "⌘ ⇧ R", desc: "Toggle distraction-free read mode" },
+      { keys: "⌘ ;", desc: "Insert today's date inline" },
       { keys: "Dbl-click heading", desc: "Copy direct link to the heading" },
       { keys: "?", desc: "Show this help" },
       { keys: "Esc", desc: "Close dialogs / palettes / exit read mode" },

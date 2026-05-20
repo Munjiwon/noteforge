@@ -258,6 +258,36 @@ export function Editor({
     return () => window.removeEventListener("keydown", onKey);
   }, [editor, readOnly]);
 
+  // ⌘; — insert today's date as inline text at the cursor.
+  useEffect(() => {
+    if (!editor || readOnly) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (!(e.metaKey || e.ctrlKey) || e.shiftKey) return;
+      if (e.key !== ";") return;
+      e.preventDefault();
+      const today = new Date().toISOString().slice(0, 10);
+      try {
+        document.execCommand("insertText", false, today);
+      } catch {
+        const cur = editor.getTextCursorPosition().block;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        editor.insertBlocks(
+          [
+            {
+              type: "paragraph",
+              content: [{ type: "text", text: today, styles: {} }],
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            } as any,
+          ],
+          cur,
+          "after",
+        );
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [editor, readOnly]);
+
   // File drag overlay — visual cue when the user drags a file onto the page.
   const [dragOver, setDragOver] = useState(false);
   useEffect(() => {
@@ -943,7 +973,7 @@ export function Editor({
                 },
               },
               ...(aiEnabled
-                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "sentiment", "next_steps", "critique", "edit"] as const)
+                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "sentiment", "next_steps", "critique", "agenda", "eli5", "pros_cons", "risks", "timeline", "faq", "edit"] as const)
                 : ([] as const)).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {
@@ -969,6 +999,12 @@ export function Editor({
                     sentiment: { title: "AI · Sentiment", emoji: "😊", color: "blue", aliases: ["ai", "sentiment", "tone", "감정"] },
                     next_steps: { title: "AI · Next steps", emoji: "🚶", color: "green", aliases: ["ai", "next", "steps", "다음 단계"] },
                     critique: { title: "AI · Critique", emoji: "🧐", color: "purple", aliases: ["ai", "critique", "review", "피드백"] },
+                    agenda: { title: "AI · Meeting agenda", emoji: "📋", color: "blue", aliases: ["ai", "agenda", "meeting", "안건"] },
+                    eli5: { title: "AI · Explain like I'm 5", emoji: "🧒", color: "yellow", aliases: ["ai", "eli5", "simple", "쉽게"] },
+                    pros_cons: { title: "AI · Pros & cons", emoji: "⚖️", color: "purple", aliases: ["ai", "pros", "cons", "찬반"] },
+                    risks: { title: "AI · Identify risks", emoji: "⚠️", color: "red", aliases: ["ai", "risks", "risk", "위험"] },
+                    timeline: { title: "AI · Build timeline", emoji: "🕒", color: "blue", aliases: ["ai", "timeline", "chronology", "연대표"] },
+                    faq: { title: "AI · Generate FAQ", emoji: "❓", color: "green", aliases: ["ai", "faq", "questions", "질문"] },
                     edit: { title: "AI · Edit (custom)", emoji: "🪄", color: "red", aliases: ["ai", "edit", "custom", "transform"] },
                   }[action];
                   return {

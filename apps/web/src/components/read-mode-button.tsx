@@ -13,9 +13,23 @@ export function ReadModeButton() {
     return () => document.body.classList.remove("read-mode");
   }, [active]);
   useEffect(() => {
-    if (!active) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setActive(false);
+      if (active && e.key === "Escape") {
+        setActive(false);
+        return;
+      }
+      const mod = e.metaKey || e.ctrlKey;
+      if (mod && e.shiftKey && (e.key === "R" || e.key === "r")) {
+        const target = e.target as HTMLElement | null;
+        const inForm =
+          target &&
+          (target.tagName === "INPUT" ||
+            target.tagName === "TEXTAREA" ||
+            target.isContentEditable);
+        if (inForm) return;
+        e.preventDefault();
+        setActive((v) => !v);
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);

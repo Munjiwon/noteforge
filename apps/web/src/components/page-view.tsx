@@ -82,6 +82,7 @@ export function PageView({
     coverCaption?: string | null;
     coverDim?: boolean;
     status?: "draft" | "in_review" | "published" | null;
+    lockedUntil?: string | null;
   };
   canChangeSettings?: boolean;
   user: { id: string; name: string; color: string };
@@ -320,17 +321,39 @@ export function PageView({
           </nav>
         )}
         {page.locked ? (
-          <div className="mb-3 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-3 py-1 inline-flex items-center gap-2">
-            <span>🔒 Page locked — read-only</span>
-            {canChangeSettings && (
-              <button
-                onClick={() => start(() => togglePageLock(slug, page.id))}
-                className="text-amber-900 hover:underline"
+          (() => {
+            const until = page.lockedUntil ? new Date(page.lockedUntil) : null;
+            const remainingMs = until ? until.getTime() - Date.now() : null;
+            let chip: string | null = null;
+            if (remainingMs !== null && remainingMs > 0) {
+              const totalMin = Math.floor(remainingMs / 60_000);
+              if (totalMin < 60) chip = `${totalMin}m 남음`;
+              else if (totalMin < 60 * 24) chip = `${Math.floor(totalMin / 60)}h ${totalMin % 60}m 남음`;
+              else chip = `${Math.floor(totalMin / (60 * 24))}d 남음`;
+            }
+            const tip = until ? `Locked until ${until.toLocaleString()}` : "Page is locked";
+            return (
+              <div
+                className="mb-3 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-3 py-1 inline-flex items-center gap-2"
+                title={tip}
               >
-                Unlock
-              </button>
-            )}
-          </div>
+                <span>🔒 Page locked — read-only</span>
+                {chip ? (
+                  <span className="px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-200">
+                    {chip}
+                  </span>
+                ) : null}
+                {canChangeSettings && (
+                  <button
+                    onClick={() => start(() => togglePageLock(slug, page.id))}
+                    className="text-amber-900 hover:underline"
+                  >
+                    Unlock
+                  </button>
+                )}
+              </div>
+            );
+          })()
         ) : readOnly ? (
           <div className="mb-3 text-xs text-gray-600 bg-gray-100 border border-gray-200 rounded px-3 py-1 inline-flex items-center gap-1">
             👁 Read-only view
