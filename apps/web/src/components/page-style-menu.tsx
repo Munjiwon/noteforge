@@ -213,6 +213,112 @@ export function PageStyleMenu({
               </button>
               <button
                 onClick={() => {
+                  const editor =
+                    document.querySelector(".bn-container") ||
+                    document.querySelector(".bn-editor");
+                  const text = (editor?.textContent ?? "")
+                    .replace(/ /g, " ")
+                    .replace(/[ \t]+\n/g, "\n")
+                    .replace(/\n{3,}/g, "\n\n")
+                    .trim();
+                  if (!text) {
+                    alert("Nothing to copy.");
+                    return;
+                  }
+                  void navigator.clipboard?.writeText(text).then(() => {
+                    const tip = document.createElement("div");
+                    tip.textContent = `Copied ${text.length} chars`;
+                    tip.className =
+                      "fixed bottom-4 left-1/2 -translate-x-1/2 z-50 text-xs bg-gray-900 text-white rounded-full px-3 py-1 shadow";
+                    document.body.appendChild(tip);
+                    setTimeout(() => tip.remove(), 1200);
+                  });
+                  setOpen(false);
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+              >
+                📄 Copy as plain text
+              </button>
+              <button
+                onClick={() => {
+                  const editor =
+                    document.querySelector(".bn-container") ||
+                    document.querySelector(".bn-editor");
+                  if (!editor) {
+                    alert("Editor not ready.");
+                    return;
+                  }
+                  const headings = Array.from(
+                    editor.querySelectorAll("h1, h2, h3, h4, h5, h6"),
+                  ) as HTMLElement[];
+                  const lines = headings
+                    .map((h) => {
+                      const lvl = Number(h.tagName.slice(1));
+                      const t = (h.textContent ?? "").trim();
+                      return t ? `${"#".repeat(lvl)} ${t}` : "";
+                    })
+                    .filter(Boolean);
+                  const out = lines.join("\n");
+                  if (!out) {
+                    alert("No headings on this page.");
+                    return;
+                  }
+                  void navigator.clipboard?.writeText(out).then(() => {
+                    const tip = document.createElement("div");
+                    tip.textContent = `Outline copied (${lines.length})`;
+                    tip.className =
+                      "fixed bottom-4 left-1/2 -translate-x-1/2 z-50 text-xs bg-gray-900 text-white rounded-full px-3 py-1 shadow";
+                    document.body.appendChild(tip);
+                    setTimeout(() => tip.remove(), 1200);
+                  });
+                  setOpen(false);
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+              >
+                🧭 Copy outline (Markdown)
+              </button>
+              <div className="flex gap-1 mb-1">
+                <button
+                  onClick={() => {
+                    const ts = document.querySelectorAll<HTMLElement>(
+                      '.bn-block[data-content-type="toggle"] [aria-expanded="false"]',
+                    );
+                    ts.forEach((b) => b.click());
+                    const n = ts.length;
+                    const tip = document.createElement("div");
+                    tip.textContent = n ? `Expanded ${n} toggles` : "No collapsed toggles";
+                    tip.className =
+                      "fixed bottom-4 left-1/2 -translate-x-1/2 z-50 text-xs bg-gray-900 text-white rounded-full px-3 py-1 shadow";
+                    document.body.appendChild(tip);
+                    setTimeout(() => tip.remove(), 1200);
+                    setOpen(false);
+                  }}
+                  className="flex-1 text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5"
+                >
+                  ➕ Expand all
+                </button>
+                <button
+                  onClick={() => {
+                    const ts = document.querySelectorAll<HTMLElement>(
+                      '.bn-block[data-content-type="toggle"] [aria-expanded="true"]',
+                    );
+                    ts.forEach((b) => b.click());
+                    const n = ts.length;
+                    const tip = document.createElement("div");
+                    tip.textContent = n ? `Collapsed ${n} toggles` : "No expanded toggles";
+                    tip.className =
+                      "fixed bottom-4 left-1/2 -translate-x-1/2 z-50 text-xs bg-gray-900 text-white rounded-full px-3 py-1 shadow";
+                    document.body.appendChild(tip);
+                    setTimeout(() => tip.remove(), 1200);
+                    setOpen(false);
+                  }}
+                  className="flex-1 text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5"
+                >
+                  ➖ Collapse all
+                </button>
+              </div>
+              <button
+                onClick={() => {
                   void navigator.clipboard?.writeText(pageId).then(() => {
                     const tip = document.createElement("div");
                     tip.textContent = "Page ID copied";

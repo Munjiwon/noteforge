@@ -973,7 +973,7 @@ export function Editor({
                 },
               },
               ...(aiEnabled
-                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "sentiment", "next_steps", "critique", "agenda", "eli5", "pros_cons", "risks", "timeline", "faq", "edit"] as const)
+                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "sentiment", "next_steps", "critique", "agenda", "eli5", "pros_cons", "risks", "timeline", "faq", "counter", "hashtags", "headlines", "slug", "tweet_thread", "citations", "edit"] as const)
                 : ([] as const)).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {
@@ -1005,6 +1005,12 @@ export function Editor({
                     risks: { title: "AI · Identify risks", emoji: "⚠️", color: "red", aliases: ["ai", "risks", "risk", "위험"] },
                     timeline: { title: "AI · Build timeline", emoji: "🕒", color: "blue", aliases: ["ai", "timeline", "chronology", "연대표"] },
                     faq: { title: "AI · Generate FAQ", emoji: "❓", color: "green", aliases: ["ai", "faq", "questions", "질문"] },
+                    counter: { title: "AI · Counter-argument", emoji: "🛡️", color: "red", aliases: ["ai", "counter", "rebuttal", "반박"] },
+                    hashtags: { title: "AI · Hashtags", emoji: "#️⃣", color: "blue", aliases: ["ai", "hashtags", "tags", "해시태그"] },
+                    headlines: { title: "AI · 5 alt headlines", emoji: "📰", color: "yellow", aliases: ["ai", "headlines", "headline", "헤드라인"] },
+                    slug: { title: "AI · Suggest URL slug", emoji: "🔗", color: "blue", aliases: ["ai", "slug", "url", "주소"] },
+                    tweet_thread: { title: "AI · Tweet thread", emoji: "🐦", color: "blue", aliases: ["ai", "tweet", "twitter", "thread", "트윗"] },
+                    citations: { title: "AI · Citation check", emoji: "📚", color: "purple", aliases: ["ai", "citations", "sources", "출처"] },
                     edit: { title: "AI · Edit (custom)", emoji: "🪄", color: "red", aliases: ["ai", "edit", "custom", "transform"] },
                   }[action];
                   return {
