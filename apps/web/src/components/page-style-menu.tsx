@@ -192,6 +192,27 @@ export function PageStyleMenu({
               </button>
               <button
                 onClick={() => {
+                  const title =
+                    (document.querySelector(
+                      'input[placeholder="Untitled"]',
+                    ) as HTMLInputElement | null)?.value || "Untitled";
+                  const md = `[${title}](${window.location.href.split("?")[0]})`;
+                  void navigator.clipboard?.writeText(md).then(() => {
+                    const tip = document.createElement("div");
+                    tip.textContent = "Cite markdown copied";
+                    tip.className =
+                      "fixed bottom-4 left-1/2 -translate-x-1/2 z-50 text-xs bg-gray-900 text-white rounded-full px-3 py-1 shadow";
+                    document.body.appendChild(tip);
+                    setTimeout(() => tip.remove(), 1200);
+                  });
+                  setOpen(false);
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+              >
+                📝 Cite this page (Markdown)
+              </button>
+              <button
+                onClick={() => {
                   void navigator.clipboard?.writeText(pageId).then(() => {
                     const tip = document.createElement("div");
                     tip.textContent = "Page ID copied";

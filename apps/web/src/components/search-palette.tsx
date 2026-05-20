@@ -60,6 +60,16 @@ export function SearchPalette({ slug }: { slug: string }) {
       if ((e.metaKey || e.ctrlKey) && (k === "k" || k === "p")) {
         e.preventDefault();
         setOpen((o) => !o);
+      } else if (e.key === "/" && !open) {
+        const t = e.target as HTMLElement | null;
+        const inForm =
+          t &&
+          (t.tagName === "INPUT" ||
+            t.tagName === "TEXTAREA" ||
+            t.isContentEditable);
+        if (inForm) return;
+        e.preventDefault();
+        setOpen(true);
       } else if (e.key === "Escape" && open) {
         setOpen(false);
       }
@@ -143,8 +153,14 @@ export function SearchPalette({ slug }: { slug: string }) {
     };
   }, [q, open, slug, since, tag, sortBy]);
 
-  const choose = (hit: Hit) => {
+  const choose = (hit: Hit, asPeek = false) => {
     setOpen(false);
+    if (asPeek) {
+      window.dispatchEvent(
+        new CustomEvent("noteforge:peek", { detail: { pageId: hit.id } }),
+      );
+      return;
+    }
     router.push(`/w/${slug}/p/${hit.id}`);
   };
 
@@ -191,7 +207,7 @@ export function SearchPalette({ slug }: { slug: string }) {
                 setHighlight((h) => (hits.length === 0 ? 0 : (h - 1 + hits.length) % hits.length));
               } else if (e.key === "Enter" && hits[highlight]) {
                 e.preventDefault();
-                choose(hits[highlight]);
+                choose(hits[highlight], e.metaKey || e.ctrlKey);
               }
             }}
           />

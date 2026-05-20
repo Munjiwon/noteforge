@@ -876,7 +876,7 @@ export function Editor({
                 },
               },
               ...(aiEnabled
-                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "edit"] as const)
+                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "edit"] as const)
                 : ([] as const)).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {
@@ -893,6 +893,9 @@ export function Editor({
                     checklist: { title: "AI · Checklist", emoji: "✔️", color: "green", aliases: ["ai", "checklist", "todo", "체크리스트"] },
                     poll: { title: "AI · Poll", emoji: "📊", color: "blue", aliases: ["ai", "poll", "survey", "설문"] },
                     email: { title: "AI · Draft email", emoji: "✉️", color: "purple", aliases: ["ai", "email", "draft", "이메일"] },
+                    action_items: { title: "AI · Action items", emoji: "📌", color: "green", aliases: ["ai", "action", "actions", "할일 추출"] },
+                    quote: { title: "AI · Pick quotes", emoji: "❝", color: "blue", aliases: ["ai", "quote", "quotes", "인용"] },
+                    tone: { title: "AI · Change tone", emoji: "🎚", color: "purple", aliases: ["ai", "tone", "formal", "casual"] },
                     edit: { title: "AI · Edit (custom)", emoji: "🪄", color: "red", aliases: ["ai", "edit", "custom", "transform"] },
                   }[action];
                   return {
@@ -913,6 +916,12 @@ export function Editor({
                         instruction = window.prompt(
                           "Target language?",
                           "English",
+                        );
+                        if (!instruction || !instruction.trim()) return;
+                      } else if (action === "tone") {
+                        instruction = window.prompt(
+                          "Tone? (e.g. formal, casual, friendly, assertive)",
+                          "more formal",
                         );
                         if (!instruction || !instruction.trim()) return;
                       }

@@ -226,7 +226,13 @@ export function CommentsPanel({
       )}
 
       {visible.length === 0 ? (
-        <div className="text-xs text-gray-400 py-4 text-center">No comments yet</div>
+        <div className="py-6 text-center">
+          <div className="text-2xl mb-1">💬</div>
+          <p className="text-xs text-gray-500">No comments yet.</p>
+          <p className="text-[10px] text-gray-400 mt-1">
+            Select text in the editor and click 💬 to anchor a comment to a block.
+          </p>
+        </div>
       ) : (
         <div className="space-y-4">
           {visible.map((c) => (

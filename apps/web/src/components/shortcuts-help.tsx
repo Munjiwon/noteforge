@@ -6,7 +6,7 @@ const GROUPS: { name: string; items: { keys: string; desc: string }[] }[] = [
   {
     name: "Navigation",
     items: [
-      { keys: "⌘ K / ⌘ P", desc: "Open search palette / jump to page" },
+      { keys: "⌘ K / ⌘ P / /", desc: "Open search palette / jump to page" },
       { keys: "⌘ F", desc: "Find within the current page (browser)" },
       { keys: "⌘ ⇧ L", desc: "Switch workspace" },
       { keys: "⌘ ⇧ B", desc: "Toggle favorite on current page" },

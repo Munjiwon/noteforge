@@ -493,25 +493,7 @@ export function PageView({
         aiEnabled={aiEnabled}
       />
         {backlinks.length > 0 && (
-          <section className="mt-10 border-t border-gray-200 pt-6">
-            <h2 className="text-sm font-semibold text-gray-700 mb-2">
-              Backlinks
-              <span className="ml-2 text-xs text-gray-400">{backlinks.length}</span>
-            </h2>
-            <ul className="space-y-1">
-              {backlinks.map((b) => (
-                <li key={b.id}>
-                  <a
-                    href={`/w/${slug}/p/${b.id}`}
-                    className="flex items-center gap-2 text-sm text-gray-700 hover:bg-black/5 rounded px-2 py-1"
-                  >
-                    <span>{b.icon ?? (b.kind === "database" ? "📊" : "📄")}</span>
-                    <span className="truncate">{b.title || "Untitled"}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </section>
+          <BacklinksSection slug={slug} backlinks={backlinks} />
         )}
         <CommentsPanel
           slug={slug}
@@ -525,6 +507,22 @@ export function PageView({
           <span>· Updated {new Date(info.updatedAt).toLocaleString()}</span>
           <span>· {info.wordCount.toLocaleString()} words</span>
           <span>· {page.content.length.toLocaleString()} chars</span>
+          <button
+            onClick={() => {
+              const url = window.location.href.split("?")[0];
+              void navigator.clipboard?.writeText(url).then(() => {
+                const tip = document.createElement("div");
+                tip.textContent = "Link copied";
+                tip.className =
+                  "fixed bottom-4 left-1/2 -translate-x-1/2 z-50 text-xs bg-gray-900 text-white rounded-full px-3 py-1 shadow";
+                document.body.appendChild(tip);
+                setTimeout(() => tip.remove(), 1200);
+              });
+            }}
+            className="ml-auto text-gray-500 hover:text-gray-900"
+          >
+            🔗 Copy link
+          </button>
         </footer>
       </div>
       <ReadingProgress />
@@ -532,6 +530,49 @@ export function PageView({
         <AskAiPanel slug={slug} getPageText={() => extractText(page.content, title)} />
       )}
     </div>
+  );
+}
+
+function BacklinksSection({
+  slug,
+  backlinks,
+}: {
+  slug: string;
+  backlinks: { id: string; title: string; icon: string | null; kind: string }[];
+}) {
+  const [sort, setSort] = useState<"original" | "alpha">("original");
+  const sorted =
+    sort === "alpha"
+      ? [...backlinks].sort((a, b) =>
+          (a.title || "Untitled").localeCompare(b.title || "Untitled"),
+        )
+      : backlinks;
+  return (
+    <section className="mt-10 border-t border-gray-200 pt-6">
+      <h2 className="text-sm font-semibold text-gray-700 mb-2 flex items-center">
+        Backlinks
+        <span className="ml-2 text-xs text-gray-400">{backlinks.length}</span>
+        <button
+          onClick={() => setSort((s) => (s === "original" ? "alpha" : "original"))}
+          className="ml-auto text-[10px] uppercase tracking-wide text-gray-400 hover:text-gray-700"
+        >
+          {sort === "alpha" ? "A → Z ▾" : "Original ▾"}
+        </button>
+      </h2>
+      <ul className="space-y-1">
+        {sorted.map((b) => (
+          <li key={b.id}>
+            <a
+              href={`/w/${slug}/p/${b.id}`}
+              className="flex items-center gap-2 text-sm text-gray-700 hover:bg-black/5 rounded px-2 py-1"
+            >
+              <span>{b.icon ?? (b.kind === "database" ? "📊" : "📄")}</span>
+              <span className="truncate">{b.title || "Untitled"}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 
