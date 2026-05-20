@@ -110,6 +110,10 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a concise, friendly email draft (3-5 sentences) about the following context. Include a subject line on the first line, blank line, then the body.\n\nContext:\n${text}`,
   ideas: (text) =>
     `Brainstorm 5 short, varied ideas inspired by the following context. Reply as a markdown bullet list, one idea per line, no preamble.\n\n${text}`,
+  checklist: (text) =>
+    `Extract a concrete to-do checklist (3-7 items) from the following context. Reply with a markdown checklist using '- [ ]' on each line, no preamble.\n\n${text}`,
+  poll: (text) =>
+    `Draft a short poll question with 3-4 multiple-choice options based on the context. Reply with the question first, then one option per line as '- option'.\n\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

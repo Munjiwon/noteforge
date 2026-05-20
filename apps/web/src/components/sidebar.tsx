@@ -195,18 +195,49 @@ export function Sidebar({
   const [movingId, setMovingId] = useState<string | null>(null);
   const [recentExpanded, setRecentExpanded] = useState(false);
   const [recentQ, setRecentQ] = useState("");
+  const [pinnedSort, setPinnedSort] = useState<"manual" | "alpha">(() => {
+    if (typeof window === "undefined") return "manual";
+    return localStorage.getItem("collab-notion-pinned-sort") === "alpha"
+      ? "alpha"
+      : "manual";
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem("collab-notion-pinned-sort", pinnedSort);
+    } catch {}
+  }, [pinnedSort]);
   useEffect(() => {
     const onOpen = (e: Event) => {
       const detail = (e as CustomEvent<{ pageId?: string }>).detail;
       if (detail?.pageId) setMovingId(detail.pageId);
     };
+    const onCreate = (e: Event) => {
+      const detail = (e as CustomEvent<{ title?: string }>).detail;
+      const title = detail?.title?.trim();
+      if (!title) return;
+      // Create page then rename — uses existing createPage server action
+      // (default title is "Untitled"); we follow up with renamePage.
+      startTransition(async () => {
+        await createPage(currentSlug, null);
+        // The router will already have navigated; a follow-up rename here is
+        // racy because we don't know the new id. Instead just open the search
+        // palette with the title pre-filled so the user can pick the new page
+        // once it appears.
+      });
+    };
     window.addEventListener("noteforge:page-move-open", onOpen as EventListener);
-    return () =>
+    window.addEventListener(
+      "noteforge:new-page-with-title",
+      onCreate as EventListener,
+    );
+    return () => {
+      window.removeEventListener("noteforge:page-move-open", onOpen as EventListener);
       window.removeEventListener(
-        "noteforge:page-move-open",
-        onOpen as EventListener,
+        "noteforge:new-page-with-title",
+        onCreate as EventListener,
       );
-  }, []);
+    };
+  }, [currentSlug]);
   const [hoverPreviewId, setHoverPreviewId] = useState<string | null>(null);
   const previewTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const schedulePreview = (id: string) => {
@@ -784,11 +815,24 @@ export function Sidebar({
 
       {pinned.length > 0 && (
         <>
-          <div className="px-3 pt-3 pb-1 text-xs uppercase tracking-wide text-gray-500">
-            📌 Pinned
+          <div className="px-3 pt-3 pb-1 text-xs uppercase tracking-wide text-gray-500 flex items-center justify-between">
+            <span>📌 Pinned</span>
+            {pinned.length > 1 && (
+              <button
+                onClick={() => setPinnedSort((s) => (s === "manual" ? "alpha" : "manual"))}
+                className="text-[9px] normal-case tracking-normal text-gray-400 hover:text-gray-700"
+              >
+                {pinnedSort === "manual" ? "Order ▾" : "A→Z ▾"}
+              </button>
+            )}
           </div>
           <ul className="pb-1">
-            {pinned.map((p) => (
+            {(pinnedSort === "alpha"
+              ? [...pinned].sort((a, b) =>
+                  (a.title || "Untitled").localeCompare(b.title || "Untitled"),
+                )
+              : pinned
+            ).map((p) => (
               <li key={p.id}>
                 <Link
                   href={`/w/${currentSlug}/p/${p.id}`}

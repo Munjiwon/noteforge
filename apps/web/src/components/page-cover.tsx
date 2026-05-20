@@ -175,6 +175,15 @@ export function PageCover({
               {p === "top" ? "⬆" : p === "bottom" ? "⬇" : "⬌"}
             </button>
           ))}
+          {pos !== "center" && (
+            <button
+              onClick={() => start(() => setPageCoverPos(slug, pageId, "center"))}
+              className="px-1.5 py-0.5 text-gray-600 hover:bg-black/5 border-l border-gray-200"
+              title="Reset to center"
+            >
+              ↺
+            </button>
+          )}
         </div>
       )}
       {!readOnly && (

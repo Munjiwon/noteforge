@@ -52,6 +52,7 @@ model Workspace {
   announcement String?
   defaultFont String          @default("default") // "default" | "serif" | "mono"
   defaultWidth String         @default("normal") // "normal" | "wide" | "full"
+  aiEnabled   Boolean         @default(true)
   createdAt DateTime          @default(now())
 
   members   WorkspaceMember[]

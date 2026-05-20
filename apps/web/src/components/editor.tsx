@@ -17,6 +17,7 @@ import * as Y from "yjs";
 import { WebsocketProvider } from "y-websocket";
 import { saveContent } from "@/app/w/[slug]/actions";
 import { editorSchema } from "./blocks/schema";
+import { PAGE_TEMPLATES } from "@/lib/page-templates";
 
 type Peer = { clientId: number; name: string; color: string };
 
@@ -28,12 +29,14 @@ export function Editor({
   initialContent,
   user,
   readOnly,
+  aiEnabled = true,
 }: {
   pageId: string;
   slug: string;
   initialContent: string;
   user: { id: string; name: string; color: string };
   readOnly: boolean;
+  aiEnabled?: boolean;
 }) {
   // doc + provider are created once per page mount and bound synchronously.
   const { doc, provider } = useMemo(() => {
@@ -723,6 +726,18 @@ export function Editor({
                   };
                 },
               ),
+              ...PAGE_TEMPLATES.map((tpl): DefaultReactSuggestionItem => ({
+                title: `Template · ${tpl.name}`,
+                subtext: tpl.description ?? "Insert this template here",
+                aliases: ["template", "snippet", tpl.id, tpl.name.toLowerCase()],
+                group: "Templates",
+                icon: <span>{tpl.icon}</span>,
+                onItemClick: () => {
+                  const cur = editor.getTextCursorPosition().block;
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  editor.insertBlocks(tpl.content as any[], cur, "after");
+                },
+              })),
               {
                 title: "Snippet · Meeting agenda",
                 subtext: "Quick agenda + action items checklist",
@@ -860,7 +875,9 @@ export function Editor({
                   }
                 },
               },
-              ...(["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "email", "edit"] as const).map(
+              ...(aiEnabled
+                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "edit"] as const)
+                : ([] as const)).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {
                     summarize: { title: "AI · Summarize", emoji: "✨", color: "blue", aliases: ["ai", "summarize", "summary", "요약"] },
@@ -873,6 +890,8 @@ export function Editor({
                     outline: { title: "AI · Outline", emoji: "🧱", color: "blue", aliases: ["ai", "outline", "toc", "목차"] },
                     keywords: { title: "AI · Keywords", emoji: "🏷", color: "yellow", aliases: ["ai", "keywords", "tags", "키워드"] },
                     ideas: { title: "AI · Brainstorm 5 ideas", emoji: "💭", color: "yellow", aliases: ["ai", "ideas", "brainstorm", "아이디어"] },
+                    checklist: { title: "AI · Checklist", emoji: "✔️", color: "green", aliases: ["ai", "checklist", "todo", "체크리스트"] },
+                    poll: { title: "AI · Poll", emoji: "📊", color: "blue", aliases: ["ai", "poll", "survey", "설문"] },
                     email: { title: "AI · Draft email", emoji: "✉️", color: "purple", aliases: ["ai", "email", "draft", "이메일"] },
                     edit: { title: "AI · Edit (custom)", emoji: "🪄", color: "red", aliases: ["ai", "edit", "custom", "transform"] },
                   }[action];

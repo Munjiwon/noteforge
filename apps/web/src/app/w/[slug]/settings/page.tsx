@@ -70,6 +70,7 @@ export default async function SettingsPage({
           ? ctx.workspace.defaultWidth
           : "normal") as "normal" | "wide" | "full"
       }
+      workspaceAiEnabled={ctx.workspace.aiEnabled}
       workspaceBannerUrl={ctx.workspace.bannerUrl ?? null}
       workspaceAnnouncement={ctx.workspace.announcement ?? null}
       mutedKinds={muted}

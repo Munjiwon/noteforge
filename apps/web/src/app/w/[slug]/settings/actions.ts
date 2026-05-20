@@ -75,6 +75,15 @@ export async function setWorkspaceBanner(slug: string, url: string | null) {
   revalidatePath(`/w/${slug}`, "layout");
 }
 
+export async function setWorkspaceAiEnabled(slug: string, enabled: boolean) {
+  const ctx = await assertOwner(slug);
+  await prisma.workspace.update({
+    where: { id: ctx.workspace.id },
+    data: { aiEnabled: enabled },
+  });
+  revalidatePath(`/w/${slug}`, "layout");
+}
+
 export async function setWorkspaceDefaultWidth(
   slug: string,
   width: "normal" | "wide" | "full",

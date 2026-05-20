@@ -425,6 +425,7 @@ export default async function PageRoute({
             ? ctx.workspace.defaultWidth
             : "normal") as "normal" | "wide" | "full"
         }
+        aiEnabled={ctx.workspace.aiEnabled}
         subPages={subPages}
       />
     </>

@@ -162,6 +162,36 @@ export function PageStyleMenu({
               </button>
               <button
                 onClick={() => {
+                  window.open(`/api/page/${pageId}`, "_blank", "noopener");
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+                title="Open the raw JSON in a new tab (debugging)"
+              >
+                🧰 View raw JSON
+              </button>
+              <button
+                onClick={async () => {
+                  try {
+                    const r = await fetch(`/api/page/${pageId}`);
+                    if (!r.ok) return;
+                    const json = await r.text();
+                    const blob = new Blob([json], { type: "application/json" });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = `${pageId}.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    URL.revokeObjectURL(url);
+                  } catch {}
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+              >
+                ⬇ Download JSON
+              </button>
+              <button
+                onClick={() => {
                   void navigator.clipboard?.writeText(pageId).then(() => {
                     const tip = document.createElement("div");
                     tip.textContent = "Page ID copied";

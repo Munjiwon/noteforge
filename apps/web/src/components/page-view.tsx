@@ -54,6 +54,7 @@ export function PageView({
   reminders = [],
   workspaceDefaultFont = "default",
   workspaceDefaultWidth = "normal",
+  aiEnabled = true,
   subPages = [],
   canChangeSettings = false,
 }: {
@@ -112,6 +113,7 @@ export function PageView({
   reminders?: PendingReminder[];
   workspaceDefaultFont?: "default" | "serif" | "mono";
   workspaceDefaultWidth?: "normal" | "wide" | "full";
+  aiEnabled?: boolean;
   subPages?: { id: string; title: string; icon: string | null; kind: string }[];
 }) {
   const [title, setTitle] = useState(page.title);
@@ -488,6 +490,7 @@ export function PageView({
         initialContent={page.content}
         user={user}
         readOnly={readOnly}
+        aiEnabled={aiEnabled}
       />
         {backlinks.length > 0 && (
           <section className="mt-10 border-t border-gray-200 pt-6">
@@ -525,7 +528,9 @@ export function PageView({
         </footer>
       </div>
       <ReadingProgress />
-      <AskAiPanel slug={slug} getPageText={() => extractText(page.content, title)} />
+      {aiEnabled && (
+        <AskAiPanel slug={slug} getPageText={() => extractText(page.content, title)} />
+      )}
     </div>
   );
 }

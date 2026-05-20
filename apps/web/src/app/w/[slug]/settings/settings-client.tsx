@@ -13,6 +13,7 @@ import {
   renameWorkspace,
   revokeInvite,
   setMutedNotificationKinds,
+  setWorkspaceAiEnabled,
   setWorkspaceAnnouncement,
   setWorkspaceBanner,
   setWorkspaceColor,
@@ -39,6 +40,7 @@ export function SettingsClient({
   workspaceColor,
   workspaceDefaultFont = "default",
   workspaceDefaultWidth = "normal",
+  workspaceAiEnabled = true,
   workspaceBannerUrl = null,
   workspaceAnnouncement = null,
   mutedKinds = [],
@@ -56,6 +58,7 @@ export function SettingsClient({
   workspaceColor: string | null;
   workspaceDefaultFont?: "default" | "serif" | "mono";
   workspaceDefaultWidth?: "normal" | "wide" | "full";
+  workspaceAiEnabled?: boolean;
   workspaceBannerUrl?: string | null;
   workspaceAnnouncement?: string | null;
   mutedKinds?: string[];
@@ -185,6 +188,22 @@ export function SettingsClient({
                     {f}
                   </button>
                 ))}
+              </div>
+            )}
+            {isOwner && (
+              <div className="flex items-center gap-2 mt-2 text-xs">
+                <span className="text-gray-500">AI features:</span>
+                <button
+                  onClick={() => start(() => setWorkspaceAiEnabled(slug, !workspaceAiEnabled))}
+                  className={
+                    "px-2 py-0.5 rounded border " +
+                    (workspaceAiEnabled
+                      ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                      : "border-gray-200 text-gray-500")
+                  }
+                >
+                  {workspaceAiEnabled ? "🤖 Enabled" : "🚫 Disabled"}
+                </button>
               </div>
             )}
             {isOwner && (

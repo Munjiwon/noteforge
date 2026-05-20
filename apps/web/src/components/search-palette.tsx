@@ -99,9 +99,27 @@ export function SearchPalette({ slug }: { slug: string }) {
     const ctrl = new AbortController();
     const t = setTimeout(async () => {
       try {
+        // Parse 'kind:doc' / 'kind:database' tokens out of the query so
+        // typing 'kind:db ...' filters the results.
+        let cleanedQ = q.trim();
+        let kindFromToken: "doc" | "database" | null = null;
+        cleanedQ = cleanedQ
+          .replace(/\bkind:(doc|page)\b/i, () => {
+            kindFromToken = "doc";
+            return "";
+          })
+          .replace(/\bkind:(db|database)\b/i, () => {
+            kindFromToken = "database";
+            return "";
+          })
+          .replace(/\s+/g, " ")
+          .trim();
+        if (kindFromToken) {
+          setKindFilter(kindFromToken);
+        }
         const params = new URLSearchParams({
           ws: slug,
-          q: q.trim(),
+          q: cleanedQ,
         });
         if (since !== "any") params.set("since", since);
         if (tag.trim()) params.set("tag", tag.trim());
@@ -241,7 +259,25 @@ export function SearchPalette({ slug }: { slug: string }) {
               kindFilter === "all" ? true : h.kind === kindFilter,
             );
             return filtered.length === 0 ? (
-              <div className="text-xs text-gray-400 text-center py-8">No results.</div>
+              <div className="text-center py-8">
+                <div className="text-xs text-gray-400 mb-2">No results.</div>
+                {q.trim() && (
+                  <button
+                    onClick={() => {
+                      const title = q.trim();
+                      setOpen(false);
+                      window.dispatchEvent(
+                        new CustomEvent("noteforge:new-page-with-title", {
+                          detail: { title },
+                        }),
+                      );
+                    }}
+                    className="text-xs px-3 py-1 rounded border border-gray-200 hover:bg-black/5"
+                  >
+                    + Create page “{q.trim()}”
+                  </button>
+                )}
+              </div>
             ) : (
               <ul>
               {filtered.map((h, i) => (
