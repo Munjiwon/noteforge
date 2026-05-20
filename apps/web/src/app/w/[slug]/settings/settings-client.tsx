@@ -99,6 +99,33 @@ export function SettingsClient({
       <NotificationPrefs slug={slug} mutedKinds={mutedKinds} />
 
       <section>
+        <h2 className="text-sm font-medium text-gray-700 mb-2">UI hints</h2>
+        <button
+          onClick={() => {
+            const keys = Object.keys(localStorage).filter((k) =>
+              k.startsWith("collab-notion-") || k.startsWith("noteforge-"),
+            );
+            if (
+              !confirm(
+                `Reset ${keys.length} client-side preferences (sort orders, dismissed hints, theme, etc.)?`,
+              )
+            )
+              return;
+            for (const k of keys) localStorage.removeItem(k);
+            sessionStorage.clear();
+            alert("Reset. Refresh the page.");
+          }}
+          className="text-xs px-3 py-1 rounded border border-gray-200 hover:bg-black/5"
+        >
+          ↺ Reset hints &amp; preferences (this device)
+        </button>
+        <p className="text-[11px] text-gray-400 mt-1">
+          Clears localStorage / sessionStorage keys used by the app — favorites
+          sort, dismissed tips, draft language toggles, etc.
+        </p>
+      </section>
+
+      <section>
         <h2 className="text-sm font-medium text-gray-700 mb-2">General</h2>
         <div className="flex items-center gap-3 mb-3">
           <div className="relative">

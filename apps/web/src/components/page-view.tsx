@@ -446,6 +446,14 @@ export function PageView({
             🔥 Popular · {info.viewCount}
           </span>
         )}
+        {info.childrenCount > 0 && (
+          <span
+            className="text-[10px] uppercase tracking-wide px-2 py-0.5 rounded-full border bg-gray-50 border-gray-200 text-gray-600"
+            title={`${info.childrenCount} sub-pages`}
+          >
+            📁 {info.childrenCount}
+          </span>
+        )}
         {!readOnly && (
           <button
             onClick={() => start(() => toggleFavorite(slug, page.id))}

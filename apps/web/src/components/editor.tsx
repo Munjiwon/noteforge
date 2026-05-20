@@ -323,6 +323,31 @@ export function Editor({
     if (!editor || readOnly) return;
     const onPaste = async (e: ClipboardEvent) => {
       const items = e.clipboardData?.items;
+      const text = e.clipboardData?.getData("text/plain") ?? "";
+      // URL paste → suggest bookmark when the clipboard is exactly a URL.
+      const urlMatch = /^https?:\/\/\S+$/i.exec(text.trim());
+      if (urlMatch && !items?.length) {
+        // Let the default text paste happen first; then offer a one-line
+        // upgrade so it doesn't surprise the user.
+        setTimeout(() => {
+          const yes = window.confirm(
+            `Paste as bookmark card instead?\n\n${urlMatch[0]}`,
+          );
+          if (!yes) return;
+          const cur = editor.getTextCursorPosition().block;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          editor.insertBlocks(
+            [
+              {
+                type: "bookmark",
+                props: { url: urlMatch[0] } as Record<string, unknown>,
+              } as any,
+            ],
+            cur,
+            "after",
+          );
+        }, 0);
+      }
       if (!items) return;
       for (const it of Array.from(items)) {
         if (it.kind === "file" && it.type.startsWith("image/")) {
@@ -876,7 +901,7 @@ export function Editor({
                 },
               },
               ...(aiEnabled
-                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "edit"] as const)
+                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "edit"] as const)
                 : ([] as const)).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {
@@ -896,6 +921,9 @@ export function Editor({
                     action_items: { title: "AI · Action items", emoji: "📌", color: "green", aliases: ["ai", "action", "actions", "할일 추출"] },
                     quote: { title: "AI · Pick quotes", emoji: "❝", color: "blue", aliases: ["ai", "quote", "quotes", "인용"] },
                     tone: { title: "AI · Change tone", emoji: "🎚", color: "purple", aliases: ["ai", "tone", "formal", "casual"] },
+                    longer: { title: "AI · Make longer", emoji: "📏", color: "blue", aliases: ["ai", "longer", "expand", "더 길게"] },
+                    shorter: { title: "AI · Make shorter", emoji: "✂️", color: "blue", aliases: ["ai", "shorter", "compress", "더 짧게"] },
+                    glossary: { title: "AI · Glossary", emoji: "📖", color: "yellow", aliases: ["ai", "glossary", "terms", "용어"] },
                     edit: { title: "AI · Edit (custom)", emoji: "🪄", color: "red", aliases: ["ai", "edit", "custom", "transform"] },
                   }[action];
                   return {

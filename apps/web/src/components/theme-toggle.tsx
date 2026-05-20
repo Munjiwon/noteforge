@@ -44,6 +44,21 @@ export function ThemeToggle() {
     applyTheme(next);
   };
 
+  // ⌘⇧D — quick toggle (jumps directly between light and dark)
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === "d") {
+        e.preventDefault();
+        const next: Theme = theme === "dark" ? "light" : "dark";
+        setTheme(next);
+        localStorage.setItem(STORAGE_KEY, next);
+        applyTheme(next);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [theme]);
+
   const icon = theme === "auto" ? "🖥" : theme === "dark" ? "🌙" : "☀️";
   return (
     <button

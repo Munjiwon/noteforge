@@ -17,6 +17,7 @@ const GROUPS: { name: string; items: { keys: string; desc: string }[] }[] = [
       { keys: "⌘ ⌫", desc: "Archive the current page" },
       { keys: "⌘ ⇧ O", desc: "Toggle the floating page Outline (mobile/medium widths)" },
       { keys: "⌘ S", desc: "Show 'Auto-saved' confirmation (saves happen continuously)" },
+      { keys: "⌘ ⇧ D", desc: "Toggle light / dark theme" },
       { keys: "Dbl-click heading", desc: "Copy direct link to the heading" },
       { keys: "?", desc: "Show this help" },
       { keys: "Esc", desc: "Close dialogs / palettes / exit read mode" },

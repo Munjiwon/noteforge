@@ -120,6 +120,12 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Pick 2-3 most memorable or quote-worthy sentences from the following text. Reply as markdown blockquote lines (each prefixed with '> ').\n\n${text}`,
   tone: (text, instr) =>
     `Rewrite the following text in a ${instr ?? "neutral"} tone, keeping the meaning. Reply with just the rewritten text.\n\n${text}`,
+  longer: (text) =>
+    `Expand the following text so it is roughly twice as long. Keep the meaning and tone intact. Reply with just the expanded text.\n\n${text}`,
+  shorter: (text) =>
+    `Compress the following text to roughly half its length, keeping all key meaning. Reply with just the compressed text.\n\n${text}`,
+  glossary: (text) =>
+    `Identify 5-8 key terms in the following text and define each in one short sentence. Reply as markdown bullets formatted as '- **term**: definition'.\n\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { requireWorkspaceMember } from "@/lib/workspace";
 import { prisma } from "db";
+import { ActivityFilterUser } from "./filter-user";
 
 export const dynamic = "force-dynamic";
 
@@ -16,18 +17,34 @@ const ACTION_LABEL: Record<string, string> = {
 
 export default async function ActivityPage({
   params,
+  searchParams,
 }: {
   params: { slug: string };
+  searchParams: { user?: string; action?: string };
 }) {
   const ctx = await requireWorkspaceMember(params.slug);
+  const userFilter = searchParams.user;
+  const actionFilter = searchParams.action;
   // fetch latest 200 activities scoped to the workspace
   const activities = await prisma.pageActivity.findMany({
-    where: { page: { workspaceId: ctx.workspace.id } },
+    where: {
+      page: { workspaceId: ctx.workspace.id },
+      ...(userFilter ? { userId: userFilter } : {}),
+      ...(actionFilter ? { action: actionFilter } : {}),
+    },
     orderBy: { createdAt: "desc" },
     take: 200,
     include: {
       page: { select: { id: true, title: true, icon: true, kind: true } },
     },
+  });
+  // For the filter UI, fetch all distinct authors across recent activity.
+  const allUsers = await prisma.user.findMany({
+    where: {
+      memberships: { some: { workspaceId: ctx.workspace.id } },
+    },
+    select: { id: true, name: true, color: true },
+    orderBy: { name: "asc" },
   });
   const userIds = Array.from(
     new Set(activities.map((a) => a.userId).filter((id): id is string => !!id)),
@@ -50,7 +67,40 @@ export default async function ActivityPage({
 
   return (
     <div className="max-w-3xl mx-auto px-8 py-10">
-      <h1 className="text-2xl font-bold mb-6">Activity</h1>
+      <h1 className="text-2xl font-bold mb-3">Activity</h1>
+      <div className="flex flex-wrap items-center gap-2 mb-5 text-xs">
+        <span className="text-gray-500">Filter:</span>
+        <Link
+          href={`/w/${params.slug}/activity`}
+          className={
+            "px-2 py-0.5 rounded " +
+            (!userFilter && !actionFilter
+              ? "bg-gray-900 text-white"
+              : "hover:bg-black/5 text-gray-500")
+          }
+        >
+          All
+        </Link>
+        <ActivityFilterUser
+          slug={params.slug}
+          users={allUsers}
+          current={userFilter ?? ""}
+        />
+        {Object.entries(ACTION_LABEL).map(([k, label]) => (
+          <Link
+            key={k}
+            href={`/w/${params.slug}/activity?action=${k}${userFilter ? `&user=${userFilter}` : ""}`}
+            className={
+              "px-2 py-0.5 rounded " +
+              (actionFilter === k
+                ? "bg-gray-900 text-white"
+                : "hover:bg-black/5 text-gray-500")
+            }
+          >
+            {label}
+          </Link>
+        ))}
+      </div>
       {activities.length === 0 ? (
         <p className="text-sm text-gray-400 text-center py-10">
           No activity in this workspace yet.
