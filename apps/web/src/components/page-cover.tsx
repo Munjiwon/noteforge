@@ -48,6 +48,7 @@ export function PageCover({
 }) {
   const [open, setOpen] = useState(false);
   const [urlEdit, setUrlEdit] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
   const [, start] = useTransition();
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -57,13 +58,21 @@ export function PageCover({
   const onPickFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (!f) return;
-    const form = new FormData();
-    form.append("file", f);
-    const res = await fetch("/api/upload", { method: "POST", body: form });
-    if (!res.ok) return;
-    const data = (await res.json()) as { url: string };
-    setCover(data.url);
-    setOpen(false);
+    setUploading(true);
+    try {
+      const form = new FormData();
+      form.append("file", f);
+      const res = await fetch("/api/upload", { method: "POST", body: form });
+      if (!res.ok) {
+        alert("Upload failed: " + (await res.text()));
+        return;
+      }
+      const data = (await res.json()) as { url: string };
+      setCover(data.url);
+      setOpen(false);
+    } finally {
+      setUploading(false);
+    }
   };
 
   if (!cover) {
@@ -192,9 +201,10 @@ export function PageCover({
           </button>
           <button
             onClick={() => fileRef.current?.click()}
-            className="text-xs bg-white/90 border border-gray-200 rounded px-2 py-1"
+            disabled={uploading}
+            className="text-xs bg-white/90 border border-gray-200 rounded px-2 py-1 disabled:opacity-50"
           >
-            Upload
+            {uploading ? "Uploading…" : "Upload"}
           </button>
           <button
             onClick={() => setCover(null)}

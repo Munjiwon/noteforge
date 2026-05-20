@@ -17,6 +17,7 @@ import {
   setWorkspaceBanner,
   setWorkspaceColor,
   setWorkspaceDefaultFont,
+  setWorkspaceDefaultWidth,
   setWorkspaceIcon,
   updateMemberRole,
 } from "./actions";
@@ -37,6 +38,7 @@ export function SettingsClient({
   workspaceIcon,
   workspaceColor,
   workspaceDefaultFont = "default",
+  workspaceDefaultWidth = "normal",
   workspaceBannerUrl = null,
   workspaceAnnouncement = null,
   mutedKinds = [],
@@ -53,6 +55,7 @@ export function SettingsClient({
   workspaceIcon: string | null;
   workspaceColor: string | null;
   workspaceDefaultFont?: "default" | "serif" | "mono";
+  workspaceDefaultWidth?: "normal" | "wide" | "full";
   workspaceBannerUrl?: string | null;
   workspaceAnnouncement?: string | null;
   mutedKinds?: string[];
@@ -180,6 +183,25 @@ export function SettingsClient({
                     }
                   >
                     {f}
+                  </button>
+                ))}
+              </div>
+            )}
+            {isOwner && (
+              <div className="flex items-center gap-2 mt-2 text-xs">
+                <span className="text-gray-500">Default width:</span>
+                {(["normal", "wide", "full"] as const).map((w) => (
+                  <button
+                    key={w}
+                    onClick={() => start(() => setWorkspaceDefaultWidth(slug, w))}
+                    className={
+                      "px-2 py-0.5 rounded border " +
+                      (workspaceDefaultWidth === w
+                        ? "bg-gray-900 text-white border-gray-900"
+                        : "border-gray-200 hover:bg-black/5")
+                    }
+                  >
+                    {w}
                   </button>
                 ))}
               </div>

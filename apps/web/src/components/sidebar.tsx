@@ -15,6 +15,7 @@ import {
   deletePage,
   duplicatePage,
   emptyTrash,
+  restoreAllFromTrash,
   purgePage,
   reorderPage,
   restorePage,
@@ -1046,19 +1047,34 @@ export function Sidebar({
             {t("🗑 Trash", lang)}
             <span className="ml-1 text-gray-400">({trashed.length})</span>
             {role !== "viewer" && trashed.length > 0 && (
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  if (!confirm(`Permanently delete all ${trashed.length} trashed page(s)?`)) return;
-                  startTransition(() => {
-                    emptyTrash(currentSlug);
-                  });
-                }}
-                className="ml-auto text-[10px] normal-case tracking-normal text-red-600 hover:underline"
-              >
-                Empty
-              </button>
+              <span className="ml-auto flex items-center gap-2">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (!confirm(`Restore all ${trashed.length} trashed page(s)?`)) return;
+                    startTransition(() => {
+                      restoreAllFromTrash(currentSlug);
+                    });
+                  }}
+                  className="text-[10px] normal-case tracking-normal text-emerald-600 hover:underline"
+                >
+                  Restore all
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (!confirm(`Permanently delete all ${trashed.length} trashed page(s)?`)) return;
+                    startTransition(() => {
+                      emptyTrash(currentSlug);
+                    });
+                  }}
+                  className="text-[10px] normal-case tracking-normal text-red-600 hover:underline"
+                >
+                  Empty
+                </button>
+              </span>
             )}
           </summary>
           {(trashStaleCount ?? 0) > 0 && (

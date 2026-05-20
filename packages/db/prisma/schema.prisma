@@ -51,6 +51,7 @@ model Workspace {
   bannerUrl String?
   announcement String?
   defaultFont String          @default("default") // "default" | "serif" | "mono"
+  defaultWidth String         @default("normal") // "normal" | "wide" | "full"
   createdAt DateTime          @default(now())
 
   members   WorkspaceMember[]

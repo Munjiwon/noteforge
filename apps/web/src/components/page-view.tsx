@@ -52,6 +52,7 @@ export function PageView({
   subscribed = false,
   reminders = [],
   workspaceDefaultFont = "default",
+  workspaceDefaultWidth = "normal",
   subPages = [],
   canChangeSettings = false,
 }: {
@@ -109,6 +110,7 @@ export function PageView({
   subscribed?: boolean;
   reminders?: PendingReminder[];
   workspaceDefaultFont?: "default" | "serif" | "mono";
+  workspaceDefaultWidth?: "normal" | "wide" | "full";
   subPages?: { id: string; title: string; icon: string | null; kind: string }[];
 }) {
   const [title, setTitle] = useState(page.title);
@@ -208,7 +210,10 @@ export function PageView({
     tick();
   }, [page.id]);
 
-  const width = page.width ?? "normal";
+  const width =
+    page.width && page.width !== "normal"
+      ? page.width
+      : workspaceDefaultWidth ?? "normal";
   // page.font="default" means "follow workspace default"
   const effFont =
     page.font && page.font !== "default" ? page.font : workspaceDefaultFont;

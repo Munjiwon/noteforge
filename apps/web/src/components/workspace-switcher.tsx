@@ -12,7 +12,13 @@ export function WorkspaceSwitcher({
 }) {
   const [open, setOpen] = useState(false);
   const [highlight, setHighlight] = useState(0);
+  const [q, setQ] = useState("");
   const router = useRouter();
+  const filtered = q.trim()
+    ? workspaces.filter((w) =>
+        w.name.toLowerCase().includes(q.trim().toLowerCase()),
+      )
+    : workspaces;
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -31,15 +37,15 @@ export function WorkspaceSwitcher({
       if (e.key === "Escape") setOpen(false);
       if (e.key === "ArrowDown") {
         e.preventDefault();
-        setHighlight((h) => (h + 1) % workspaces.length);
+        setHighlight((h) => (h + 1) % filtered.length);
       }
       if (e.key === "ArrowUp") {
         e.preventDefault();
-        setHighlight((h) => (h - 1 + workspaces.length) % workspaces.length);
+        setHighlight((h) => (h - 1 + filtered.length) % filtered.length);
       }
       if (e.key === "Enter") {
         e.preventDefault();
-        const ws = workspaces[highlight];
+        const ws = filtered[highlight];
         if (ws && ws.slug !== currentSlug) {
           router.push(`/w/${ws.slug}`);
         }
@@ -64,8 +70,22 @@ export function WorkspaceSwitcher({
         <div className="px-3 py-2 border-b border-gray-100 text-sm font-medium">
           Switch workspace
         </div>
+        {workspaces.length > 6 && (
+          <div className="px-3 py-2 border-b border-gray-100">
+            <input
+              autoFocus
+              value={q}
+              onChange={(e) => {
+                setQ(e.target.value);
+                setHighlight(0);
+              }}
+              placeholder="Filter workspaces…"
+              className="w-full text-sm border border-gray-200 rounded px-2 py-1 outline-none focus:border-gray-400"
+            />
+          </div>
+        )}
         <ul>
-          {workspaces.map((w, i) => (
+          {filtered.map((w, i) => (
             <li key={w.slug}>
               <button
                 onClick={() => {

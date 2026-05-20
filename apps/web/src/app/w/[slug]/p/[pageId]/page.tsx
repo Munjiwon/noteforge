@@ -419,6 +419,12 @@ export default async function PageRoute({
             ? ctx.workspace.defaultFont
             : "default") as "default" | "serif" | "mono"
         }
+        workspaceDefaultWidth={
+          (ctx.workspace.defaultWidth === "wide" ||
+          ctx.workspace.defaultWidth === "full"
+            ? ctx.workspace.defaultWidth
+            : "normal") as "normal" | "wide" | "full"
+        }
         subPages={subPages}
       />
     </>

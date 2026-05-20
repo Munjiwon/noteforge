@@ -42,6 +42,7 @@ export function CommentsPanel({
 }) {
   const [showResolved, setShowResolved] = useState(false);
   const [mentionsOnly, setMentionsOnly] = useState(false);
+  const [authorFilter, setAuthorFilter] = useState<string | "all">("all");
   const [sortDir, setSortDirState] = useState<"newest" | "oldest">("newest");
   useEffect(() => {
     try {
@@ -73,6 +74,9 @@ export function CommentsPanel({
   }
   const mentionsMe = (body: string) =>
     new RegExp(`@\\[u:${currentUserId}\\]`).test(body);
+  const authors = Array.from(
+    new Map(comments.map((c) => [c.author.id, c.author])).values(),
+  );
   const visible = tops
     .filter((t) => showResolved || !t.resolved)
     .filter((t) => {
@@ -80,6 +84,12 @@ export function CommentsPanel({
       if (mentionsMe(t.body)) return true;
       const replies = threads.get(t.threadId ?? t.id) ?? [];
       return replies.some((r) => mentionsMe(r.body));
+    })
+    .filter((t) => {
+      if (authorFilter === "all") return true;
+      if (t.author.id === authorFilter) return true;
+      const replies = threads.get(t.threadId ?? t.id) ?? [];
+      return replies.some((r) => r.author.id === authorFilter);
     })
     .sort((a, b) => {
       const da = new Date(a.createdAt).getTime();
@@ -121,6 +131,20 @@ export function CommentsPanel({
           >
             {sortDir === "newest" ? "↓ Newest" : "↑ Oldest"}
           </button>
+          {authors.length > 1 && (
+            <select
+              value={authorFilter}
+              onChange={(e) => setAuthorFilter(e.target.value)}
+              className="text-[10px] text-gray-500 border border-gray-200 rounded px-1 py-0.5 bg-transparent"
+            >
+              <option value="all">All authors</option>
+              {authors.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.name}
+                </option>
+              ))}
+            </select>
+          )}
           <button
             onClick={() => setMentionsOnly((v) => !v)}
             className={

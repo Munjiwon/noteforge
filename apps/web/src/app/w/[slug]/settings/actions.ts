@@ -75,6 +75,18 @@ export async function setWorkspaceBanner(slug: string, url: string | null) {
   revalidatePath(`/w/${slug}`, "layout");
 }
 
+export async function setWorkspaceDefaultWidth(
+  slug: string,
+  width: "normal" | "wide" | "full",
+) {
+  const ctx = await assertOwner(slug);
+  await prisma.workspace.update({
+    where: { id: ctx.workspace.id },
+    data: { defaultWidth: width },
+  });
+  revalidatePath(`/w/${slug}`, "layout");
+}
+
 export async function setWorkspaceDefaultFont(
   slug: string,
   font: "default" | "serif" | "mono",

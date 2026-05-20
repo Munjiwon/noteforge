@@ -290,6 +290,15 @@ export async function emptyTrash(slug: string) {
   revalidatePath(`/w/${slug}`, "layout");
 }
 
+export async function restoreAllFromTrash(slug: string) {
+  const ctx = await assertEditor(slug);
+  await prisma.page.updateMany({
+    where: { workspaceId: ctx.workspace.id, deletedAt: { not: null } },
+    data: { deletedAt: null },
+  });
+  revalidatePath(`/w/${slug}`, "layout");
+}
+
 export async function purgePage(slug: string, pageId: string) {
   const ctx = await assertEditor(slug);
   // Only allow purging items that are already in trash

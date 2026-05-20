@@ -166,6 +166,14 @@ export function PageStyleMenu({
               >
                 🆔 Copy page ID
               </button>
+              {status !== "published" && (
+                <button
+                  onClick={() => start(() => setPageStatus(slug, pageId, "published"))}
+                  className="w-full text-xs px-2 py-1 rounded border border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 flex items-center gap-1 justify-center mb-1"
+                >
+                  ✅ Mark as published
+                </button>
+              )}
               <div className="mb-1">
                 <label className="text-[10px] uppercase text-gray-500 px-1">
                   Status

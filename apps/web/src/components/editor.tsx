@@ -844,7 +844,7 @@ export function Editor({
                   }
                 },
               },
-              ...(["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "edit"] as const).map(
+              ...(["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "email", "edit"] as const).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {
                     summarize: { title: "AI · Summarize", emoji: "✨", color: "blue", aliases: ["ai", "summarize", "summary", "요약"] },
@@ -856,6 +856,7 @@ export function Editor({
                     explain: { title: "AI · Explain", emoji: "🔎", color: "blue", aliases: ["ai", "explain", "expand", "설명"] },
                     outline: { title: "AI · Outline", emoji: "🧱", color: "blue", aliases: ["ai", "outline", "toc", "목차"] },
                     keywords: { title: "AI · Keywords", emoji: "🏷", color: "yellow", aliases: ["ai", "keywords", "tags", "키워드"] },
+                    email: { title: "AI · Draft email", emoji: "✉️", color: "purple", aliases: ["ai", "email", "draft", "이메일"] },
                     edit: { title: "AI · Edit (custom)", emoji: "🪄", color: "red", aliases: ["ai", "edit", "custom", "transform"] },
                   }[action];
                   return {
