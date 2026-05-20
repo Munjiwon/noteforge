@@ -1098,10 +1098,20 @@ export function Sidebar({
               .map((t) => (
               <li
                 key={t.id}
-                className="group/row flex items-center gap-1 px-2 py-0.5 rounded hover:bg-black/5"
+                className={
+                  "group/row flex items-center gap-1 px-2 py-0.5 rounded hover:bg-black/5 " +
+                  (t.deletedAt &&
+                  Date.now() - new Date(t.deletedAt).getTime() >
+                    30 * 24 * 3600 * 1000
+                    ? "opacity-60"
+                    : "")
+                }
                 title={
                   t.deletedAt
-                    ? `Trashed ${new Date(t.deletedAt).toLocaleString()}`
+                    ? Date.now() - new Date(t.deletedAt).getTime() >
+                      30 * 24 * 3600 * 1000
+                      ? `Trashed ${new Date(t.deletedAt).toLocaleString()} · auto-deletes soon`
+                      : `Trashed ${new Date(t.deletedAt).toLocaleString()}`
                     : undefined
                 }
               >

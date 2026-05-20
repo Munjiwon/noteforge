@@ -108,6 +108,8 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Create a short hierarchical outline (markdown headings/bullets) of the following document. Reply with only the outline.\n\n${text}`,
   email: (text) =>
     `Write a concise, friendly email draft (3-5 sentences) about the following context. Include a subject line on the first line, blank line, then the body.\n\nContext:\n${text}`,
+  ideas: (text) =>
+    `Brainstorm 5 short, varied ideas inspired by the following context. Reply as a markdown bullet list, one idea per line, no preamble.\n\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

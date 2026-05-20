@@ -9,6 +9,7 @@ import {
   setPageSlug,
   setPageStatus,
   setPageWidth,
+  setPageWordGoal,
   togglePageLock,
   togglePagePinned,
   unarchivePage,
@@ -29,6 +30,7 @@ export function PageStyleMenu({
   expiresAt = null,
   pinned = false,
   status = null,
+  wordGoal = null,
   canEdit,
 }: {
   slug: string;
@@ -41,6 +43,7 @@ export function PageStyleMenu({
   expiresAt?: string | null;
   pinned?: boolean;
   status?: "draft" | "in_review" | "published" | null;
+  wordGoal?: number | null;
   canEdit: boolean;
 }) {
   const [open, setOpen] = useState(false);
@@ -151,6 +154,14 @@ export function PageStyleMenu({
               </button>
               <button
                 onClick={() => {
+                  window.open(window.location.href, "_blank", "noopener");
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+              >
+                🪟 Open in new window
+              </button>
+              <button
+                onClick={() => {
                   void navigator.clipboard?.writeText(pageId).then(() => {
                     const tip = document.createElement("div");
                     tip.textContent = "Page ID copied";
@@ -231,6 +242,7 @@ export function PageStyleMenu({
                 📦 Archive
               </button>
               <ExpiryRow slug={slug} pageId={pageId} initial={expiresAt} />
+              <WordGoalRow slug={slug} pageId={pageId} initial={wordGoal} />
               <SlugRow slug={slug} pageId={pageId} initial={customSlug} />
             </>
           )}
@@ -369,6 +381,50 @@ function ExpiryRow({
             ✕
           </button>
         )}
+      </div>
+    </div>
+  );
+}
+
+function WordGoalRow({
+  slug,
+  pageId,
+  initial,
+}: {
+  slug: string;
+  pageId: string;
+  initial: number | null;
+}) {
+  const [value, setValue] = useState<string>(initial ? String(initial) : "");
+  const [, start] = useTransition();
+  return (
+    <div className="mt-2 pt-2 border-t border-gray-100">
+      <label className="text-[10px] uppercase text-gray-500 px-1">
+        Word goal
+      </label>
+      <div className="flex items-center gap-1 mt-1">
+        <input
+          type="number"
+          min={0}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder="500"
+          className="flex-1 border border-gray-200 rounded px-2 py-1 text-xs outline-none focus:border-gray-400"
+        />
+        <button
+          onClick={() =>
+            start(() =>
+              setPageWordGoal(
+                slug,
+                pageId,
+                value && Number(value) > 0 ? Math.round(Number(value)) : null,
+              ),
+            )
+          }
+          className="text-[10px] px-2 py-1 rounded border border-gray-200 hover:bg-black/5"
+        >
+          Save
+        </button>
       </div>
     </div>
   );

@@ -72,6 +72,23 @@ export function PageOutline({ content }: { content: string }) {
 
   return (
     <>
+      {/* Print-only TOC at top of page */}
+      <section className="hidden print:block mb-6">
+        <h2 className="text-sm font-semibold uppercase tracking-wide mb-2">
+          Contents
+        </h2>
+        <ol className="text-sm space-y-1">
+          {headings.map((h) => (
+            <li
+              key={h.id}
+              style={{ paddingLeft: (h.level - 1) * 12 }}
+              className="list-none"
+            >
+              {h.text || "(untitled section)"}
+            </li>
+          ))}
+        </ol>
+      </section>
       {/* xl+ desktop: fixed sidebar outline */}
       <aside className="hidden xl:block fixed right-4 top-32 w-56 no-print">
         <div className="text-[10px] uppercase text-gray-500 mb-1 tracking-wide">

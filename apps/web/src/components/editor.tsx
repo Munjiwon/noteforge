@@ -587,7 +587,7 @@ export function Editor({
               {
                 title: "Embed",
                 subtext: "YouTube / Vimeo / Figma / Loom",
-                aliases: ["embed", "iframe", "video", "임베드"],
+                aliases: ["embed", "iframe", "video", "youtube", "vimeo", "twitter", "임베드"],
                 group: "Media",
                 icon: <span>▶</span>,
                 onItemClick: insert("embed", { url: "" }),
@@ -599,6 +599,22 @@ export function Editor({
                 group: "Basic blocks",
                 icon: <span>▾</span>,
                 onItemClick: insert("toggle", { open: true }),
+              },
+              {
+                title: "File / attachment",
+                subtext: "Upload a non-image file",
+                aliases: ["file", "attachment", "upload", "첨부"],
+                group: "Media",
+                icon: <span>📎</span>,
+                onItemClick: () => {
+                  const cur = editor.getTextCursorPosition().block;
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  editor.insertBlocks(
+                    [{ type: "file" } as any],
+                    cur,
+                    "after",
+                  );
+                },
               },
               {
                 title: "Bookmark",
@@ -844,7 +860,7 @@ export function Editor({
                   }
                 },
               },
-              ...(["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "email", "edit"] as const).map(
+              ...(["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "email", "edit"] as const).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {
                     summarize: { title: "AI · Summarize", emoji: "✨", color: "blue", aliases: ["ai", "summarize", "summary", "요약"] },
@@ -856,6 +872,7 @@ export function Editor({
                     explain: { title: "AI · Explain", emoji: "🔎", color: "blue", aliases: ["ai", "explain", "expand", "설명"] },
                     outline: { title: "AI · Outline", emoji: "🧱", color: "blue", aliases: ["ai", "outline", "toc", "목차"] },
                     keywords: { title: "AI · Keywords", emoji: "🏷", color: "yellow", aliases: ["ai", "keywords", "tags", "키워드"] },
+                    ideas: { title: "AI · Brainstorm 5 ideas", emoji: "💭", color: "yellow", aliases: ["ai", "ideas", "brainstorm", "아이디어"] },
                     email: { title: "AI · Draft email", emoji: "✉️", color: "purple", aliases: ["ai", "email", "draft", "이메일"] },
                     edit: { title: "AI · Edit (custom)", emoji: "🪄", color: "red", aliases: ["ai", "edit", "custom", "transform"] },
                   }[action];

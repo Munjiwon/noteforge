@@ -7,6 +7,7 @@ import {
   incrementPageView,
   renamePage,
   setPageIcon,
+  setPageStatus,
   togglePageLock,
   toggleFavorite,
 } from "@/app/w/[slug]/actions";
@@ -355,6 +356,7 @@ export function PageView({
             expiresAt={page.expiresAt ?? null}
             pinned={page.pinned ?? false}
             status={page.status ?? null}
+            wordGoal={info.wordGoal}
             canEdit={canChangeSettings}
           />
           <HistoryButton
@@ -407,14 +409,27 @@ export function PageView({
           className="flex-1 text-4xl font-bold outline-none bg-transparent placeholder-gray-300"
         />
         {page.status && (
-          <span
+          <button
+            onClick={() => {
+              if (readOnly) return;
+              const next =
+                page.status === "draft"
+                  ? "in_review"
+                  : page.status === "in_review"
+                    ? "published"
+                    : null;
+              start(() => setPageStatus(slug, page.id, next));
+            }}
+            disabled={readOnly}
+            title={readOnly ? undefined : "Click to advance status"}
             className={
               "text-[10px] uppercase tracking-wide px-2 py-0.5 rounded-full border " +
               (page.status === "published"
                 ? "bg-emerald-50 border-emerald-200 text-emerald-700"
                 : page.status === "in_review"
                   ? "bg-amber-50 border-amber-200 text-amber-700"
-                  : "bg-gray-100 border-gray-200 text-gray-600")
+                  : "bg-gray-100 border-gray-200 text-gray-600") +
+              (readOnly ? "" : " hover:opacity-80")
             }
           >
             {page.status === "in_review"
@@ -422,7 +437,7 @@ export function PageView({
               : page.status === "published"
                 ? "Published"
                 : "Draft"}
-          </span>
+          </button>
         )}
         {info.viewCount && info.viewCount >= 50 && (
           <span className="text-[10px] uppercase tracking-wide px-2 py-0.5 rounded-full border bg-orange-50 border-orange-200 text-orange-700">

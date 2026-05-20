@@ -42,7 +42,7 @@ export default async function WorkspaceHome({
   const weekAgo = new Date(Date.now() - 7 * 24 * 3600 * 1000);
 
   const activeSince = new Date(Date.now() - 5 * 60 * 1000);
-  const [recents, favorites, totals, dueCount, comingReminders, dateDatabases, recent7, activeMembers] = await Promise.all([
+  const [recents, favorites, totals, dueCount, comingReminders, dateDatabases, recent7, activeMembers, newest] = await Promise.all([
     prisma.page.findMany({
       where: {
         workspaceId: ctx.workspace.id,
@@ -147,6 +147,16 @@ export default async function WorkspaceHome({
       },
       take: 10,
       include: { user: { select: { name: true, color: true, avatarUrl: true } } },
+    }),
+    prisma.page.findMany({
+      where: {
+        workspaceId: ctx.workspace.id,
+        deletedAt: null,
+        isTemplate: false,
+      },
+      orderBy: { createdAt: "desc" },
+      take: 5,
+      select: { id: true, title: true, icon: true, kind: true, createdAt: true },
     }),
   ]);
   const [newPages7, editedPages7, newComments7] = recent7;
@@ -313,6 +323,30 @@ export default async function WorkspaceHome({
           ))}
         </Card>
       </section>
+
+      {newest.length > 0 && (
+        <section className="mb-8">
+          <h2 className="text-xs uppercase tracking-wide text-gray-500 mb-2">
+            Recently created
+          </h2>
+          <ul className="border border-gray-200 rounded-md divide-y divide-gray-100">
+            {newest.map((p) => (
+              <li key={p.id}>
+                <Link
+                  href={`/w/${params.slug}/p/${p.id}`}
+                  className="flex items-center gap-2 px-3 py-1.5 text-sm hover:bg-black/5"
+                >
+                  <span>{p.icon ?? (p.kind === "database" ? "📊" : "📄")}</span>
+                  <span className="flex-1 truncate">{p.title || "Untitled"}</span>
+                  <span className="text-[11px] text-gray-400">
+                    {timeAgo(p.createdAt)}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {upcoming.length > 0 && (
         <section className="mb-8">
