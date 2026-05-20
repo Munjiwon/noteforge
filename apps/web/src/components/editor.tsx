@@ -607,6 +607,17 @@ export function Editor({
                 onItemClick: insert("pageEmbed", { pageId: "" }),
               },
               {
+                title: "Highlight selection",
+                subtext: "Yellow background on the selected text",
+                aliases: ["highlight", "mark", "yellow", "형광펜"],
+                group: "Basic blocks",
+                icon: <span>🖍</span>,
+                onItemClick: () => {
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  (editor as any).toggleStyles?.({ backgroundColor: "yellow" });
+                },
+              },
+              {
                 title: "Checkbox",
                 subtext: "Single to-do checkbox",
                 aliases: ["check", "checkbox", "todo", "task", "할일", "체크박스"],
@@ -815,13 +826,14 @@ export function Editor({
                   }
                 },
               },
-              ...(["summarize", "one_liner", "translate", "improve", "continue", "explain", "keywords", "edit"] as const).map(
+              ...(["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "keywords", "edit"] as const).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {
                     summarize: { title: "AI · Summarize", emoji: "✨", color: "blue", aliases: ["ai", "summarize", "summary", "요약"] },
                     one_liner: { title: "AI · One-liner", emoji: "💡", color: "blue", aliases: ["ai", "concise", "tldr", "한줄"] },
                     translate: { title: "AI · Translate", emoji: "🌐", color: "purple", aliases: ["ai", "translate", "번역"] },
                     improve: { title: "AI · Improve writing", emoji: "📝", color: "green", aliases: ["ai", "improve", "rewrite", "교정"] },
+                    proofread: { title: "AI · Proofread", emoji: "✅", color: "green", aliases: ["ai", "proofread", "spellcheck", "맞춤법"] },
                     continue: { title: "AI · Continue writing", emoji: "➡️", color: "yellow", aliases: ["ai", "continue", "write more", "이어쓰기"] },
                     explain: { title: "AI · Explain", emoji: "🔎", color: "blue", aliases: ["ai", "explain", "expand", "설명"] },
                     keywords: { title: "AI · Keywords", emoji: "🏷", color: "yellow", aliases: ["ai", "keywords", "tags", "키워드"] },

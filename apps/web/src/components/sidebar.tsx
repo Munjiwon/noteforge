@@ -1121,6 +1121,17 @@ export function Sidebar({
 
       <div className="border-t border-black/10 p-3 space-y-2">
         <Link
+          href={`/w/${currentSlug}/inbox`}
+          className="flex items-center text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
+        >
+          📬 Inbox
+          {notifications.filter((n) => !n.read).length > 0 && (
+            <span className="ml-auto text-[10px] bg-red-500 text-white rounded-full px-1.5 min-w-[16px] text-center">
+              {notifications.filter((n) => !n.read).length}
+            </span>
+          )}
+        </Link>
+        <Link
           href={`/w/${currentSlug}/today`}
           className="block text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
         >

@@ -47,6 +47,7 @@ export function PageCover({
   readOnly: boolean;
 }) {
   const [open, setOpen] = useState(false);
+  const [urlEdit, setUrlEdit] = useState<string | null>(null);
   const [, start] = useTransition();
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -184,10 +185,7 @@ export function PageCover({
             🎲 Random
           </button>
           <button
-            onClick={() => {
-              const url = prompt("New cover URL", cover);
-              if (url && url.trim()) setCover(url.trim());
-            }}
+            onClick={() => setUrlEdit(cover ?? "")}
             className="text-xs bg-white/90 border border-gray-200 rounded px-2 py-1"
           >
             Change
@@ -211,6 +209,50 @@ export function PageCover({
             className="hidden"
             onChange={onPickFile}
           />
+        </div>
+      )}
+      {urlEdit !== null && (
+        <div
+          className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4"
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) setUrlEdit(null);
+          }}
+        >
+          <div className="bg-white rounded-lg shadow-2xl w-[480px] max-w-[92vw] p-4 space-y-2">
+            <div className="text-sm font-medium">Set cover URL</div>
+            <input
+              autoFocus
+              value={urlEdit}
+              onChange={(e) => setUrlEdit(e.target.value)}
+              placeholder="https://example.com/image.jpg"
+              className="w-full text-sm border border-gray-200 rounded px-2 py-1 outline-none focus:border-gray-400"
+            />
+            {urlEdit.trim() && !urlEdit.startsWith("gradient:") && (
+              <img
+                src={urlEdit}
+                alt="preview"
+                className="w-full h-32 object-cover rounded border border-gray-200"
+              />
+            )}
+            <div className="flex justify-end gap-2 text-xs">
+              <button
+                onClick={() => setUrlEdit(null)}
+                className="px-3 py-1 rounded hover:bg-black/5"
+              >
+                Cancel
+              </button>
+              <button
+                disabled={!urlEdit.trim()}
+                onClick={() => {
+                  setCover(urlEdit.trim());
+                  setUrlEdit(null);
+                }}
+                className="px-3 py-1 rounded bg-gray-900 text-white disabled:opacity-40"
+              >
+                Apply
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

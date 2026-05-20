@@ -102,6 +102,8 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Explain the following in plain language, expanding on terms and assumptions a beginner might miss. 2-4 sentences.\n\n${text}`,
   keywords: (text) =>
     `Extract 5-7 short keywords or topics that describe the following document. Reply as a comma-separated list, no quotes, no preamble.\n\n${text}`,
+  proofread: (text) =>
+    `Fix grammar, spelling, and punctuation in the following text. Change wording only when strictly necessary. Reply with the corrected text only.\n\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

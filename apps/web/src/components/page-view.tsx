@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState, useTransition } from "react";
 import {
+  createPage,
   incrementPageView,
   renamePage,
   setPageIcon,
@@ -25,6 +26,7 @@ import { ReminderButton, type PendingReminder } from "./reminder-button";
 import { Avatar } from "./avatar";
 import { ReadModeButton } from "./read-mode-button";
 import { ReadAloudButton } from "./read-aloud-button";
+import { ReadingProgress } from "./reading-progress";
 import { AskAiPanel } from "./ask-ai-panel";
 import type { PermItem } from "./share-button";
 
@@ -319,9 +321,9 @@ export function PageView({
           <button
             onClick={() => window.print()}
             className="text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5"
-            title="Print or save as PDF"
+            title="Print or save as PDF (⌘P → 'Save as PDF' destination)"
           >
-            🖨 Print
+            🖨 Print / PDF
           </button>
           <PageInfo info={info} workspaceSlug={slug} />
           <SubscribeButton slug={slug} pageId={page.id} subscribed={subscribed} />
@@ -407,6 +409,11 @@ export function PageView({
                 : "Draft"}
           </span>
         )}
+        {info.viewCount && info.viewCount >= 50 && (
+          <span className="text-[10px] uppercase tracking-wide px-2 py-0.5 rounded-full border bg-orange-50 border-orange-200 text-orange-700">
+            🔥 Popular · {info.viewCount}
+          </span>
+        )}
         {!readOnly && (
           <button
             onClick={() => start(() => toggleFavorite(slug, page.id))}
@@ -443,7 +450,7 @@ export function PageView({
         readOnly={readOnly}
       />
       {subPages.length > 0 && (
-        <SubPagesSection slug={slug} subPages={subPages} />
+        <SubPagesSection slug={slug} pageId={page.id} subPages={subPages} readOnly={readOnly} />
       )}
       <Editor
         pageId={page.id}
@@ -481,6 +488,7 @@ export function PageView({
           readOnly={readOnly}
         />
       </div>
+      <ReadingProgress />
       <AskAiPanel slug={slug} getPageText={() => extractText(page.content, title)} />
     </div>
   );
@@ -488,12 +496,17 @@ export function PageView({
 
 function SubPagesSection({
   slug,
+  pageId,
   subPages,
+  readOnly,
 }: {
   slug: string;
+  pageId: string;
   subPages: { id: string; title: string; icon: string | null; kind: string }[];
+  readOnly: boolean;
 }) {
   const [sort, setSort] = useState<"original" | "alpha">("original");
+  const [, startTx] = useTransition();
   const sorted =
     sort === "alpha"
       ? [...subPages].sort((a, b) =>
@@ -529,6 +542,17 @@ function SubPagesSection({
             </a>
           </li>
         ))}
+        {!readOnly && (
+          <li>
+            <button
+              onClick={() => startTx(() => createPage(slug, pageId))}
+              className="flex items-center gap-2 px-2 py-1 rounded text-sm text-gray-500 hover:bg-black/5 w-full text-left"
+            >
+              <span>+</span>
+              <span>Add sub-page</span>
+            </button>
+          </li>
+        )}
       </ul>
     </details>
   );
