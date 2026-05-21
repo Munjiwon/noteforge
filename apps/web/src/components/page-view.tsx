@@ -241,13 +241,27 @@ export function PageView({
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Scroll-to-top floating button on long pages.
+  // Scroll-to-top / scroll-to-bottom floating buttons on long pages.
   const [showTop, setShowTop] = useState(false);
+  const [showBottom, setShowBottom] = useState(false);
   useEffect(() => {
-    const onScroll = () => setShowTop(window.scrollY > 600);
+    const onScroll = () => {
+      const y = window.scrollY;
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      setShowTop(y > 600);
+      setShowBottom(h - y > 600);
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Tick once per minute so the relative "Last edited" timestamp stays fresh
+  // without forcing a full re-render of the editor body.
+  const [, setTickRef] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setTickRef((n) => n + 1), 60_000);
+    return () => clearInterval(id);
   }, []);
 
   // Apply device-wide style toggles on mount.
@@ -793,6 +807,20 @@ export function PageView({
           ↑ Top
         </button>
       )}
+      {showBottom && (
+        <button
+          onClick={() =>
+            window.scrollTo({
+              top: document.documentElement.scrollHeight,
+              behavior: "smooth",
+            })
+          }
+          className="fixed bottom-32 right-5 z-30 text-xs bg-gray-700 text-white rounded-full px-3 py-1.5 shadow-lg hover:opacity-90 no-print"
+          title="Scroll to bottom"
+        >
+          ↓ Bottom
+        </button>
+      )}
       {aiEnabled && (
         <AskAiPanel slug={slug} getPageText={() => extractText(page.content, title)} />
       )}
@@ -914,7 +942,9 @@ function relTime(iso: string): string {
   if (s < 3600) return `${Math.floor(s / 60)}m ago`;
   if (s < 86400) return `${Math.floor(s / 3600)}h ago`;
   if (s < 86400 * 7) return `${Math.floor(s / 86400)}d ago`;
-  return d.toLocaleDateString();
+  if (s < 86400 * 30) return `${Math.floor(s / (86400 * 7))}w ago`;
+  if (s < 86400 * 365) return `${Math.floor(s / (86400 * 30))}mo ago`;
+  return `${Math.floor(s / (86400 * 365))}y ago`;
 }
 
 function extractText(json: string, fallbackTitle: string): string {

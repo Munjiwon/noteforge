@@ -973,7 +973,7 @@ export function Editor({
                 },
               },
               ...(aiEnabled
-                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "sentiment", "next_steps", "critique", "agenda", "eli5", "pros_cons", "risks", "timeline", "faq", "counter", "hashtags", "headlines", "slug", "tweet_thread", "citations", "study_notes", "flashcards", "quiz", "persona", "swot", "release_notes", "objections", "decision_log", "user_stories", "test_cases", "rhyme", "lyrics", "regex", "sql", "commit_msg", "standup", "retro", "jargon", "mind_map", "elevator_pitch", "job_desc", "follow_up", "sub_headings", "anti_pattern", "dictionary", "expand_acronyms", "star_method", "key_takeaways", "email_reply", "cover_letter", "pre_publish", "tagline", "metaphor", "press_release", "interview_questions", "linkedin_post", "blog_outline", "testimonials", "contrarian", "dialog", "seo_keywords", "news_headline", "recommendation_letter", "scenario", "risk_matrix", "api_spec", "raci", "value_prop", "cta", "landing_hero", "onboarding_email", "insight_3", "dictation_clean", "clean_formatting", "inverse_pyramid", "contrast_vs", "buyer_persona", "feature_benefit", "learn_vocab", "edit"] as const)
+                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "sentiment", "next_steps", "critique", "agenda", "eli5", "pros_cons", "risks", "timeline", "faq", "counter", "hashtags", "headlines", "slug", "tweet_thread", "citations", "study_notes", "flashcards", "quiz", "persona", "swot", "release_notes", "objections", "decision_log", "user_stories", "test_cases", "rhyme", "lyrics", "regex", "sql", "commit_msg", "standup", "retro", "jargon", "mind_map", "elevator_pitch", "job_desc", "follow_up", "sub_headings", "anti_pattern", "dictionary", "expand_acronyms", "star_method", "key_takeaways", "email_reply", "cover_letter", "pre_publish", "tagline", "metaphor", "press_release", "interview_questions", "linkedin_post", "blog_outline", "testimonials", "contrarian", "dialog", "seo_keywords", "news_headline", "recommendation_letter", "scenario", "risk_matrix", "api_spec", "raci", "value_prop", "cta", "landing_hero", "onboarding_email", "insight_3", "dictation_clean", "clean_formatting", "inverse_pyramid", "contrast_vs", "buyer_persona", "feature_benefit", "learn_vocab", "business_canvas", "competitive_analysis", "postmortem", "case_study", "customer_interview", "release_tweet", "job_offer_email", "spec_template", "okrs", "onboarding_checklist", "prd", "edit"] as const)
                 : ([] as const)).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {
@@ -1070,6 +1070,17 @@ export function Editor({
                     buyer_persona: { title: "AI · Buyer persona", emoji: "🛒", color: "blue", aliases: ["ai", "buyer", "persona", "구매자"] },
                     feature_benefit: { title: "AI · Feature → Benefit", emoji: "🎁", color: "green", aliases: ["ai", "feature", "benefit", "이익"] },
                     learn_vocab: { title: "AI · Vocab study list", emoji: "🅰", color: "yellow", aliases: ["ai", "vocab", "vocabulary", "단어"] },
+                    business_canvas: { title: "AI · Lean canvas", emoji: "🧩", color: "blue", aliases: ["ai", "canvas", "business", "사업"] },
+                    competitive_analysis: { title: "AI · Competitive analysis", emoji: "🥊", color: "red", aliases: ["ai", "competitor", "compare", "경쟁사"] },
+                    postmortem: { title: "AI · Incident postmortem", emoji: "🚨", color: "red", aliases: ["ai", "postmortem", "incident", "장애회고"] },
+                    case_study: { title: "AI · Case study", emoji: "📖", color: "blue", aliases: ["ai", "case", "study", "사례"] },
+                    customer_interview: { title: "AI · Customer interview Qs", emoji: "🎤", color: "purple", aliases: ["ai", "customer", "interview", "고객인터뷰"] },
+                    release_tweet: { title: "AI · Release tweet", emoji: "🐤", color: "blue", aliases: ["ai", "release", "tweet", "릴리스트윗"] },
+                    job_offer_email: { title: "AI · Job offer email", emoji: "📨", color: "green", aliases: ["ai", "offer", "email", "오퍼"] },
+                    spec_template: { title: "AI · Feature spec", emoji: "📐", color: "blue", aliases: ["ai", "spec", "feature", "명세"] },
+                    okrs: { title: "AI · Quarterly OKRs", emoji: "🎯", color: "green", aliases: ["ai", "okrs", "objective", "분기"] },
+                    onboarding_checklist: { title: "AI · Onboarding checklist", emoji: "📋", color: "blue", aliases: ["ai", "onboarding", "newhire", "온보딩"] },
+                    prd: { title: "AI · PRD skeleton", emoji: "📑", color: "purple", aliases: ["ai", "prd", "spec", "기획서"] },
                     edit: { title: "AI · Edit (custom)", emoji: "🪄", color: "red", aliases: ["ai", "edit", "custom", "transform"] },
                   }[action];
                   return {

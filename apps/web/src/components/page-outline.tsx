@@ -37,6 +37,7 @@ export function PageOutline({ content }: { content: string }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [filter, setFilter] = useState("");
   const [maxDepth, setMaxDepth] = useState<1 | 2 | 3>(3);
+  const [activeId, setActiveId] = useState<string | null>(null);
   useEffect(() => {
     try {
       const d = localStorage.getItem("noteforge:outline-depth");
@@ -51,6 +52,35 @@ export function PageOutline({ content }: { content: string }) {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
+  // Scroll-spy: as the user scrolls, highlight the heading whose block is
+  // closest to the top of the viewport.
+  useEffect(() => {
+    if (allHeadings.length === 0) return;
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        let best: { id: string; top: number } | null = null;
+        for (const h of allHeadings) {
+          const el = document.querySelector(`[data-id="${h.id}"]`) as
+            | HTMLElement
+            | null;
+          if (!el) continue;
+          const top = el.getBoundingClientRect().top;
+          if (top > 120) continue;
+          if (!best || top > best.top) best = { id: h.id, top };
+        }
+        setActiveId(best?.id ?? allHeadings[0]?.id ?? null);
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [allHeadings]);
   const headings = useMemo(() => {
     const q = filter.trim().toLowerCase();
     return allHeadings
@@ -93,24 +123,35 @@ export function PageOutline({ content }: { content: string }) {
 
   const list = (
     <nav className="text-xs space-y-1 border-l-2 border-gray-200 pl-2">
-      {headings.map((h) => (
-        <a
-          key={h.id}
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
-            setMobileOpen(false);
-            const el = document.querySelector(
-              `[data-id="${h.id}"]`,
-            ) as HTMLElement | null;
-            if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-          }}
-          className="block text-gray-600 hover:text-blue-600 truncate"
-          style={{ paddingLeft: (h.level - 1) * 10 }}
-        >
-          {h.text || "Untitled heading"}
-        </a>
-      ))}
+      {headings.map((h) => {
+        const active = h.id === activeId;
+        return (
+          <a
+            key={h.id}
+            href={`#${h.id}`}
+            onClick={(e) => {
+              e.preventDefault();
+              setMobileOpen(false);
+              const el = document.querySelector(
+                `[data-id="${h.id}"]`,
+              ) as HTMLElement | null;
+              if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+              try {
+                history.replaceState(null, "", `#${h.id}`);
+              } catch {}
+            }}
+            className={
+              "block truncate " +
+              (active
+                ? "text-blue-600 font-medium border-l-2 -ml-[2px] pl-[6px] border-blue-500"
+                : "text-gray-600 hover:text-blue-600")
+            }
+            style={{ paddingLeft: (h.level - 1) * 10 }}
+          >
+            {h.text || "Untitled heading"}
+          </a>
+        );
+      })}
     </nav>
   );
 
