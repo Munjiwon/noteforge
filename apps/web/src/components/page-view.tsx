@@ -286,6 +286,9 @@ export function PageView({
       "hide-tags",
       "hide-subpages",
       "hide-backlinks",
+      "breadcrumb-sticky",
+      "sidebar-hide-icons",
+      "sidebar-group-by-kind",
     ];
     try {
       for (const k of toggles) {
@@ -512,7 +515,7 @@ export function PageView({
           </div>
         )}
         {ancestors && ancestors.length > 0 && (
-          <nav className="mb-2 flex items-center gap-1 text-xs text-gray-500 no-print">
+          <nav className="nf-breadcrumb mb-2 flex items-center gap-1 text-xs text-gray-500 no-print">
             {ancestors.map((a) => (
               <span key={a.id} className="inline-flex items-center gap-1">
                 <a
@@ -567,6 +570,21 @@ export function PageView({
           </div>
         ) : null}
         <div className="flex flex-wrap justify-end gap-1.5 mb-2 no-print">
+          {backlinks.length > 0 && (
+            <a
+              href="#backlinks"
+              onClick={(e) => {
+                e.preventDefault();
+                document
+                  .querySelector("[data-page-backlinks]")
+                  ?.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
+              className="text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 text-gray-600"
+              title={`${backlinks.length} backlink${backlinks.length === 1 ? "" : "s"}`}
+            >
+              🔗 {backlinks.length}
+            </a>
+          )}
           <ReadModeButton />
           <ReadAloudButton getText={() => extractText(page.content, title)} />
           <button

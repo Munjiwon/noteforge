@@ -602,6 +602,9 @@ export function PageStyleMenu({
                       { key: "hide-tags", label: "Hide tags" },
                       { key: "hide-subpages", label: "Hide sub-pages" },
                       { key: "hide-backlinks", label: "Hide backlinks" },
+                      { key: "breadcrumb-sticky", label: "Sticky breadcrumb" },
+                      { key: "sidebar-hide-icons", label: "No tree icons" },
+                      { key: "sidebar-group-by-kind", label: "Group by kind" },
                     ] as const
                   ).map((t) => (
                     <button

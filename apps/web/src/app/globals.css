@@ -374,6 +374,32 @@ body.hide-backlinks [data-page-backlinks] {
   display: none !important;
 }
 
+/* Breadcrumb sticky — pin the ancestor breadcrumb nav to the top of the
+   viewport so it stays visible while scrolling deep pages. */
+body.breadcrumb-sticky nav.nf-breadcrumb {
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  background: var(--page-bg, #ffffff);
+  backdrop-filter: blur(4px);
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+.dark body.breadcrumb-sticky nav.nf-breadcrumb {
+  background: #18181b;
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Sidebar – hide kind/icon prefixes when the user wants a denser tree. */
+body.sidebar-hide-icons aside .nf-page-icon {
+  display: none !important;
+}
+
 body.comments-compact .comment-item {
   padding-top: 0.25rem !important;
   padding-bottom: 0.25rem !important;

@@ -155,7 +155,23 @@ export function Sidebar({
     }
     return pages.filter((p) => matches.has(p.id));
   }, [pages, filterQ]);
-  const tree = useMemo(() => toTree(filteredPages), [filteredPages]);
+  const [groupByKind, setGroupByKind] = useState(false);
+  useEffect(() => {
+    const sync = () =>
+      setGroupByKind(document.body.classList.contains("sidebar-group-by-kind"));
+    sync();
+    const obs = new MutationObserver(sync);
+    obs.observe(document.body, { attributes: true, attributeFilter: ["class"] });
+    return () => obs.disconnect();
+  }, []);
+  const orderedForTree = useMemo(() => {
+    if (!groupByKind) return filteredPages;
+    // Databases first, then docs; preserve relative position within each group.
+    const dbs = filteredPages.filter((p) => p.kind === "database");
+    const docs = filteredPages.filter((p) => p.kind !== "database");
+    return [...dbs, ...docs];
+  }, [filteredPages, groupByKind]);
+  const tree = useMemo(() => toTree(orderedForTree), [orderedForTree]);
   const [open, setOpen] = useState<Set<string>>(new Set());
   // When filtering, auto-expand all matched nodes.
   useEffect(() => {
@@ -558,7 +574,7 @@ export function Sidebar({
             onMouseLeave={cancelPreview}
             className="flex-1 truncate text-sm py-0.5 flex items-center relative"
           >
-            <span className="mr-1">
+            <span className="mr-1 nf-page-icon">
               {node.icon ?? (node.kind === "database" ? "📊" : "📄")}
             </span>
             <span className="truncate flex-1">
