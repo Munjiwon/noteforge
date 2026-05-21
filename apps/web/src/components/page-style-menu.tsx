@@ -664,6 +664,7 @@ export function PageStyleMenu({
                       { key: "sidebar-hide-icons", label: "No tree icons" },
                       { key: "sidebar-group-by-kind", label: "Group by kind" },
                       { key: "hide-outline", label: "Hide outline" },
+                      { key: "hide-trash", label: "Hide trash" },
                     ] as const
                   ).map((t) => (
                     <button

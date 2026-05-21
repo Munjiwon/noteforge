@@ -318,6 +318,7 @@ export function PageView({
       "sidebar-hide-icons",
       "sidebar-group-by-kind",
       "hide-outline",
+      "hide-trash",
     ];
     try {
       for (const k of toggles) {

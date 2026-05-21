@@ -1172,7 +1172,7 @@ export function Sidebar({
       )}
 
       {trashed.length > 0 && (
-        <details className="border-t border-black/10 px-3 py-2 group">
+        <details className="nf-sidebar-trash border-t border-black/10 px-3 py-2 group">
           <summary className="text-xs uppercase tracking-wide text-gray-500 cursor-pointer flex items-center gap-1 list-none">
             <span className="text-gray-400 group-open:rotate-90 transition inline-block">▸</span>
             {t("🗑 Trash", lang)}
@@ -1724,8 +1724,20 @@ function RecentVisited({ currentSlug }: { currentSlug: string }) {
   if (rows.length === 0) return null;
   return (
     <div className="px-2 pt-2 pb-1">
-      <div className="text-[10px] uppercase tracking-wide text-gray-400 px-1 mb-0.5">
-        Recently visited (this device)
+      <div className="flex items-center justify-between text-[10px] uppercase tracking-wide text-gray-400 px-1 mb-0.5">
+        <span>Recently visited (this device)</span>
+        <button
+          onClick={() => {
+            try {
+              localStorage.removeItem("noteforge:recents");
+              window.dispatchEvent(new CustomEvent("noteforge:recents-changed"));
+            } catch {}
+          }}
+          className="hover:text-gray-700 normal-case tracking-normal text-[10px]"
+          title="Forget recent history"
+        >
+          ✕
+        </button>
       </div>
       <ul className="space-y-0.5">
         {rows.map((r) => (

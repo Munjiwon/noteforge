@@ -406,6 +406,25 @@ body.hide-outline .xl\:hidden.fixed.bottom-20.right-5 {
   display: none !important;
 }
 
+/* Hide the Trash section in the sidebar. */
+body.hide-trash .nf-sidebar-trash {
+  display: none !important;
+}
+
+/* Print page numbers in the footer (browser-dependent). */
+@page {
+  margin: 18mm 14mm 18mm 14mm;
+}
+@media print {
+  @page {
+    @bottom-center {
+      content: counter(page) " / " counter(pages);
+      font-size: 9pt;
+      color: #666;
+    }
+  }
+}
+
 body.comments-compact .comment-item {
   padding-top: 0.25rem !important;
   padding-bottom: 0.25rem !important;
