@@ -261,6 +261,25 @@ export function PageStyleMenu({
                 ⎘ Duplicate (no children)
               </button>
               <button
+                onClick={async () => {
+                  if (
+                    !confirm(
+                      "Mark every open comment on this page as resolved?",
+                    )
+                  )
+                    return;
+                  setOpen(false);
+                  const { resolveAllComments } = await import(
+                    "@/app/w/[slug]/comment-actions"
+                  );
+                  await resolveAllComments(slug, pageId);
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+                title="Resolve every open comment on this page in one go"
+              >
+                ✅ Mark all comments resolved
+              </button>
+              <button
                 onClick={() => {
                   window.open(`/api/page/${pageId}`, "_blank", "noopener");
                 }}
@@ -630,6 +649,7 @@ export function PageStyleMenu({
                       { key: "breadcrumb-sticky", label: "Sticky breadcrumb" },
                       { key: "sidebar-hide-icons", label: "No tree icons" },
                       { key: "sidebar-group-by-kind", label: "Group by kind" },
+                      { key: "hide-outline", label: "Hide outline" },
                     ] as const
                   ).map((t) => (
                     <button

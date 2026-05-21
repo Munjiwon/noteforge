@@ -216,6 +216,34 @@ export function PageView({
       );
   }, [page.id]);
 
+  // ⌘⇧? — jump to a random doc in the workspace (workspace shuffle).
+  useEffect(() => {
+    const onKey = async (e: KeyboardEvent) => {
+      const mod = e.metaKey || e.ctrlKey;
+      if (!mod || !e.shiftKey) return;
+      if (e.key !== "?" && e.key !== "/") return;
+      const t = e.target as HTMLElement | null;
+      const inForm =
+        t &&
+        (t.tagName === "INPUT" ||
+          t.tagName === "TEXTAREA" ||
+          t.isContentEditable);
+      if (inForm) return;
+      e.preventDefault();
+      try {
+        const res = await fetch(
+          `/api/workspace/random?slug=${encodeURIComponent(slug)}`,
+        );
+        if (!res.ok) return;
+        const data = (await res.json()) as { id: string | null };
+        if (data.id && data.id !== page.id)
+          window.location.href = `/w/${slug}/p/${data.id}`;
+      } catch {}
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [slug, page.id]);
+
   // ⌘⇧J — jump to the workspace Inbox (the page slugged 'inbox').
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -289,6 +317,7 @@ export function PageView({
       "breadcrumb-sticky",
       "sidebar-hide-icons",
       "sidebar-group-by-kind",
+      "hide-outline",
     ];
     try {
       for (const k of toggles) {

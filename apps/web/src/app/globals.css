@@ -400,6 +400,12 @@ body.sidebar-hide-icons aside .nf-page-icon {
   display: none !important;
 }
 
+/* Hide the desktop outline panel + its mobile floating button when toggled. */
+body.hide-outline aside.fixed.right-4,
+body.hide-outline .xl\:hidden.fixed.bottom-20.right-5 {
+  display: none !important;
+}
+
 body.comments-compact .comment-item {
   padding-top: 0.25rem !important;
   padding-bottom: 0.25rem !important;
