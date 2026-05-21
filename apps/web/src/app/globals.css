@@ -176,6 +176,121 @@ body.read-mode main {
   color: rgba(255, 255, 255, 0.25);
 }
 
+/* Heading numbers — '1.', '1.1.', '1.1.1.' prefixes via CSS counters. */
+body.heading-numbers main {
+  counter-reset: nf-h1 nf-h2 nf-h3;
+}
+body.heading-numbers .bn-editor h1 {
+  counter-reset: nf-h2 nf-h3;
+  counter-increment: nf-h1;
+}
+body.heading-numbers .bn-editor h1::after {
+  content: "";
+}
+body.heading-numbers .bn-editor h2 {
+  counter-reset: nf-h3;
+  counter-increment: nf-h2;
+}
+body.heading-numbers .bn-editor h3 {
+  counter-increment: nf-h3;
+}
+body.heading-numbers .bn-editor h1::before {
+  content: counter(nf-h1) ". ";
+  position: static;
+  opacity: 1;
+  color: inherit;
+  margin-right: 0.25rem;
+}
+body.heading-numbers .bn-editor h2::before {
+  content: counter(nf-h1) "." counter(nf-h2) " ";
+  position: static;
+  opacity: 1;
+  color: inherit;
+  margin-right: 0.25rem;
+}
+body.heading-numbers .bn-editor h3::before {
+  content: counter(nf-h1) "." counter(nf-h2) "." counter(nf-h3) " ";
+  position: static;
+  opacity: 1;
+  color: inherit;
+  margin-right: 0.25rem;
+}
+
+/* Bionic reading — bolden the leading half of every word. Implemented by
+   targeting the editor's text spans; rough but effective for reading aid. */
+body.bionic .bn-editor p,
+body.bionic .bn-editor li,
+body.bionic .bn-editor h1,
+body.bionic .bn-editor h2,
+body.bionic .bn-editor h3 {
+  font-feature-settings: "ss01";
+}
+body.bionic .bn-editor span[data-content-type] {
+  position: relative;
+}
+body.bionic .bn-editor p::first-letter,
+body.bionic .bn-editor li::first-letter {
+  font-weight: 700;
+}
+
+/* Zen mode — go beyond read-mode by also hiding the footer/backlinks/comments. */
+body.zen-mode aside,
+body.zen-mode .no-print,
+body.zen-mode [data-comments-panel],
+body.zen-mode .bn-side-menu,
+body.zen-mode .bn-formatting-toolbar,
+body.zen-mode .nf-print-hide {
+  display: none !important;
+}
+body.zen-mode .read-mode-keep {
+  display: revert !important;
+}
+body.zen-mode main {
+  width: 100% !important;
+  margin: 0 auto !important;
+  padding: 2rem 1rem !important;
+}
+
+/* Highlight all links — make every anchor inside the editor blue + underlined. */
+body.highlight-links .bn-editor a {
+  color: #1d4ed8 !important;
+  text-decoration: underline !important;
+}
+.dark body.highlight-links .bn-editor a {
+  color: #60a5fa !important;
+}
+
+/* Dyslexia-friendly typography — looser letter/word/line spacing. */
+body.dyslexia .bn-editor {
+  letter-spacing: 0.04em;
+  word-spacing: 0.12em;
+  line-height: 1.85;
+}
+
+/* Justified body text inside the editor. */
+body.justify-text .bn-editor p,
+body.justify-text .bn-editor li {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+/* Focus mode — fade out all blocks except the one containing the caret. */
+body.focus-mode .bn-block:not(.bn-focused) {
+  opacity: 0.25;
+  transition: opacity 180ms ease;
+}
+body.focus-mode .bn-block.bn-focused {
+  opacity: 1;
+}
+
+/* Compact DB table rows. */
+body.db-compact table td,
+body.db-compact table th {
+  padding-top: 0.15rem !important;
+  padding-bottom: 0.15rem !important;
+  font-size: 12px !important;
+}
+
 body.comments-compact .comment-item {
   padding-top: 0.25rem !important;
   padding-bottom: 0.25rem !important;

@@ -403,6 +403,50 @@ export function PageStyleMenu({
               </button>
               <button
                 onClick={() => {
+                  setOpen(false);
+                  // give the menu a tick to close before opening the print dialog
+                  setTimeout(() => window.print(), 50);
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+              >
+                🖨 Print now
+              </button>
+              <div className="mb-1 mt-1">
+                <label className="text-[10px] uppercase text-gray-500 px-1">
+                  Reading toggles
+                </label>
+                <div className="grid grid-cols-2 gap-1 mt-1">
+                  {(
+                    [
+                      { key: "heading-numbers", label: "# numbers" },
+                      { key: "bionic", label: "Bionic" },
+                      { key: "zen-mode", label: "Zen mode" },
+                      { key: "highlight-links", label: "Highlight links" },
+                      { key: "dyslexia", label: "Dyslexia" },
+                      { key: "justify-text", label: "Justify" },
+                    ] as const
+                  ).map((t) => (
+                    <button
+                      key={t.key}
+                      onClick={() => {
+                        try {
+                          const lsKey = `noteforge:${t.key}`;
+                          const cur = localStorage.getItem(lsKey) === "1";
+                          if (cur) localStorage.removeItem(lsKey);
+                          else localStorage.setItem(lsKey, "1");
+                          document.body.classList.toggle(t.key, !cur);
+                        } catch {}
+                      }}
+                      className="text-[10px] px-1.5 py-0.5 rounded border border-gray-200 hover:bg-black/5 text-left"
+                    >
+                      {document.body.classList.contains(t.key) ? "✓ " : ""}
+                      {t.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <button
+                onClick={() => {
                   const editor =
                     document.querySelector(".bn-container") ||
                     document.querySelector(".bn-editor");

@@ -171,6 +171,23 @@ export function DbControls({
         )}
       </div>
       )}
+      {showGroupAndColumns && (
+        <button
+          onClick={() => {
+            try {
+              const k = "noteforge:db-compact";
+              const cur = localStorage.getItem(k) === "1";
+              if (cur) localStorage.removeItem(k);
+              else localStorage.setItem(k, "1");
+              document.body.classList.toggle("db-compact", !cur);
+            } catch {}
+          }}
+          className="px-2 py-1 rounded hover:bg-black/5"
+          title="Toggle compact row spacing in tables"
+        >
+          ⥯ Density
+        </button>
+      )}
     </div>
   );
 }

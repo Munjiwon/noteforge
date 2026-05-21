@@ -1249,6 +1249,7 @@ export function Sidebar({
             </span>
           ) : null}
         </Link>
+        <RecentVisited currentSlug={currentSlug} />
         <Link
           href={`/w/${currentSlug}/tasks`}
           className="block text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
@@ -1340,5 +1341,48 @@ export function Sidebar({
       />
     </aside>
     </>
+  );
+}
+
+function RecentVisited({ currentSlug }: { currentSlug: string }) {
+  type Rec = { id: string; title: string; icon: string | null; slug: string; ts: number };
+  const [rows, setRows] = useState<Rec[]>([]);
+  useEffect(() => {
+    const load = () => {
+      try {
+        const arr: Rec[] = JSON.parse(
+          localStorage.getItem("noteforge:recents") || "[]",
+        );
+        setRows(arr.filter((r) => r.slug === currentSlug).slice(0, 5));
+      } catch {
+        setRows([]);
+      }
+    };
+    load();
+    const handler = () => load();
+    window.addEventListener("noteforge:recents-changed", handler);
+    return () => window.removeEventListener("noteforge:recents-changed", handler);
+  }, [currentSlug]);
+  if (rows.length === 0) return null;
+  return (
+    <div className="px-2 pt-2 pb-1">
+      <div className="text-[10px] uppercase tracking-wide text-gray-400 px-1 mb-0.5">
+        Recently visited (this device)
+      </div>
+      <ul className="space-y-0.5">
+        {rows.map((r) => (
+          <li key={r.id}>
+            <Link
+              href={`/w/${r.slug}/p/${r.id}`}
+              className="block text-xs text-gray-600 hover:text-gray-900 px-2 py-0.5 rounded hover:bg-black/5 truncate"
+              title={r.title}
+            >
+              <span className="mr-1">{r.icon ?? "📄"}</span>
+              {r.title || "Untitled"}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

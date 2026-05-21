@@ -250,14 +250,35 @@ export function PageView({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Apply device-wide style toggles (comments-compact / print-no-comments).
+  // Apply device-wide style toggles on mount.
   useEffect(() => {
+    const toggles = [
+      "comments-compact",
+      "print-no-comments",
+      "heading-numbers",
+      "bionic",
+      "zen-mode",
+      "highlight-links",
+      "dyslexia",
+      "justify-text",
+      "db-compact",
+    ];
     try {
-      if (localStorage.getItem("noteforge:comments-compact") === "1")
-        document.body.classList.add("comments-compact");
-      if (localStorage.getItem("noteforge:print-no-comments") === "1")
-        document.body.classList.add("print-no-comments");
+      for (const k of toggles) {
+        if (localStorage.getItem(`noteforge:${k}`) === "1")
+          document.body.classList.add(k);
+      }
     } catch {}
+    // ⌘⇧F — toggle focus mode (only this paragraph fully opaque).
+    const onKey = (e: KeyboardEvent) => {
+      const mod = e.metaKey || e.ctrlKey;
+      if (!mod || !e.shiftKey) return;
+      if (e.key !== "F" && e.key !== "f") return;
+      e.preventDefault();
+      document.body.classList.toggle("focus-mode");
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, []);
 
   // Resume reading — remember scroll position per page, restore on next visit.
@@ -290,7 +311,8 @@ export function PageView({
   }, [page.id]);
 
   // "Last viewed" tooltip — store first time the user opens this page on this
-  // device and show it on the title hover.
+  // device and show it on the title hover. Also push to a 'recents' list the
+  // sidebar can render so navigation feels persistent across refreshes.
   const [lastViewed, setLastViewed] = useState<string | null>(null);
   useEffect(() => {
     const key = `lastViewed:${page.id}`;
@@ -299,7 +321,18 @@ export function PageView({
       if (prev) setLastViewed(prev);
       localStorage.setItem(key, new Date().toISOString());
     } catch {}
-  }, [page.id]);
+    try {
+      const k = "noteforge:recents";
+      const arr: { id: string; title: string; icon: string | null; slug: string; ts: number }[] =
+        JSON.parse(localStorage.getItem(k) || "[]");
+      const next = [
+        { id: page.id, title: page.title || "Untitled", icon: page.icon, slug, ts: Date.now() },
+        ...arr.filter((x) => x.id !== page.id),
+      ].slice(0, 12);
+      localStorage.setItem(k, JSON.stringify(next));
+      window.dispatchEvent(new CustomEvent("noteforge:recents-changed"));
+    } catch {}
+  }, [page.id, page.title, page.icon, slug]);
 
   // ⌘⇧. — wrap the current selection in an Editor-style blockquote prefix.
   useEffect(() => {
