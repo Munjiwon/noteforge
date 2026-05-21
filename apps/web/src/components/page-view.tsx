@@ -250,6 +250,75 @@ export function PageView({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Apply device-wide style toggles (comments-compact / print-no-comments).
+  useEffect(() => {
+    try {
+      if (localStorage.getItem("noteforge:comments-compact") === "1")
+        document.body.classList.add("comments-compact");
+      if (localStorage.getItem("noteforge:print-no-comments") === "1")
+        document.body.classList.add("print-no-comments");
+    } catch {}
+  }, []);
+
+  // Resume reading — remember scroll position per page, restore on next visit.
+  useEffect(() => {
+    const key = `scroll:${page.id}`;
+    try {
+      const v = localStorage.getItem(key);
+      if (v && !window.location.hash) {
+        const y = parseInt(v, 10);
+        if (Number.isFinite(y) && y > 50) {
+          requestAnimationFrame(() => window.scrollTo({ top: y }));
+        }
+      }
+    } catch {}
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        try {
+          localStorage.setItem(key, String(Math.round(window.scrollY)));
+        } catch {}
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [page.id]);
+
+  // "Last viewed" tooltip — store first time the user opens this page on this
+  // device and show it on the title hover.
+  const [lastViewed, setLastViewed] = useState<string | null>(null);
+  useEffect(() => {
+    const key = `lastViewed:${page.id}`;
+    try {
+      const prev = localStorage.getItem(key);
+      if (prev) setLastViewed(prev);
+      localStorage.setItem(key, new Date().toISOString());
+    } catch {}
+  }, [page.id]);
+
+  // ⌘⇧. — wrap the current selection in an Editor-style blockquote prefix.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const mod = e.metaKey || e.ctrlKey;
+      if (!mod || !e.shiftKey) return;
+      if (e.key !== "." && e.key !== ">") return;
+      const sel = window.getSelection?.();
+      const text = sel?.toString().trim();
+      if (!text) return;
+      e.preventDefault();
+      try {
+        document.execCommand("insertText", false, `> ${text}\n`);
+      } catch {}
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   // Auto-scroll to anchored block (?b) or comment (?c)
   useEffect(() => {
     const u = new URL(window.location.href);
@@ -494,6 +563,11 @@ export function PageView({
           }}
           disabled={readOnly}
           placeholder="Untitled"
+          title={
+            lastViewed
+              ? `Last viewed ${new Date(lastViewed).toLocaleString()}`
+              : "First time viewing on this device"
+          }
           className="flex-1 text-4xl font-bold outline-none bg-transparent placeholder-gray-300"
         />
         {page.status && (

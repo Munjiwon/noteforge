@@ -973,7 +973,7 @@ export function Editor({
                 },
               },
               ...(aiEnabled
-                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "sentiment", "next_steps", "critique", "agenda", "eli5", "pros_cons", "risks", "timeline", "faq", "counter", "hashtags", "headlines", "slug", "tweet_thread", "citations", "study_notes", "flashcards", "quiz", "persona", "swot", "release_notes", "objections", "decision_log", "user_stories", "test_cases", "rhyme", "lyrics", "regex", "sql", "commit_msg", "standup", "retro", "jargon", "mind_map", "elevator_pitch", "job_desc", "follow_up", "edit"] as const)
+                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "sentiment", "next_steps", "critique", "agenda", "eli5", "pros_cons", "risks", "timeline", "faq", "counter", "hashtags", "headlines", "slug", "tweet_thread", "citations", "study_notes", "flashcards", "quiz", "persona", "swot", "release_notes", "objections", "decision_log", "user_stories", "test_cases", "rhyme", "lyrics", "regex", "sql", "commit_msg", "standup", "retro", "jargon", "mind_map", "elevator_pitch", "job_desc", "follow_up", "sub_headings", "anti_pattern", "dictionary", "expand_acronyms", "edit"] as const)
                 : ([] as const)).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {
@@ -1033,6 +1033,10 @@ export function Editor({
                     elevator_pitch: { title: "AI · Elevator pitch", emoji: "🚀", color: "green", aliases: ["ai", "pitch", "elevator", "피치"] },
                     job_desc: { title: "AI · Job description", emoji: "💼", color: "purple", aliases: ["ai", "job", "jd", "직무"] },
                     follow_up: { title: "AI · Follow-up Qs", emoji: "↩️", color: "blue", aliases: ["ai", "follow", "up", "후속"] },
+                    sub_headings: { title: "AI · Suggest sub-headings", emoji: "🏷", color: "blue", aliases: ["ai", "subheadings", "sections", "소제목"] },
+                    anti_pattern: { title: "AI · Anti-pattern check", emoji: "🚧", color: "red", aliases: ["ai", "antipattern", "pitfalls", "안티패턴"] },
+                    dictionary: { title: "AI · Mini dictionary", emoji: "📚", color: "yellow", aliases: ["ai", "dictionary", "definitions", "사전"] },
+                    expand_acronyms: { title: "AI · Expand acronyms", emoji: "🔤", color: "purple", aliases: ["ai", "acronyms", "abbrev", "약어"] },
                     edit: { title: "AI · Edit (custom)", emoji: "🪄", color: "red", aliases: ["ai", "edit", "custom", "transform"] },
                   }[action];
                   return {

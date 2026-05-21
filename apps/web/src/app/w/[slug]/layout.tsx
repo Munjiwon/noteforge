@@ -182,6 +182,8 @@ export default async function WorkspaceLayout({
         pinned: true,
         content: true,
         isTemplate: true,
+        tags: true,
+        createdAt: true,
       },
     }),
     prisma.page.findMany({
@@ -311,7 +313,14 @@ export default async function WorkspaceLayout({
     count: childCount.get(p.id) ?? 0,
     openComments: commentCountByPage.get(p.id) ?? 0,
     preview: extractPreview(p.content),
+    tags: p.tags ?? null,
+    createdAt: p.createdAt.toISOString(),
   }));
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+  const todayCount = pages.filter(
+    (p) => p.kind === "doc" && p.createdAt.getTime() >= todayStart.getTime(),
+  ).length;
   const pinned = pages
     .filter((p) => p.pinned && !p.parentId)
     .map((p) => ({
@@ -391,6 +400,7 @@ export default async function WorkspaceLayout({
         trashStaleCount={trashedPages.filter((t) => t.deletedAt && Date.now() - t.deletedAt.getTime() > 30 * 24 * 3600 * 1000).length}
         user={{ ...ctx.user, avatarUrl: currentUserAvatar }}
         footerStats={{ pageCount: footerPageCount, fileBytes: footerFileBytes }}
+        todayCount={todayCount}
       />
       <main className="flex-1 overflow-auto bg-white">
         <MobileSidebarToggle />

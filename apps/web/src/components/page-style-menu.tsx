@@ -376,6 +376,91 @@ export function PageStyleMenu({
               </button>
               <button
                 onClick={() => {
+                  try {
+                    const cur =
+                      localStorage.getItem("noteforge:print-no-comments") === "1";
+                    if (cur)
+                      localStorage.removeItem("noteforge:print-no-comments");
+                    else
+                      localStorage.setItem("noteforge:print-no-comments", "1");
+                    document.body.classList.toggle("print-no-comments", !cur);
+                  } catch {}
+                  setOpen(false);
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+                title="Hide the comments section when printing"
+              >
+                🖨 Toggle print-hide comments
+              </button>
+              <button
+                onClick={() => {
+                  window.open(window.location.href, "_blank", "noopener");
+                  setOpen(false);
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+              >
+                ↗ Open in new window
+              </button>
+              <button
+                onClick={() => {
+                  const editor =
+                    document.querySelector(".bn-container") ||
+                    document.querySelector(".bn-editor");
+                  const text = (editor?.textContent ?? "")
+                    .replace(/\s+/g, " ")
+                    .trim();
+                  const words = text ? text.split(/\s+/).length : 0;
+                  const chars = text.length;
+                  const sentences = text
+                    ? (text.match(/[.!?]+(?=\s|$)/g) || []).length
+                    : 0;
+                  const paragraphs = editor
+                    ? editor.querySelectorAll(".bn-block").length
+                    : 0;
+                  const h2 = editor
+                    ? editor.querySelectorAll("h2").length
+                    : 0;
+                  const minRead = Math.max(1, Math.round(words / 200));
+                  let sections = "";
+                  if (editor && h2 > 0) {
+                    const all = Array.from(
+                      editor.querySelectorAll("h1, h2, h3, p, li, blockquote"),
+                    );
+                    let cur: { name: string; words: number } | null = null;
+                    const out: { name: string; words: number }[] = [];
+                    for (const el of all) {
+                      if (el.tagName === "H2") {
+                        if (cur) out.push(cur);
+                        cur = {
+                          name: (el.textContent ?? "").trim() || "(untitled)",
+                          words: 0,
+                        };
+                      } else if (cur && (el.tagName === "P" || el.tagName === "LI" || el.tagName === "H3" || el.tagName === "BLOCKQUOTE")) {
+                        const t = (el.textContent ?? "").trim();
+                        if (t) cur.words += t.split(/\s+/).length;
+                      }
+                    }
+                    if (cur) out.push(cur);
+                    if (out.length > 0) {
+                      sections =
+                        "\n\nBy section:\n" +
+                        out
+                          .slice(0, 12)
+                          .map((s) => `· ${s.name.slice(0, 40)} — ${s.words}`)
+                          .join("\n");
+                    }
+                  }
+                  alert(
+                    `📊 Quick stats\n\nWords: ${words.toLocaleString()}\nChars: ${chars.toLocaleString()}\nSentences: ${sentences}\nBlocks: ${paragraphs}\nH2 sections: ${h2}\nEst. read: ${minRead} min${sections}`,
+                  );
+                  setOpen(false);
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+              >
+                📊 Quick stats
+              </button>
+              <button
+                onClick={() => {
                   void navigator.clipboard?.writeText(pageId).then(() => {
                     const tip = document.createElement("div");
                     tip.textContent = "Page ID copied";

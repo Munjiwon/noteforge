@@ -671,6 +671,33 @@ export async function duplicatePage(slug: string, pageId: string) {
   return cloned.id;
 }
 
+export async function moveRowToEdge(
+  slug: string,
+  rowId: string,
+  edge: "top" | "bottom",
+) {
+  const ctx = await assertEditor(slug);
+  const row = await prisma.page.findFirst({
+    where: { id: rowId, workspaceId: ctx.workspace.id },
+    select: { parentId: true },
+  });
+  if (!row || !row.parentId) throw new Error("not found or not a row");
+  const agg = await prisma.page.aggregate({
+    where: { parentId: row.parentId, deletedAt: null },
+    _min: { position: true },
+    _max: { position: true },
+  });
+  const next =
+    edge === "top"
+      ? (agg._min.position ?? 0) - 1
+      : (agg._max.position ?? 0) + 1;
+  await prisma.page.update({
+    where: { id: rowId },
+    data: { position: next },
+  });
+  revalidatePath(`/w/${slug}`, "layout");
+}
+
 export async function reorderPage(
   slug: string,
   pageId: string,

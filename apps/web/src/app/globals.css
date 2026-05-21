@@ -141,6 +141,41 @@ body.read-mode .bn-formatting-toolbar {
 body.read-mode main {
   width: 100% !important;
 }
+@media print {
+  body.print-no-comments [data-comments-panel] {
+    display: none !important;
+  }
+}
+
+/* Heading hover anchor — show a faint '#' beside h1/h2/h3 on hover, hinting
+   that double-clicking the heading copies its direct link. */
+.bn-editor h1,
+.bn-editor h2,
+.bn-editor h3 {
+  position: relative;
+}
+.bn-editor h1::before,
+.bn-editor h2::before,
+.bn-editor h3::before {
+  content: "#";
+  position: absolute;
+  left: -1.25rem;
+  color: rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  transition: opacity 120ms ease;
+  pointer-events: none;
+}
+.bn-editor h1:hover::before,
+.bn-editor h2:hover::before,
+.bn-editor h3:hover::before {
+  opacity: 1;
+}
+.dark .bn-editor h1::before,
+.dark .bn-editor h2::before,
+.dark .bn-editor h3::before {
+  color: rgba(255, 255, 255, 0.25);
+}
+
 body.comments-compact .comment-item {
   padding-top: 0.25rem !important;
   padding-bottom: 0.25rem !important;

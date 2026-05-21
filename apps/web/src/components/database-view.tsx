@@ -27,7 +27,7 @@ import {
   updateCell,
 } from "@/app/w/[slug]/database-actions";
 import { SELECT_COLORS } from "@/lib/database";
-import { duplicatePage, reorderPage } from "@/app/w/[slug]/actions";
+import { duplicatePage, moveRowToEdge, reorderPage } from "@/app/w/[slug]/actions";
 import type { DbProp, DbPropType, DbSchema } from "@/lib/database";
 import {
   STATUS_GROUP_LABEL,
@@ -782,6 +782,20 @@ function RowRow({
         <td className="relative" style={{ minWidth: 100 }}>
           {hover && (
             <>
+              <button
+                className="text-xs text-gray-400 hover:text-gray-900 px-1"
+                title="Move to top"
+                onClick={() => start(() => moveRowToEdge(slug, row.id, "top"))}
+              >
+                ⤒
+              </button>
+              <button
+                className="text-xs text-gray-400 hover:text-gray-900 px-1"
+                title="Move to bottom"
+                onClick={() => start(() => moveRowToEdge(slug, row.id, "bottom"))}
+              >
+                ⤓
+              </button>
               <button
                 className="text-xs text-gray-400 hover:text-gray-900 px-1"
                 title="Duplicate row"

@@ -40,6 +40,8 @@ type SidebarPage = {
   preview?: string;
   count?: number;
   openComments?: number;
+  tags?: string | null;
+  createdAt?: string;
 };
 
 type TrashItem = { id: string; title: string; icon: string | null; kind: string; deletedAt?: Date | string | null };
@@ -94,6 +96,7 @@ export function Sidebar({
   user,
   announcement,
   footerStats,
+  todayCount,
 }: {
   workspaces: { slug: string; name: string }[];
   currentSlug: string;
@@ -113,18 +116,33 @@ export function Sidebar({
   user: { id: string; name: string; color: string; avatarUrl?: string | null };
   announcement?: string | null;
   footerStats?: { pageCount: number; fileBytes: number };
+  todayCount?: number;
 }) {
   const params = useParams<{ pageId?: string }>();
   const activePageId = params.pageId;
   const [lang] = useLang();
   const [filterQ, setFilterQ] = useState("");
   const filteredPages = useMemo(() => {
-    const q = filterQ.trim().toLowerCase();
+    const raw = filterQ.trim();
+    if (!raw) return pages;
+    // '#tag' filters by tags; otherwise match the title.
+    const isTag = raw.startsWith("#");
+    const q = (isTag ? raw.slice(1) : raw).toLowerCase().trim();
     if (!q) return pages;
     const matches = new Set<string>();
+    const matched = (p: SidebarPage) => {
+      if (isTag) {
+        const tags = (p.tags ?? "").toLowerCase();
+        if (!tags) return false;
+        return tags
+          .split(",")
+          .map((t) => t.trim())
+          .some((t) => t === q || t.includes(q));
+      }
+      return (p.title || "Untitled").toLowerCase().includes(q);
+    };
     for (const p of pages) {
-      if ((p.title || "Untitled").toLowerCase().includes(q)) {
-        // include match + all ancestors
+      if (matched(p)) {
         let cur: SidebarPage | undefined = p;
         while (cur) {
           matches.add(cur.id);
@@ -933,7 +951,7 @@ export function Sidebar({
         <input
           value={filterQ}
           onChange={(e) => setFilterQ(e.target.value)}
-          placeholder="Filter pages…"
+          placeholder="Filter pages… (try #tag)"
           className="w-full text-xs border border-gray-200 rounded px-2 py-1 pr-6 outline-none focus:border-gray-400 bg-white/60"
         />
         {filterQ && (
@@ -1222,9 +1240,14 @@ export function Sidebar({
         </Link>
         <Link
           href={`/w/${currentSlug}/today`}
-          className="block text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
+          className="flex items-center justify-between text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
         >
-          ☀️ Today
+          <span>☀️ Today</span>
+          {todayCount && todayCount > 0 ? (
+            <span className="text-[10px] bg-amber-100 text-amber-800 rounded-full px-1.5 py-0.5 leading-none">
+              {todayCount}
+            </span>
+          ) : null}
         </Link>
         <Link
           href={`/w/${currentSlug}/tasks`}
