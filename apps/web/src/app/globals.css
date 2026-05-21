@@ -291,6 +291,43 @@ body.db-compact table th {
   font-size: 12px !important;
 }
 
+/* Striped DB rows — alternate row background for readability. */
+body.db-striped table tbody tr:nth-child(even) {
+  background: rgba(0, 0, 0, 0.025);
+}
+.dark body.db-striped table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Larger font — bump the editor up ~10% for easier reading. */
+body.larger-font .bn-editor {
+  font-size: 1.075em;
+}
+body.larger-font .bn-editor h1 {
+  font-size: 2.2em;
+}
+body.larger-font .bn-editor h2 {
+  font-size: 1.65em;
+}
+
+/* Sticky page title on long pages — pins the H1-style title bar to the top. */
+body.sticky-title .nf-page-title {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--page-bg, #ffffff);
+  backdrop-filter: blur(4px);
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.dark body.sticky-title .nf-page-title {
+  background: #18181b;
+}
+
 body.comments-compact .comment-item {
   padding-top: 0.25rem !important;
   padding-bottom: 0.25rem !important;

@@ -262,6 +262,9 @@ export function PageView({
       "dyslexia",
       "justify-text",
       "db-compact",
+      "db-striped",
+      "larger-font",
+      "sticky-title",
     ];
     try {
       for (const k of toggles) {
@@ -586,7 +589,7 @@ export function PageView({
           />
         )}
       </div>
-      <div className="flex items-center gap-2 mb-3">
+      <div className="flex items-center gap-2 mb-3 nf-page-title">
         <input
           ref={titleRef}
           value={title}

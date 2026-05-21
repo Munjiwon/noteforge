@@ -973,7 +973,7 @@ export function Editor({
                 },
               },
               ...(aiEnabled
-                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "sentiment", "next_steps", "critique", "agenda", "eli5", "pros_cons", "risks", "timeline", "faq", "counter", "hashtags", "headlines", "slug", "tweet_thread", "citations", "study_notes", "flashcards", "quiz", "persona", "swot", "release_notes", "objections", "decision_log", "user_stories", "test_cases", "rhyme", "lyrics", "regex", "sql", "commit_msg", "standup", "retro", "jargon", "mind_map", "elevator_pitch", "job_desc", "follow_up", "sub_headings", "anti_pattern", "dictionary", "expand_acronyms", "star_method", "key_takeaways", "email_reply", "cover_letter", "pre_publish", "edit"] as const)
+                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "sentiment", "next_steps", "critique", "agenda", "eli5", "pros_cons", "risks", "timeline", "faq", "counter", "hashtags", "headlines", "slug", "tweet_thread", "citations", "study_notes", "flashcards", "quiz", "persona", "swot", "release_notes", "objections", "decision_log", "user_stories", "test_cases", "rhyme", "lyrics", "regex", "sql", "commit_msg", "standup", "retro", "jargon", "mind_map", "elevator_pitch", "job_desc", "follow_up", "sub_headings", "anti_pattern", "dictionary", "expand_acronyms", "star_method", "key_takeaways", "email_reply", "cover_letter", "pre_publish", "tagline", "metaphor", "press_release", "interview_questions", "linkedin_post", "blog_outline", "testimonials", "contrarian", "dialog", "seo_keywords", "news_headline", "recommendation_letter", "edit"] as const)
                 : ([] as const)).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {
@@ -1042,6 +1042,18 @@ export function Editor({
                     email_reply: { title: "AI · Email reply", emoji: "📨", color: "purple", aliases: ["ai", "email", "reply", "답장"] },
                     cover_letter: { title: "AI · Cover letter", emoji: "📃", color: "yellow", aliases: ["ai", "cover", "letter", "자소서"] },
                     pre_publish: { title: "AI · Pre-publish checklist", emoji: "📋", color: "green", aliases: ["ai", "publish", "checklist", "출판"] },
+                    tagline: { title: "AI · Taglines", emoji: "🎯", color: "yellow", aliases: ["ai", "tagline", "slogan", "슬로건"] },
+                    metaphor: { title: "AI · Metaphors", emoji: "🪞", color: "purple", aliases: ["ai", "metaphor", "analogy", "비유"] },
+                    press_release: { title: "AI · Press release", emoji: "📰", color: "blue", aliases: ["ai", "press", "release", "보도자료"] },
+                    interview_questions: { title: "AI · Interview Qs", emoji: "💬", color: "blue", aliases: ["ai", "interview", "questions", "면접"] },
+                    linkedin_post: { title: "AI · LinkedIn post", emoji: "💼", color: "blue", aliases: ["ai", "linkedin", "post", "링크드인"] },
+                    blog_outline: { title: "AI · Blog outline", emoji: "✍️", color: "green", aliases: ["ai", "blog", "outline", "블로그"] },
+                    testimonials: { title: "AI · Testimonials (3)", emoji: "🗨️", color: "yellow", aliases: ["ai", "testimonial", "추천사"] },
+                    contrarian: { title: "AI · Contrarian view", emoji: "🙃", color: "red", aliases: ["ai", "contrarian", "opposite", "반대"] },
+                    dialog: { title: "AI · Make dialog (A/B)", emoji: "🎭", color: "purple", aliases: ["ai", "dialog", "conversation", "대화"] },
+                    seo_keywords: { title: "AI · SEO keywords", emoji: "🔎", color: "blue", aliases: ["ai", "seo", "keywords", "검색어"] },
+                    news_headline: { title: "AI · News headline", emoji: "🗞️", color: "yellow", aliases: ["ai", "news", "headline", "뉴스"] },
+                    recommendation_letter: { title: "AI · Recommendation letter", emoji: "🤝", color: "green", aliases: ["ai", "recommendation", "letter", "추천서"] },
                     edit: { title: "AI · Edit (custom)", emoji: "🪄", color: "red", aliases: ["ai", "edit", "custom", "transform"] },
                   }[action];
                   return {

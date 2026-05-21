@@ -424,6 +424,9 @@ export function PageStyleMenu({
                       { key: "highlight-links", label: "Highlight links" },
                       { key: "dyslexia", label: "Dyslexia" },
                       { key: "justify-text", label: "Justify" },
+                      { key: "larger-font", label: "Larger font" },
+                      { key: "sticky-title", label: "Sticky title" },
+                      { key: "db-striped", label: "DB striped" },
                     ] as const
                   ).map((t) => (
                     <button
