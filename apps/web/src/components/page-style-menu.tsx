@@ -427,6 +427,13 @@ export function PageStyleMenu({
                       { key: "larger-font", label: "Larger font" },
                       { key: "sticky-title", label: "Sticky title" },
                       { key: "db-striped", label: "DB striped" },
+                      { key: "bg-grid", label: "Grid bg" },
+                      { key: "bg-dots", label: "Dots bg" },
+                      { key: "bg-ruled", label: "Ruled bg" },
+                      { key: "hide-reactions", label: "Hide reactions" },
+                      { key: "hide-tags", label: "Hide tags" },
+                      { key: "hide-subpages", label: "Hide sub-pages" },
+                      { key: "hide-backlinks", label: "Hide backlinks" },
                     ] as const
                   ).map((t) => (
                     <button

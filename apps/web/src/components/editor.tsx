@@ -973,7 +973,7 @@ export function Editor({
                 },
               },
               ...(aiEnabled
-                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "sentiment", "next_steps", "critique", "agenda", "eli5", "pros_cons", "risks", "timeline", "faq", "counter", "hashtags", "headlines", "slug", "tweet_thread", "citations", "study_notes", "flashcards", "quiz", "persona", "swot", "release_notes", "objections", "decision_log", "user_stories", "test_cases", "rhyme", "lyrics", "regex", "sql", "commit_msg", "standup", "retro", "jargon", "mind_map", "elevator_pitch", "job_desc", "follow_up", "sub_headings", "anti_pattern", "dictionary", "expand_acronyms", "star_method", "key_takeaways", "email_reply", "cover_letter", "pre_publish", "tagline", "metaphor", "press_release", "interview_questions", "linkedin_post", "blog_outline", "testimonials", "contrarian", "dialog", "seo_keywords", "news_headline", "recommendation_letter", "edit"] as const)
+                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "sentiment", "next_steps", "critique", "agenda", "eli5", "pros_cons", "risks", "timeline", "faq", "counter", "hashtags", "headlines", "slug", "tweet_thread", "citations", "study_notes", "flashcards", "quiz", "persona", "swot", "release_notes", "objections", "decision_log", "user_stories", "test_cases", "rhyme", "lyrics", "regex", "sql", "commit_msg", "standup", "retro", "jargon", "mind_map", "elevator_pitch", "job_desc", "follow_up", "sub_headings", "anti_pattern", "dictionary", "expand_acronyms", "star_method", "key_takeaways", "email_reply", "cover_letter", "pre_publish", "tagline", "metaphor", "press_release", "interview_questions", "linkedin_post", "blog_outline", "testimonials", "contrarian", "dialog", "seo_keywords", "news_headline", "recommendation_letter", "scenario", "risk_matrix", "api_spec", "raci", "value_prop", "cta", "landing_hero", "onboarding_email", "edit"] as const)
                 : ([] as const)).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {
@@ -1054,6 +1054,14 @@ export function Editor({
                     seo_keywords: { title: "AI · SEO keywords", emoji: "🔎", color: "blue", aliases: ["ai", "seo", "keywords", "검색어"] },
                     news_headline: { title: "AI · News headline", emoji: "🗞️", color: "yellow", aliases: ["ai", "news", "headline", "뉴스"] },
                     recommendation_letter: { title: "AI · Recommendation letter", emoji: "🤝", color: "green", aliases: ["ai", "recommendation", "letter", "추천서"] },
+                    scenario: { title: "AI · Scenarios (3)", emoji: "🎲", color: "purple", aliases: ["ai", "scenario", "cases", "시나리오"] },
+                    risk_matrix: { title: "AI · Risk matrix", emoji: "📐", color: "red", aliases: ["ai", "risk", "matrix", "위험"] },
+                    api_spec: { title: "AI · API spec", emoji: "🛰", color: "blue", aliases: ["ai", "api", "spec", "명세"] },
+                    raci: { title: "AI · RACI table", emoji: "🧮", color: "blue", aliases: ["ai", "raci", "table", "책임"] },
+                    value_prop: { title: "AI · Value proposition", emoji: "💎", color: "green", aliases: ["ai", "value", "vp", "가치"] },
+                    cta: { title: "AI · CTA button copy", emoji: "👆", color: "yellow", aliases: ["ai", "cta", "button", "버튼"] },
+                    landing_hero: { title: "AI · Landing hero", emoji: "🦸", color: "purple", aliases: ["ai", "hero", "landing", "랜딩"] },
+                    onboarding_email: { title: "AI · Onboarding email", emoji: "📬", color: "blue", aliases: ["ai", "onboarding", "welcome", "환영"] },
                     edit: { title: "AI · Edit (custom)", emoji: "🪄", color: "red", aliases: ["ai", "edit", "custom", "transform"] },
                   }[action];
                   return {

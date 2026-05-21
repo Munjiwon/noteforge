@@ -265,6 +265,13 @@ export function PageView({
       "db-striped",
       "larger-font",
       "sticky-title",
+      "bg-grid",
+      "bg-dots",
+      "bg-ruled",
+      "hide-reactions",
+      "hide-tags",
+      "hide-subpages",
+      "hide-backlinks",
     ];
     try {
       for (const k of toggles) {
@@ -691,20 +698,26 @@ export function PageView({
           </span>
         )}
       </div>
-      <PageReactions
-        slug={slug}
-        pageId={page.id}
-        groups={reactions}
-        readOnly={readOnly}
-      />
-      <PageTags
-        slug={slug}
-        pageId={page.id}
-        initial={parseTags(page.tags ?? null)}
-        readOnly={readOnly}
-      />
+      <div data-page-reactions>
+        <PageReactions
+          slug={slug}
+          pageId={page.id}
+          groups={reactions}
+          readOnly={readOnly}
+        />
+      </div>
+      <div data-page-tags>
+        <PageTags
+          slug={slug}
+          pageId={page.id}
+          initial={parseTags(page.tags ?? null)}
+          readOnly={readOnly}
+        />
+      </div>
       {subPages.length > 0 && (
-        <SubPagesSection slug={slug} pageId={page.id} subPages={subPages} readOnly={readOnly} />
+        <div data-page-subpages>
+          <SubPagesSection slug={slug} pageId={page.id} subPages={subPages} readOnly={readOnly} />
+        </div>
       )}
       <Editor
         pageId={page.id}
@@ -715,7 +728,9 @@ export function PageView({
         aiEnabled={aiEnabled}
       />
         {backlinks.length > 0 && (
-          <BacklinksSection slug={slug} backlinks={backlinks} />
+          <div data-page-backlinks>
+            <BacklinksSection slug={slug} backlinks={backlinks} />
+          </div>
         )}
         <CommentsPanel
           slug={slug}

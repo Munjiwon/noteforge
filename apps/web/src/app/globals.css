@@ -328,6 +328,50 @@ body.sticky-title .nf-page-title {
   background: #18181b;
 }
 
+/* Page backgrounds — opt-in patterns layered behind the editor. */
+body.bg-grid main {
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+body.bg-dots main {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.18) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+body.bg-ruled main {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 31px,
+    rgba(0, 0, 0, 0.08) 32px
+  );
+}
+.dark body.bg-grid main {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+}
+.dark body.bg-dots main {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.18) 1px, transparent 1px);
+}
+.dark body.bg-ruled main {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 31px,
+    rgba(255, 255, 255, 0.1) 32px
+  );
+}
+
+/* Section visibility toggles — hide the chip-rows the user doesn't want. */
+body.hide-reactions [data-page-reactions],
+body.hide-tags [data-page-tags],
+body.hide-subpages [data-page-subpages],
+body.hide-backlinks [data-page-backlinks] {
+  display: none !important;
+}
+
 body.comments-compact .comment-item {
   padding-top: 0.25rem !important;
   padding-bottom: 0.25rem !important;
