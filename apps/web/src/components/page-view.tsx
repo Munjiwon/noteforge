@@ -585,6 +585,21 @@ export function PageView({
               🔗 {backlinks.length}
             </a>
           )}
+          {info.commentCount > 0 && (
+            <a
+              href="#comments"
+              onClick={(e) => {
+                e.preventDefault();
+                document
+                  .querySelector("[data-comments-panel]")
+                  ?.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
+              className="text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 text-gray-600"
+              title={`${info.commentCount} comment${info.commentCount === 1 ? "" : "s"}`}
+            >
+              💬 {info.commentCount}
+            </a>
+          )}
           <ReadModeButton />
           <ReadAloudButton getText={() => extractText(page.content, title)} />
           <button

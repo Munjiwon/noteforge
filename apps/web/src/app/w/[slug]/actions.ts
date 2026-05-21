@@ -620,12 +620,17 @@ export async function createPageFromUserTemplate(
   redirect(`/w/${slug}/p/${cloned.id}`);
 }
 
-export async function duplicatePage(slug: string, pageId: string) {
+export async function duplicatePage(
+  slug: string,
+  pageId: string,
+  options?: { withChildren?: boolean },
+) {
   const ctx = await assertEditor(slug);
   const src = await prisma.page.findFirst({
     where: { id: pageId, workspaceId: ctx.workspace.id, deletedAt: null },
   });
   if (!src) throw new Error("not found");
+  const withChildren = options?.withChildren !== false;
 
   async function copy(node: NonNullable<typeof src>, newParent: string | null) {
     const max = await prisma.page.aggregate({
@@ -652,16 +657,18 @@ export async function duplicatePage(slug: string, pageId: string) {
         authorId: ctx.user.id,
       },
     });
-    const children = await prisma.page.findMany({
-      where: {
-        workspaceId: ctx.workspace.id,
-        parentId: node.id,
-        deletedAt: null,
-      },
-      orderBy: { position: "asc" },
-    });
-    for (const c of children) {
-      await copy(c, created.id);
+    if (withChildren) {
+      const children = await prisma.page.findMany({
+        where: {
+          workspaceId: ctx.workspace.id,
+          parentId: node.id,
+          deletedAt: null,
+        },
+        orderBy: { position: "asc" },
+      });
+      for (const c of children) {
+        await copy(c, created.id);
+      }
     }
     return created;
   }
@@ -669,6 +676,33 @@ export async function duplicatePage(slug: string, pageId: string) {
   const cloned = await copy(src, src.parentId);
   revalidatePath(`/w/${slug}`, "layout");
   return cloned.id;
+}
+
+export async function movePageToRoot(slug: string, pageId: string) {
+  const ctx = await assertEditor(slug);
+  const max = await prisma.page.aggregate({
+    where: { workspaceId: ctx.workspace.id, parentId: null },
+    _max: { position: true },
+  });
+  await prisma.page.update({
+    where: { id: pageId, workspaceId: ctx.workspace.id } as never,
+    data: { parentId: null, position: (max._max.position ?? 0) + 1 },
+  });
+  revalidatePath(`/w/${slug}`, "layout");
+}
+
+export async function lockPageForDuration(
+  slug: string,
+  pageId: string,
+  hours: number,
+) {
+  const ctx = await assertEditor(slug);
+  const until = new Date(Date.now() + Math.max(1, hours) * 3600 * 1000);
+  await prisma.page.update({
+    where: { id: pageId, workspaceId: ctx.workspace.id } as never,
+    data: { locked: true, lockedUntil: until },
+  });
+  revalidatePath(`/w/${slug}/p/${pageId}`);
 }
 
 export async function moveRowToEdge(

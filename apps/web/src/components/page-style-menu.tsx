@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState, useTransition } from "react";
 import {
   archivePage,
+  duplicatePage,
+  movePageToRoot,
   setPageAsTemplate,
   setPageExpiry,
   setPageFont,
@@ -234,6 +236,29 @@ export function PageStyleMenu({
                 className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
               >
                 🪟 Open in new window
+              </button>
+              <button
+                onClick={() => {
+                  start(() => movePageToRoot(slug, pageId));
+                  setOpen(false);
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+                title="Move this page to the workspace root (un-nest)"
+              >
+                ⤴ Move to workspace root
+              </button>
+              <button
+                onClick={async () => {
+                  setOpen(false);
+                  const newId = await duplicatePage(slug, pageId, {
+                    withChildren: false,
+                  });
+                  if (newId) router.push(`/w/${slug}/p/${newId}`);
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+                title="Copy this page without any sub-pages"
+              >
+                ⎘ Duplicate (no children)
               </button>
               <button
                 onClick={() => {
