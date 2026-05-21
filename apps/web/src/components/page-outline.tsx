@@ -32,10 +32,16 @@ function extract(json: string): Heading[] {
 }
 
 export function PageOutline({ content }: { content: string }) {
-  const headings = useMemo(() => extract(content), [content]);
+  const allHeadings = useMemo(() => extract(content), [content]);
   // On md and below, allow toggling the outline open/closed via a small button.
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [filter, setFilter] = useState("");
+  const [maxDepth, setMaxDepth] = useState<1 | 2 | 3>(3);
   useEffect(() => {
+    try {
+      const d = localStorage.getItem("noteforge:outline-depth");
+      if (d === "1" || d === "2" || d === "3") setMaxDepth(Number(d) as 1 | 2 | 3);
+    } catch {}
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === "o") {
         e.preventDefault();
@@ -45,7 +51,45 @@ export function PageOutline({ content }: { content: string }) {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
-  if (headings.length === 0) return null;
+  const headings = useMemo(() => {
+    const q = filter.trim().toLowerCase();
+    return allHeadings
+      .filter((h) => h.level <= maxDepth)
+      .filter((h) => (q ? h.text.toLowerCase().includes(q) : true));
+  }, [allHeadings, filter, maxDepth]);
+  const setDepth = (d: 1 | 2 | 3) => {
+    setMaxDepth(d);
+    try {
+      localStorage.setItem("noteforge:outline-depth", String(d));
+    } catch {}
+  };
+  if (allHeadings.length === 0) return null;
+
+  const controls = (
+    <div className="mb-1 flex items-center gap-1">
+      <input
+        value={filter}
+        onChange={(e) => setFilter(e.target.value)}
+        placeholder="Filter…"
+        className="flex-1 text-[11px] border border-gray-200 rounded px-1.5 py-0.5 outline-none focus:border-gray-400"
+      />
+      {([1, 2, 3] as const).map((d) => (
+        <button
+          key={d}
+          onClick={() => setDepth(d)}
+          className={
+            "text-[10px] px-1.5 py-0.5 rounded border " +
+            (maxDepth === d
+              ? "bg-gray-900 text-white border-gray-900"
+              : "border-gray-200 hover:bg-black/5")
+          }
+          title={`Show up to H${d}`}
+        >
+          H{d}
+        </button>
+      ))}
+    </div>
+  );
 
   const list = (
     <nav className="text-xs space-y-1 border-l-2 border-gray-200 pl-2">
@@ -94,6 +138,7 @@ export function PageOutline({ content }: { content: string }) {
         <div className="text-[10px] uppercase text-gray-500 mb-1 tracking-wide">
           Outline
         </div>
+        {controls}
         {list}
       </aside>
       {/* below xl: floating button + popover */}
@@ -111,6 +156,7 @@ export function PageOutline({ content }: { content: string }) {
                 ✕
               </button>
             </div>
+            {controls}
             {list}
           </div>
         ) : (

@@ -19,6 +19,81 @@ import { useRouter } from "next/navigation";
 export type PageWidth = "normal" | "wide" | "full";
 export type PageFont = "default" | "serif" | "mono";
 
+// Walks the BlockNote DOM tree and emits a best-effort Markdown rendering.
+// Conversion is intentionally lossy (no nested-list indent, no per-cell table
+// formatting) — good enough for export/copy-paste, not a Pandoc replacement.
+function renderPageAsMarkdown(): string {
+  const root =
+    document.querySelector(".bn-container") ||
+    document.querySelector(".bn-editor");
+  if (!root) return "";
+  const blocks = Array.from(root.querySelectorAll<HTMLElement>(".bn-block"));
+  const out: string[] = [];
+  for (const block of blocks) {
+    // Skip blocks nested under another block (we'll get them flat at top level).
+    const parentBlock = block.parentElement?.closest(".bn-block");
+    if (parentBlock) continue;
+    const inner = block.querySelector<HTMLElement>("[data-content-type]");
+    const type = inner?.getAttribute("data-content-type") ?? "";
+    const text = (block.querySelector("[data-node-view-content-react], .bn-inline-content")?.textContent
+      ?? block.textContent
+      ?? ""
+    ).trim();
+    if (!text && type !== "image" && type !== "table") continue;
+    switch (type) {
+      case "heading": {
+        const lvl = parseInt(inner?.getAttribute("data-level") ?? "1", 10) || 1;
+        out.push(`${"#".repeat(Math.min(6, Math.max(1, lvl)))} ${text}`);
+        break;
+      }
+      case "bulletListItem":
+        out.push(`- ${text}`);
+        break;
+      case "numberedListItem":
+        out.push(`1. ${text}`);
+        break;
+      case "checkListItem": {
+        const checked =
+          inner?.querySelector('input[type="checkbox"]') instanceof
+            HTMLInputElement &&
+          (
+            inner.querySelector(
+              'input[type="checkbox"]',
+            ) as HTMLInputElement
+          ).checked;
+        out.push(`- [${checked ? "x" : " "}] ${text}`);
+        break;
+      }
+      case "quote":
+        out.push(`> ${text}`);
+        break;
+      case "codeBlock": {
+        const lang = inner?.getAttribute("data-language") ?? "";
+        out.push("```" + lang);
+        out.push(text);
+        out.push("```");
+        break;
+      }
+      case "callout":
+      case "toggle":
+        out.push(text);
+        break;
+      case "image": {
+        const src = inner?.querySelector("img")?.getAttribute("src") ?? "";
+        if (src) out.push(`![](${src})`);
+        break;
+      }
+      case "divider":
+        out.push("---");
+        break;
+      default:
+        out.push(text);
+    }
+    out.push("");
+  }
+  return out.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+}
+
 export function PageStyleMenu({
   slug,
   pageId,
@@ -168,6 +243,52 @@ export function PageStyleMenu({
                 title="Open the raw JSON in a new tab (debugging)"
               >
                 🧰 View raw JSON
+              </button>
+              <button
+                onClick={() => {
+                  const md = renderPageAsMarkdown();
+                  if (!md) {
+                    alert("Nothing to copy.");
+                    return;
+                  }
+                  void navigator.clipboard?.writeText(md).then(() => {
+                    const tip = document.createElement("div");
+                    tip.textContent = `Markdown copied (${md.length} chars)`;
+                    tip.className =
+                      "fixed bottom-4 left-1/2 -translate-x-1/2 z-50 text-xs bg-gray-900 text-white rounded-full px-3 py-1 shadow";
+                    document.body.appendChild(tip);
+                    setTimeout(() => tip.remove(), 1500);
+                  });
+                  setOpen(false);
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+              >
+                📝 Copy body as Markdown
+              </button>
+              <button
+                onClick={() => {
+                  const md = renderPageAsMarkdown();
+                  const title =
+                    (document.querySelector(
+                      'input[placeholder="Untitled"]',
+                    ) as HTMLInputElement | null)?.value || "Untitled";
+                  const out = `# ${title}\n\n${md}`;
+                  const blob = new Blob([out], {
+                    type: "text/markdown;charset=utf-8",
+                  });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement("a");
+                  a.href = url;
+                  a.download = `${title.replace(/[^\w\-]+/g, "_")}.md`;
+                  document.body.appendChild(a);
+                  a.click();
+                  a.remove();
+                  URL.revokeObjectURL(url);
+                  setOpen(false);
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+              >
+                ⬇ Download as Markdown
               </button>
               <button
                 onClick={async () => {
@@ -410,6 +531,51 @@ export function PageStyleMenu({
                 className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
               >
                 🖨 Print now
+              </button>
+              <button
+                onClick={() => {
+                  // "Clean print" — temporarily hide cover/comments/tags/reactions
+                  // for printing, then revert after the print dialog closes.
+                  const prev = {
+                    cover: !!document.querySelector(".nf-print-hide"),
+                    classes: [
+                      "print-no-comments",
+                      "hide-tags",
+                      "hide-reactions",
+                      "hide-subpages",
+                      "hide-backlinks",
+                    ].filter((c) => document.body.classList.contains(c)),
+                  };
+                  document.body.classList.add(
+                    "print-no-comments",
+                    "hide-tags",
+                    "hide-reactions",
+                    "hide-subpages",
+                    "hide-backlinks",
+                  );
+                  setOpen(false);
+                  setTimeout(() => {
+                    window.print();
+                    // restore — we toggled, so remove only what we added
+                    setTimeout(() => {
+                      const restore = [
+                        "print-no-comments",
+                        "hide-tags",
+                        "hide-reactions",
+                        "hide-subpages",
+                        "hide-backlinks",
+                      ];
+                      for (const c of restore) {
+                        if (!prev.classes.includes(c))
+                          document.body.classList.remove(c);
+                      }
+                    }, 500);
+                  }, 60);
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+                title="Print cover/comments/tags/reactions hidden for this print only"
+              >
+                🧼 Clean print
               </button>
               <div className="mb-1 mt-1">
                 <label className="text-[10px] uppercase text-gray-500 px-1">
@@ -777,6 +943,29 @@ function WordGoalRow({
           className="text-[10px] px-2 py-1 rounded border border-gray-200 hover:bg-black/5"
         >
           Save
+        </button>
+      </div>
+      <div className="flex gap-1 mt-1">
+        {[250, 500, 1000, 2000].map((n) => (
+          <button
+            key={n}
+            onClick={() => {
+              setValue(String(n));
+              start(() => setPageWordGoal(slug, pageId, n));
+            }}
+            className="flex-1 text-[10px] px-1 py-0.5 rounded border border-gray-200 hover:bg-black/5"
+          >
+            {n}
+          </button>
+        ))}
+        <button
+          onClick={() => {
+            setValue("");
+            start(() => setPageWordGoal(slug, pageId, null));
+          }}
+          className="text-[10px] px-1.5 py-0.5 rounded border border-gray-200 hover:bg-black/5 text-gray-500"
+        >
+          ✕
         </button>
       </div>
     </div>

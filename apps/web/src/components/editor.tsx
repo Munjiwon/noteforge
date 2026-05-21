@@ -973,7 +973,7 @@ export function Editor({
                 },
               },
               ...(aiEnabled
-                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "sentiment", "next_steps", "critique", "agenda", "eli5", "pros_cons", "risks", "timeline", "faq", "counter", "hashtags", "headlines", "slug", "tweet_thread", "citations", "study_notes", "flashcards", "quiz", "persona", "swot", "release_notes", "objections", "decision_log", "user_stories", "test_cases", "rhyme", "lyrics", "regex", "sql", "commit_msg", "standup", "retro", "jargon", "mind_map", "elevator_pitch", "job_desc", "follow_up", "sub_headings", "anti_pattern", "dictionary", "expand_acronyms", "star_method", "key_takeaways", "email_reply", "cover_letter", "pre_publish", "tagline", "metaphor", "press_release", "interview_questions", "linkedin_post", "blog_outline", "testimonials", "contrarian", "dialog", "seo_keywords", "news_headline", "recommendation_letter", "scenario", "risk_matrix", "api_spec", "raci", "value_prop", "cta", "landing_hero", "onboarding_email", "edit"] as const)
+                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "sentiment", "next_steps", "critique", "agenda", "eli5", "pros_cons", "risks", "timeline", "faq", "counter", "hashtags", "headlines", "slug", "tweet_thread", "citations", "study_notes", "flashcards", "quiz", "persona", "swot", "release_notes", "objections", "decision_log", "user_stories", "test_cases", "rhyme", "lyrics", "regex", "sql", "commit_msg", "standup", "retro", "jargon", "mind_map", "elevator_pitch", "job_desc", "follow_up", "sub_headings", "anti_pattern", "dictionary", "expand_acronyms", "star_method", "key_takeaways", "email_reply", "cover_letter", "pre_publish", "tagline", "metaphor", "press_release", "interview_questions", "linkedin_post", "blog_outline", "testimonials", "contrarian", "dialog", "seo_keywords", "news_headline", "recommendation_letter", "scenario", "risk_matrix", "api_spec", "raci", "value_prop", "cta", "landing_hero", "onboarding_email", "insight_3", "dictation_clean", "clean_formatting", "inverse_pyramid", "contrast_vs", "buyer_persona", "feature_benefit", "learn_vocab", "edit"] as const)
                 : ([] as const)).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {
@@ -1062,6 +1062,14 @@ export function Editor({
                     cta: { title: "AI · CTA button copy", emoji: "👆", color: "yellow", aliases: ["ai", "cta", "button", "버튼"] },
                     landing_hero: { title: "AI · Landing hero", emoji: "🦸", color: "purple", aliases: ["ai", "hero", "landing", "랜딩"] },
                     onboarding_email: { title: "AI · Onboarding email", emoji: "📬", color: "blue", aliases: ["ai", "onboarding", "welcome", "환영"] },
+                    insight_3: { title: "AI · 3 insights", emoji: "💡", color: "yellow", aliases: ["ai", "insight", "insights", "통찰"] },
+                    dictation_clean: { title: "AI · Clean dictation", emoji: "🎙", color: "purple", aliases: ["ai", "dictation", "transcript", "받아쓰기"] },
+                    clean_formatting: { title: "AI · Clean formatting", emoji: "🧹", color: "green", aliases: ["ai", "clean", "format", "정리"] },
+                    inverse_pyramid: { title: "AI · Inverse pyramid", emoji: "🔻", color: "blue", aliases: ["ai", "pyramid", "inverse", "역피라미드"] },
+                    contrast_vs: { title: "AI · Contrast A vs B", emoji: "🆚", color: "purple", aliases: ["ai", "contrast", "compare", "비교"] },
+                    buyer_persona: { title: "AI · Buyer persona", emoji: "🛒", color: "blue", aliases: ["ai", "buyer", "persona", "구매자"] },
+                    feature_benefit: { title: "AI · Feature → Benefit", emoji: "🎁", color: "green", aliases: ["ai", "feature", "benefit", "이익"] },
+                    learn_vocab: { title: "AI · Vocab study list", emoji: "🅰", color: "yellow", aliases: ["ai", "vocab", "vocabulary", "단어"] },
                     edit: { title: "AI · Edit (custom)", emoji: "🪄", color: "red", aliases: ["ai", "edit", "custom", "transform"] },
                   }[action];
                   return {

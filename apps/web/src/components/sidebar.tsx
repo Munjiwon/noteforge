@@ -1250,6 +1250,10 @@ export function Sidebar({
           ) : null}
         </Link>
         <RecentVisited currentSlug={currentSlug} />
+        <AllTagsPanel
+          pages={pages}
+          onPickTag={(t) => setFilterQ(`#${t}`)}
+        />
         <Link
           href={`/w/${currentSlug}/tasks`}
           className="block text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
@@ -1341,6 +1345,53 @@ export function Sidebar({
       />
     </aside>
     </>
+  );
+}
+
+function AllTagsPanel({
+  pages,
+  onPickTag,
+}: {
+  pages: SidebarPage[];
+  onPickTag: (tag: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const counts = useMemo(() => {
+    const m = new Map<string, number>();
+    for (const p of pages) {
+      const raw = (p.tags ?? "").trim();
+      if (!raw) continue;
+      for (const t of raw.split(",").map((s) => s.trim()).filter(Boolean)) {
+        m.set(t.toLowerCase(), (m.get(t.toLowerCase()) ?? 0) + 1);
+      }
+    }
+    return Array.from(m.entries()).sort((a, b) => b[1] - a[1]).slice(0, 40);
+  }, [pages]);
+  if (counts.length === 0) return null;
+  return (
+    <div className="px-2 pt-1">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center justify-between text-xs text-gray-500 hover:text-gray-900 px-1 py-1 rounded hover:bg-black/5"
+      >
+        <span>🏷 All tags · {counts.length}</span>
+        <span className="text-gray-400">{open ? "▾" : "▸"}</span>
+      </button>
+      {open && (
+        <div className="flex flex-wrap gap-1 px-1 pt-1 pb-1 max-h-40 overflow-y-auto">
+          {counts.map(([t, n]) => (
+            <button
+              key={t}
+              onClick={() => onPickTag(t)}
+              className="text-[10px] px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 hover:bg-blue-100"
+              title={`Filter by #${t}`}
+            >
+              #{t} <span className="opacity-60">{n}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
