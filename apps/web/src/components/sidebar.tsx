@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import clsx from "clsx";
 import {
@@ -784,6 +784,14 @@ export function Sidebar({
               >
                 ⌘⇧L Switcher
               </button>
+              <a
+                href={`/api/workspace/export?slug=${currentSlug}`}
+                download
+                className="block w-full text-left px-2 py-1 rounded hover:bg-black/5"
+                title="Download every page in this workspace as a single JSON file"
+              >
+                ⬇ Export workspace JSON
+              </a>
             </li>
           </ul>
         </details>
@@ -1025,6 +1033,17 @@ export function Sidebar({
                   }}
                 >
                   📊 New database
+                </button>
+                <button
+                  className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded"
+                  onClick={() => {
+                    setAddMenuFor(null);
+                    window.dispatchEvent(
+                      new CustomEvent("noteforge:open-md-import"),
+                    );
+                  }}
+                >
+                  📥 Import markdown…
                 </button>
                 <div className="border-t my-1" />
                 <div className="text-[10px] uppercase text-gray-400 px-2 pb-1">From template</div>
@@ -1359,8 +1378,107 @@ export function Sidebar({
         movingId={movingId}
         onClose={() => setMovingId(null)}
       />
+      <MarkdownImportModal slug={currentSlug} />
     </aside>
     </>
+  );
+}
+
+function MarkdownImportModal({ slug }: { slug: string }) {
+  const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [busy, setBusy] = useState(false);
+  const router = useRouter();
+  useEffect(() => {
+    const handler = () => setOpen(true);
+    window.addEventListener("noteforge:open-md-import", handler);
+    return () => window.removeEventListener("noteforge:open-md-import", handler);
+  }, []);
+  if (!open) return null;
+  const submit = async () => {
+    setBusy(true);
+    try {
+      const { createPageFromMarkdown } = await import(
+        "@/app/w/[slug]/actions"
+      );
+      const id = await createPageFromMarkdown(slug, null, title || "Imported", body);
+      setOpen(false);
+      setTitle("");
+      setBody("");
+      router.push(`/w/${slug}/p/${id}`);
+    } finally {
+      setBusy(false);
+    }
+  };
+  const onFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    const t = await f.text();
+    setBody(t);
+    if (!title) setTitle(f.name.replace(/\.md$/i, ""));
+  };
+  return (
+    <div
+      className="fixed inset-0 z-50 bg-black/30 flex items-center justify-center p-4"
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) setOpen(false);
+      }}
+    >
+      <div className="bg-white rounded-lg shadow-2xl w-[640px] max-w-[95vw] p-4">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-sm font-medium">📥 Import markdown as new page</h3>
+          <button
+            onClick={() => setOpen(false)}
+            className="text-gray-400 hover:text-gray-900"
+          >
+            ✕
+          </button>
+        </div>
+        <input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Page title"
+          className="w-full border border-gray-200 rounded px-2 py-1 text-sm mb-2 outline-none focus:border-gray-400"
+        />
+        <textarea
+          value={body}
+          onChange={(e) => setBody(e.target.value)}
+          placeholder="# Heading&#10;&#10;Paste markdown or load a .md file."
+          className="w-full h-56 border border-gray-200 rounded px-2 py-1 text-xs font-mono mb-2 outline-none focus:border-gray-400 resize-none"
+        />
+        <p className="text-[10px] text-gray-500 mb-2">
+          Headings (#/##/###), bullets, numbered lists, blockquotes, code
+          fences, and dividers are preserved. Inline bold/italic/links become
+          plain text — restyle in the editor once imported.
+        </p>
+        <div className="flex items-center gap-2">
+          <label className="text-xs text-gray-600 cursor-pointer hover:text-gray-900">
+            <input
+              type="file"
+              accept=".md,text/markdown,text/plain"
+              onChange={onFile}
+              className="hidden"
+            />
+            📁 Load .md file
+          </label>
+          <span className="flex-1" />
+          <button
+            onClick={() => setOpen(false)}
+            className="text-xs text-gray-500 hover:text-gray-900 px-2 py-1"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={submit}
+            disabled={busy || !body.trim()}
+            className="text-xs px-3 py-1 rounded bg-gray-900 text-white disabled:opacity-30"
+          >
+            {busy ? "Importing…" : "Import"}
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 

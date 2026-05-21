@@ -678,6 +678,149 @@ export async function duplicatePage(
   return cloned.id;
 }
 
+// Lightweight markdown → BlockNote-JSON converter. Lossy on purpose:
+// preserves headings (1-3), bullet/numbered lists, blockquote, code fences,
+// horizontal rules, and paragraphs. Inline formatting (bold/italic/links)
+// is kept as plain text — BlockNote will pick it up on first edit if the
+// user wants real styling.
+function markdownToBlocksJson(md: string): string {
+  type Block = {
+    type: string;
+    props?: Record<string, unknown>;
+    content: { type: "text"; text: string; styles: Record<string, never> }[];
+  };
+  const out: Block[] = [];
+  const lines = md.replace(/\r\n/g, "\n").split("\n");
+  let i = 0;
+  const text = (s: string): Block["content"] => [
+    { type: "text", text: s, styles: {} as Record<string, never> },
+  ];
+  while (i < lines.length) {
+    const line = lines[i];
+    // Fenced code block
+    const fence = line.match(/^```(\w+)?\s*$/);
+    if (fence) {
+      const lang = fence[1] ?? "";
+      i++;
+      const buf: string[] = [];
+      while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+        buf.push(lines[i]);
+        i++;
+      }
+      i++;
+      out.push({
+        type: "codeBlock",
+        props: lang ? { language: lang } : {},
+        content: text(buf.join("\n")),
+      });
+      continue;
+    }
+    // Horizontal rule
+    if (/^\s*(-{3,}|\*{3,})\s*$/.test(line)) {
+      out.push({ type: "divider", props: {}, content: [] });
+      i++;
+      continue;
+    }
+    // Heading
+    const h = line.match(/^(#{1,3})\s+(.+)$/);
+    if (h) {
+      out.push({
+        type: "heading",
+        props: { level: h[1].length as 1 | 2 | 3 },
+        content: text(h[2].trim()),
+      });
+      i++;
+      continue;
+    }
+    // Blockquote
+    if (/^>\s?/.test(line)) {
+      const buf: string[] = [];
+      while (i < lines.length && /^>\s?/.test(lines[i])) {
+        buf.push(lines[i].replace(/^>\s?/, ""));
+        i++;
+      }
+      out.push({ type: "quote", props: {}, content: text(buf.join("\n")) });
+      continue;
+    }
+    // Bulleted list
+    if (/^\s*[-*+]\s+/.test(line)) {
+      while (i < lines.length && /^\s*[-*+]\s+/.test(lines[i])) {
+        const item = lines[i].replace(/^\s*[-*+]\s+/, "");
+        const cb = item.match(/^\[( |x|X)\]\s+(.+)$/);
+        if (cb) {
+          out.push({
+            type: "checkListItem",
+            props: { checked: cb[1].toLowerCase() === "x" },
+            content: text(cb[2]),
+          });
+        } else {
+          out.push({ type: "bulletListItem", props: {}, content: text(item) });
+        }
+        i++;
+      }
+      continue;
+    }
+    // Numbered list
+    if (/^\s*\d+\.\s+/.test(line)) {
+      while (i < lines.length && /^\s*\d+\.\s+/.test(lines[i])) {
+        const item = lines[i].replace(/^\s*\d+\.\s+/, "");
+        out.push({ type: "numberedListItem", props: {}, content: text(item) });
+        i++;
+      }
+      continue;
+    }
+    // Blank line — skip
+    if (line.trim() === "") {
+      i++;
+      continue;
+    }
+    // Paragraph — gather contiguous non-blank, non-special lines
+    const buf: string[] = [line];
+    i++;
+    while (
+      i < lines.length &&
+      lines[i].trim() !== "" &&
+      !/^(#{1,3})\s+/.test(lines[i]) &&
+      !/^\s*[-*+]\s+/.test(lines[i]) &&
+      !/^\s*\d+\.\s+/.test(lines[i]) &&
+      !/^>\s?/.test(lines[i]) &&
+      !/^```/.test(lines[i]) &&
+      !/^\s*(-{3,}|\*{3,})\s*$/.test(lines[i])
+    ) {
+      buf.push(lines[i]);
+      i++;
+    }
+    out.push({ type: "paragraph", props: {}, content: text(buf.join(" ")) });
+  }
+  return JSON.stringify(out);
+}
+
+export async function createPageFromMarkdown(
+  slug: string,
+  parentId: string | null,
+  title: string,
+  markdown: string,
+) {
+  const ctx = await assertEditor(slug);
+  const max = await prisma.page.aggregate({
+    where: { workspaceId: ctx.workspace.id, parentId },
+    _max: { position: true },
+  });
+  const created = await prisma.page.create({
+    data: {
+      workspaceId: ctx.workspace.id,
+      parentId,
+      kind: "doc",
+      title: title.trim() || "Imported",
+      content: markdownToBlocksJson(markdown),
+      position: (max._max.position ?? 0) + 1,
+      authorId: ctx.user.id,
+    },
+  });
+  revalidatePath(`/w/${slug}`, "layout");
+  return created.id;
+}
+
 export async function movePageToRoot(slug: string, pageId: string) {
   const ctx = await assertEditor(slug);
   const max = await prisma.page.aggregate({

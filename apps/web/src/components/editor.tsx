@@ -288,6 +288,53 @@ export function Editor({
     return () => window.removeEventListener("keydown", onKey);
   }, [editor, readOnly]);
 
+  // `:shortcode:` → emoji autoreplace. Fires when the user types the closing
+  // colon. Small built-in dictionary; covers the most-used shortcodes.
+  useEffect(() => {
+    if (readOnly) return;
+    const map: Record<string, string> = {
+      smile: "😄", laugh: "😂", joy: "😂", grin: "😁", wink: "😉",
+      heart: "❤️", love: "❤️", "+1": "👍", thumbsup: "👍", "-1": "👎",
+      thumbsdown: "👎", clap: "👏", fire: "🔥", rocket: "🚀", tada: "🎉",
+      party: "🥳", check: "✅", cross: "❌", warning: "⚠️", star: "⭐",
+      sparkles: "✨", eyes: "👀", thinking: "🤔", shrug: "🤷", cry: "😢",
+      sad: "😢", angry: "😠", sweat: "😅", pray: "🙏", muscle: "💪",
+      brain: "🧠", bug: "🐛", wrench: "🔧", lock: "🔒", unlock: "🔓",
+      calendar: "📅", clock: "⏰", phone: "📱", bulb: "💡", memo: "📝",
+      mag: "🔍", chart: "📊", pin: "📌", link: "🔗", zap: "⚡",
+      coffee: "☕", pizza: "🍕", cake: "🎂", tea: "🍵",
+    };
+    const onInput = (e: KeyboardEvent) => {
+      if (e.key !== ":") return;
+      const sel = window.getSelection?.();
+      if (!sel || !sel.focusNode || sel.focusNode.nodeType !== Node.TEXT_NODE)
+        return;
+      const node = sel.focusNode as Text;
+      const offset = sel.focusOffset;
+      const text = node.textContent ?? "";
+      // We see the keydown BEFORE the colon is inserted; look for an opening
+      // ":word" right behind the caret.
+      const m = /:([a-z+_-]{2,16})$/i.exec(text.slice(0, offset));
+      if (!m) return;
+      const code = m[1].toLowerCase();
+      const emoji = map[code];
+      if (!emoji) return;
+      e.preventDefault();
+      // remove the ":word" then insert the emoji using execCommand so undo
+      // works naturally.
+      const range = document.createRange();
+      range.setStart(node, offset - m[0].length);
+      range.setEnd(node, offset);
+      sel.removeAllRanges();
+      sel.addRange(range);
+      try {
+        document.execCommand("insertText", false, emoji);
+      } catch {}
+    };
+    window.addEventListener("keydown", onInput, true);
+    return () => window.removeEventListener("keydown", onInput, true);
+  }, [readOnly]);
+
   // File drag overlay — visual cue when the user drags a file onto the page.
   const [dragOver, setDragOver] = useState(false);
   useEffect(() => {
@@ -973,7 +1020,7 @@ export function Editor({
                 },
               },
               ...(aiEnabled
-                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "sentiment", "next_steps", "critique", "agenda", "eli5", "pros_cons", "risks", "timeline", "faq", "counter", "hashtags", "headlines", "slug", "tweet_thread", "citations", "study_notes", "flashcards", "quiz", "persona", "swot", "release_notes", "objections", "decision_log", "user_stories", "test_cases", "rhyme", "lyrics", "regex", "sql", "commit_msg", "standup", "retro", "jargon", "mind_map", "elevator_pitch", "job_desc", "follow_up", "sub_headings", "anti_pattern", "dictionary", "expand_acronyms", "star_method", "key_takeaways", "email_reply", "cover_letter", "pre_publish", "tagline", "metaphor", "press_release", "interview_questions", "linkedin_post", "blog_outline", "testimonials", "contrarian", "dialog", "seo_keywords", "news_headline", "recommendation_letter", "scenario", "risk_matrix", "api_spec", "raci", "value_prop", "cta", "landing_hero", "onboarding_email", "insight_3", "dictation_clean", "clean_formatting", "inverse_pyramid", "contrast_vs", "buyer_persona", "feature_benefit", "learn_vocab", "business_canvas", "competitive_analysis", "postmortem", "case_study", "customer_interview", "release_tweet", "job_offer_email", "spec_template", "okrs", "onboarding_checklist", "prd", "sales_pitch", "cold_email", "q_and_a", "agenda_action", "escalation_email", "proposal", "roadmap", "sprint_plan", "standup_async", "release_detailed", "code_review", "devil_advocate", "objection_handler", "changelog_emoji", "inverse_faq", "style_guide", "email_friendly", "persona_quote", "voice_script", "short_bio", "long_bio", "job_rejection", "recruiting_msg", "edit"] as const)
+                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "sentiment", "next_steps", "critique", "agenda", "eli5", "pros_cons", "risks", "timeline", "faq", "counter", "hashtags", "headlines", "slug", "tweet_thread", "citations", "study_notes", "flashcards", "quiz", "persona", "swot", "release_notes", "objections", "decision_log", "user_stories", "test_cases", "rhyme", "lyrics", "regex", "sql", "commit_msg", "standup", "retro", "jargon", "mind_map", "elevator_pitch", "job_desc", "follow_up", "sub_headings", "anti_pattern", "dictionary", "expand_acronyms", "star_method", "key_takeaways", "email_reply", "cover_letter", "pre_publish", "tagline", "metaphor", "press_release", "interview_questions", "linkedin_post", "blog_outline", "testimonials", "contrarian", "dialog", "seo_keywords", "news_headline", "recommendation_letter", "scenario", "risk_matrix", "api_spec", "raci", "value_prop", "cta", "landing_hero", "onboarding_email", "insight_3", "dictation_clean", "clean_formatting", "inverse_pyramid", "contrast_vs", "buyer_persona", "feature_benefit", "learn_vocab", "business_canvas", "competitive_analysis", "postmortem", "case_study", "customer_interview", "release_tweet", "job_offer_email", "spec_template", "okrs", "onboarding_checklist", "prd", "sales_pitch", "cold_email", "q_and_a", "agenda_action", "escalation_email", "proposal", "roadmap", "sprint_plan", "standup_async", "release_detailed", "code_review", "devil_advocate", "objection_handler", "changelog_emoji", "inverse_faq", "style_guide", "email_friendly", "persona_quote", "voice_script", "short_bio", "long_bio", "job_rejection", "recruiting_msg", "exec_summary", "lessons_learned", "decision_memo", "release_faq", "launch_checklist", "feedback_questions", "user_research_plan", "discovery_questions", "product_tour", "day_in_life", "founder_story", "positioning", "edit"] as const)
                 : ([] as const)).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {
@@ -1104,6 +1151,18 @@ export function Editor({
                     long_bio: { title: "AI · Long bio (200w)", emoji: "👥", color: "blue", aliases: ["ai", "bio", "long", "긴약력"] },
                     job_rejection: { title: "AI · Job rejection email", emoji: "📭", color: "red", aliases: ["ai", "rejection", "decline", "탈락"] },
                     recruiting_msg: { title: "AI · Recruiting DM", emoji: "🔎", color: "blue", aliases: ["ai", "recruit", "message", "채용연락"] },
+                    exec_summary: { title: "AI · Executive summary", emoji: "📔", color: "blue", aliases: ["ai", "exec", "summary", "경영요약"] },
+                    lessons_learned: { title: "AI · Lessons learned", emoji: "🎓", color: "yellow", aliases: ["ai", "lessons", "learned", "교훈"] },
+                    decision_memo: { title: "AI · Decision memo", emoji: "🧭", color: "purple", aliases: ["ai", "decision", "memo", "결정메모"] },
+                    release_faq: { title: "AI · Release FAQ", emoji: "❓", color: "green", aliases: ["ai", "release", "faq", "출시FAQ"] },
+                    launch_checklist: { title: "AI · Launch checklist", emoji: "🚀", color: "green", aliases: ["ai", "launch", "checklist", "출시체크"] },
+                    feedback_questions: { title: "AI · Feedback questions", emoji: "🗳", color: "blue", aliases: ["ai", "feedback", "questions", "피드백질문"] },
+                    user_research_plan: { title: "AI · UX research plan", emoji: "🔬", color: "purple", aliases: ["ai", "research", "plan", "유저리서치"] },
+                    discovery_questions: { title: "AI · Discovery Qs", emoji: "🧪", color: "blue", aliases: ["ai", "discovery", "interview", "디스커버리"] },
+                    product_tour: { title: "AI · Product tour copy", emoji: "🧭", color: "blue", aliases: ["ai", "tour", "tooltip", "투어"] },
+                    day_in_life: { title: "AI · Day in life", emoji: "🌅", color: "yellow", aliases: ["ai", "day", "life", "하루"] },
+                    founder_story: { title: "AI · Founder story", emoji: "🏁", color: "purple", aliases: ["ai", "founder", "story", "창업스토리"] },
+                    positioning: { title: "AI · Positioning statement", emoji: "🎯", color: "green", aliases: ["ai", "positioning", "statement", "포지셔닝"] },
                     edit: { title: "AI · Edit (custom)", emoji: "🪄", color: "red", aliases: ["ai", "edit", "custom", "transform"] },
                   }[action];
                   return {
