@@ -319,6 +319,8 @@ export function PageView({
       "sidebar-group-by-kind",
       "hide-outline",
       "hide-trash",
+      "page-dark",
+      "compact-title",
     ];
     try {
       for (const k of toggles) {

@@ -411,6 +411,24 @@ body.hide-trash .nf-sidebar-trash {
   display: none !important;
 }
 
+/* 'Page-only dark' — flip the editor content to dark even when global theme is light. */
+body.page-dark main {
+  background: #18181b !important;
+  color: #f4f4f5 !important;
+}
+body.page-dark main .bn-editor {
+  color: #f4f4f5 !important;
+}
+body.page-dark main .bn-block-content[data-content-type="codeBlock"] pre {
+  background: #0b0b0d !important;
+}
+
+/* 'Compact title' — knocks the H1-style page title down a size. */
+body.compact-title .nf-page-title input {
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+}
+
 /* Print page numbers in the footer (browser-dependent). */
 @page {
   margin: 18mm 14mm 18mm 14mm;

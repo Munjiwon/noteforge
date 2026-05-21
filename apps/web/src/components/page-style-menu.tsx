@@ -295,6 +295,34 @@ export function PageStyleMenu({
               </button>
               <button
                 onClick={() => {
+                  const editor =
+                    document.querySelector(".bn-container") ||
+                    document.querySelector(".bn-editor");
+                  const blocks = editor
+                    ? editor.querySelectorAll(".bn-block").length
+                    : 0;
+                  const content = (editor?.textContent ?? "").length;
+                  const ua = navigator.userAgent;
+                  alert(
+                    `🛠 Debug info\n\n` +
+                      `Page ID: ${pageId}\n` +
+                      `Block count: ${blocks}\n` +
+                      `Visible char count: ${content.toLocaleString()}\n` +
+                      `URL: ${window.location.href}\n` +
+                      `User agent: ${ua}\n` +
+                      `localStorage size: ${
+                        Object.keys(localStorage).length
+                      } keys`,
+                  );
+                  setOpen(false);
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+                title="Show debug info for this page (for support)"
+              >
+                🛠 Show debug info
+              </button>
+              <button
+                onClick={() => {
                   window.open(`/api/page/${pageId}`, "_blank", "noopener");
                 }}
                 className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
@@ -665,6 +693,8 @@ export function PageStyleMenu({
                       { key: "sidebar-group-by-kind", label: "Group by kind" },
                       { key: "hide-outline", label: "Hide outline" },
                       { key: "hide-trash", label: "Hide trash" },
+                      { key: "page-dark", label: "Page-only dark" },
+                      { key: "compact-title", label: "Compact title" },
                     ] as const
                   ).map((t) => (
                     <button
