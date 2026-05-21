@@ -821,6 +821,36 @@ export async function createPageFromMarkdown(
   return created.id;
 }
 
+export async function bulkAddTagToPages(
+  slug: string,
+  pageIds: string[],
+  tag: string,
+) {
+  const ctx = await assertEditor(slug);
+  const cleaned = tag.trim();
+  if (!cleaned) return 0;
+  const rows = await prisma.page.findMany({
+    where: { id: { in: pageIds }, workspaceId: ctx.workspace.id },
+    select: { id: true, tags: true },
+  });
+  let count = 0;
+  for (const r of rows) {
+    const list = (r.tags ?? "")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    if (list.some((t) => t.toLowerCase() === cleaned.toLowerCase())) continue;
+    list.push(cleaned);
+    await prisma.page.update({
+      where: { id: r.id },
+      data: { tags: list.join(", ") },
+    });
+    count++;
+  }
+  revalidatePath(`/w/${slug}`, "layout");
+  return count;
+}
+
 export async function movePageToRoot(slug: string, pageId: string) {
   const ctx = await assertEditor(slug);
   const max = await prisma.page.aggregate({

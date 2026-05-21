@@ -281,6 +281,20 @@ export function PageStyleMenu({
               </button>
               <button
                 onClick={() => {
+                  setOpen(false);
+                  window.dispatchEvent(
+                    new CustomEvent("noteforge:open-activity", {
+                      detail: { pageId },
+                    }),
+                  );
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+                title="View who did what on this page"
+              >
+                📜 Activity log
+              </button>
+              <button
+                onClick={() => {
                   window.open(`/api/page/${pageId}`, "_blank", "noopener");
                 }}
                 className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"

@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import clsx from "clsx";
 import {
+  bulkAddTagToPages,
   bulkDeletePages,
   bulkFavoritePages,
   archivePage,
@@ -1079,6 +1080,24 @@ export function Sidebar({
             className="px-1.5 py-0.5 rounded bg-white border border-gray-200 hover:bg-black/5"
           >
             ★ Favorite
+          </button>
+          <button
+            onClick={() => {
+              const t = window.prompt(
+                `Add a tag to ${selectedIds.size} page(s):`,
+              );
+              if (!t || !t.trim()) return;
+              startTransition(() => {
+                bulkAddTagToPages(
+                  currentSlug,
+                  Array.from(selectedIds),
+                  t.trim(),
+                );
+              });
+            }}
+            className="px-1.5 py-0.5 rounded bg-white border border-gray-200 hover:bg-black/5"
+          >
+            🏷 Tag
           </button>
           <button
             onClick={() => {

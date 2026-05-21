@@ -911,6 +911,7 @@ export function PageView({
       {aiEnabled && (
         <AskAiPanel slug={slug} getPageText={() => extractText(page.content, title)} />
       )}
+      <ActivityLogModal pageId={page.id} />
     </div>
   );
 }
@@ -1019,6 +1020,89 @@ function SubPagesSection({
         )}
       </ul>
     </details>
+  );
+}
+
+export function ActivityLogModal({ pageId }: { pageId: string }) {
+  const [open, setOpen] = useState(false);
+  type Item = {
+    id: string;
+    action: string;
+    meta: string | null;
+    createdAt: string;
+    user: { id: string; name: string; color: string } | null;
+  };
+  const [rows, setRows] = useState<Item[]>([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const ce = e as CustomEvent<{ pageId?: string }>;
+      if (!ce.detail || ce.detail.pageId !== pageId) return;
+      setOpen(true);
+      setLoading(true);
+      fetch(`/api/page/${pageId}/activity`)
+        .then((r) => r.json())
+        .then((d) => setRows((d as { activities?: Item[] }).activities ?? []))
+        .catch(() => setRows([]))
+        .finally(() => setLoading(false));
+    };
+    window.addEventListener("noteforge:open-activity", handler);
+    return () =>
+      window.removeEventListener("noteforge:open-activity", handler);
+  }, [pageId]);
+  if (!open) return null;
+  return (
+    <div
+      className="fixed inset-0 z-50 bg-black/30 flex items-start justify-center pt-20 p-4"
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) setOpen(false);
+      }}
+    >
+      <div className="bg-white rounded-lg shadow-2xl w-[520px] max-w-[95vw] p-4">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-sm font-medium">📜 Activity log</h3>
+          <button onClick={() => setOpen(false)} className="text-gray-400 hover:text-gray-900">
+            ✕
+          </button>
+        </div>
+        {loading ? (
+          <p className="text-xs text-gray-500 py-6 text-center">Loading…</p>
+        ) : rows.length === 0 ? (
+          <p className="text-xs text-gray-500 py-6 text-center">No activity yet.</p>
+        ) : (
+          <ul className="max-h-[60vh] overflow-y-auto text-xs space-y-1.5">
+            {rows.map((a) => (
+              <li
+                key={a.id}
+                className="flex items-start gap-2 px-2 py-1 rounded hover:bg-black/5"
+              >
+                <span
+                  className="inline-block w-5 h-5 rounded-full mt-0.5 shrink-0"
+                  style={{ background: a.user?.color ?? "#9ca3af" }}
+                  title={a.user?.name ?? "system"}
+                />
+                <div className="min-w-0 flex-1">
+                  <div className="text-gray-700">
+                    <span className="font-medium">
+                      {a.user?.name ?? "Someone"}
+                    </span>{" "}
+                    · {a.action}
+                  </div>
+                  {a.meta && (
+                    <div className="text-[10px] text-gray-500 truncate">
+                      {a.meta}
+                    </div>
+                  )}
+                </div>
+                <span className="text-[10px] text-gray-400 shrink-0">
+                  {relTime(a.createdAt)}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
   );
 }
 
