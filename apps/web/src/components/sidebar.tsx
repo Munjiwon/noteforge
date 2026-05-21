@@ -1380,8 +1380,96 @@ export function Sidebar({
         onClose={() => setMovingId(null)}
       />
       <MarkdownImportModal slug={currentSlug} />
+      <MarkdownDropTarget slug={currentSlug} />
     </aside>
     </>
+  );
+}
+
+function MarkdownDropTarget({ slug }: { slug: string }) {
+  const router = useRouter();
+  const [hover, setHover] = useState(false);
+  useEffect(() => {
+    const onOver = (e: DragEvent) => {
+      if (!e.dataTransfer) return;
+      const hasFile = Array.from(e.dataTransfer.items).some(
+        (i) => i.kind === "file",
+      );
+      if (!hasFile) return;
+      e.preventDefault();
+      setHover(true);
+    };
+    const onLeave = () => setHover(false);
+    const onDrop = async (e: DragEvent) => {
+      setHover(false);
+      const files = Array.from(e.dataTransfer?.files ?? []);
+      const mds = files.filter(
+        (f) => /\.md$/i.test(f.name) || f.type === "text/markdown",
+      );
+      const jsons = files.filter(
+        (f) => /\.json$/i.test(f.name) || f.type === "application/json",
+      );
+      if (mds.length === 0 && jsons.length === 0) return;
+      e.preventDefault();
+      const { createPageFromMarkdown } = await import(
+        "@/app/w/[slug]/actions"
+      );
+      let firstId: string | null = null;
+      for (const f of mds) {
+        const text = await f.text();
+        const id = await createPageFromMarkdown(
+          slug,
+          null,
+          f.name.replace(/\.md$/i, ""),
+          text,
+        );
+        if (!firstId) firstId = id;
+      }
+      for (const f of jsons) {
+        try {
+          const data = JSON.parse(await f.text()) as {
+            pages?: { title?: string; content?: string; kind?: string }[];
+          };
+          if (Array.isArray(data.pages)) {
+            for (const p of data.pages) {
+              if (p.kind && p.kind !== "doc") continue;
+              const id = await createPageFromMarkdown(
+                slug,
+                null,
+                p.title ?? "Imported",
+                "", // markdown empty; content overridden below
+              );
+              if (!firstId) firstId = id;
+              // Overwrite content with raw BlockNote JSON if it parses.
+              if (p.content) {
+                try {
+                  JSON.parse(p.content);
+                  const { saveContent } = await import(
+                    "@/app/w/[slug]/actions"
+                  );
+                  await saveContent(slug, id, p.content);
+                } catch {}
+              }
+            }
+          }
+        } catch {}
+      }
+      if (firstId) router.push(`/w/${slug}/p/${firstId}`);
+    };
+    window.addEventListener("dragover", onOver);
+    window.addEventListener("dragleave", onLeave);
+    window.addEventListener("drop", onDrop);
+    return () => {
+      window.removeEventListener("dragover", onOver);
+      window.removeEventListener("dragleave", onLeave);
+      window.removeEventListener("drop", onDrop);
+    };
+  }, [slug, router]);
+  if (!hover) return null;
+  return (
+    <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-gray-900 text-white rounded-full px-4 py-2 text-xs shadow-lg pointer-events-none no-print">
+      Drop .md or workspace .json to import…
+    </div>
   );
 }
 

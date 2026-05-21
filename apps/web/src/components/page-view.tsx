@@ -765,6 +765,31 @@ export function PageView({
             ⏱ {Math.max(1, Math.round(info.wordCount / 200))} min read · {info.wordCount.toLocaleString()} words
           </span>
         )}
+        {info.wordGoal && info.wordGoal > 0 && (
+          <span
+            className="nf-word-chip flex items-center gap-1"
+            title={`${info.wordCount.toLocaleString()} / ${info.wordGoal.toLocaleString()} words`}
+          >
+            <span className="text-gray-400">·</span>
+            <span className="inline-block w-20 h-1.5 rounded-full bg-gray-200 overflow-hidden">
+              <span
+                className={
+                  "block h-full " +
+                  (info.wordCount >= info.wordGoal
+                    ? "bg-emerald-500"
+                    : "bg-blue-500")
+                }
+                style={{
+                  width: `${Math.min(100, Math.round((info.wordCount / info.wordGoal) * 100))}%`,
+                }}
+              />
+            </span>
+            <span>
+              {Math.min(100, Math.round((info.wordCount / info.wordGoal) * 100))}%
+              {info.wordCount >= info.wordGoal ? " 🎉" : ""}
+            </span>
+          </span>
+        )}
       </div>
       <div data-page-reactions>
         <PageReactions

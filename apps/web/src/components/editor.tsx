@@ -630,6 +630,7 @@ export function Editor({
 
   return (
     <div>
+      <EmojiPickerOverlay />
       <PresenceBar self={user} peers={peers} syncStatus={syncStatus} />
       <div className="flex gap-2 mb-2">
         {!readOnly && (
@@ -926,6 +927,16 @@ export function Editor({
                 },
               })),
               {
+                title: "Emoji picker",
+                subtext: "Search and insert an emoji (or type :name: inline)",
+                aliases: ["emoji", "icon", "이모지"],
+                group: "Basic blocks",
+                icon: <span>😀</span>,
+                onItemClick: () => {
+                  window.dispatchEvent(new CustomEvent("noteforge:emoji-picker"));
+                },
+              },
+              {
                 title: "Snippet · Meeting agenda",
                 subtext: "Quick agenda + action items checklist",
                 aliases: ["meeting", "agenda", "snippet"],
@@ -1063,7 +1074,7 @@ export function Editor({
                 },
               },
               ...(aiEnabled
-                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "sentiment", "next_steps", "critique", "agenda", "eli5", "pros_cons", "risks", "timeline", "faq", "counter", "hashtags", "headlines", "slug", "tweet_thread", "citations", "study_notes", "flashcards", "quiz", "persona", "swot", "release_notes", "objections", "decision_log", "user_stories", "test_cases", "rhyme", "lyrics", "regex", "sql", "commit_msg", "standup", "retro", "jargon", "mind_map", "elevator_pitch", "job_desc", "follow_up", "sub_headings", "anti_pattern", "dictionary", "expand_acronyms", "star_method", "key_takeaways", "email_reply", "cover_letter", "pre_publish", "tagline", "metaphor", "press_release", "interview_questions", "linkedin_post", "blog_outline", "testimonials", "contrarian", "dialog", "seo_keywords", "news_headline", "recommendation_letter", "scenario", "risk_matrix", "api_spec", "raci", "value_prop", "cta", "landing_hero", "onboarding_email", "insight_3", "dictation_clean", "clean_formatting", "inverse_pyramid", "contrast_vs", "buyer_persona", "feature_benefit", "learn_vocab", "business_canvas", "competitive_analysis", "postmortem", "case_study", "customer_interview", "release_tweet", "job_offer_email", "spec_template", "okrs", "onboarding_checklist", "prd", "sales_pitch", "cold_email", "q_and_a", "agenda_action", "escalation_email", "proposal", "roadmap", "sprint_plan", "standup_async", "release_detailed", "code_review", "devil_advocate", "objection_handler", "changelog_emoji", "inverse_faq", "style_guide", "email_friendly", "persona_quote", "voice_script", "short_bio", "long_bio", "job_rejection", "recruiting_msg", "exec_summary", "lessons_learned", "decision_memo", "release_faq", "launch_checklist", "feedback_questions", "user_research_plan", "discovery_questions", "product_tour", "day_in_life", "founder_story", "positioning", "ad_copy", "headline_test", "before_after", "social_proof", "error_msg", "migration_guide", "legal_disclaimer", "privacy_summary", "api_changelog", "whitepaper_outline", "press_quote", "customer_quote", "edit"] as const)
+                ? (["summarize", "one_liner", "translate", "improve", "proofread", "continue", "explain", "outline", "keywords", "ideas", "checklist", "poll", "email", "action_items", "quote", "tone", "longer", "shorter", "glossary", "sentiment", "next_steps", "critique", "agenda", "eli5", "pros_cons", "risks", "timeline", "faq", "counter", "hashtags", "headlines", "slug", "tweet_thread", "citations", "study_notes", "flashcards", "quiz", "persona", "swot", "release_notes", "objections", "decision_log", "user_stories", "test_cases", "rhyme", "lyrics", "regex", "sql", "commit_msg", "standup", "retro", "jargon", "mind_map", "elevator_pitch", "job_desc", "follow_up", "sub_headings", "anti_pattern", "dictionary", "expand_acronyms", "star_method", "key_takeaways", "email_reply", "cover_letter", "pre_publish", "tagline", "metaphor", "press_release", "interview_questions", "linkedin_post", "blog_outline", "testimonials", "contrarian", "dialog", "seo_keywords", "news_headline", "recommendation_letter", "scenario", "risk_matrix", "api_spec", "raci", "value_prop", "cta", "landing_hero", "onboarding_email", "insight_3", "dictation_clean", "clean_formatting", "inverse_pyramid", "contrast_vs", "buyer_persona", "feature_benefit", "learn_vocab", "business_canvas", "competitive_analysis", "postmortem", "case_study", "customer_interview", "release_tweet", "job_offer_email", "spec_template", "okrs", "onboarding_checklist", "prd", "sales_pitch", "cold_email", "q_and_a", "agenda_action", "escalation_email", "proposal", "roadmap", "sprint_plan", "standup_async", "release_detailed", "code_review", "devil_advocate", "objection_handler", "changelog_emoji", "inverse_faq", "style_guide", "email_friendly", "persona_quote", "voice_script", "short_bio", "long_bio", "job_rejection", "recruiting_msg", "exec_summary", "lessons_learned", "decision_memo", "release_faq", "launch_checklist", "feedback_questions", "user_research_plan", "discovery_questions", "product_tour", "day_in_life", "founder_story", "positioning", "ad_copy", "headline_test", "before_after", "social_proof", "error_msg", "migration_guide", "legal_disclaimer", "privacy_summary", "api_changelog", "whitepaper_outline", "press_quote", "customer_quote", "content_calendar", "seo_meta", "alt_text", "thumbnail_text", "survey_design", "system_prompt", "talking_points", "brief_from_bullets", "haiku", "quotes_on_topic", "tldr_emoji", "edit"] as const)
                 : ([] as const)).map(
                 (action): DefaultReactSuggestionItem => {
                   const meta = {
@@ -1218,6 +1229,17 @@ export function Editor({
                     whitepaper_outline: { title: "AI · Whitepaper outline", emoji: "📄", color: "purple", aliases: ["ai", "whitepaper", "outline", "백서"] },
                     press_quote: { title: "AI · Press quotes (3)", emoji: "🗞", color: "blue", aliases: ["ai", "press", "quote", "보도인용"] },
                     customer_quote: { title: "AI · Customer pull-quote", emoji: "💬", color: "green", aliases: ["ai", "customer", "quote", "고객인용"] },
+                    content_calendar: { title: "AI · 4-week content calendar", emoji: "🗓", color: "blue", aliases: ["ai", "calendar", "content", "콘텐츠일정"] },
+                    seo_meta: { title: "AI · SEO meta tags", emoji: "🔖", color: "blue", aliases: ["ai", "seo", "meta", "메타태그"] },
+                    alt_text: { title: "AI · Image alt text", emoji: "🖼", color: "purple", aliases: ["ai", "alt", "image", "alt텍스트"] },
+                    thumbnail_text: { title: "AI · Thumbnail overlay", emoji: "🎬", color: "yellow", aliases: ["ai", "thumbnail", "overlay", "썸네일"] },
+                    survey_design: { title: "AI · Survey (5 Q mix)", emoji: "📋", color: "blue", aliases: ["ai", "survey", "questions", "설문설계"] },
+                    system_prompt: { title: "AI · System prompt", emoji: "🤖", color: "purple", aliases: ["ai", "system", "prompt", "시스템프롬프트"] },
+                    talking_points: { title: "AI · Talking points (5)", emoji: "📌", color: "yellow", aliases: ["ai", "talking", "points", "발표포인트"] },
+                    brief_from_bullets: { title: "AI · Bullets → brief prose", emoji: "📜", color: "green", aliases: ["ai", "brief", "expand", "확장"] },
+                    haiku: { title: "AI · Haiku (5/7/5)", emoji: "🎋", color: "yellow", aliases: ["ai", "haiku", "poem", "하이쿠"] },
+                    quotes_on_topic: { title: "AI · Famous quotes (5)", emoji: "📚", color: "purple", aliases: ["ai", "quotes", "famous", "명언"] },
+                    tldr_emoji: { title: "AI · 1-line TL;DR + emoji", emoji: "💨", color: "blue", aliases: ["ai", "tldr", "emoji", "한줄요약"] },
                     edit: { title: "AI · Edit (custom)", emoji: "🪄", color: "red", aliases: ["ai", "edit", "custom", "transform"] },
                   }[action];
                   return {
@@ -1609,6 +1631,103 @@ function Avatar({ name, color, title }: { name: string; color: string; title: st
       style={{ backgroundColor: color }}
     >
       {name.slice(0, 1).toUpperCase()}
+    </div>
+  );
+}
+
+const EMOJI_LIB: { name: string; emoji: string; keywords?: string }[] = [
+  { name: "smile", emoji: "😄" }, { name: "laugh", emoji: "😂" },
+  { name: "wink", emoji: "😉" }, { name: "thinking", emoji: "🤔" },
+  { name: "shrug", emoji: "🤷" }, { name: "eyes", emoji: "👀" },
+  { name: "sad", emoji: "😢" }, { name: "angry", emoji: "😠" },
+  { name: "sweat", emoji: "😅" }, { name: "pray", emoji: "🙏" },
+  { name: "muscle", emoji: "💪" }, { name: "brain", emoji: "🧠" },
+  { name: "heart", emoji: "❤️" }, { name: "thumbsup", emoji: "👍" },
+  { name: "thumbsdown", emoji: "👎" }, { name: "clap", emoji: "👏" },
+  { name: "fire", emoji: "🔥" }, { name: "rocket", emoji: "🚀" },
+  { name: "tada", emoji: "🎉" }, { name: "party", emoji: "🥳" },
+  { name: "check", emoji: "✅" }, { name: "cross", emoji: "❌" },
+  { name: "warning", emoji: "⚠️" }, { name: "star", emoji: "⭐" },
+  { name: "sparkles", emoji: "✨" }, { name: "bulb", emoji: "💡" },
+  { name: "memo", emoji: "📝" }, { name: "pin", emoji: "📌" },
+  { name: "link", emoji: "🔗" }, { name: "zap", emoji: "⚡" },
+  { name: "calendar", emoji: "📅" }, { name: "clock", emoji: "⏰" },
+  { name: "phone", emoji: "📱" }, { name: "mag", emoji: "🔍" },
+  { name: "chart", emoji: "📊" }, { name: "bug", emoji: "🐛" },
+  { name: "wrench", emoji: "🔧" }, { name: "lock", emoji: "🔒" },
+  { name: "unlock", emoji: "🔓" }, { name: "coffee", emoji: "☕" },
+  { name: "pizza", emoji: "🍕" }, { name: "cake", emoji: "🎂" },
+  { name: "tea", emoji: "🍵" }, { name: "book", emoji: "📚" },
+  { name: "rainbow", emoji: "🌈" }, { name: "sun", emoji: "☀️" },
+  { name: "moon", emoji: "🌙" }, { name: "snowflake", emoji: "❄️" },
+  { name: "earth", emoji: "🌍" }, { name: "robot", emoji: "🤖" },
+];
+
+function EmojiPickerOverlay() {
+  const [open, setOpen] = useState(false);
+  const [q, setQ] = useState("");
+  useEffect(() => {
+    const onOpen = () => {
+      setQ("");
+      setOpen(true);
+    };
+    window.addEventListener("noteforge:emoji-picker", onOpen);
+    return () => window.removeEventListener("noteforge:emoji-picker", onOpen);
+  }, []);
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+  if (!open) return null;
+  const ql = q.trim().toLowerCase();
+  const filtered = ql
+    ? EMOJI_LIB.filter((e) =>
+        (e.name + " " + (e.keywords ?? "")).toLowerCase().includes(ql),
+      )
+    : EMOJI_LIB;
+  const insert = (em: string) => {
+    setOpen(false);
+    setTimeout(() => {
+      try {
+        document.execCommand("insertText", false, em);
+      } catch {}
+    }, 30);
+  };
+  return (
+    <div
+      className="fixed inset-0 z-50 bg-black/30 flex items-start justify-center pt-24 p-4"
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) setOpen(false);
+      }}
+    >
+      <div className="bg-white rounded-lg shadow-2xl w-[420px] max-w-[95vw] p-3">
+        <input
+          autoFocus
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          placeholder="Search emoji…"
+          className="w-full border border-gray-200 rounded px-2 py-1 text-sm mb-2 outline-none focus:border-gray-400"
+        />
+        <div className="grid grid-cols-8 gap-1 max-h-72 overflow-y-auto">
+          {filtered.map((e) => (
+            <button
+              key={e.name}
+              onClick={() => insert(e.emoji)}
+              className="aspect-square text-xl rounded hover:bg-black/5"
+              title={`:${e.name}:`}
+            >
+              {e.emoji}
+            </button>
+          ))}
+          {filtered.length === 0 && (
+            <p className="col-span-8 text-xs text-gray-500 px-1 py-2">No match.</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
