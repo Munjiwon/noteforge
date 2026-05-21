@@ -25,8 +25,18 @@ export async function GET(
     where: { pageId: page.id },
     orderBy: { createdAt: "desc" },
     take: 8,
-    include: { user: { select: { name: true, color: true } } },
   });
+  const userIds = Array.from(
+    new Set(activities.map((a) => a.userId).filter((x): x is string => !!x)),
+  );
+  const userMap = new Map<string, { name: string; color: string }>();
+  if (userIds.length > 0) {
+    const rows = await prisma.user.findMany({
+      where: { id: { in: userIds } },
+      select: { id: true, name: true, color: true },
+    });
+    for (const r of rows) userMap.set(r.id, { name: r.name, color: r.color });
+  }
   return NextResponse.json({
     id: page.id,
     title: page.title,
@@ -44,7 +54,7 @@ export async function GET(
       action: a.action,
       meta: a.meta,
       createdAt: a.createdAt.toISOString(),
-      user: a.user ? { name: a.user.name, color: a.user.color } : null,
+      user: a.userId ? userMap.get(a.userId) ?? null : null,
     })),
   });
 }

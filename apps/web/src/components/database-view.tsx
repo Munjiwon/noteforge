@@ -799,7 +799,11 @@ function RowRow({
               <button
                 className="text-xs text-gray-400 hover:text-gray-900 px-1"
                 title="Duplicate row"
-                onClick={() => start(() => duplicatePage(slug, row.id))}
+                onClick={() =>
+                  start(async () => {
+                    await duplicatePage(slug, row.id);
+                  })
+                }
               >
                 ⎘
               </button>
@@ -1180,7 +1184,9 @@ function Cell({
       onKeyDown={(e) => {
         if (prop.id === "p_title" && e.shiftKey && e.key === "Enter") {
           e.preventDefault();
-          start(() => addRowBefore(slug, dbId, rowId));
+          start(async () => {
+            await addRowBefore(slug, dbId, rowId);
+          });
         }
       }}
       onBlur={(e) => {

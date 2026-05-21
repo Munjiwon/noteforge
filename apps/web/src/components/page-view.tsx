@@ -100,6 +100,7 @@ export function PageView({
     backlinkCount: number;
     childrenCount: number;
     subscriberCount?: number;
+    viewCount?: number;
     lastEditor?: { name: string; color: string; avatarUrl?: string | null } | null;
   };
   permissions: PermItem[];

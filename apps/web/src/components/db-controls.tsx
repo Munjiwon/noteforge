@@ -34,6 +34,10 @@ const OPS_BY_TYPE: Record<DbProp["type"], DbFilterOp[]> = {
   relation: ["empty", "not_empty"],
   rollup: ["eq", "ne", "empty", "not_empty"],
   formula: ["contains", "eq", "ne", "empty", "not_empty"],
+  created_at: ["eq", "before", "after", "empty", "not_empty"],
+  updated_at: ["eq", "before", "after", "empty", "not_empty"],
+  created_by: ["eq", "ne", "empty", "not_empty"],
+  duration: ["eq", "ne", "empty", "not_empty"],
 };
 
 const OP_LABEL: Record<DbFilterOp, string> = {
