@@ -989,6 +989,7 @@ export function Sidebar({
           </button>
         )}
       </div>
+      <SavedFilters filterQ={filterQ} setFilterQ={setFilterQ} />
 
       <div className="flex items-center justify-between px-3 pt-2 pb-1 text-xs uppercase tracking-wide text-gray-500">
         <span className="flex items-center gap-2">
@@ -1478,6 +1479,71 @@ function MarkdownImportModal({ slug }: { slug: string }) {
           </button>
         </div>
       </div>
+    </div>
+  );
+}
+
+function SavedFilters({
+  filterQ,
+  setFilterQ,
+}: {
+  filterQ: string;
+  setFilterQ: (q: string) => void;
+}) {
+  const [saved, setSaved] = useState<string[]>([]);
+  const KEY = "noteforge:saved-filters";
+  useEffect(() => {
+    try {
+      const arr = JSON.parse(localStorage.getItem(KEY) || "[]");
+      if (Array.isArray(arr)) setSaved(arr.filter((s) => typeof s === "string"));
+    } catch {}
+  }, []);
+  const persist = (next: string[]) => {
+    setSaved(next);
+    try {
+      localStorage.setItem(KEY, JSON.stringify(next));
+    } catch {}
+  };
+  const save = () => {
+    const q = filterQ.trim();
+    if (!q || saved.includes(q)) return;
+    persist([q, ...saved].slice(0, 10));
+  };
+  const remove = (q: string) => persist(saved.filter((x) => x !== q));
+  if (saved.length === 0 && !filterQ.trim()) return null;
+  return (
+    <div className="px-3 pb-1 flex flex-wrap gap-1 items-center">
+      {filterQ.trim() && !saved.includes(filterQ.trim()) && (
+        <button
+          onClick={save}
+          className="text-[10px] px-1.5 py-0.5 rounded border border-gray-200 hover:bg-black/5 text-gray-500"
+          title="Save this filter"
+        >
+          ⭐ Save
+        </button>
+      )}
+      {saved.map((q) => (
+        <span
+          key={q}
+          className={
+            "inline-flex items-center text-[10px] px-1.5 py-0.5 rounded border " +
+            (filterQ === q
+              ? "border-blue-300 bg-blue-50 text-blue-700"
+              : "border-gray-200 hover:bg-black/5 text-gray-600")
+          }
+        >
+          <button onClick={() => setFilterQ(q)} className="mr-0.5 truncate max-w-[120px]">
+            {q}
+          </button>
+          <button
+            onClick={() => remove(q)}
+            className="text-gray-400 hover:text-red-500"
+            title="Remove"
+          >
+            ×
+          </button>
+        </span>
+      ))}
     </div>
   );
 }
