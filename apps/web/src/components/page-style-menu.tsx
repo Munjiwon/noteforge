@@ -401,8 +401,10 @@ export function PageStyleMenu({
               <div className="flex gap-1 mb-1">
                 <button
                   onClick={() => {
-                    const ts = document.querySelectorAll<HTMLElement>(
-                      '.bn-block[data-content-type="toggle"] [aria-expanded="false"]',
+                    // ToggleBlock renders a <button aria-label="expand"> when
+                    // collapsed and aria-label="collapse" when open.
+                    const ts = document.querySelectorAll<HTMLButtonElement>(
+                      '.bn-editor button[aria-label="expand"]',
                     );
                     ts.forEach((b) => b.click());
                     const n = ts.length;
@@ -420,8 +422,8 @@ export function PageStyleMenu({
                 </button>
                 <button
                   onClick={() => {
-                    const ts = document.querySelectorAll<HTMLElement>(
-                      '.bn-block[data-content-type="toggle"] [aria-expanded="true"]',
+                    const ts = document.querySelectorAll<HTMLButtonElement>(
+                      '.bn-editor button[aria-label="collapse"]',
                     );
                     ts.forEach((b) => b.click());
                     const n = ts.length;

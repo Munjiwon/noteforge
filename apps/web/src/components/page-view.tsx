@@ -279,7 +279,7 @@ export function PageView({
           document.body.classList.add(k);
       }
     } catch {}
-    // ⌘⇧F — toggle focus mode (only this paragraph fully opaque).
+    // ⌘⇧F — toggle focus mode (only the caret's block fully opaque).
     const onKey = (e: KeyboardEvent) => {
       const mod = e.metaKey || e.ctrlKey;
       if (!mod || !e.shiftKey) return;
@@ -287,8 +287,29 @@ export function PageView({
       e.preventDefault();
       document.body.classList.toggle("focus-mode");
     };
+    // While focus-mode is active, mark the .bn-block under the caret so the
+    // CSS rule can dim the rest. BlockNote doesn't expose a 'current block'
+    // class itself, so we listen to selectionchange and walk up.
+    const onSel = () => {
+      if (!document.body.classList.contains("focus-mode")) return;
+      const sel = document.getSelection?.();
+      const node = sel?.focusNode;
+      const el =
+        node && node.nodeType === Node.TEXT_NODE
+          ? (node.parentElement as HTMLElement | null)
+          : (node as HTMLElement | null);
+      const block = el?.closest?.(".bn-block") as HTMLElement | null;
+      document
+        .querySelectorAll(".bn-block.nf-focused")
+        .forEach((b) => b.classList.remove("nf-focused"));
+      block?.classList.add("nf-focused");
+    };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    document.addEventListener("selectionchange", onSel);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.removeEventListener("selectionchange", onSel);
+    };
   }, []);
 
   // Resume reading — remember scroll position per page, restore on next visit.

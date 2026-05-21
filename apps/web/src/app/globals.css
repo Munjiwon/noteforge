@@ -274,12 +274,14 @@ body.justify-text .bn-editor li {
   text-justify: inter-word;
 }
 
-/* Focus mode — fade out all blocks except the one containing the caret. */
-body.focus-mode .bn-block:not(.bn-focused) {
-  opacity: 0.25;
+/* Focus mode — fade out all blocks except the one containing the caret.
+   BlockNote doesn't add a 'currently-focused-block' class, so we tag the
+   ancestor of the selection with .nf-focused via JS (see page-view.tsx). */
+body.focus-mode .bn-block:not(.nf-focused) {
+  opacity: 0.28;
   transition: opacity 180ms ease;
 }
-body.focus-mode .bn-block.bn-focused {
+body.focus-mode .bn-block.nf-focused {
   opacity: 1;
 }
 
