@@ -47,11 +47,21 @@ type SidebarPage = {
   openComments?: number;
   tags?: string | null;
   createdAt?: string;
+  updatedAt?: string;
 };
 
 type TrashItem = { id: string; title: string; icon: string | null; kind: string; deletedAt?: Date | string | null };
 
 type Tree = SidebarPage & { children: Tree[] };
+
+function relTime(iso: string): string {
+  const s = (Date.now() - new Date(iso).getTime()) / 1000;
+  if (s < 60) return "just now";
+  if (s < 3600) return `${Math.floor(s / 60)}m ago`;
+  if (s < 86400) return `${Math.floor(s / 3600)}h ago`;
+  if (s < 86400 * 7) return `${Math.floor(s / 86400)}d ago`;
+  return new Date(iso).toLocaleDateString();
+}
 
 function formatBytes(n: number): string {
   if (n < 1024) return `${n} B`;
@@ -605,6 +615,11 @@ export function Sidebar({
                 <span className="block text-gray-500 line-clamp-3">
                   {node.preview || "(no content yet)"}
                 </span>
+                {node.updatedAt && (
+                  <span className="block text-[10px] text-gray-400 mt-1">
+                    {relTime(node.updatedAt)}
+                  </span>
+                )}
               </span>
             )}
             {typeof node.count === "number" && node.count > 0 && (
@@ -1570,6 +1585,39 @@ function ManageTagsModal({ slug }: { slug: string }) {
                     #{it.tag}
                   </span>
                   <span className="text-gray-400 text-[10px]">{it.count}</span>
+                  <button
+                    onClick={() => {
+                      try {
+                        const KEYS = [
+                          "gray",
+                          "blue",
+                          "green",
+                          "yellow",
+                          "red",
+                          "purple",
+                          "pink",
+                        ];
+                        const raw = localStorage.getItem("noteforge:tag-colors");
+                        const map = raw
+                          ? (JSON.parse(raw) as Record<string, string>)
+                          : {};
+                        const cur = map[it.tag.toLowerCase()] ?? "gray";
+                        const next =
+                          KEYS[(KEYS.indexOf(cur) + 1) % KEYS.length];
+                        map[it.tag.toLowerCase()] = next;
+                        localStorage.setItem(
+                          "noteforge:tag-colors",
+                          JSON.stringify(map),
+                        );
+                        // force re-render — duplicate the array reference
+                        setItems((arr) => [...arr]);
+                      } catch {}
+                    }}
+                    className="text-gray-400 hover:text-gray-900 text-[11px] leading-none"
+                    title="Cycle color"
+                  >
+                    ●
+                  </button>
                   <span className="flex-1" />
                   <button
                     disabled={busy !== null}
@@ -1904,29 +1952,29 @@ function AllTagsPanel({
   if (counts.length === 0) return null;
   return (
     <div className="px-2 pt-1">
-      <button
-        onClick={() => setOpen((v) => !v)}
-        className="w-full flex items-center justify-between text-xs text-gray-500 hover:text-gray-900 px-1 py-1 rounded hover:bg-black/5"
-      >
-        <span>🏷 All tags · {counts.length}</span>
-        <span className="flex items-center gap-1">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              window.dispatchEvent(
-                new CustomEvent("noteforge:manage-tags", {
-                  detail: { tags: counts.map(([t, n]) => ({ tag: t, count: n })) },
-                }),
-              );
-            }}
-            className="text-gray-400 hover:text-gray-900 text-[10px] normal-case"
-            title="Manage tags"
-          >
-            ⚙
-          </button>
+      <div className="flex items-center text-xs text-gray-500 hover:text-gray-900 px-1 py-1 rounded hover:bg-black/5">
+        <button
+          onClick={() => setOpen((v) => !v)}
+          className="flex-1 text-left flex items-center justify-between"
+        >
+          <span>🏷 All tags · {counts.length}</span>
           <span className="text-gray-400">{open ? "▾" : "▸"}</span>
-        </span>
-      </button>
+        </button>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            window.dispatchEvent(
+              new CustomEvent("noteforge:manage-tags", {
+                detail: { tags: counts.map(([t, n]) => ({ tag: t, count: n })) },
+              }),
+            );
+          }}
+          className="ml-1 text-gray-400 hover:text-gray-900 text-[10px] normal-case px-1"
+          title="Manage tags"
+        >
+          ⚙
+        </button>
+      </div>
       {open && (
         <div className="flex flex-wrap gap-1 px-1 pt-1 pb-1 max-h-40 overflow-y-auto">
           {counts.map(([t, n]) => {
