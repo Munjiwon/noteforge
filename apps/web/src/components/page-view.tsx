@@ -245,6 +245,33 @@ export function PageView({
     return () => window.removeEventListener("keydown", onKey);
   }, [slug, page.id]);
 
+  // 1 / 2 / 3 — quick toggle reaction emojis on this page.
+  useEffect(() => {
+    if (readOnly) return;
+    const KEY_MAP: Record<string, string> = { "1": "👍", "2": "❤️", "3": "😂" };
+    const onKey = async (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+      const emoji = KEY_MAP[e.key];
+      if (!emoji) return;
+      const t = e.target as HTMLElement | null;
+      const inForm =
+        t &&
+        (t.tagName === "INPUT" ||
+          t.tagName === "TEXTAREA" ||
+          t.isContentEditable);
+      if (inForm) return;
+      e.preventDefault();
+      try {
+        const { togglePageReaction } = await import(
+          "@/app/w/[slug]/actions"
+        );
+        await togglePageReaction(slug, page.id, emoji);
+      } catch {}
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [slug, page.id, readOnly]);
+
   // [ / ] — jump to previous / next H1-H3 heading inside the editor.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -364,6 +391,7 @@ export function PageView({
       "hide-breadcrumb",
       "sticky-h2",
       "center-title",
+      "hide-footer",
     ];
     try {
       for (const k of toggles) {
@@ -954,7 +982,7 @@ export function PageView({
           currentUserId={user.id}
           readOnly={readOnly}
         />
-        <footer className="mt-12 pt-4 border-t border-gray-100 text-[10px] text-gray-400 flex flex-wrap gap-3 no-print">
+        <footer className="nf-page-footer mt-12 pt-4 border-t border-gray-100 text-[10px] text-gray-400 flex flex-wrap gap-3 no-print">
           <span>Created {new Date(info.createdAt).toLocaleString()}</span>
           <span>· Updated {new Date(info.updatedAt).toLocaleString()}</span>
           <span>· {info.wordCount.toLocaleString()} words</span>

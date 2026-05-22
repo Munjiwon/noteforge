@@ -803,6 +803,7 @@ export function PageStyleMenu({
                       { key: "hide-breadcrumb", label: "Hide breadcrumb" },
                       { key: "sticky-h2", label: "Sticky H2" },
                       { key: "center-title", label: "Center title" },
+                      { key: "hide-footer", label: "Hide footer" },
                     ] as const
                   ).map((t) => (
                     <button

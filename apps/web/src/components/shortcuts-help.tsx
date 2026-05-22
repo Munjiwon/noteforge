@@ -13,6 +13,7 @@ const GROUPS: { name: string; items: { keys: string; desc: string }[] }[] = [
       { keys: "⌘ ⇧ I", desc: "Quick-capture a note into 📥 Inbox" },
       { keys: "⌘ ⇧ J", desc: "Jump to 📥 Inbox" },
       { keys: "[ / ]", desc: "Jump to previous / next heading on the page" },
+      { keys: "1 / 2 / 3", desc: "Toggle 👍 / ❤️ / 😂 reaction on this page" },
       { keys: "C", desc: "Focus the comment composer" },
       { keys: "⌘ D", desc: "Duplicate the current page (with sub-pages)" },
       { keys: "⌘ N", desc: "Create a new page at workspace root" },
