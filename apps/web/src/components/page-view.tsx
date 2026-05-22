@@ -323,6 +323,7 @@ export function PageView({
       "page-dark",
       "compact-title",
       "spacing-roomy",
+      "db-sticky-head",
     ];
     try {
       for (const k of toggles) {
@@ -926,6 +927,7 @@ export function PageView({
           </button>
         </footer>
       </div>
+      <SiblingNav slug={slug} pageId={page.id} />
       <ReadingProgress />
       {showTop && (
         <button
@@ -1062,6 +1064,53 @@ function SubPagesSection({
         )}
       </ul>
     </details>
+  );
+}
+
+function SiblingNav({ slug, pageId }: { slug: string; pageId: string }) {
+  type Sib = { id: string; title: string; icon: string | null } | null;
+  const [data, setData] = useState<{ prev: Sib; next: Sib; total: number; index: number } | null>(null);
+  useEffect(() => {
+    fetch(`/api/workspace/siblings?slug=${slug}&page=${pageId}`)
+      .then((r) => r.json())
+      .then((d) => setData(d))
+      .catch(() => setData(null));
+  }, [slug, pageId]);
+  if (!data || data.total < 2) return null;
+  return (
+    <nav className="max-w-3xl mx-auto px-24 mt-8 flex items-stretch gap-2 text-xs no-print">
+      {data.prev ? (
+        <a
+          href={`/w/${slug}/p/${data.prev.id}`}
+          className="flex-1 min-w-0 px-3 py-2 rounded border border-gray-200 hover:bg-black/5 truncate"
+          title={data.prev.title}
+        >
+          <span className="text-gray-400">← prev sibling</span>
+          <span className="block truncate text-gray-700">
+            {data.prev.icon ?? "📄"} {data.prev.title || "Untitled"}
+          </span>
+        </a>
+      ) : (
+        <span className="flex-1" />
+      )}
+      <span className="text-[10px] text-gray-400 self-center px-2">
+        {data.index + 1} / {data.total}
+      </span>
+      {data.next ? (
+        <a
+          href={`/w/${slug}/p/${data.next.id}`}
+          className="flex-1 min-w-0 px-3 py-2 rounded border border-gray-200 hover:bg-black/5 truncate text-right"
+          title={data.next.title}
+        >
+          <span className="text-gray-400">next sibling →</span>
+          <span className="block truncate text-gray-700">
+            {data.next.icon ?? "📄"} {data.next.title || "Untitled"}
+          </span>
+        </a>
+      ) : (
+        <span className="flex-1" />
+      )}
+    </nav>
   );
 }
 

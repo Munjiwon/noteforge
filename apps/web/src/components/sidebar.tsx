@@ -9,6 +9,8 @@ import {
   bulkDeletePages,
   bulkFavoritePages,
   bulkRemoveTagFromPages,
+  deleteTagAcrossWorkspace,
+  renameTagAcrossWorkspace,
   archivePage,
   createPage,
   createPageFromTemplate,
@@ -1420,8 +1422,113 @@ export function Sidebar({
       />
       <MarkdownImportModal slug={currentSlug} />
       <MarkdownDropTarget slug={currentSlug} />
+      <ManageTagsModal slug={currentSlug} />
     </aside>
     </>
+  );
+}
+
+function ManageTagsModal({ slug }: { slug: string }) {
+  const [open, setOpen] = useState(false);
+  const [items, setItems] = useState<{ tag: string; count: number }[]>([]);
+  const [busy, setBusy] = useState<string | null>(null);
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const ce = e as CustomEvent<{ tags?: { tag: string; count: number }[] }>;
+      setItems(ce.detail?.tags ?? []);
+      setOpen(true);
+    };
+    window.addEventListener("noteforge:manage-tags", handler);
+    return () => window.removeEventListener("noteforge:manage-tags", handler);
+  }, []);
+  if (!open) return null;
+  return (
+    <div
+      className="fixed inset-0 z-50 bg-black/30 flex items-start justify-center pt-16 p-4"
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) setOpen(false);
+      }}
+    >
+      <div className="bg-white rounded-lg shadow-2xl w-[480px] max-w-[95vw] p-4">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-sm font-medium">🏷 Manage tags</h3>
+          <button onClick={() => setOpen(false)} className="text-gray-400 hover:text-gray-900">
+            ✕
+          </button>
+        </div>
+        {items.length === 0 ? (
+          <p className="text-xs text-gray-500 py-6 text-center">No tags yet.</p>
+        ) : (
+          <ul className="max-h-[60vh] overflow-y-auto text-xs divide-y divide-gray-100">
+            {items.map((it) => {
+              const c = tagColorClass(it.tag);
+              return (
+                <li key={it.tag} className="flex items-center gap-2 py-1.5">
+                  <span
+                    className={`text-[11px] px-1.5 py-0.5 rounded ${c.bg} ${c.fg}`}
+                  >
+                    #{it.tag}
+                  </span>
+                  <span className="text-gray-400 text-[10px]">{it.count}</span>
+                  <span className="flex-1" />
+                  <button
+                    disabled={busy !== null}
+                    onClick={async () => {
+                      const next = window.prompt(
+                        `Rename #${it.tag} to:`,
+                        it.tag,
+                      );
+                      if (!next || next.trim() === it.tag) return;
+                      setBusy(it.tag);
+                      try {
+                        await renameTagAcrossWorkspace(
+                          slug,
+                          it.tag,
+                          next.trim(),
+                        );
+                        setItems((arr) =>
+                          arr.map((x) =>
+                            x.tag === it.tag ? { ...x, tag: next.trim() } : x,
+                          ),
+                        );
+                      } finally {
+                        setBusy(null);
+                      }
+                    }}
+                    className="text-[10px] px-2 py-0.5 rounded border border-gray-200 hover:bg-black/5"
+                  >
+                    Rename
+                  </button>
+                  <button
+                    disabled={busy !== null}
+                    onClick={async () => {
+                      if (
+                        !confirm(
+                          `Delete tag #${it.tag} from ${it.count} page(s)?`,
+                        )
+                      )
+                        return;
+                      setBusy(it.tag);
+                      try {
+                        await deleteTagAcrossWorkspace(slug, it.tag);
+                        setItems((arr) =>
+                          arr.filter((x) => x.tag !== it.tag),
+                        );
+                      } finally {
+                        setBusy(null);
+                      }
+                    }}
+                    className="text-[10px] px-2 py-0.5 rounded border border-gray-200 hover:bg-red-50 text-red-600"
+                  >
+                    Delete
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -1702,7 +1809,23 @@ function AllTagsPanel({
         className="w-full flex items-center justify-between text-xs text-gray-500 hover:text-gray-900 px-1 py-1 rounded hover:bg-black/5"
       >
         <span>🏷 All tags · {counts.length}</span>
-        <span className="text-gray-400">{open ? "▾" : "▸"}</span>
+        <span className="flex items-center gap-1">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              window.dispatchEvent(
+                new CustomEvent("noteforge:manage-tags", {
+                  detail: { tags: counts.map(([t, n]) => ({ tag: t, count: n })) },
+                }),
+              );
+            }}
+            className="text-gray-400 hover:text-gray-900 text-[10px] normal-case"
+            title="Manage tags"
+          >
+            ⚙
+          </button>
+          <span className="text-gray-400">{open ? "▾" : "▸"}</span>
+        </span>
       </button>
       {open && (
         <div className="flex flex-wrap gap-1 px-1 pt-1 pb-1 max-h-40 overflow-y-auto">

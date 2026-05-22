@@ -293,6 +293,21 @@ body.db-compact table th {
   font-size: 12px !important;
 }
 
+/* Sticky DB header — pin the table header row when scrolling long tables. */
+body.db-sticky-head table thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+body.db-sticky-head table thead th {
+  background: #ffffff;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+}
+.dark body.db-sticky-head table thead th {
+  background: #18181b;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
 /* Striped DB rows — alternate row background for readability. */
 body.db-striped table tbody tr:nth-child(even) {
   background: rgba(0, 0, 0, 0.025);

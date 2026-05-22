@@ -733,6 +733,7 @@ export function PageStyleMenu({
                       { key: "page-dark", label: "Page-only dark" },
                       { key: "compact-title", label: "Compact title" },
                       { key: "spacing-roomy", label: "Roomy spacing" },
+                      { key: "db-sticky-head", label: "DB sticky header" },
                     ] as const
                   ).map((t) => (
                     <button
