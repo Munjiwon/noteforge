@@ -239,6 +239,24 @@ export function PageStyleMenu({
               </button>
               <button
                 onClick={() => {
+                  // Compact popout window for side-by-side reading.
+                  const w = 560;
+                  const h = Math.min(900, window.screen.availHeight - 80);
+                  const left = Math.max(0, window.screen.availWidth - w - 24);
+                  window.open(
+                    window.location.href.split("?")[0] + "?focus=1",
+                    "noteforge-popout-" + pageId,
+                    `popup=1,noopener,width=${w},height=${h},left=${left},top=40`,
+                  );
+                  setOpen(false);
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+                title="Open this page in a small side-panel window"
+              >
+                🪟 Open as popout (narrow)
+              </button>
+              <button
+                onClick={() => {
                   const title =
                     (document.querySelector(
                       'input[placeholder="Untitled"]',
@@ -1099,6 +1117,31 @@ function SlugRow({
   const [value, setValue] = useState(initial ?? "");
   const [, start] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [avail, setAvail] = useState<null | "ok" | "taken" | "invalid">(null);
+  useEffect(() => {
+    const v = value.trim();
+    if (!v || v === (initial ?? "")) {
+      setAvail(null);
+      return;
+    }
+    const id = setTimeout(async () => {
+      try {
+        const res = await fetch(
+          `/api/workspace/slug-check?slug=${encodeURIComponent(slug)}&page=${encodeURIComponent(pageId)}&candidate=${encodeURIComponent(v)}`,
+        );
+        if (!res.ok) {
+          setAvail(null);
+          return;
+        }
+        const data = (await res.json()) as { available?: boolean; reason?: string };
+        if (data.reason === "invalid") setAvail("invalid");
+        else setAvail(data.available ? "ok" : "taken");
+      } catch {
+        setAvail(null);
+      }
+    }, 350);
+    return () => clearTimeout(id);
+  }, [value, initial, slug, pageId]);
   return (
     <div className="mt-2 pt-2 border-t border-gray-100">
       <label className="text-[10px] uppercase text-gray-500 px-1">
@@ -1128,6 +1171,17 @@ function SlugRow({
           Save
         </button>
       </div>
+      {avail === "ok" && (
+        <p className="text-[10px] text-emerald-600 mt-1">✓ available</p>
+      )}
+      {avail === "taken" && (
+        <p className="text-[10px] text-red-600 mt-1">⚠ already in use</p>
+      )}
+      {avail === "invalid" && (
+        <p className="text-[10px] text-amber-600 mt-1">
+          ⚠ only a-z, 0-9, and dashes
+        </p>
+      )}
       {error && <p className="text-[10px] text-red-600 mt-1">{error}</p>}
     </div>
   );
