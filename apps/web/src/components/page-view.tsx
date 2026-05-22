@@ -825,7 +825,9 @@ export function PageView({
       </div>
       <div className="flex items-center gap-2 text-[11px] text-gray-400 mb-1">
         {info.author && <span>by {info.author.name}</span>}
-        <span>· Last edited {relTime(info.updatedAt)}</span>
+        <span title={new Date(info.updatedAt).toLocaleString()}>
+          · Last edited {relTime(info.updatedAt)}
+        </span>
         {info.lastEditor &&
           info.lastEditor.name !== info.author?.name && (
             <span className="inline-flex items-center gap-1">

@@ -154,6 +154,16 @@ export function SearchPalette({ slug }: { slug: string }) {
   }, [q, open, slug, since, tag, sortBy]);
 
   const choose = (hit: Hit, asPeek = false) => {
+    // Remember non-trivial queries so the user can re-run them.
+    const term = q.trim();
+    if (term.length >= 2) {
+      try {
+        const KEY = "noteforge:recent-searches";
+        const arr: string[] = JSON.parse(localStorage.getItem(KEY) || "[]");
+        const next = [term, ...arr.filter((x) => x !== term)].slice(0, 8);
+        localStorage.setItem(KEY, JSON.stringify(next));
+      } catch {}
+    }
     setOpen(false);
     if (asPeek) {
       window.dispatchEvent(
@@ -265,9 +275,7 @@ export function SearchPalette({ slug }: { slug: string }) {
         </div>
         <div className="max-h-[60vh] overflow-y-auto">
           {q.trim() === "" ? (
-            <div className="text-xs text-gray-400 text-center py-8">
-              Type to search pages and their contents.
-            </div>
+            <RecentSearches onPick={(t) => setQ(t)} />
           ) : loading && hits.length === 0 ? (
             <div className="text-xs text-gray-400 text-center py-8">Searching…</div>
           ) : (() => {
@@ -345,6 +353,55 @@ export function SearchPalette({ slug }: { slug: string }) {
           <span>⌘K to toggle</span>
         </div>
       </div>
+    </div>
+  );
+}
+
+function RecentSearches({ onPick }: { onPick: (term: string) => void }) {
+  const [items, setItems] = useState<string[]>([]);
+  useEffect(() => {
+    try {
+      const arr = JSON.parse(
+        localStorage.getItem("noteforge:recent-searches") || "[]",
+      );
+      if (Array.isArray(arr))
+        setItems(arr.filter((x) => typeof x === "string").slice(0, 8));
+    } catch {}
+  }, []);
+  if (items.length === 0)
+    return (
+      <div className="text-xs text-gray-400 text-center py-8">
+        Type to search pages and their contents.
+      </div>
+    );
+  return (
+    <div className="py-2">
+      <div className="px-3 pb-1 text-[10px] uppercase tracking-wide text-gray-500 flex items-center justify-between">
+        <span>Recent searches</span>
+        <button
+          onClick={() => {
+            try {
+              localStorage.removeItem("noteforge:recent-searches");
+            } catch {}
+            setItems([]);
+          }}
+          className="hover:text-gray-900 normal-case tracking-normal text-[10px]"
+        >
+          Clear
+        </button>
+      </div>
+      <ul>
+        {items.map((t) => (
+          <li key={t}>
+            <button
+              onClick={() => onPick(t)}
+              className="block w-full text-left px-3 py-1.5 text-sm hover:bg-black/5"
+            >
+              🔍 {t}
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
