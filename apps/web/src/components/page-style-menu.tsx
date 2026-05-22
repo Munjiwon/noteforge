@@ -276,6 +276,37 @@ export function PageStyleMenu({
               </button>
               <button
                 onClick={() => {
+                  const sel = window.getSelection?.();
+                  const text = sel?.toString().trim();
+                  if (!text || text.length < 4) {
+                    alert(
+                      "Select some text on the page first (4+ chars), then click again.",
+                    );
+                    return;
+                  }
+                  // Use only first ~80 chars to keep URLs reasonable, and
+                  // strip linebreaks for the fragment per the spec.
+                  const fragment = text.replace(/\s+/g, " ").slice(0, 80);
+                  const url =
+                    window.location.href.split("#")[0].split("?")[0] +
+                    `#:~:text=${encodeURIComponent(fragment)}`;
+                  void navigator.clipboard?.writeText(url).then(() => {
+                    const tip = document.createElement("div");
+                    tip.textContent = "Selection link copied";
+                    tip.className =
+                      "fixed bottom-4 left-1/2 -translate-x-1/2 z-50 text-xs bg-gray-900 text-white rounded-full px-3 py-1 shadow";
+                    document.body.appendChild(tip);
+                    setTimeout(() => tip.remove(), 1400);
+                  });
+                  setOpen(false);
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+                title="Copy a deep link that scrolls + highlights the selected text (Chromium/Edge/Safari TP)"
+              >
+                🔗 Copy link to selection
+              </button>
+              <button
+                onClick={() => {
                   start(() => movePageToRoot(slug, pageId));
                   setOpen(false);
                 }}

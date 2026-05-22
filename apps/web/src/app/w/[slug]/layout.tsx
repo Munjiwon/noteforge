@@ -167,7 +167,7 @@ export default async function WorkspaceLayout({
       },
     })
     .catch(() => {});
-  const [allPages, trashedPages, workspaces, memberCount, notifRows, recentRows] = await Promise.all([
+  const [allPages, trashedPages, workspaces, memberCount, memberList, notifRows, recentRows] = await Promise.all([
     prisma.page.findMany({
       where: { workspaceId: ctx.workspace.id, deletedAt: null, archivedAt: null },
       orderBy: [{ position: "asc" }, { createdAt: "asc" }],
@@ -193,6 +193,14 @@ export default async function WorkspaceLayout({
     }),
     getWorkspacesForUser(ctx.user.id),
     prisma.workspaceMember.count({ where: { workspaceId: ctx.workspace.id } }),
+    prisma.workspaceMember.findMany({
+      where: { workspaceId: ctx.workspace.id },
+      take: 25,
+      orderBy: { createdAt: "asc" },
+      include: {
+        user: { select: { name: true, color: true, avatarUrl: true, email: true } },
+      },
+    }),
     (async () => {
       const m = await prisma.workspaceMember.findFirst({
         where: { workspaceId: ctx.workspace.id, userId: ctx.user.id },
@@ -384,6 +392,14 @@ export default async function WorkspaceLayout({
         currentColor={ctx.workspace.color}
         announcement={ctx.workspace.announcement}
         memberCount={memberCount}
+        members={memberList.map((m) => ({
+          id: m.userId,
+          name: m.user.name,
+          color: m.user.color,
+          avatarUrl: m.user.avatarUrl,
+          email: m.user.email,
+          role: m.role,
+        }))}
         role={ctx.role as any}
         pages={pagesForSidebar}
         favorites={favorites}

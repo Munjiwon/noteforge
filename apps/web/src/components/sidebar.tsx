@@ -102,6 +102,7 @@ export function Sidebar({
   announcement,
   footerStats,
   todayCount,
+  members,
 }: {
   workspaces: { slug: string; name: string }[];
   currentSlug: string;
@@ -122,6 +123,14 @@ export function Sidebar({
   announcement?: string | null;
   footerStats?: { pageCount: number; fileBytes: number };
   todayCount?: number;
+  members?: {
+    id: string;
+    name: string;
+    color: string;
+    avatarUrl: string | null;
+    email: string;
+    role: string;
+  }[];
 }) {
   const params = useParams<{ pageId?: string }>();
   const activePageId = params.pageId;
@@ -755,9 +764,19 @@ export function Sidebar({
               >
                 {currentName}
               </Link>
-              <div className="text-xs text-gray-500">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  window.dispatchEvent(
+                    new CustomEvent("noteforge:show-members"),
+                  );
+                }}
+                className="text-xs text-gray-500 hover:text-gray-900 text-left"
+                title="See workspace members"
+              >
                 {memberCount} member{memberCount !== 1 && "s"}
-              </div>
+              </button>
             </div>
             <span className="text-gray-400 group-open:rotate-180 transition">▾</span>
           </summary>
@@ -1423,8 +1442,82 @@ export function Sidebar({
       <MarkdownImportModal slug={currentSlug} />
       <MarkdownDropTarget slug={currentSlug} />
       <ManageTagsModal slug={currentSlug} />
+      <MemberListModal members={members ?? []} />
     </aside>
     </>
+  );
+}
+
+function MemberListModal({
+  members,
+}: {
+  members: {
+    id: string;
+    name: string;
+    color: string;
+    avatarUrl: string | null;
+    email: string;
+    role: string;
+  }[];
+}) {
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    const h = () => setOpen(true);
+    window.addEventListener("noteforge:show-members", h);
+    return () => window.removeEventListener("noteforge:show-members", h);
+  }, []);
+  if (!open) return null;
+  return (
+    <div
+      className="fixed inset-0 z-50 bg-black/30 flex items-start justify-center pt-16 p-4"
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) setOpen(false);
+      }}
+    >
+      <div className="bg-white rounded-lg shadow-2xl w-[420px] max-w-[95vw] p-4">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-sm font-medium">
+            👥 Members ({members.length})
+          </h3>
+          <button
+            onClick={() => setOpen(false)}
+            className="text-gray-400 hover:text-gray-900"
+          >
+            ✕
+          </button>
+        </div>
+        <ul className="max-h-[60vh] overflow-y-auto divide-y divide-gray-100">
+          {members.map((m) => (
+            <li key={m.id} className="py-1.5 flex items-center gap-2">
+              {m.avatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={m.avatarUrl}
+                  alt=""
+                  className="w-7 h-7 rounded-full object-cover"
+                />
+              ) : (
+                <span
+                  className="w-7 h-7 rounded-full grid place-items-center text-white text-xs font-medium"
+                  style={{ background: m.color }}
+                >
+                  {(m.name || "?").slice(0, 1).toUpperCase()}
+                </span>
+              )}
+              <div className="min-w-0 flex-1">
+                <div className="text-sm truncate">{m.name}</div>
+                <div className="text-[10px] text-gray-500 truncate">
+                  {m.email}
+                </div>
+              </div>
+              <span className="text-[10px] text-gray-500 uppercase">
+                {m.role}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
   );
 }
 
