@@ -324,6 +324,8 @@ export function PageView({
       "compact-title",
       "spacing-roomy",
       "db-sticky-head",
+      "larger-touch",
+      "hide-breadcrumb",
     ];
     try {
       for (const k of toggles) {

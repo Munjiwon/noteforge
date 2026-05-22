@@ -765,6 +765,8 @@ export function PageStyleMenu({
                       { key: "compact-title", label: "Compact title" },
                       { key: "spacing-roomy", label: "Roomy spacing" },
                       { key: "db-sticky-head", label: "DB sticky header" },
+                      { key: "larger-touch", label: "Larger touch" },
+                      { key: "hide-breadcrumb", label: "Hide breadcrumb" },
                     ] as const
                   ).map((t) => (
                     <button

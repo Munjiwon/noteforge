@@ -444,6 +444,22 @@ body.compact-title .nf-page-title input {
   font-weight: 600 !important;
 }
 
+/* 'Larger touch' — pad small inline buttons for finger-friendly tapping. */
+body.larger-touch button,
+body.larger-touch .bn-side-menu button {
+  min-height: 32px;
+  min-width: 32px;
+}
+body.larger-touch input,
+body.larger-touch select {
+  min-height: 36px;
+}
+
+/* Hide breadcrumb. */
+body.hide-breadcrumb nav.nf-breadcrumb {
+  display: none !important;
+}
+
 /* Roomy paragraph spacing — extra vertical breathing room between blocks. */
 body.spacing-roomy .bn-block {
   margin-top: 0.85rem !important;
