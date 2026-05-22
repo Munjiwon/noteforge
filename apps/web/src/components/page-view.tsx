@@ -666,6 +666,14 @@ export function PageView({
               💬 {info.commentCount}
             </a>
           )}
+          {info.subscriberCount && info.subscriberCount > 0 ? (
+            <span
+              className="text-xs px-2 py-1 rounded border border-gray-200 text-gray-600"
+              title={`${info.subscriberCount} subscriber${info.subscriberCount === 1 ? "" : "s"} will be notified on edits`}
+            >
+              🔔 {info.subscriberCount}
+            </span>
+          ) : null}
           <ReadModeButton />
           <ReadAloudButton getText={() => extractText(page.content, title)} />
           <button

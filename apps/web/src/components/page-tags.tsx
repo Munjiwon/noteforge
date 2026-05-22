@@ -94,32 +94,7 @@ export function PageTags({
             </button>
             {!readOnly && (
               <>
-                <button
-                  onClick={() => {
-                    try {
-                      const raw = localStorage.getItem("noteforge:tag-colors");
-                      const map = raw
-                        ? (JSON.parse(raw) as Record<string, string>)
-                        : {};
-                      const cur = map[t.toLowerCase()] ?? "gray";
-                      const next =
-                        TAG_COLORS[
-                          (TAG_COLORS.findIndex((x) => x.key === cur) + 1) %
-                            TAG_COLORS.length
-                        ].key;
-                      map[t.toLowerCase()] = next;
-                      localStorage.setItem(
-                        "noteforge:tag-colors",
-                        JSON.stringify(map),
-                      );
-                      setTags((arr) => [...arr]); // trigger re-render
-                    } catch {}
-                  }}
-                  className="text-gray-400 hover:text-gray-900"
-                  title="Cycle tag color (this device)"
-                >
-                  ●
-                </button>
+                <TagColorSwatches tag={t} onChange={() => setTags((arr) => [...arr])} />
                 <button
                   onClick={() => commit(tags.filter((x) => x !== t))}
                   className="text-gray-400 hover:text-red-600"
@@ -159,6 +134,46 @@ export function PageTags({
         </>
       )}
     </div>
+  );
+}
+
+function TagColorSwatches({ tag, onChange }: { tag: string; onChange: () => void }) {
+  const [open, setOpen] = useState(false);
+  const pick = (key: string) => {
+    try {
+      const raw = localStorage.getItem("noteforge:tag-colors");
+      const map = raw ? (JSON.parse(raw) as Record<string, string>) : {};
+      map[tag.toLowerCase()] = key;
+      localStorage.setItem("noteforge:tag-colors", JSON.stringify(map));
+    } catch {}
+    setOpen(false);
+    onChange();
+  };
+  return (
+    <span className="relative inline-flex items-center">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="text-gray-400 hover:text-gray-900 leading-none"
+        title="Choose tag color"
+      >
+        ●
+      </button>
+      {open && (
+        <span
+          className="absolute z-30 top-full left-0 mt-1 bg-white border border-gray-200 rounded shadow-lg p-1 flex gap-0.5"
+          onMouseLeave={() => setOpen(false)}
+        >
+          {TAG_COLORS.map((c) => (
+            <button
+              key={c.key}
+              onClick={() => pick(c.key)}
+              className={`w-4 h-4 rounded-full ${c.bg} ring-1 ring-gray-300 hover:scale-110 transition`}
+              title={c.key}
+            />
+          ))}
+        </span>
+      )}
+    </span>
   );
 }
 
