@@ -415,6 +415,26 @@ body.sidebar-hide-icons aside .nf-page-icon {
   display: none !important;
 }
 
+/* Sidebar collapse: fade content smoothly so the panel doesn't feel like it's
+   abruptly "shoving" the page out of the way. The width transition is set
+   inline on <aside>; here we just animate opacity of the inner children, and
+   keep the small toggle button (data-keep) at full opacity. */
+aside[data-collapsed="1"] > *:not([data-keep]) {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 140ms ease-out;
+}
+aside:not([data-collapsed="1"]) > *:not([data-keep]) {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 220ms ease-out 60ms;
+}
+
+/* Smooth the main content reflow that follows the sidebar width change. */
+main {
+  transition: padding 200ms ease-out;
+}
+
 /* Hide the desktop outline panel + its mobile floating button when toggled. */
 body.hide-outline aside.fixed.right-4,
 body.hide-outline .xl\:hidden.fixed.bottom-20.right-5 {

@@ -719,16 +719,22 @@ export function Sidebar({
       />
     )}
     <aside
-      style={visuallyCollapsed ? undefined : { width: sidebarWidth }}
+      style={{
+        width: visuallyCollapsed ? 48 : sidebarWidth,
+        willChange: "width, transform",
+        transition:
+          "width 220ms cubic-bezier(0.25, 0.8, 0.25, 1), transform 200ms ease-out",
+      }}
       onMouseEnter={() => collapsed && setHoverExpanded(true)}
       onMouseLeave={() => setHoverExpanded(false)}
       data-compact={compact ? "1" : undefined}
+      data-collapsed={visuallyCollapsed ? "1" : undefined}
       className={clsx(
-        visuallyCollapsed ? "md:w-12 md:overflow-hidden" : "",
+        visuallyCollapsed ? "md:overflow-hidden" : "",
         compact && "text-[12px]",
         "shrink-0 bg-sidebar border-r border-black/10 flex flex-col relative",
         "md:relative md:translate-x-0",
-        "fixed inset-y-0 left-0 z-40 transition-[transform,width]",
+        "fixed inset-y-0 left-0 z-40",
         // mobile drawer: full width when open, slide-off when closed
         mobileOpen ? "translate-x-0 w-72 max-w-[85vw] md:w-auto md:max-w-none" : "-translate-x-full md:translate-x-0",
       )}
@@ -741,6 +747,7 @@ export function Sidebar({
         />
       )}
       <button
+        data-keep
         onClick={() => setCollapsed((v) => !v)}
         className="hidden md:flex absolute -right-3 top-3 z-50 w-6 h-6 rounded-full bg-white border border-gray-200 shadow-sm items-center justify-center text-[10px] text-gray-500 hover:text-gray-900"
         title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
