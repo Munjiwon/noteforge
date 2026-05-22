@@ -392,6 +392,8 @@ export function PageView({
       "sticky-h2",
       "center-title",
       "hide-footer",
+      "show-block-ids",
+      "side-menu-on",
     ];
     try {
       for (const k of toggles) {

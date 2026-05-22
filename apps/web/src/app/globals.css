@@ -485,6 +485,31 @@ body.hide-footer .nf-page-footer {
   display: none !important;
 }
 
+/* 'Block IDs' debug toggle — show the data-id chip next to each block so the
+   user can build deep-link URLs (#blockId) or report bugs precisely. */
+body.show-block-ids .bn-block[data-id]::after {
+  content: attr(data-id);
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  font-size: 9px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.04);
+  padding: 0 4px;
+  border-radius: 3px;
+  pointer-events: none;
+}
+body.show-block-ids .bn-block {
+  position: relative;
+}
+
+/* Always-on BlockNote side menu (drag/+ handles). */
+body.side-menu-on .bn-side-menu {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
 /* Center title — align the page title row to center for a book/print feel. */
 body.center-title .nf-page-title {
   justify-content: center;

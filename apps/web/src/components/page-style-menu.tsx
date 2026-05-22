@@ -804,6 +804,8 @@ export function PageStyleMenu({
                       { key: "sticky-h2", label: "Sticky H2" },
                       { key: "center-title", label: "Center title" },
                       { key: "hide-footer", label: "Hide footer" },
+                      { key: "show-block-ids", label: "Show block IDs" },
+                      { key: "side-menu-on", label: "Side menu always on" },
                     ] as const
                   ).map((t) => (
                     <button
