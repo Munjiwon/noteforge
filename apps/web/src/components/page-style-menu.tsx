@@ -767,6 +767,7 @@ export function PageStyleMenu({
                       { key: "db-sticky-head", label: "DB sticky header" },
                       { key: "larger-touch", label: "Larger touch" },
                       { key: "hide-breadcrumb", label: "Hide breadcrumb" },
+                      { key: "sticky-h2", label: "Sticky H2" },
                     ] as const
                   ).map((t) => (
                     <button

@@ -480,6 +480,19 @@ body.hide-breadcrumb nav.nf-breadcrumb {
   display: none !important;
 }
 
+/* Sticky H2 — pin section headings to the top while scrolling their content. */
+body.sticky-h2 .bn-editor h2 {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--page-bg, #ffffff);
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+.dark body.sticky-h2 .bn-editor h2 {
+  background: #18181b;
+}
+
 /* Roomy paragraph spacing — extra vertical breathing room between blocks. */
 body.spacing-roomy .bn-block {
   margin-top: 0.85rem !important;

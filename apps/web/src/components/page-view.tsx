@@ -245,6 +245,42 @@ export function PageView({
     return () => window.removeEventListener("keydown", onKey);
   }, [slug, page.id]);
 
+  // [ / ] — jump to previous / next H1-H3 heading inside the editor.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.key !== "[" && e.key !== "]") return;
+      const t = e.target as HTMLElement | null;
+      const inForm =
+        t &&
+        (t.tagName === "INPUT" ||
+          t.tagName === "TEXTAREA" ||
+          t.isContentEditable);
+      if (inForm) return;
+      const headings = Array.from(
+        document.querySelectorAll<HTMLElement>(".bn-editor h1, .bn-editor h2, .bn-editor h3"),
+      );
+      if (headings.length === 0) return;
+      const y = window.scrollY + 120;
+      // Find current heading index by which one is closest above the y line.
+      let curIdx = -1;
+      for (let i = 0; i < headings.length; i++) {
+        const top = headings[i].getBoundingClientRect().top + window.scrollY;
+        if (top <= y) curIdx = i;
+        else break;
+      }
+      const nextIdx =
+        e.key === "]"
+          ? Math.min(headings.length - 1, curIdx + 1)
+          : Math.max(0, curIdx - 1);
+      if (nextIdx === curIdx) return;
+      e.preventDefault();
+      headings[nextIdx].scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   // ⌘⇧J — jump to the workspace Inbox (the page slugged 'inbox').
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -326,6 +362,7 @@ export function PageView({
       "db-sticky-head",
       "larger-touch",
       "hide-breadcrumb",
+      "sticky-h2",
     ];
     try {
       for (const k of toggles) {
