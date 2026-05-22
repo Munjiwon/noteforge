@@ -23,6 +23,7 @@ import {
   toggleFavorite,
 } from "@/app/w/[slug]/actions";
 import { PAGE_TEMPLATES } from "@/lib/page-templates";
+import { tagColorClass } from "./page-tags";
 import { createDatabase } from "@/app/w/[slug]/database-actions";
 import { InviteButton } from "./invite-button";
 import { UserMenu } from "./user-menu";
@@ -1686,16 +1687,19 @@ function AllTagsPanel({
       </button>
       {open && (
         <div className="flex flex-wrap gap-1 px-1 pt-1 pb-1 max-h-40 overflow-y-auto">
-          {counts.map(([t, n]) => (
-            <button
-              key={t}
-              onClick={() => onPickTag(t)}
-              className="text-[10px] px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 hover:bg-blue-100"
-              title={`Filter by #${t}`}
-            >
-              #{t} <span className="opacity-60">{n}</span>
-            </button>
-          ))}
+          {counts.map(([t, n]) => {
+            const c = tagColorClass(t);
+            return (
+              <button
+                key={t}
+                onClick={() => onPickTag(t)}
+                className={`text-[10px] px-1.5 py-0.5 rounded ${c.bg} ${c.fg} hover:opacity-80`}
+                title={`Filter by #${t}`}
+              >
+                #{t} <span className="opacity-60">{n}</span>
+              </button>
+            );
+          })}
         </div>
       )}
     </div>

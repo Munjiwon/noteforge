@@ -3,6 +3,30 @@
 import { useEffect, useState, useTransition } from "react";
 import { setPageTags } from "@/app/w/[slug]/actions";
 
+const TAG_COLORS = [
+  { key: "gray", bg: "bg-gray-100", fg: "text-gray-700" },
+  { key: "blue", bg: "bg-blue-100", fg: "text-blue-700" },
+  { key: "green", bg: "bg-emerald-100", fg: "text-emerald-700" },
+  { key: "yellow", bg: "bg-amber-100", fg: "text-amber-800" },
+  { key: "red", bg: "bg-red-100", fg: "text-red-700" },
+  { key: "purple", bg: "bg-violet-100", fg: "text-violet-700" },
+  { key: "pink", bg: "bg-pink-100", fg: "text-pink-700" },
+];
+
+export function tagColorClass(tag: string): { bg: string; fg: string } {
+  if (typeof window === "undefined") return { bg: "bg-gray-100", fg: "text-gray-700" };
+  try {
+    const raw = localStorage.getItem("noteforge:tag-colors");
+    if (raw) {
+      const map = JSON.parse(raw) as Record<string, string>;
+      const key = map[tag.toLowerCase()];
+      const hit = TAG_COLORS.find((c) => c.key === key);
+      if (hit) return { bg: hit.bg, fg: hit.fg };
+    }
+  } catch {}
+  return { bg: "bg-gray-100", fg: "text-gray-700" };
+}
+
 export function PageTags({
   slug,
   pageId,
@@ -49,33 +73,64 @@ export function PageTags({
   if (readOnly && tags.length === 0) return null;
   return (
     <div className="flex flex-wrap items-center gap-1 mb-3 no-print">
-      {tags.map((t) => (
-        <span
-          key={t}
-          className="inline-flex items-center gap-1 text-[11px] bg-gray-100 text-gray-700 rounded px-2 py-0.5"
-        >
-          <button
-            type="button"
-            onClick={() =>
-              window.dispatchEvent(
-                new CustomEvent("search-open", { detail: { tag: t } }),
-              )
-            }
-            title="Find pages with this tag"
-            className="hover:underline"
+      {tags.map((t) => {
+        const c = tagColorClass(t);
+        return (
+          <span
+            key={t}
+            className={`inline-flex items-center gap-1 text-[11px] ${c.bg} ${c.fg} rounded px-2 py-0.5`}
           >
-            #{t}
-          </button>
-          {!readOnly && (
             <button
-              onClick={() => commit(tags.filter((x) => x !== t))}
-              className="text-gray-400 hover:text-red-600"
+              type="button"
+              onClick={() =>
+                window.dispatchEvent(
+                  new CustomEvent("search-open", { detail: { tag: t } }),
+                )
+              }
+              title="Find pages with this tag"
+              className="hover:underline"
             >
-              ✕
+              #{t}
             </button>
-          )}
-        </span>
-      ))}
+            {!readOnly && (
+              <>
+                <button
+                  onClick={() => {
+                    try {
+                      const raw = localStorage.getItem("noteforge:tag-colors");
+                      const map = raw
+                        ? (JSON.parse(raw) as Record<string, string>)
+                        : {};
+                      const cur = map[t.toLowerCase()] ?? "gray";
+                      const next =
+                        TAG_COLORS[
+                          (TAG_COLORS.findIndex((x) => x.key === cur) + 1) %
+                            TAG_COLORS.length
+                        ].key;
+                      map[t.toLowerCase()] = next;
+                      localStorage.setItem(
+                        "noteforge:tag-colors",
+                        JSON.stringify(map),
+                      );
+                      setTags((arr) => [...arr]); // trigger re-render
+                    } catch {}
+                  }}
+                  className="text-gray-400 hover:text-gray-900"
+                  title="Cycle tag color (this device)"
+                >
+                  ●
+                </button>
+                <button
+                  onClick={() => commit(tags.filter((x) => x !== t))}
+                  className="text-gray-400 hover:text-red-600"
+                >
+                  ✕
+                </button>
+              </>
+            )}
+          </span>
+        );
+      })}
       {!readOnly && (
         <>
           <input
