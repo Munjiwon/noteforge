@@ -363,6 +363,7 @@ export function PageView({
       "larger-touch",
       "hide-breadcrumb",
       "sticky-h2",
+      "center-title",
     ];
     try {
       for (const k of toggles) {

@@ -480,6 +480,14 @@ body.hide-breadcrumb nav.nf-breadcrumb {
   display: none !important;
 }
 
+/* Center title — align the page title row to center for a book/print feel. */
+body.center-title .nf-page-title {
+  justify-content: center;
+}
+body.center-title .nf-page-title input {
+  text-align: center;
+}
+
 /* Sticky H2 — pin section headings to the top while scrolling their content. */
 body.sticky-h2 .bn-editor h2 {
   position: sticky;

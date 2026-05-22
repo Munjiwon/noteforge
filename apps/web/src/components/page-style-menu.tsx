@@ -733,6 +733,40 @@ export function PageStyleMenu({
               >
                 🧼 Clean print
               </button>
+              <button
+                onClick={() => {
+                  const SET = [
+                    "zen-mode",
+                    "hide-breadcrumb",
+                    "hide-outline",
+                    "hide-reactions",
+                    "hide-tags",
+                    "hide-subpages",
+                    "hide-backlinks",
+                    "focus-mode",
+                  ];
+                  const isWriter = SET.every((k) =>
+                    document.body.classList.contains(k),
+                  );
+                  for (const k of SET) {
+                    try {
+                      const lsKey = `noteforge:${k}`;
+                      if (isWriter) {
+                        localStorage.removeItem(lsKey);
+                        document.body.classList.remove(k);
+                      } else {
+                        localStorage.setItem(lsKey, "1");
+                        document.body.classList.add(k);
+                      }
+                    } catch {}
+                  }
+                  setOpen(false);
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+                title="Toggle Zen + hide breadcrumb/outline/reactions/tags/sub-pages/backlinks + focus mode in one click"
+              >
+                ✍ Writer mode (all distractions off)
+              </button>
               <div className="mb-1 mt-1">
                 <label className="text-[10px] uppercase text-gray-500 px-1">
                   Reading toggles
@@ -768,6 +802,7 @@ export function PageStyleMenu({
                       { key: "larger-touch", label: "Larger touch" },
                       { key: "hide-breadcrumb", label: "Hide breadcrumb" },
                       { key: "sticky-h2", label: "Sticky H2" },
+                      { key: "center-title", label: "Center title" },
                     ] as const
                   ).map((t) => (
                     <button
