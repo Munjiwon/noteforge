@@ -239,6 +239,25 @@ export function PageStyleMenu({
               </button>
               <button
                 onClick={() => {
+                  const title =
+                    (document.querySelector(
+                      'input[placeholder="Untitled"]',
+                    ) as HTMLInputElement | null)?.value || "Untitled";
+                  const url = window.location.href.split("?")[0];
+                  const subject = encodeURIComponent(`Have a look: ${title}`);
+                  const body = encodeURIComponent(
+                    `Hi,\n\nThought you'd find this useful: ${title}\n${url}\n\n— sent from noteforge`,
+                  );
+                  window.location.href = `mailto:?subject=${subject}&body=${body}`;
+                  setOpen(false);
+                }}
+                className="w-full text-xs px-2 py-1 rounded border border-gray-200 hover:bg-black/5 flex items-center gap-1 justify-center mb-1"
+                title="Compose an email with the page link pre-filled"
+              >
+                📧 Share via email
+              </button>
+              <button
+                onClick={() => {
                   start(() => movePageToRoot(slug, pageId));
                   setOpen(false);
                 }}

@@ -851,6 +851,36 @@ export async function bulkAddTagToPages(
   return count;
 }
 
+export async function bulkRemoveTagFromPages(
+  slug: string,
+  pageIds: string[],
+  tag: string,
+) {
+  const ctx = await assertEditor(slug);
+  const target = tag.trim().toLowerCase();
+  if (!target) return 0;
+  const rows = await prisma.page.findMany({
+    where: { id: { in: pageIds }, workspaceId: ctx.workspace.id },
+    select: { id: true, tags: true },
+  });
+  let count = 0;
+  for (const r of rows) {
+    const list = (r.tags ?? "")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    const next = list.filter((t) => t.toLowerCase() !== target);
+    if (next.length === list.length) continue;
+    await prisma.page.update({
+      where: { id: r.id },
+      data: { tags: next.join(", ") },
+    });
+    count++;
+  }
+  revalidatePath(`/w/${slug}`, "layout");
+  return count;
+}
+
 export async function movePageToRoot(slug: string, pageId: string) {
   const ctx = await assertEditor(slug);
   const max = await prisma.page.aggregate({

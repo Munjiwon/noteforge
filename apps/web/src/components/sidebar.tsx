@@ -8,6 +8,7 @@ import {
   bulkAddTagToPages,
   bulkDeletePages,
   bulkFavoritePages,
+  bulkRemoveTagFromPages,
   archivePage,
   createPage,
   createPageFromTemplate,
@@ -1098,7 +1099,25 @@ export function Sidebar({
             }}
             className="px-1.5 py-0.5 rounded bg-white border border-gray-200 hover:bg-black/5"
           >
-            🏷 Tag
+            🏷 +Tag
+          </button>
+          <button
+            onClick={() => {
+              const t = window.prompt(
+                `Remove a tag from ${selectedIds.size} page(s):`,
+              );
+              if (!t || !t.trim()) return;
+              startTransition(() => {
+                bulkRemoveTagFromPages(
+                  currentSlug,
+                  Array.from(selectedIds),
+                  t.trim(),
+                );
+              });
+            }}
+            className="px-1.5 py-0.5 rounded bg-white border border-gray-200 hover:bg-black/5"
+          >
+            🚫 −Tag
           </button>
           <button
             onClick={() => {
