@@ -322,6 +322,7 @@ export function PageView({
       "hide-trash",
       "page-dark",
       "compact-title",
+      "spacing-roomy",
     ];
     try {
       for (const k of toggles) {
@@ -389,6 +390,35 @@ export function PageView({
       if (raf) cancelAnimationFrame(raf);
       window.removeEventListener("scroll", onScroll);
     };
+  }, [page.id]);
+
+  // Reading streak — increments by 1 each calendar day this page is visited.
+  const [streakDays, setStreakDays] = useState<number>(0);
+  useEffect(() => {
+    const key = `streak:${page.id}`;
+    try {
+      const raw = localStorage.getItem(key);
+      const today = new Date();
+      const ymd = today.toISOString().slice(0, 10);
+      let next = { lastDate: ymd, count: 1 };
+      if (raw) {
+        const cur = JSON.parse(raw) as { lastDate: string; count: number };
+        if (cur.lastDate === ymd) {
+          next = cur; // same day; no bump
+        } else {
+          const prev = new Date(cur.lastDate);
+          const diffDays = Math.round(
+            (today.getTime() - prev.getTime()) / 86_400_000,
+          );
+          next = {
+            lastDate: ymd,
+            count: diffDays === 1 ? cur.count + 1 : 1,
+          };
+        }
+      }
+      localStorage.setItem(key, JSON.stringify(next));
+      setStreakDays(next.count);
+    } catch {}
   }, [page.id]);
 
   // "Last viewed" tooltip — store first time the user opens this page on this
@@ -796,6 +826,14 @@ export function PageView({
         {!wordChipHidden && (
           <span className="nf-word-chip" data-page-id={page.id}>
             ⏱ {Math.max(1, Math.round(info.wordCount / 200))} min read · {info.wordCount.toLocaleString()} words
+          </span>
+        )}
+        {streakDays >= 2 && (
+          <span
+            className="nf-word-chip text-orange-600"
+            title={`You've visited this page ${streakDays} days in a row`}
+          >
+            · 🔥 {streakDays} day streak
           </span>
         )}
         {info.wordGoal && info.wordGoal > 0 && (

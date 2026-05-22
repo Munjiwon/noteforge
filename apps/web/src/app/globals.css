@@ -429,6 +429,16 @@ body.compact-title .nf-page-title input {
   font-weight: 600 !important;
 }
 
+/* Roomy paragraph spacing — extra vertical breathing room between blocks. */
+body.spacing-roomy .bn-block {
+  margin-top: 0.85rem !important;
+  margin-bottom: 0.85rem !important;
+}
+body.spacing-roomy .bn-block p,
+body.spacing-roomy .bn-block li {
+  line-height: 1.85 !important;
+}
+
 /* Print page numbers in the footer (browser-dependent). */
 @page {
   margin: 18mm 14mm 18mm 14mm;

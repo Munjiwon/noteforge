@@ -695,6 +695,7 @@ export function PageStyleMenu({
                       { key: "hide-trash", label: "Hide trash" },
                       { key: "page-dark", label: "Page-only dark" },
                       { key: "compact-title", label: "Compact title" },
+                      { key: "spacing-roomy", label: "Roomy spacing" },
                     ] as const
                   ).map((t) => (
                     <button
