@@ -510,6 +510,20 @@ body.side-menu-on .bn-side-menu {
   pointer-events: auto !important;
 }
 
+/* Larger code font for screenshare-friendly reading. */
+body.code-larger .bn-block-content[data-content-type="codeBlock"] pre,
+body.code-larger .bn-block-content[data-content-type="codeBlock"] code {
+  font-size: 1.05em !important;
+  line-height: 1.55 !important;
+}
+
+/* Purple accent on blockquotes. */
+body.quote-accent .bn-editor blockquote,
+body.quote-accent .bn-block-content[data-content-type="quote"] {
+  border-left: 4px solid #7c3aed !important;
+  background: rgba(124, 58, 237, 0.04) !important;
+}
+
 /* Center title — align the page title row to center for a book/print feel. */
 body.center-title .nf-page-title {
   justify-content: center;

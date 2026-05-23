@@ -394,6 +394,8 @@ export function PageView({
       "hide-footer",
       "show-block-ids",
       "side-menu-on",
+      "code-larger",
+      "quote-accent",
     ];
     try {
       for (const k of toggles) {

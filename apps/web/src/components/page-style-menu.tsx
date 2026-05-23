@@ -806,6 +806,8 @@ export function PageStyleMenu({
                       { key: "hide-footer", label: "Hide footer" },
                       { key: "show-block-ids", label: "Show block IDs" },
                       { key: "side-menu-on", label: "Side menu always on" },
+                      { key: "code-larger", label: "Larger code font" },
+                      { key: "quote-accent", label: "Quote purple accent" },
                     ] as const
                   ).map((t) => (
                     <button
