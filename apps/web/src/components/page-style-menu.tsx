@@ -810,6 +810,8 @@ export function PageStyleMenu({
                       { key: "quote-accent", label: "Quote purple accent" },
                       { key: "code-line-numbers", label: "Code line numbers" },
                       { key: "image-rounded", label: "Rounded images" },
+                      { key: "line-loose", label: "Loose line-height" },
+                      { key: "bookworm", label: "Bookworm serif" },
                     ] as const
                   ).map((t) => (
                     <button

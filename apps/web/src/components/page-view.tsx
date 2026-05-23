@@ -398,6 +398,8 @@ export function PageView({
       "quote-accent",
       "code-line-numbers",
       "image-rounded",
+      "line-loose",
+      "bookworm",
     ];
     try {
       for (const k of toggles) {
