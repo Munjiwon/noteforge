@@ -808,6 +808,8 @@ export function PageStyleMenu({
                       { key: "side-menu-on", label: "Side menu always on" },
                       { key: "code-larger", label: "Larger code font" },
                       { key: "quote-accent", label: "Quote purple accent" },
+                      { key: "code-line-numbers", label: "Code line numbers" },
+                      { key: "image-rounded", label: "Rounded images" },
                     ] as const
                   ).map((t) => (
                     <button

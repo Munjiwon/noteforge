@@ -396,6 +396,8 @@ export function PageView({
       "side-menu-on",
       "code-larger",
       "quote-accent",
+      "code-line-numbers",
+      "image-rounded",
     ];
     try {
       for (const k of toggles) {
