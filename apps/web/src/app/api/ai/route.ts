@@ -1064,6 +1064,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Read the schema + question below. Reply with a single Postgres-compatible SQL query inside a fenced \`\`\`sql block that answers the question. After the block: '**How it works:**' 2-3 sentence plain-language explanation, then '**Assumptions:**' (1-2 bullets on what you inferred from the schema if anything was ambiguous).\n\nSchema + question:\n${text}`,
   excel_formula: (text) =>
     `Given the intent described below, reply with a single Excel/Google Sheets formula on its own line (starting with '='). Then below it, markdown sections: '**What it does**' (one sentence), '**Inputs**' (bullet list mapping cell refs to their role, e.g. '- A2: order amount'), '**Variants**' (1-2 alternative formulas for related needs).\n\nIntent:\n${text}`,
+  onboarding_survey_ko: (text) =>
+    `Design a 5-question Korean onboarding survey (온보딩 설문) for the product / service described. Mix question types: 1) Likert (1-5점), 2) 다지선다, 3) 순위 매기기, 4) 단답형 (1-2 문장), 5) 자유 응답. Use 해요체. Each question on its own bold line with the type label in parens '(리커트 1-5)'. Add a brief intro sentence at the top and a closing thank-you line. Reply as markdown.\n\nContext:\n${text}`,
+  refund_letter_ko: (text) =>
+    `Write a polite, firm Korean refund-request letter (환불 요청서) based on the context. Structure: '제목: …' first line, blank, then 4-5 short paragraphs in 합쇼체 — 구매 사실 명시 (상품/일자/금액), 환불 사유 (간결, 감정 X), 관련 법령/약관 근거 (있으면 인용), 환불 요청 + 기한, 정중한 마무리. End with '○○○ 드림' placeholder. Reply with the letter only.\n\nContext:\n${text}`,
+  news_summary_ko: (text) =>
+    `Summarize the Korean (or any-language) news article below into exactly 3 short Korean sentences in 합쇼체. Cover: 1) 핵심 사실 (누가/무엇을), 2) 배경/원인, 3) 영향/전망. Then on a new line, add '**핵심 키워드:**' followed by 5 comma-separated Korean keywords. Reply as markdown.\n\nArticle:\n${text}`,
+  recipe_shopping_list: (text) =>
+    `Extract a shopping list from the recipe(s) below, grouped by store section. Markdown sections with bold labels: **농산물 / Produce**, **육류·수산 / Meat & seafood**, **유제품·달걀 / Dairy & eggs**, **건조식품·곡류 / Pantry**, **양념·소스 / Sauces & spices**, **기타 / Misc**. Each bullet shows quantity + item. Skip empty sections. Aggregate duplicates from multiple recipes.\n\nRecipe(s):\n${text}`,
+  podcast_guest_questions: (text) =>
+    `Generate 10 thoughtful podcast interview questions for the guest described below. Mix angles: origin story, current focus, contrarian take, recent failure, one tactical how-to, future-of-field, personal habit, a question only this guest could answer, audience Q-bait, closing reflection. Reply as a markdown numbered list, no preamble.\n\nGuest:\n${text}`,
+  email_subject_5: (text) =>
+    `Read the email body below and write 5 alternative subject lines under 60 chars each. Vary the angle: 1) benefit-led, 2) curiosity, 3) question, 4) urgency / specific date, 5) low-key personal. Reply as a markdown numbered list with the angle label in italic after each, e.g. '1. Subject line — *benefit*'.\n\nEmail body:\n${text}`,
+  research_summary: (text) =>
+    `Summarize the research paper / abstract below in a 4-section structured note. Markdown with bold labels: **Problem** (what was the gap or question), **Method** (study design, sample, key tools — 1-2 lines), **Result** (the headline finding + 1-2 numbers if present), **Limitations / open questions** (1-2 bullets). Stay neutral; do not embellish.\n\nPaper:\n${text}`,
+  tough_questions: (text) =>
+    `Read the pitch / proposal / argument below. Generate 5 tough audience questions a critical reviewer would ask. Mix: an evidence question, a comparison question, an assumption-buster, a 'what if you're wrong' scenario, a follow-the-money question. Reply as a markdown numbered list, each question 1 sentence. Add a one-line '**Suggested honest answer**' under each.\n\nContext:\n${text}`,
+  legalese_detect: (text) =>
+    `Scan the legal text below for risky, one-sided, or unusually broad clauses. Reply as a markdown table with columns | Clause type | Why it matters | Negotiation lever |. 4-6 rows. Cover liability caps, indemnity scope, termination asymmetry, IP assignment, auto-renewal, jurisdiction. End with a single bold '**Top concern:**' sentence.\n\nText:\n${text}`,
+  translate_natural_en: (text) =>
+    `Translate the Korean (or Japanese / Chinese) text below into natural, idiomatic English that reads like it was originally written in English. Avoid literal word order, soften 한국어/일본어 특유의 격식, replace direct translations with the closest English idiom or register. Reply with two markdown sections: '**Natural English**' (the translation only) and '**Translator's notes**' (2-3 bullets on choices you made and what was lost).\n\nOriginal:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

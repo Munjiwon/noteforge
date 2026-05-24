@@ -824,6 +824,11 @@ export function PageStyleMenu({
                       { key: "meta-on-hover", label: "Meta on hover" },
                       { key: "mono-code", label: "Mono code blocks" },
                       { key: "indent-guides", label: "Indent guides" },
+                      { key: "highlight-todos", label: "Highlight TODOs" },
+                      { key: "no-animations", label: "No animations" },
+                      { key: "heading-separator", label: "Heading separator" },
+                      { key: "highlight-urls", label: "Highlight URLs" },
+                      { key: "image-zoom-cursor", label: "Image zoom cursor" },
                     ] as const
                   ).map((t) => (
                     <button

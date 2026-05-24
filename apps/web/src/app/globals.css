@@ -693,6 +693,66 @@ body.indent-guides .bn-editor ol ul {
   border-left-color: rgba(255, 255, 255, 0.15);
 }
 
+/* Highlight TODOs — yellow marker around TODO/FIXME/XXX/HACK/NOTE keywords.
+   The actual <mark.nf-todo> wrapping is done in JS (text-content matching can't be done from CSS). */
+body.highlight-todos mark.nf-todo {
+  background: #fef08a;
+  color: #92400e;
+  padding: 0 0.2em;
+  border-radius: 0.2em;
+  font-weight: 600;
+}
+.dark body.highlight-todos mark.nf-todo {
+  background: #f59e0b;
+  color: #1f1300;
+}
+
+/* No animations — disable all motion for low-power / vestibular-sensitive users. */
+body.no-animations *,
+body.no-animations *::before,
+body.no-animations *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Heading separator — auto underline below h1/h2 for a cleaner section break. */
+body.heading-separator .bn-editor h1 {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  padding-bottom: 0.25rem;
+}
+body.heading-separator .bn-editor h2 {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding-bottom: 0.15rem;
+}
+.dark body.heading-separator .bn-editor h1 {
+  border-bottom-color: rgba(255, 255, 255, 0.15);
+}
+.dark body.heading-separator .bn-editor h2 {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Highlight URLs — make link anchors visually pop (heavier underline, brand color). */
+body.highlight-urls .bn-editor a {
+  color: #1d4ed8 !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 2px !important;
+  text-underline-offset: 3px;
+  font-weight: 500;
+}
+.dark body.highlight-urls .bn-editor a {
+  color: #60a5fa !important;
+}
+
+/* Image zoom cursor — invite users to click images and lift them on hover. */
+body.image-zoom-cursor .bn-editor img {
+  cursor: zoom-in;
+  transition: box-shadow 200ms ease, transform 200ms ease;
+}
+body.image-zoom-cursor .bn-editor img:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25);
+  transform: scale(1.01);
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

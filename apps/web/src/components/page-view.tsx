@@ -412,6 +412,11 @@ export function PageView({
       "meta-on-hover",
       "mono-code",
       "indent-guides",
+      "highlight-todos",
+      "no-animations",
+      "heading-separator",
+      "highlight-urls",
+      "image-zoom-cursor",
     ];
     try {
       for (const k of toggles) {
@@ -460,8 +465,56 @@ export function PageView({
         existing.remove();
       }
     };
-    syncPrintPageNum();
-    const bodyObserver = new MutationObserver(syncPrintPageNum);
+    // Highlight TODOs — wrap TODO/FIXME/XXX/HACK/NOTE in <mark.nf-todo>.
+    // CSS can't match text content, so we walk text nodes when the toggle flips.
+    const TODO_RE = /\b(TODO|FIXME|XXX|HACK|NOTE)\b/g;
+    const syncTodoMarks = () => {
+      document.querySelectorAll("mark.nf-todo").forEach((m) => {
+        const t = document.createTextNode(m.textContent || "");
+        m.replaceWith(t);
+        m.parentElement?.normalize();
+      });
+      if (!document.body.classList.contains("highlight-todos")) return;
+      const editor = document.querySelector(".bn-editor");
+      if (!editor) return;
+      const walker = document.createTreeWalker(editor, NodeFilter.SHOW_TEXT, {
+        acceptNode: (n) => {
+          if ((n.parentElement as Element | null)?.tagName === "MARK")
+            return NodeFilter.FILTER_REJECT;
+          return TODO_RE.test(n.textContent || "")
+            ? NodeFilter.FILTER_ACCEPT
+            : NodeFilter.FILTER_REJECT;
+        },
+      });
+      const targets: Text[] = [];
+      let node: Node | null;
+      while ((node = walker.nextNode())) targets.push(node as Text);
+      for (const t of targets) {
+        const text = t.textContent || "";
+        const frag = document.createDocumentFragment();
+        const re = new RegExp(TODO_RE.source, "g");
+        let last = 0;
+        let m: RegExpExecArray | null;
+        while ((m = re.exec(text)) !== null) {
+          if (m.index > last)
+            frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+          const mark = document.createElement("mark");
+          mark.className = "nf-todo";
+          mark.textContent = m[0];
+          frag.appendChild(mark);
+          last = m.index + m[0].length;
+        }
+        if (last < text.length)
+          frag.appendChild(document.createTextNode(text.slice(last)));
+        t.parentNode?.replaceChild(frag, t);
+      }
+    };
+    const syncAll = () => {
+      syncPrintPageNum();
+      syncTodoMarks();
+    };
+    syncAll();
+    const bodyObserver = new MutationObserver(syncAll);
     bodyObserver.observe(document.body, { attributes: true, attributeFilter: ["class"] });
     window.addEventListener("keydown", onKey);
     document.addEventListener("selectionchange", onSel);
