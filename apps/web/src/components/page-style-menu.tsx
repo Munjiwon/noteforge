@@ -814,6 +814,11 @@ export function PageStyleMenu({
                       { key: "bookworm", label: "Bookworm serif" },
                       { key: "compact-subpage-cards", label: "Compact sub-pages" },
                       { key: "dotted-divider", label: "Dotted divider" },
+                      { key: "hide-footer-dates", label: "Hide footer dates" },
+                      { key: "no-emoji-icons", label: "No emoji icons" },
+                      { key: "compact-callouts", label: "Compact callouts" },
+                      { key: "two-col-reading", label: "2-column reading" },
+                      { key: "print-page-numbers", label: "Print page #" },
                     ] as const
                   ).map((t) => (
                     <button

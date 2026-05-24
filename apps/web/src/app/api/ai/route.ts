@@ -1024,6 +1024,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a business-card-sized professional bio (under 200 characters) for the subject described. Third person, name first, then role + company, then one specific credential or focus area. Reply with just the bio line, no quotes.\n\nContext:\n${text}`,
   elevator_mom_test: (text) =>
     `Rewrite the elevator pitch / explanation below so your mom (or any smart non-expert) would understand it in 30 seconds. Strip jargon, use one everyday analogy, lead with the human problem. Reply with two markdown sections: '**Mom-test version**' (the rewritten pitch, 3-4 sentences) and '**Words I had to drop**' (3-5 bullets listing the jargon swapped out, with the plain substitute).\n\nContext:\n${text}`,
+  yo_style_ko: (text) =>
+    `Rewrite the text below in soft Korean 해요체 — polite but warm and approachable (~해요 / ~예요 / ~네요 endings). Avoid both rigid 합쇼체 and casual 반말. If input is English, translate naturally into 해요체 Korean. Reply with the rewritten text only — no preamble.\n\nText:\n${text}`,
+  grandma_explain: (text) =>
+    `Explain the concept below as if telling your grandmother — warm, patient, using one old-fashioned analogy (e.g. a market stall, a sewing kit, a radio dial) that fits her world. 3-4 short sentences. Reply in the same language as the input. Reply with the explanation only.\n\nConcept:\n${text}`,
+  movie_pitch: (text) =>
+    `Compress the idea below into a single-line movie logline in the format: '[Genre] · When [protagonist with one trait] [inciting incident], they must [goal] before [stakes/twist].' Under 35 words. Then on a new line give 3 alternate one-line taglines for the poster as a markdown bullet list.\n\nIdea:\n${text}`,
+  changelog_from_bullets: (text) =>
+    `Rewrite the raw change bullets below into a user-facing changelog entry. Markdown sections: '**🎉 What's new**' (1-2 bullets focused on user benefit), '**🛠 Improved**' (1-3 bullets), '**🐛 Fixed**' (1-3 bullets). Skip empty sections. Keep each bullet under 110 chars and lead with the user-visible outcome, not the implementation.\n\nRaw bullets:\n${text}`,
+  contract_summary: (text) =>
+    `Summarize the contract / clauses below for a busy non-lawyer. Markdown sections with bold labels: **당사자 / Parties**, **금액 / Fees**, **기간 / Term**, **해지 / Termination**, **위약·책임 / Penalties & Liability**, **유의사항 / Watch-outs** (2-3 bullets). 1-2 lines per section. Keep it neutral — flag risky asymmetric clauses in 'Watch-outs'.\n\nContract:\n${text}`,
+  explain_acronym: (text) =>
+    `Treat the text below as either an acronym/abbreviation or a sentence containing one. Reply as markdown: '**Full form:**' (the expansion), '**Domain:**' (where it's used), '**Meaning in plain language:**' (1-2 sentences), '**Example sentence:**' (one sentence showing natural use). If multiple acronyms appear, do this for the most prominent one only.\n\nText:\n${text}`,
+  dramatize: (text) =>
+    `Rewrite the flat text below as a vivid, dramatic version — sharper verbs, sensory detail, stronger stakes, a one-beat cliffhanger at the end. Keep facts intact. Reply with two markdown sections: '**Dramatized**' (the rewritten text) and '**Edits I made**' (3 bullets naming the specific moves used: e.g. 'replaced "went" with "stormed"').\n\nText:\n${text}`,
+  karaoke_lyrics: (text) =>
+    `Write a singable 4-line Korean (or English if input is English) karaoke-friendly chorus inspired by the context. Plus 2 extra verse lines that lead into the chorus. Reply as markdown labels '**Verse**' (2 lines) then '**Chorus** ×2' (the 4 chorus lines). Lines should match a regular 8-10 syllable feel.\n\nContext:\n${text}`,
+  legal_plain_ko: (text) =>
+    `Rewrite the legal clause(s) below in plain Korean (쉬운 한국어) that a non-lawyer can understand. Replace 한자어/전문용어 with everyday words ('계약 해제' → '계약을 끝낼 수 있어요'). Use 해요체. Keep the legal meaning intact. Reply as markdown: '**쉽게 풀어쓴 조항**' (the rewrite) and '**핵심 포인트**' (2-3 bullets — 권리/의무/주의사항).\n\n조항:\n${text}`,
+  yc_pitch: (text) =>
+    `Write a 60-second YC-style startup pitch from the context below. 4 sections in this order, each 1-2 sentences with bold labels: **What** (one concrete sentence on what we built — no buzzwords), **Why now** (the timing / unlock), **How (traction)** (one numeric proof point, even rough), **Ask** (what we need next — money, intros, hires). Reply as markdown.\n\nStartup context:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

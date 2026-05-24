@@ -402,6 +402,11 @@ export function PageView({
       "bookworm",
       "compact-subpage-cards",
       "dotted-divider",
+      "hide-footer-dates",
+      "no-emoji-icons",
+      "compact-callouts",
+      "two-col-reading",
+      "print-page-numbers",
     ];
     try {
       for (const k of toggles) {
@@ -434,11 +439,31 @@ export function PageView({
         .forEach((b) => b.classList.remove("nf-focused"));
       block?.classList.add("nf-focused");
     };
+    // Print page numbers — @page rules can't be scoped by body class in CSS,
+    // so inject/remove a dedicated <style> when the toggle flips.
+    const STYLE_ID = "nf-print-pagenum-style";
+    const syncPrintPageNum = () => {
+      const wants = document.body.classList.contains("print-page-numbers");
+      const existing = document.getElementById(STYLE_ID);
+      if (wants && !existing) {
+        const s = document.createElement("style");
+        s.id = STYLE_ID;
+        s.textContent =
+          '@media print{@page{margin-bottom:18mm;@bottom-center{content:"Page " counter(page) " of " counter(pages);font-size:9pt;color:#666;}}}';
+        document.head.appendChild(s);
+      } else if (!wants && existing) {
+        existing.remove();
+      }
+    };
+    syncPrintPageNum();
+    const bodyObserver = new MutationObserver(syncPrintPageNum);
+    bodyObserver.observe(document.body, { attributes: true, attributeFilter: ["class"] });
     window.addEventListener("keydown", onKey);
     document.addEventListener("selectionchange", onSel);
     return () => {
       window.removeEventListener("keydown", onKey);
       document.removeEventListener("selectionchange", onSel);
+      bodyObserver.disconnect();
     };
   }, []);
 
@@ -797,7 +822,7 @@ export function PageView({
         </div>
       <div className="relative flex items-center gap-2 mb-2">
         <button
-          className="text-4xl leading-none hover:bg-black/5 rounded px-1"
+          className="text-4xl leading-none hover:bg-black/5 rounded px-1 nf-page-icon"
           onClick={() => setPickerOpen((o) => !o)}
           disabled={readOnly}
           aria-label="change icon"
@@ -993,8 +1018,8 @@ export function PageView({
           readOnly={readOnly}
         />
         <footer className="nf-page-footer mt-12 pt-4 border-t border-gray-100 text-[10px] text-gray-400 flex flex-wrap gap-3 no-print">
-          <span>Created {new Date(info.createdAt).toLocaleString()}</span>
-          <span>· Updated {new Date(info.updatedAt).toLocaleString()}</span>
+          <span data-footer-date>Created {new Date(info.createdAt).toLocaleString()}</span>
+          <span data-footer-date>· Updated {new Date(info.updatedAt).toLocaleString()}</span>
           <span>· {info.wordCount.toLocaleString()} words</span>
           <span>· {page.content.length.toLocaleString()} chars</span>
           <button

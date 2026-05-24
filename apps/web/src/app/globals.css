@@ -585,6 +585,48 @@ body.compact-subpage-cards [data-page-subpages] ul button {
   gap: 0.375rem;
 }
 
+/* Hide footer dates — drop the Created/Updated spans, keep word/char counts. */
+body.hide-footer-dates .nf-page-footer [data-footer-date] {
+  display: none !important;
+}
+
+/* No emoji icons — strip the leading emoji from sidebar/page icons. */
+body.no-emoji-icons .nf-page-icon {
+  display: none !important;
+}
+body.no-emoji-icons [data-page-subpages] li > a > span:first-child,
+body.no-emoji-icons [data-page-subpages] li > button > span:first-child {
+  display: none !important;
+}
+
+/* Compact callouts — tighter padding/margin for callout blocks. */
+body.compact-callouts [data-content-type="callout"] > div {
+  padding-top: 0.25rem !important;
+  padding-bottom: 0.25rem !important;
+  margin-top: 0.125rem !important;
+  margin-bottom: 0.125rem !important;
+  font-size: 0.85em;
+}
+body.compact-callouts [data-content-type="callout"] button {
+  font-size: 0.95em !important;
+}
+
+/* 2-column reading — split the editor body into two flowing columns. */
+@media (min-width: 900px) {
+  body.two-col-reading .bn-editor {
+    column-count: 2;
+    column-gap: 2.5rem;
+    column-rule: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  body.two-col-reading .bn-editor h1,
+  body.two-col-reading .bn-editor h2 {
+    column-span: all;
+  }
+  .dark body.two-col-reading .bn-editor {
+    column-rule-color: rgba(255, 255, 255, 0.08);
+  }
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
