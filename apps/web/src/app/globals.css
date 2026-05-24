@@ -627,6 +627,72 @@ body.compact-callouts [data-content-type="callout"] button {
   }
 }
 
+/* Print: no images — hide image, video, audio blocks while printing. */
+@media print {
+  body.print-no-images img,
+  body.print-no-images video,
+  body.print-no-images audio,
+  body.print-no-images [data-content-type="image"],
+  body.print-no-images [data-content-type="video"],
+  body.print-no-images [data-content-type="audio"] {
+    display: none !important;
+  }
+}
+
+/* Wide page mode — override the page-width container to a roomier max width. */
+body.wide-page .max-w-3xl {
+  max-width: 64rem !important;
+}
+
+/* Meta on hover — fade tags/reactions in only when the page body is hovered. */
+body.meta-on-hover [data-page-tags],
+body.meta-on-hover [data-page-reactions] {
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+body.meta-on-hover:hover [data-page-tags],
+body.meta-on-hover:hover [data-page-reactions] {
+  opacity: 1;
+}
+
+/* Mono code blocks — stronger monospace + tinted background for code blocks. */
+body.mono-code .bn-editor pre,
+body.mono-code .bn-editor code {
+  font-family: "JetBrains Mono", "Fira Code", "Menlo", "Consolas", "Liberation Mono", monospace !important;
+  font-feature-settings: "calt" 1, "liga" 1;
+}
+body.mono-code .bn-editor pre {
+  background: #0f172a !important;
+  color: #f1f5f9 !important;
+  border-radius: 0.375rem;
+  padding: 0.75rem 1rem;
+}
+body.mono-code .bn-editor :not(pre) > code {
+  background: rgba(15, 23, 42, 0.08);
+  padding: 0.1em 0.35em;
+  border-radius: 0.25rem;
+  font-size: 0.92em;
+}
+.dark body.mono-code .bn-editor :not(pre) > code {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Indent guides — draw a faint vertical line for each nested list level. */
+body.indent-guides .bn-editor ul ul,
+body.indent-guides .bn-editor ol ol,
+body.indent-guides .bn-editor ul ol,
+body.indent-guides .bn-editor ol ul {
+  border-left: 1px dashed rgba(0, 0, 0, 0.12);
+  padding-left: 1rem;
+  margin-left: 0.25rem;
+}
+.dark body.indent-guides .bn-editor ul ul,
+.dark body.indent-guides .bn-editor ol ol,
+.dark body.indent-guides .bn-editor ul ol,
+.dark body.indent-guides .bn-editor ol ul {
+  border-left-color: rgba(255, 255, 255, 0.15);
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

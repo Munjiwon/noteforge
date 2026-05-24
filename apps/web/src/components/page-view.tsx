@@ -407,6 +407,11 @@ export function PageView({
       "compact-callouts",
       "two-col-reading",
       "print-page-numbers",
+      "print-no-images",
+      "wide-page",
+      "meta-on-hover",
+      "mono-code",
+      "indent-guides",
     ];
     try {
       for (const k of toggles) {

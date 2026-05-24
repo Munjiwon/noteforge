@@ -1044,6 +1044,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Rewrite the legal clause(s) below in plain Korean (쉬운 한국어) that a non-lawyer can understand. Replace 한자어/전문용어 with everyday words ('계약 해제' → '계약을 끝낼 수 있어요'). Use 해요체. Keep the legal meaning intact. Reply as markdown: '**쉽게 풀어쓴 조항**' (the rewrite) and '**핵심 포인트**' (2-3 bullets — 권리/의무/주의사항).\n\n조항:\n${text}`,
   yc_pitch: (text) =>
     `Write a 60-second YC-style startup pitch from the context below. 4 sections in this order, each 1-2 sentences with bold labels: **What** (one concrete sentence on what we built — no buzzwords), **Why now** (the timing / unlock), **How (traction)** (one numeric proof point, even rough), **Ask** (what we need next — money, intros, hires). Reply as markdown.\n\nStartup context:\n${text}`,
+  meeting_minutes: (text) =>
+    `Convert the raw meeting notes/transcript below into formal meeting minutes. Markdown sections with bold labels: **Date / Attendees** (inferred or 'TBD'), **Agenda** (3-5 bullets), **Discussion** (1-2 short paragraphs per topic), **Decisions** (bullet list), **Action items** (markdown checkboxes with owner placeholder and rough due date), **Open questions**. Reply as markdown.\n\nNotes:\n${text}`,
+  sprint_retro_detailed: (text) =>
+    `Run a DAKI sprint retrospective on the context below. Markdown with four bold sections: **Drop** (3 bullets — stop doing), **Add** (3 bullets — start doing), **Keep** (3 bullets — continue doing well), **Improve** (3 bullets — change but don't drop). End with one bold takeaway sentence labeled **Top priority for next sprint:**.\n\nContext:\n${text}`,
+  user_story_acceptance: (text) =>
+    `Write a user story plus Gherkin acceptance criteria for the feature below. Markdown: '**User story:**' single line in the format 'As a <persona>, I want <capability>, so that <benefit>.'  Then '**Acceptance criteria**' as 5 bullets, each in 'Given … When … Then …' format. Cover happy path, one edge case, one error case, one accessibility case, one performance case.\n\nFeature:\n${text}`,
+  bug_repro: (text) =>
+    `Turn the loose bug description below into a clean reproducibility report. Markdown sections with bold labels: **Summary** (one sentence, no jargon), **Environment** (OS / browser / app version / device — leave 'TBD' if unknown), **Steps to reproduce** (numbered, 3-6 steps), **Expected**, **Actual**, **Frequency** (Always / Sometimes / Rare), **Workaround** (if any). Reply as markdown.\n\nDescription:\n${text}`,
+  api_mock_response: (text) =>
+    `Read the API endpoint description below and produce 3 realistic mock JSON response variants in this order: a **success** (200), a **partial / edge case**, and an **error** (4xx). Wrap each in its own fenced \`\`\`json block, with a bold label above (e.g. '**200 OK**'). Field types should match the endpoint's shape; pick plausible non-PII sample values.\n\nEndpoint:\n${text}`,
+  changelog_merge: (text) =>
+    `Merge the multiple PR / commit notes below into a single user-facing changelog entry. Deduplicate overlapping changes, drop internal refactors, and reframe in user benefit terms. Markdown sections: **🎉 Highlights** (1-3 bullets), **✨ New**, **🛠 Improved**, **🐛 Fixed**, **⚠️ Breaking** (skip empty sections). Each bullet under 110 chars.\n\nRaw notes:\n${text}`,
+  customer_followup_ko: (text) =>
+    `Write a warm Korean customer follow-up message (고객 후속 메시지) for the context below. Use polite 해요체. Open with a brief reference to the prior interaction (구매/문의/상담), check satisfaction in one line, offer a concrete next step (additional help, 후기 요청, 추천 등), close warmly. 4-6 sentences. Reply with the message only.\n\nContext:\n${text}`,
+  release_blog_ko: (text) =>
+    `Rewrite the release notes below as a Korean blog post (300-400자) in 합쇼체 / 해요체 mix. Structure: 한 줄 hook intro, 핵심 변경 사항 2-3개 (각각 짧은 H3 + 1-2문장), 사용자에게 의미하는 바 1단락, 다음 단계 (CTA 1줄). Use natural Korean tech blog tone — avoid mechanical translations. Reply as markdown.\n\nRelease notes:\n${text}`,
+  sql_from_schema: (text) =>
+    `Read the schema + question below. Reply with a single Postgres-compatible SQL query inside a fenced \`\`\`sql block that answers the question. After the block: '**How it works:**' 2-3 sentence plain-language explanation, then '**Assumptions:**' (1-2 bullets on what you inferred from the schema if anything was ambiguous).\n\nSchema + question:\n${text}`,
+  excel_formula: (text) =>
+    `Given the intent described below, reply with a single Excel/Google Sheets formula on its own line (starting with '='). Then below it, markdown sections: '**What it does**' (one sentence), '**Inputs**' (bullet list mapping cell refs to their role, e.g. '- A2: order amount'), '**Variants**' (1-2 alternative formulas for related needs).\n\nIntent:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

@@ -819,6 +819,11 @@ export function PageStyleMenu({
                       { key: "compact-callouts", label: "Compact callouts" },
                       { key: "two-col-reading", label: "2-column reading" },
                       { key: "print-page-numbers", label: "Print page #" },
+                      { key: "print-no-images", label: "Print: no images" },
+                      { key: "wide-page", label: "Wide page" },
+                      { key: "meta-on-hover", label: "Meta on hover" },
+                      { key: "mono-code", label: "Mono code blocks" },
+                      { key: "indent-guides", label: "Indent guides" },
                     ] as const
                   ).map((t) => (
                     <button
