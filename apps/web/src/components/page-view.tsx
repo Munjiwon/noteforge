@@ -417,6 +417,11 @@ export function PageView({
       "heading-separator",
       "highlight-urls",
       "image-zoom-cursor",
+      "big-numbered-list",
+      "selection-accent",
+      "block-hover-lift",
+      "reduced-contrast",
+      "checklist-strike",
     ];
     try {
       for (const k of toggles) {

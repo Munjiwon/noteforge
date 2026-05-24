@@ -753,6 +753,58 @@ body.image-zoom-cursor .bn-editor img:hover {
   transform: scale(1.01);
 }
 
+/* Big numbered list — make ol counters visually heavier and colored. */
+body.big-numbered-list .bn-editor ol > li::marker {
+  font-weight: 700;
+  font-size: 1.1em;
+  color: #2563eb;
+}
+.dark body.big-numbered-list .bn-editor ol > li::marker {
+  color: #60a5fa;
+}
+
+/* Selection accent — stronger highlight color when selecting text. */
+body.selection-accent .bn-editor ::selection,
+body.selection-accent .bn-editor *::selection {
+  background: #fde68a !important;
+  color: #422006;
+}
+.dark body.selection-accent .bn-editor ::selection,
+.dark body.selection-accent .bn-editor *::selection {
+  background: #d97706 !important;
+  color: #fff;
+}
+
+/* Block hover lift — gentle shadow + lift when hovering blocks (read flow). */
+body.block-hover-lift .bn-editor .bn-block:hover {
+  background: rgba(0, 0, 0, 0.02);
+  box-shadow: 0 2px 6px -2px rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+  transition: box-shadow 120ms ease, background 120ms ease;
+}
+.dark body.block-hover-lift .bn-editor .bn-block:hover {
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: 0 2px 6px -2px rgba(0, 0, 0, 0.35);
+}
+
+/* Reduced contrast — softer body text color for long reading sessions. */
+body.reduced-contrast .bn-editor p,
+body.reduced-contrast .bn-editor li,
+body.reduced-contrast .bn-editor blockquote {
+  color: #4b5563 !important;
+}
+.dark body.reduced-contrast .bn-editor p,
+.dark body.reduced-contrast .bn-editor li,
+.dark body.reduced-contrast .bn-editor blockquote {
+  color: #d1d5db !important;
+}
+
+/* Checklist strike — checked items get strikethrough + dimmed for clarity. */
+body.checklist-strike .bn-editor [data-checked="true"] {
+  text-decoration: line-through;
+  opacity: 0.55;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

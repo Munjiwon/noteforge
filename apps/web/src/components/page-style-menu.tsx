@@ -829,6 +829,11 @@ export function PageStyleMenu({
                       { key: "heading-separator", label: "Heading separator" },
                       { key: "highlight-urls", label: "Highlight URLs" },
                       { key: "image-zoom-cursor", label: "Image zoom cursor" },
+                      { key: "big-numbered-list", label: "Big numbers (ol)" },
+                      { key: "selection-accent", label: "Selection accent" },
+                      { key: "block-hover-lift", label: "Block hover lift" },
+                      { key: "reduced-contrast", label: "Reduced contrast" },
+                      { key: "checklist-strike", label: "Checklist strike" },
                     ] as const
                   ).map((t) => (
                     <button

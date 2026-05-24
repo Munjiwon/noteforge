@@ -1084,6 +1084,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Scan the legal text below for risky, one-sided, or unusually broad clauses. Reply as a markdown table with columns | Clause type | Why it matters | Negotiation lever |. 4-6 rows. Cover liability caps, indemnity scope, termination asymmetry, IP assignment, auto-renewal, jurisdiction. End with a single bold '**Top concern:**' sentence.\n\nText:\n${text}`,
   translate_natural_en: (text) =>
     `Translate the Korean (or Japanese / Chinese) text below into natural, idiomatic English that reads like it was originally written in English. Avoid literal word order, soften 한국어/일본어 특유의 격식, replace direct translations with the closest English idiom or register. Reply with two markdown sections: '**Natural English**' (the translation only) and '**Translator's notes**' (2-3 bullets on choices you made and what was lost).\n\nOriginal:\n${text}`,
+  safety_review: (text) =>
+    `Scan the text below for safety / publication risks. Reply as a markdown table with columns | Category | Risk found? | Snippet | Suggested action |, with rows for: **PII** (names, emails, phone, IDs), **Sensitive data** (financial, health, credentials), **Hate / harassment**, **Defamation risk**, **Copyright snippet (>40 words)**, **Confidential markers** ('NDA', 'internal', etc.). Mark 'None' if clean for a row. End with one bold '**Overall verdict:**' line: 'Safe to publish' / 'Needs review' / 'Do not publish'.\n\nText:\n${text}`,
+  style_mirror: (text) =>
+    `The text below has TWO parts separated by '---'. The first part is a **style sample** (the voice to mimic). The second part is a **topic / brief** to write about in that same voice. Absorb the sample's sentence length, vocabulary, rhythm, and signature quirks, then write 2-3 paragraphs about the topic. Reply with the new text only.\n\nInput:\n${text}`,
+  biz_eng_email: (text) =>
+    `Draft a formal business English email from the context below. Subject line on the first line ('Subject: …'), blank line, then 4-5 sentences: clear opening with reason for writing, one paragraph of context/ask, a specific next step with date, a polite close, signature placeholder. Use neutral professional register — no exclamation marks, no 'I hope you are doing well'. Reply with the email only.\n\nContext:\n${text}`,
+  intro_ko_formal: (text) =>
+    `Write a polite Korean first-meeting self-introduction (정중한 자기소개) from the bio below. 합쇼체. Structure: 인사말 ('안녕하세요. …'), 이름 + 소속/직책 (한 문장), 현재 하는 일 (한 문장), 만나서 기대하는 점 (한 문장), 마무리 인사 ('잘 부탁드립니다.'). 총 5-6문장. Reply with the intro only.\n\nBio:\n${text}`,
+  ui_spec_from_desc: (text) =>
+    `Read the UI screen description below and produce a structured component spec. Markdown sections with bold labels: **Component name** (PascalCase), **Purpose** (one sentence), **Elements** (bullet list of each visible element + role), **States** (default / hover / focus / disabled / loading / error / empty — only those that apply), **Interactions** (3-5 bullets), **Accessibility** (keyboard, screen reader, contrast), **Edge cases** (2-3 bullets).\n\nScreen:\n${text}`,
+  dad_jokes: (text) =>
+    `Write 3 dad jokes (아재 개그) related to the topic below. Each one a setup line + punchline on the next line. Keep them family-friendly and groan-worthy in the classic dad-joke way. If the topic is Korean, write Korean 아재 개그 (말장난 포함); otherwise English dad jokes. Reply as markdown with each joke labeled '**Joke 1**', '**Joke 2**', '**Joke 3**'.\n\nTopic:\n${text}`,
+  jp_business_polite: (text) =>
+    `Rewrite the text below as polite Japanese business communication (敬語 — 丁寧語 + 尊敬語/謙譲語 where appropriate). Use natural ビジネスメール conventions: 「お世話になっております」style openings, 「〜いただけますでしょうか」style requests, 「よろしくお願いいたします」close. If input is English/Korean, translate into proper Japanese business register. Reply with the rewritten text only, then a brief '**注記**' bullet list (2-3 bullets) noting the 尊敬語/謙譲語 swaps you made.\n\nText:\n${text}`,
+  git_conflict_resolve: (text) =>
+    `The text below contains a git merge conflict (with <<<<<<<, =======, >>>>>>> markers). Reply with: 1) a fenced code block containing the **suggested resolution** (the merged code, conflict markers removed), 2) '**Why this resolution**' — 2-3 sentences explaining which side won and why, 3) '**What to double-check**' — 2 bullets on edge cases the human should verify.\n\nConflict:\n${text}`,
+  copy_3_tones: (text) =>
+    `Rewrite the copy below three times in different tones. Markdown with three bold sections: **Formal** (corporate, no contractions, neutral), **Playful** (warm, light humor, conversational contractions OK), **Punchy** (short sentences, strong verbs, no fluff — under 60% of original length). Preserve facts and asks. Reply with the three versions only.\n\nCopy:\n${text}`,
+  sql_explain_ko: (text) =>
+    `Explain the SQL query below in Korean using 해요체, step by step. Markdown structure: '**한 줄 요약**' (이 쿼리가 뭘 가져오는지 한 문장), '**단계별 분석**' (FROM / JOIN / WHERE / GROUP BY / ORDER BY 등 순서대로 bullet — 사용된 절만), '**주의할 점**' (성능, NULL 처리, edge case — 1-3 bullets). Reply as markdown.\n\nQuery:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
