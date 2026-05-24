@@ -400,6 +400,8 @@ export function PageView({
       "image-rounded",
       "line-loose",
       "bookworm",
+      "compact-subpage-cards",
+      "dotted-divider",
     ];
     try {
       for (const k of toggles) {

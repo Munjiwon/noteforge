@@ -812,6 +812,8 @@ export function PageStyleMenu({
                       { key: "image-rounded", label: "Rounded images" },
                       { key: "line-loose", label: "Loose line-height" },
                       { key: "bookworm", label: "Bookworm serif" },
+                      { key: "compact-subpage-cards", label: "Compact sub-pages" },
+                      { key: "dotted-divider", label: "Dotted divider" },
                     ] as const
                   ).map((t) => (
                     <button
