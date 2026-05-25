@@ -863,6 +863,59 @@ body.h1-as-h2 .bn-editor h1 {
   line-height: 1.3 !important;
 }
 
+/* Sidebar wide — give the left sidebar more room so long page titles don't truncate. */
+body.sidebar-wide aside {
+  width: 320px !important;
+  min-width: 320px !important;
+  max-width: 320px !important;
+}
+
+/* Outline pinned — stick the table-of-contents to viewport when scrolling. */
+body.outline-pinned [data-page-outline] {
+  position: sticky;
+  top: 0.75rem;
+  z-index: 10;
+  background: var(--page-bg, #ffffff);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+.dark body.outline-pinned [data-page-outline] {
+  background: #18181b;
+}
+
+/* Sidebar darker — give the sidebar a subtle gray background to separate from content. */
+body.sidebar-darker aside {
+  background: #f8fafc !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+}
+.dark body.sidebar-darker aside {
+  background: #0f172a !important;
+  border-right-color: rgba(255, 255, 255, 0.06);
+}
+
+/* Mobile-narrow — squeeze the page body to a phone-like reading width. */
+body.mobile-narrow .max-w-3xl,
+body.mobile-narrow .max-w-5xl,
+body.mobile-narrow .max-w-none {
+  max-width: 22rem !important;
+}
+
+/* Big headings — bump h1/h2/h3 sizes for presentation-style reading. */
+body.big-headings .bn-editor h1 {
+  font-size: 2.75rem !important;
+  line-height: 1.15 !important;
+}
+body.big-headings .bn-editor h2 {
+  font-size: 2rem !important;
+  line-height: 1.2 !important;
+}
+body.big-headings .bn-editor h3 {
+  font-size: 1.5rem !important;
+  line-height: 1.25 !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

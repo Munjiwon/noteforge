@@ -427,6 +427,11 @@ export function PageView({
       "db-compact-rows",
       "sidebar-small-text",
       "h1-as-h2",
+      "sidebar-wide",
+      "outline-pinned",
+      "sidebar-darker",
+      "mobile-narrow",
+      "big-headings",
     ];
     try {
       for (const k of toggles) {
@@ -671,7 +676,9 @@ export function PageView({
   const font = effFont ?? "default";
   return (
     <div className={fontClass(font)}>
-      <PageOutline content={page.content} />
+<div data-page-outline>
+        <PageOutline content={page.content} />
+      </div>
       <PageCover
         slug={slug}
         pageId={page.id}

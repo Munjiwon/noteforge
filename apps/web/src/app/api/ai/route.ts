@@ -1124,6 +1124,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Rewrite the Korean (or any-language) headline below in 5 different angles. Each under 35자, in 합쇼체. Markdown numbered list with the angle label in italic after each: 1) **호기심**, 2) **혜택 중심**, 3) **숫자/구체성**, 4) **대비/before-after**, 5) **질문형**. Reply as: '1. 헤드라인 — *호기심*' style.\n\n원본 헤드라인:\n${text}`,
   email_decline_ko: (text) =>
     `Draft a polite Korean email declining the request in the context. Use 합쇼체. Structure: 제목 ('제목: 회신 - …'), blank, 4 short paragraphs — 1) 감사 인사 + 요청 수신 확인, 2) 정중한 거절 + 구체적 사유 (변명조 X), 3) 가능한 대안 1개 (소개·다음 기회·자료 공유 등), 4) 관계 유지 마무리. End with '○○○ 드림' placeholder. Reply with the email only.\n\n요청 맥락:\n${text}`,
+  api_docs_from_code: (text) =>
+    `Read the function / endpoint signature below and produce API reference docs in markdown. Sections: **Signature** (fenced code block of the signature), **Description** (1-2 sentences on what it does and when to use it), **Parameters** (table | Name | Type | Required | Description |), **Returns** (type + 1 sentence), **Throws / errors** (bulleted list, or 'None'), **Example** (fenced code block with a realistic call + expected output).\n\nCode:\n${text}`,
+  db_schema_naming: (text) =>
+    `Read the entity / domain description below and propose a database naming scheme. Markdown sections: **Tables** (bullet list of table names in snake_case_plural with 1-line purpose each), **Columns** (per-table bullets formatted '- table.column — type — purpose'), **Foreign keys** (bullets like 'orders.user_id → users.id'), **Indexes worth adding** (3 bullets with why). Keep names short, consistent, and avoid reserved words.\n\nDomain:\n${text}`,
+  translate_formal_en: (text) =>
+    `Translate the text below into formal business English. Use complete sentences, no contractions, no exclamation marks, restrained vocabulary suitable for a regulator, board member, or external counterparty. Preserve meaning exactly. Reply with the translation only — no preamble.\n\nOriginal:\n${text}`,
+  translate_formal_ko: (text) =>
+    `Translate / rewrite the text below into formal Korean (격식체 합쇼체). Use 한자어 where they add precision (해당 / 관련 / 별도 / 협조), avoid 구어체, no 이모지. Suitable for 공문 / 공식 메일 / 공지. Preserve meaning exactly. Reply with the translation only.\n\nOriginal:\n${text}`,
+  customer_segments: (text) =>
+    `Read the product / market context below and propose 3-4 distinct customer segments. For each: markdown '### Segment N: [short name]', then bullets — **Who they are** (firmographic + role), **Top job-to-be-done**, **Why they'd pick us**, **Why they'd churn**, **Rough size & priority for us** (S/M/L). End with one bold '**Where to focus first:**' sentence.\n\nContext:\n${text}`,
+  email_thread_summary: (text) =>
+    `Summarize the long email thread below for someone catching up. Markdown sections with bold labels: **Participants** (names + roles, comma-separated), **What was discussed** (3-5 bullets), **Decisions made** (bullets, or 'None'), **Open questions** (bullets, or 'None'), **Action items** (markdown checkboxes with owner placeholder and rough due date), **Where we left off** (one sentence on the latest reply).\n\nThread:\n${text}`,
+  pr_review_checklist: (text) =>
+    `Read the PR description below and generate a tailored review checklist for the reviewer. Markdown grouped under bold sections, each with 2-4 checkbox bullets ('- [ ] …'): **Functional correctness**, **Tests**, **Edge cases**, **Security**, **Performance**, **Backward compatibility**, **Docs & comms**. Only include sections relevant to the change; skip ones that obviously don't apply.\n\nPR:\n${text}`,
+  onboarding_30_60_90: (text) =>
+    `Build a 30/60/90-day onboarding plan for a new hire in the role below. Markdown with three bold sections: **Day 1-30 (Learn)**, **Day 31-60 (Contribute)**, **Day 61-90 (Own)**. Under each: bullet groups **Goals** (3), **Key relationships to build** (2-3 names placeholders + reason), **Expected output** (1-2 concrete deliverables), **How success is measured**.\n\nRole:\n${text}`,
+  sales_call_script_ko: (text) =>
+    `Draft a Korean sales discovery call script (영업 콜 스크립트) for the offering. Use 해요체. Markdown sections with bold labels: **오프닝 (1분)** — 인사 + 콜 목적 + 시간 양해, **현황 질문 (5분)** — 3-4개 질문 bullets, **니즈 발굴 (10분)** — pain point 캐치 질문 4개, **가치 제시 (5분)** — 우리 솔루션이 그 페인에 어떻게 fit하는지 2-3 문장, **CTA (2분)** — 다음 단계 제안 (데모 / 후속 미팅 / 자료 발송) + 마무리 인사.\n\n맥락:\n${text}`,
+  contract_redline: (text) =>
+    `Read the contract clause(s) below and propose redline edits. For each problematic clause: markdown structure — '### Clause: [short name]', then '**현재 / Current:**' (quote the original, fenced as a > blockquote), '**제안 / Proposed:**' (fenced > blockquote of the rewrite), '**근거 / Rationale:**' (1-2 sentences on why the change protects us). 3-5 clauses. End with '**우선순위 / Priority:**' line ranking the top 2 most important.\n\nContract:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

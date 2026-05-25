@@ -839,6 +839,11 @@ export function PageStyleMenu({
                       { key: "db-compact-rows", label: "DB compact rows" },
                       { key: "sidebar-small-text", label: "Small sidebar" },
                       { key: "h1-as-h2", label: "H1 = H2 size" },
+                      { key: "sidebar-wide", label: "Sidebar wide" },
+                      { key: "outline-pinned", label: "Outline pinned" },
+                      { key: "sidebar-darker", label: "Sidebar darker" },
+                      { key: "mobile-narrow", label: "Mobile-narrow" },
+                      { key: "big-headings", label: "Big headings" },
                     ] as const
                   ).map((t) => (
                     <button
