@@ -442,6 +442,11 @@ export function PageView({
       "no-image-captions",
       "larger-checkbox",
       "reading-ruler",
+      "mini-sidebar-icons",
+      "two-tone-tags",
+      "neutral-links",
+      "link-underline-hover",
+      "code-line-wrap",
     ];
     try {
       for (const k of toggles) {

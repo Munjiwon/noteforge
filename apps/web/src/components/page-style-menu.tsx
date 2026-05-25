@@ -854,6 +854,11 @@ export function PageStyleMenu({
                       { key: "no-image-captions", label: "No image captions" },
                       { key: "larger-checkbox", label: "Larger checkbox" },
                       { key: "reading-ruler", label: "Reading ruler" },
+                      { key: "mini-sidebar-icons", label: "Mini sb icons" },
+                      { key: "two-tone-tags", label: "Two-tone tags" },
+                      { key: "neutral-links", label: "Neutral links" },
+                      { key: "link-underline-hover", label: "Underline on hover" },
+                      { key: "code-line-wrap", label: "Code line wrap" },
                     ] as const
                   ).map((t) => (
                     <button

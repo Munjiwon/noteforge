@@ -1044,6 +1044,50 @@ body.reading-ruler .bn-editor li:hover {
   background: rgba(250, 204, 21, 0.16);
 }
 
+/* Mini sidebar icons — shrink the leading emoji glyphs in the sidebar tree. */
+body.mini-sidebar-icons aside .nf-page-icon {
+  font-size: 0.7rem !important;
+  margin-right: 0.25rem !important;
+}
+
+/* Two-tone tags — give page tags a subtle gradient background. */
+body.two-tone-tags [data-page-tags] a,
+body.two-tone-tags [data-page-tags] button,
+body.two-tone-tags [data-page-tags] span {
+  background: linear-gradient(135deg, #e0e7ff 0%, #fce7f3 100%) !important;
+  color: #4338ca;
+  border-color: transparent;
+}
+.dark body.two-tone-tags [data-page-tags] a,
+.dark body.two-tone-tags [data-page-tags] button,
+.dark body.two-tone-tags [data-page-tags] span {
+  background: linear-gradient(135deg, #312e81 0%, #831843 100%) !important;
+  color: #ddd6fe;
+}
+
+/* Neutral links — strip color tint from links, inherit body text color. */
+body.neutral-links .bn-editor a {
+  color: inherit !important;
+}
+
+/* Underline on hover — links lose their default underline, show only on hover. */
+body.link-underline-hover .bn-editor a {
+  text-decoration: none !important;
+}
+body.link-underline-hover .bn-editor a:hover,
+body.link-underline-hover .bn-editor a:focus-visible {
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+}
+
+/* Code line wrap — let long code lines wrap instead of horizontal scroll. */
+body.code-line-wrap .bn-editor pre,
+body.code-line-wrap .bn-editor pre code {
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+  overflow-x: hidden !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
