@@ -452,6 +452,11 @@ export function PageView({
       "italic-accent",
       "heading-shadow",
       "external-link-icon",
+      "italic-serif",
+      "big-checklist-text",
+      "strikethrough-faded",
+      "drop-cap",
+      "highlight-accent",
     ];
     try {
       for (const k of toggles) {

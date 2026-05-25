@@ -1150,6 +1150,62 @@ body.external-link-icon .bn-editor a[href^="http"]::after {
   color: #94a3b8;
 }
 
+/* Italic serif — render <em> with a serif stack for a typeset / book feel. */
+body.italic-serif .bn-editor em,
+body.italic-serif .bn-editor i {
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+/* Big checklist text — bump checklist item font size so goals stand out. */
+body.big-checklist-text .bn-editor [data-checked] + *,
+body.big-checklist-text .bn-editor [data-content-type="checkListItem"] {
+  font-size: 1.1rem !important;
+  line-height: 1.5;
+}
+
+/* Strikethrough faded — line-through text is dimmer (done-feel for old items). */
+body.strikethrough-faded .bn-editor s,
+body.strikethrough-faded .bn-editor del,
+body.strikethrough-faded .bn-editor strike,
+body.strikethrough-faded .bn-editor [style*="line-through"] {
+  opacity: 0.5;
+  color: #6b7280;
+}
+.dark body.strikethrough-faded .bn-editor s,
+.dark body.strikethrough-faded .bn-editor del,
+.dark body.strikethrough-faded .bn-editor strike,
+.dark body.strikethrough-faded .bn-editor [style*="line-through"] {
+  color: #9ca3af;
+}
+
+/* Drop cap — first character of the first paragraph becomes a large decorative cap. */
+body.drop-cap .bn-editor > div > div:first-child p:first-of-type::first-letter,
+body.drop-cap .bn-editor > div:first-child p:first-of-type::first-letter {
+  float: left;
+  font-family: Georgia, serif;
+  font-size: 3.5rem;
+  line-height: 0.9;
+  padding: 0.3rem 0.5rem 0 0;
+  color: #1e293b;
+  font-weight: 700;
+}
+.dark body.drop-cap .bn-editor > div > div:first-child p:first-of-type::first-letter,
+.dark body.drop-cap .bn-editor > div:first-child p:first-of-type::first-letter {
+  color: #e2e8f0;
+}
+
+/* Highlight accent — push the default <mark> highlight to a stronger brand color. */
+body.highlight-accent .bn-editor mark {
+  background: #fde68a !important;
+  color: #422006 !important;
+  padding: 0 0.2em;
+  border-radius: 0.2em;
+}
+.dark body.highlight-accent .bn-editor mark {
+  background: #f59e0b !important;
+  color: #18181b !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

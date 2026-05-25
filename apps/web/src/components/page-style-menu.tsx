@@ -864,6 +864,11 @@ export function PageStyleMenu({
                       { key: "italic-accent", label: "Italic accent" },
                       { key: "heading-shadow", label: "Heading shadow" },
                       { key: "external-link-icon", label: "↗ on ext links" },
+                      { key: "italic-serif", label: "Italic serif" },
+                      { key: "big-checklist-text", label: "Big checklist text" },
+                      { key: "strikethrough-faded", label: "Strike faded" },
+                      { key: "drop-cap", label: "Drop cap" },
+                      { key: "highlight-accent", label: "Highlight accent" },
                     ] as const
                   ).map((t) => (
                     <button
