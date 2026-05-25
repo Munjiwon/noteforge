@@ -447,6 +447,11 @@ export function PageView({
       "neutral-links",
       "link-underline-hover",
       "code-line-wrap",
+      "heading-anchor-hover",
+      "no-selection",
+      "italic-accent",
+      "heading-shadow",
+      "external-link-icon",
     ];
     try {
       for (const k of toggles) {

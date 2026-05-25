@@ -859,6 +859,11 @@ export function PageStyleMenu({
                       { key: "neutral-links", label: "Neutral links" },
                       { key: "link-underline-hover", label: "Underline on hover" },
                       { key: "code-line-wrap", label: "Code line wrap" },
+                      { key: "heading-anchor-hover", label: "Heading anchors" },
+                      { key: "no-selection", label: "No selection" },
+                      { key: "italic-accent", label: "Italic accent" },
+                      { key: "heading-shadow", label: "Heading shadow" },
+                      { key: "external-link-icon", label: "↗ on ext links" },
                     ] as const
                   ).map((t) => (
                     <button

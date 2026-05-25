@@ -1088,6 +1088,68 @@ body.code-line-wrap .bn-editor pre code {
   overflow-x: hidden !important;
 }
 
+/* Heading anchor on hover — show a faint '#' marker on h1-h3 on hover. */
+body.heading-anchor-hover .bn-editor :is(h1, h2, h3) {
+  position: relative;
+}
+body.heading-anchor-hover .bn-editor :is(h1, h2, h3)::before {
+  content: "#";
+  position: absolute;
+  left: -1.25rem;
+  color: rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  transition: opacity 120ms ease;
+  font-weight: 600;
+}
+body.heading-anchor-hover .bn-editor :is(h1, h2, h3):hover::before {
+  opacity: 1;
+}
+.dark body.heading-anchor-hover .bn-editor :is(h1, h2, h3)::before {
+  color: rgba(255, 255, 255, 0.22);
+}
+
+/* No selection — block user-select in the editor body (publish/read-only feel). */
+body.no-selection .bn-editor,
+body.no-selection .bn-editor * {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+/* Italic accent — bring brand color into <em> emphasis text. */
+body.italic-accent .bn-editor em,
+body.italic-accent .bn-editor i {
+  color: #6d28d9;
+}
+.dark body.italic-accent .bn-editor em,
+.dark body.italic-accent .bn-editor i {
+  color: #c4b5fd;
+}
+
+/* Heading shadow — gentle text-shadow on h1/h2 for a poster vibe. */
+body.heading-shadow .bn-editor h1 {
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.04), 2px 2px 0 rgba(0, 0, 0, 0.03);
+}
+body.heading-shadow .bn-editor h2 {
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.04);
+}
+.dark body.heading-shadow .bn-editor h1 {
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.06), 2px 2px 0 rgba(255, 255, 255, 0.04);
+}
+.dark body.heading-shadow .bn-editor h2 {
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* External link icon — append ↗ to anchors that point to absolute URLs. */
+body.external-link-icon .bn-editor a[href^="http"]::after {
+  content: " ↗";
+  font-size: 0.85em;
+  color: #64748b;
+  margin-left: 1px;
+}
+.dark body.external-link-icon .bn-editor a[href^="http"]::after {
+  color: #94a3b8;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

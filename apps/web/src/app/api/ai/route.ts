@@ -1204,6 +1204,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Given the branch situation below, recommend a git strategy. Markdown sections: **Recommendation** ('rebase' / 'merge' / 'squash' + 1-2 sentences justifying), **Why not the alternatives** (2 bullets), **Step-by-step commands** (numbered, in a fenced bash block), **Risks & rollback** (2 bullets — how to recover if something goes wrong). Specific to the described branch state, not generic.\n\nBranch state:\n${text}`,
   cors_config: (text) =>
     `Recommend a CORS configuration for the scenario below. Markdown sections: **Recommended config** (fenced code block — pick the right framework based on context: Express/Next.js/Nginx), **Why these values** (table | Setting | Value | Reason |, 4-6 rows covering Access-Control-Allow-Origin, Methods, Headers, Credentials, Max-Age, Expose-Headers), **Common mistakes to avoid** (2-3 bullets — e.g. '*' with credentials, missing preflight). Be specific to the scenario.\n\nScenario:\n${text}`,
+  changelog_ko: (text) =>
+    `Rewrite the changes below as a Korean user-facing changelog (한국어 변경 로그) in 합쇼체. Markdown sections with bold labels and emoji: **✨ 신규 기능**, **🛠 개선 사항**, **🐛 버그 수정**, **⚠️ 주의 / 호환성**. Each bullet under 110자, lead with what changed for the user (not how it was built). Skip empty sections.\n\n변경 사항:\n${text}`,
+  scam_detect_ko: (text) =>
+    `Scan the Korean message / text below for scam, phishing, or social-engineering signals. Markdown sections: **종합 점수** (0-100, higher = more risky), **탐지된 신호** (bullets — 각 신호명 + 이유 + 인용된 문구), **위험 패턴** (선택 — 긴급성 압박 / 권위 사칭 / 의심 링크 / 개인정보 요구 / 비정상 결제 요청 등), **권장 조치** (3 bullets — 사용자에게 줄 행동 지침). Use 해요체.\n\n메시지:\n${text}`,
+  contract_clause_explain_ko: (text) =>
+    `Explain the contract clause(s) below in Korean using 해요체, focusing on what they mean for the signer. Markdown sections: **이 조항의 핵심 의미** (한 문단 plain Korean), **나에게 어떤 영향** (3 bullets — 권리 / 의무 / 제약), **숨겨진 리스크** (2 bullets — 자주 놓치는 함정), **협상 시 체크포인트** (3 bullets — 무엇을 요구할지). 법률 용어는 풀어쓰고, 직역체 금지.\n\n조항:\n${text}`,
+  study_cheatsheet: (text) =>
+    `Build a single-page cheatsheet for the topic below. Markdown sections with bold labels: **핵심 정의 / Core terms** (5-8 bullets: '- 용어 — one-line def'), **공식·규칙 / Formulas & rules** (3-5 short fenced snippets or bullets), **자주 쓰는 예제 / Quick examples** (2 short snippets), **흔한 실수 / Gotchas** (3 bullets), **암기할 한 줄 / TL;DR** (one bold sentence). Compact, scannable, no fluff. Match input language for labels.\n\nTopic:\n${text}`,
+  saas_onboarding_checklist: (text) =>
+    `Design a 7-step SaaS user onboarding checklist for the product. Markdown numbered list, each step formatted '**Step N — Title** (X분): one-line goal • success signal'. Order roughly: 계정 생성 → 핵심 설정 → 첫 데이터 입력 → 핵심 기능 1개 체험 → aha-moment → 협업 / 공유 → 다음 단계 (구독 / 팀 초대). After the list, add '**Aha-moment 정의:**' line — the specific in-product event we should optimize for.\n\nProduct:\n${text}`,
+  email_thank_customer_ko: (text) =>
+    `Write a heartfelt Korean thank-you email to a customer based on the context. Use 해요체 (warmer than 합쇼체). 3 short paragraphs: 1) 구체적인 감사 인사 (그 고객의 특정 행동 — 구매 / 후기 / 소개 / 피드백 등을 짚어줌), 2) 그 행동이 우리에게 어떤 의미였는지 진솔하게, 3) 앞으로의 약속 + 부담 없는 mantenimiento 멘트. 제목 ('제목: …') 첫 줄. Reply with the email only.\n\nContext:\n${text}`,
+  community_rules_ko: (text) =>
+    `Draft 5 Korean community guidelines (커뮤니티 규칙) tailored to the space. Numbered list, each rule: '**N. 한 줄 원칙 (행동 지침형)**' on first line, then 1-sentence explanation in 해요체, then '**위반 시:**' bullet with the moderation action (경고 / 일시 정지 / 영구 정지). End with one bold '**우리가 지향하는 분위기:**' sentence summarizing the vibe.\n\n커뮤니티 맥락:\n${text}`,
+  translate_formal_jp: (text) =>
+    `Translate / rewrite the text below into formal Japanese business writing (ビジネス日本語 / 敬語). Use 「お世話になっております」 style openings if it's an email, 尊敬語 for the counterpart's actions, 謙譲語 for our actions, 「よろしくお願いいたします」 style closes. Reply with two markdown sections: '**フォーマル日本語**' (the translation alone) and '**敬語ノート**' (2-3 bullets noting 尊敬語/謙譲語 choices and any Japanese-specific framing changes from the original).\n\nOriginal:\n${text}`,
+  dashboard_widgets_spec: (text) =>
+    `Design 6 dashboard widgets for the dashboard purpose below. Reply as a markdown table with columns | # | Widget title | Metric / question answered | Visualization (number / line / bar / table / gauge / heatmap) | Filters | Refresh rate |. Pick widgets that together tell a coherent story about the goal — overview first, then breakdowns, then leading indicators. After the table, '**Empty state:**' one sentence on what shows when no data.\n\nDashboard purpose:\n${text}`,
+  error_message_friendly: (text) =>
+    `Convert the technical error / failure below into a friendly user-facing message. Markdown labels: **Title** (under 8 words, calm — no 'Oops!' or alarm), **Body** (1-2 sentences: what happened in user terms + what to try), **Primary CTA** (3-word button label), **Secondary CTA** (3-word button label, often 'Try again' or 'Contact support'), **Tech detail (collapsed)** (one-line ID / code the user can share with support). Avoid blaming the user.\n\nError:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
