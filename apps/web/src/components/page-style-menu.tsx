@@ -849,6 +849,11 @@ export function PageStyleMenu({
                       { key: "para-indent", label: "Paragraph indent" },
                       { key: "print-toggle-expand", label: "Print: expand toggles" },
                       { key: "thick-caret", label: "Thick caret" },
+                      { key: "code-chip", label: "Code chip" },
+                      { key: "caret-block-highlight", label: "Caret block hi" },
+                      { key: "no-image-captions", label: "No image captions" },
+                      { key: "larger-checkbox", label: "Larger checkbox" },
+                      { key: "reading-ruler", label: "Reading ruler" },
                     ] as const
                   ).map((t) => (
                     <button

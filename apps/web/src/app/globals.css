@@ -989,6 +989,61 @@ body.thick-caret .bn-editor *:focus {
   }
 }
 
+/* Code chip — render inline code as a rounded pill with subtle background. */
+body.code-chip .bn-editor :not(pre) > code {
+  background: #ede9fe;
+  color: #5b21b6;
+  padding: 0.1em 0.55em;
+  border-radius: 9999px;
+  font-size: 0.85em;
+  font-weight: 500;
+  border: 1px solid rgba(91, 33, 182, 0.18);
+}
+.dark body.code-chip .bn-editor :not(pre) > code {
+  background: rgba(167, 139, 250, 0.18);
+  color: #ddd6fe;
+  border-color: rgba(167, 139, 250, 0.3);
+}
+
+/* Caret block highlight — gently shade the block containing the editor's caret.
+   focus-within is the cheapest available signal that works without JS. */
+body.caret-block-highlight .bn-editor .bn-block:focus-within {
+  background: rgba(59, 130, 246, 0.04);
+  border-radius: 4px;
+  box-shadow: inset 3px 0 0 #3b82f6;
+}
+.dark body.caret-block-highlight .bn-editor .bn-block:focus-within {
+  background: rgba(96, 165, 250, 0.08);
+  box-shadow: inset 3px 0 0 #60a5fa;
+}
+
+/* No image captions — hide figcaption-like elements (alt text labels). */
+body.no-image-captions .bn-editor figcaption,
+body.no-image-captions .bn-editor [data-content-type="image"] [contenteditable="true"]:empty {
+  display: none !important;
+}
+
+/* Larger checkbox — bump checklist checkbox visual size + accent. */
+body.larger-checkbox .bn-editor input[type="checkbox"] {
+  width: 1.15rem !important;
+  height: 1.15rem !important;
+  accent-color: #16a34a;
+  margin-right: 0.5rem;
+  cursor: pointer;
+}
+
+/* Reading ruler — paragraph-level hover tint to help track long-line reading. */
+body.reading-ruler .bn-editor p:hover,
+body.reading-ruler .bn-editor li:hover {
+  background: rgba(250, 204, 21, 0.12);
+  border-radius: 3px;
+  transition: background 80ms ease;
+}
+.dark body.reading-ruler .bn-editor p:hover,
+.dark body.reading-ruler .bn-editor li:hover {
+  background: rgba(250, 204, 21, 0.16);
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

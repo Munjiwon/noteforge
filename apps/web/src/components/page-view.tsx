@@ -437,6 +437,11 @@ export function PageView({
       "para-indent",
       "print-toggle-expand",
       "thick-caret",
+      "code-chip",
+      "caret-block-highlight",
+      "no-image-captions",
+      "larger-checkbox",
+      "reading-ruler",
     ];
     try {
       for (const k of toggles) {
