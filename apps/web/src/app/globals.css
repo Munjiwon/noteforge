@@ -916,6 +916,79 @@ body.big-headings .bn-editor h3 {
   line-height: 1.25 !important;
 }
 
+/* Square bullets — swap the round disc bullet for a chunky square. */
+body.square-bullets .bn-editor ul > li::marker {
+  content: "▪  ";
+  color: #475569;
+}
+.dark body.square-bullets .bn-editor ul > li::marker {
+  color: #94a3b8;
+}
+
+/* Auto-numbered headings — h2/h3 get auto 1., 1.1, 1.1.1 prefixes via CSS counters. */
+body.auto-num-headings .bn-editor {
+  counter-reset: h2num;
+}
+body.auto-num-headings .bn-editor h2 {
+  counter-reset: h3num;
+  counter-increment: h2num;
+}
+body.auto-num-headings .bn-editor h2::before {
+  content: counter(h2num) ". ";
+  margin-right: 0.25rem;
+  color: #64748b;
+  font-weight: 600;
+}
+body.auto-num-headings .bn-editor h3 {
+  counter-increment: h3num;
+}
+body.auto-num-headings .bn-editor h3::before {
+  content: counter(h2num) "." counter(h3num) " ";
+  margin-right: 0.25rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* Paragraph indent — newspaper / book-style first-line indent for prose. */
+body.para-indent .bn-editor p {
+  text-indent: 1.5em;
+}
+body.para-indent .bn-editor p:first-of-type,
+body.para-indent .bn-editor h1 + p,
+body.para-indent .bn-editor h2 + p,
+body.para-indent .bn-editor h3 + p {
+  text-indent: 0;
+}
+
+/* Print: expand toggles — show <details> contents in print even if collapsed.
+   The HTML `open` attribute can't be set from CSS, but we can still display
+   the children block-style during print, which paints them as if open. */
+@media print {
+  body.print-toggle-expand details > *:not(summary) {
+    display: block !important;
+    visibility: visible !important;
+  }
+  body.print-toggle-expand details > summary {
+    list-style: none;
+  }
+  body.print-toggle-expand details > summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+/* Thick caret — make the editing caret more visible (wider stroke, taller). */
+body.thick-caret .bn-editor {
+  caret-color: #2563eb;
+}
+body.thick-caret .bn-editor *:focus {
+  caret-color: #2563eb;
+}
+@supports (caret-shape: block) {
+  body.thick-caret .bn-editor {
+    caret-shape: block;
+  }
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

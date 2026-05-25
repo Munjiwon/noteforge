@@ -844,6 +844,11 @@ export function PageStyleMenu({
                       { key: "sidebar-darker", label: "Sidebar darker" },
                       { key: "mobile-narrow", label: "Mobile-narrow" },
                       { key: "big-headings", label: "Big headings" },
+                      { key: "square-bullets", label: "Square bullets" },
+                      { key: "auto-num-headings", label: "Auto # headings" },
+                      { key: "para-indent", label: "Paragraph indent" },
+                      { key: "print-toggle-expand", label: "Print: expand toggles" },
+                      { key: "thick-caret", label: "Thick caret" },
                     ] as const
                   ).map((t) => (
                     <button

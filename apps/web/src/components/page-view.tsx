@@ -432,6 +432,11 @@ export function PageView({
       "sidebar-darker",
       "mobile-narrow",
       "big-headings",
+      "square-bullets",
+      "auto-num-headings",
+      "para-indent",
+      "print-toggle-expand",
+      "thick-caret",
     ];
     try {
       for (const k of toggles) {
