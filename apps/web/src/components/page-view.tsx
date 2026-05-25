@@ -422,6 +422,11 @@ export function PageView({
       "block-hover-lift",
       "reduced-contrast",
       "checklist-strike",
+      "wider-gutters",
+      "blockquote-drama",
+      "db-compact-rows",
+      "sidebar-small-text",
+      "h1-as-h2",
     ];
     try {
       for (const k of toggles) {

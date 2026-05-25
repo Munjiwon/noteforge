@@ -834,6 +834,11 @@ export function PageStyleMenu({
                       { key: "block-hover-lift", label: "Block hover lift" },
                       { key: "reduced-contrast", label: "Reduced contrast" },
                       { key: "checklist-strike", label: "Checklist strike" },
+                      { key: "wider-gutters", label: "Wider gutters" },
+                      { key: "blockquote-drama", label: "Big quote marks" },
+                      { key: "db-compact-rows", label: "DB compact rows" },
+                      { key: "sidebar-small-text", label: "Small sidebar" },
+                      { key: "h1-as-h2", label: "H1 = H2 size" },
                     ] as const
                   ).map((t) => (
                     <button

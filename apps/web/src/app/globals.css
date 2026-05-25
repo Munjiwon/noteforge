@@ -805,6 +805,64 @@ body.checklist-strike .bn-editor [data-checked="true"] {
   opacity: 0.55;
 }
 
+/* Wider gutters — expand the page container side padding for a roomier feel. */
+@media (min-width: 768px) {
+  body.wider-gutters .max-w-3xl,
+  body.wider-gutters .max-w-5xl {
+    padding-left: 7rem !important;
+    padding-right: 7rem !important;
+  }
+}
+
+/* Blockquote drama — show a giant opening quote mark before each blockquote. */
+body.blockquote-drama .bn-editor blockquote {
+  position: relative;
+  padding-left: 2.5rem;
+  font-style: italic;
+}
+body.blockquote-drama .bn-editor blockquote::before {
+  content: "\201C";
+  position: absolute;
+  left: 0;
+  top: -0.5rem;
+  font-size: 3.5rem;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.18);
+  font-family: Georgia, serif;
+}
+.dark body.blockquote-drama .bn-editor blockquote::before {
+  color: rgba(255, 255, 255, 0.22);
+}
+
+/* DB compact rows — tighter cell padding for table-style database views. */
+body.db-compact-rows table td,
+body.db-compact-rows table th,
+body.db-compact-rows [role="row"] [role="cell"],
+body.db-compact-rows [role="row"] [role="columnheader"] {
+  padding-top: 0.15rem !important;
+  padding-bottom: 0.15rem !important;
+  font-size: 0.85rem;
+  line-height: 1.25;
+}
+
+/* Small sidebar text — shrink sidebar font so more tree fits on screen. */
+body.sidebar-small-text aside .text-sm,
+body.sidebar-small-text aside a,
+body.sidebar-small-text aside button {
+  font-size: 0.75rem !important;
+  line-height: 1.15;
+}
+body.sidebar-small-text aside .nf-page-icon {
+  font-size: 0.85rem;
+}
+
+/* H1 = H2 size — clamp h1 down to h2 size when authors over-use h1. */
+body.h1-as-h2 .bn-editor h1 {
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  line-height: 1.3 !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

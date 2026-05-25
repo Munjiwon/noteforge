@@ -1104,6 +1104,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Rewrite the copy below three times in different tones. Markdown with three bold sections: **Formal** (corporate, no contractions, neutral), **Playful** (warm, light humor, conversational contractions OK), **Punchy** (short sentences, strong verbs, no fluff — under 60% of original length). Preserve facts and asks. Reply with the three versions only.\n\nCopy:\n${text}`,
   sql_explain_ko: (text) =>
     `Explain the SQL query below in Korean using 해요체, step by step. Markdown structure: '**한 줄 요약**' (이 쿼리가 뭘 가져오는지 한 문장), '**단계별 분석**' (FROM / JOIN / WHERE / GROUP BY / ORDER BY 등 순서대로 bullet — 사용된 절만), '**주의할 점**' (성능, NULL 처리, edge case — 1-3 bullets). Reply as markdown.\n\nQuery:\n${text}`,
+  jira_from_bug: (text) =>
+    `Convert the loose bug description below into a Jira-ready ticket. Markdown sections with bold labels: **Summary** (under 80 chars, present tense, no period), **Description** (Steps to reproduce / Expected / Actual / Environment as sub-bullets), **Acceptance criteria** (3-5 markdown checkboxes '- [ ] ...'), **Priority** (P0-P3 + one-line justification), **Labels** (comma-separated, lowercase-kebab). Reply as markdown.\n\nBug description:\n${text}`,
+  slack_rephrase_ko: (text) =>
+    `Rewrite the long message below as a casual 3-line Korean Slack message in 해요체. Lines: 1) 핵심 한 줄 (왜 쓰는지 / 무엇이 결정/필요한지), 2) 짧은 맥락 (필요하면 숫자/링크 placeholder), 3) 행동 요청 ('이거 확인 부탁드려요!' 같은 한 줄). Casual emoji 0-1개 OK. Reply with just the 3 lines.\n\nOriginal:\n${text}`,
+  pitch_slide_titles: (text) =>
+    `Produce 10 pitch-deck slide titles + one-line content each, in the YC / Sequoia order: 1) Company purpose, 2) Problem, 3) Solution, 4) Why now, 5) Market size, 6) Competition, 7) Product, 8) Business model, 9) Team, 10) The ask. Reply as a markdown numbered list, each line formatted '**N. Title** — one-sentence content'.\n\nContext:\n${text}`,
+  customer_quote_ko: (text) =>
+    `Write 3 short, distinct Korean customer testimonials (고객 사용 후기) for the offering below — each from a different persona. Use 해요체. Each quote 1-2 sentences with one concrete outcome (시간 절약 / 만족도 / 성과 수치 placeholder). Reply as markdown bullets formatted '- "…" — 페르소나, 직책 / 상황'. Personas: 1) 실무 담당자, 2) 의사결정권자, 3) 신규 사용자.\n\nOffering:\n${text}`,
+  release_go_no_go: (text) =>
+    `Write a release Go/No-Go decision memo from the context below. Markdown sections with bold labels: **Release**, **Date**, **Owner**, **Open blockers** (table | Issue | Severity | Owner | ETA |, 2-4 rows or 'None'), **Risks accepted** (3 bullets), **Rollback plan** (3 short steps), **Comms ready?** (checkboxes for changelog / blog / support / status), **Decision: Go / No-Go** + one-sentence justification.\n\nContext:\n${text}`,
+  icp_profile: (text) =>
+    `Build a 1-page Ideal Customer Profile from the context. Markdown sections: **Firmographics** (industry, company size, geography, revenue band), **Buyer persona** (title, seniority, team), **Pain points** (3 bullets), **Trigger events** (3 bullets — what makes them start looking), **Buying process** (decision-maker, influencer, evaluator, blocker), **Anti-ICP** (3 bullets — who NOT to target).\n\nContext:\n${text}`,
+  competitive_moat: (text) =>
+    `Identify the offering's 3 strongest competitive moats. For each, markdown structure: '### Moat: [name]', then bullets — **Why it's defensible**, **How fast a competitor could copy it (months)**, **Metric we can track to prove it widening over time**, **Biggest risk to this moat**. Keep each bullet short.\n\nOffering:\n${text}`,
+  postmortem_ko: (text) =>
+    `Draft a Korean blameless postmortem (장애 회고) from the context. Use 합쇼체. Markdown sections: **요약** (1-2문장), **영향** (사용자 수 / 지속 시간 / 손실 추정), **타임라인** (시간 순 bullet, 'HH:MM — …'), **근본 원인**, **잘된 점** (3 bullets), **개선할 점** (3 bullets), **액션 아이템** ('- [ ] 담당: ○○○ / 기한: YYYY-MM-DD' 형식, 3-5개). 비난조 금지, 시스템 관점 유지.\n\n맥락:\n${text}`,
+  headline_rewrite_ko: (text) =>
+    `Rewrite the Korean (or any-language) headline below in 5 different angles. Each under 35자, in 합쇼체. Markdown numbered list with the angle label in italic after each: 1) **호기심**, 2) **혜택 중심**, 3) **숫자/구체성**, 4) **대비/before-after**, 5) **질문형**. Reply as: '1. 헤드라인 — *호기심*' style.\n\n원본 헤드라인:\n${text}`,
+  email_decline_ko: (text) =>
+    `Draft a polite Korean email declining the request in the context. Use 합쇼체. Structure: 제목 ('제목: 회신 - …'), blank, 4 short paragraphs — 1) 감사 인사 + 요청 수신 확인, 2) 정중한 거절 + 구체적 사유 (변명조 X), 3) 가능한 대안 1개 (소개·다음 기회·자료 공유 등), 4) 관계 유지 마무리. End with '○○○ 드림' placeholder. Reply with the email only.\n\n요청 맥락:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
