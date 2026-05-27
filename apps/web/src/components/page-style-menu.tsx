@@ -979,6 +979,11 @@ export function PageStyleMenu({
                       { key: "table-stripes-vertical", label: "Vertical stripes" },
                       { key: "callout-bg-translucent", label: "Glass callout" },
                       { key: "page-side-tab", label: "Side tab" },
+                      { key: "h2-color-accent", label: "Accent H2" },
+                      { key: "code-block-mono-only", label: "Pure mono code" },
+                      { key: "table-alt-text-color", label: "Alt row text" },
+                      { key: "callout-border-dashed", label: "Dashed callout" },
+                      { key: "page-rule-tip-corner", label: "Tip corner" },
                     ] as const
                   ).map((t) => (
                     <button

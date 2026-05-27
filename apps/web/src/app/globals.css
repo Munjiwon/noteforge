@@ -2646,6 +2646,73 @@ body.page-side-tab .bn-editor::before {
   color: #18181b;
 }
 
+/* Accent H2 — recolor H2 to brand accent for stronger section presence. */
+body.h2-color-accent .bn-editor h2,
+body.h2-color-accent .bn-editor [data-content-type="heading"][data-level="2"] {
+  color: #2563eb !important;
+}
+.dark body.h2-color-accent .bn-editor h2,
+.dark body.h2-color-accent .bn-editor [data-content-type="heading"][data-level="2"] {
+  color: #60a5fa !important;
+}
+
+/* Pure mono code — strip background and use only the monospace font for code blocks. */
+body.code-block-mono-only .bn-editor pre,
+body.code-block-mono-only .bn-editor [data-content-type="codeBlock"] {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  font-family: "JetBrains Mono", "SF Mono", "Fira Code", ui-monospace, Menlo, monospace !important;
+  color: inherit !important;
+}
+.dark body.code-block-mono-only .bn-editor pre,
+.dark body.code-block-mono-only .bn-editor [data-content-type="codeBlock"] {
+  background: transparent !important;
+}
+
+/* Alt row text color — alternate text color on table rows for non-color-blocked stripes. */
+body.table-alt-text-color .bn-editor table tbody tr:nth-child(even) td,
+body.table-alt-text-color .bn-editor [data-content-type="table"] tr:nth-child(even) td {
+  color: #4b5563 !important;
+}
+.dark body.table-alt-text-color .bn-editor table tbody tr:nth-child(even) td,
+.dark body.table-alt-text-color .bn-editor [data-content-type="table"] tr:nth-child(even) td {
+  color: #9ca3af !important;
+}
+
+/* Dashed callout border — render callouts with a dashed border instead of solid bg. */
+body.callout-border-dashed .bn-editor [data-content-type="callout"] {
+  border: 2px dashed #f59e0b !important;
+  background: transparent !important;
+  padding: 0.6em 1em !important;
+}
+.dark body.callout-border-dashed .bn-editor [data-content-type="callout"] {
+  border-color: #fbbf24 !important;
+}
+
+/* Tip corner — add a small "TIP" sticker in the top-right corner of every callout. */
+body.page-rule-tip-corner .bn-editor [data-content-type="callout"] {
+  position: relative;
+}
+body.page-rule-tip-corner .bn-editor [data-content-type="callout"]::after {
+  content: "TIP";
+  position: absolute;
+  top: -0.6em;
+  right: 0.5em;
+  background: #f59e0b;
+  color: #ffffff;
+  font-size: 0.65em;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  padding: 0.2em 0.5em;
+  border-radius: 4px;
+  pointer-events: none;
+}
+.dark body.page-rule-tip-corner .bn-editor [data-content-type="callout"]::after {
+  background: #fbbf24;
+  color: #18181b;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
