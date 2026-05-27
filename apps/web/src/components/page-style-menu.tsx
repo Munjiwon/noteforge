@@ -879,6 +879,11 @@ export function PageStyleMenu({
                       { key: "image-rounded-xl", label: "Image rounded-xl" },
                       { key: "sidebar-accent", label: "Sidebar accent" },
                       { key: "compact-spacing", label: "Compact spacing" },
+                      { key: "scroll-snap-headings", label: "Snap to headings" },
+                      { key: "mono-sidebar", label: "Mono sidebar" },
+                      { key: "bigger-cursor", label: "Bigger cursor" },
+                      { key: "title-no-emoji", label: "Title no emoji" },
+                      { key: "dark-code-always", label: "Dark code always" },
                     ] as const
                   ).map((t) => (
                     <button

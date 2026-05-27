@@ -467,6 +467,11 @@ export function PageView({
       "image-rounded-xl",
       "sidebar-accent",
       "compact-spacing",
+      "scroll-snap-headings",
+      "mono-sidebar",
+      "bigger-cursor",
+      "title-no-emoji",
+      "dark-code-always",
     ];
     try {
       for (const k of toggles) {

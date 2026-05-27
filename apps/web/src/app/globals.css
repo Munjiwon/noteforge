@@ -1310,6 +1310,56 @@ body.compact-spacing .bn-editor li {
   line-height: 1.45 !important;
 }
 
+/* Scroll snap headings — anchor jumps stop with a clean gap above the target. */
+body.scroll-snap-headings {
+  scroll-behavior: smooth;
+}
+body.scroll-snap-headings .bn-editor :is(h1, h2, h3) {
+  scroll-margin-top: 5rem;
+}
+
+/* Mono sidebar — render sidebar text in a monospace stack (terminal vibe). */
+body.mono-sidebar aside,
+body.mono-sidebar aside * {
+  font-family: "JetBrains Mono", "Fira Code", "Menlo", "Consolas", monospace !important;
+}
+
+/* Bigger cursor — show a larger / chunkier mouse cursor over editor/sidebar. */
+body.bigger-cursor,
+body.bigger-cursor .bn-editor,
+body.bigger-cursor .bn-editor *,
+body.bigger-cursor aside,
+body.bigger-cursor aside * {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'><polygon points='2,2 2,22 8,17 12,26 16,24 12,15 22,15' fill='black' stroke='white' stroke-width='1.5' stroke-linejoin='round'/></svg>") 2 2, auto;
+}
+
+/* Title no emoji — fade the icon button in front of the page title. */
+body.title-no-emoji .nf-page-title {
+  /* container only — icon is the sibling button */
+}
+body.title-no-emoji .nf-page-icon {
+  visibility: hidden;
+  width: 0;
+  overflow: hidden;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Dark code always — force dark theme for code blocks even in light mode. */
+body.dark-code-always .bn-editor pre,
+body.dark-code-always .bn-editor pre * {
+  background: #0f172a !important;
+  color: #e2e8f0 !important;
+}
+body.dark-code-always .bn-editor pre {
+  border-radius: 6px;
+  padding: 0.85rem 1rem;
+}
+body.dark-code-always .bn-editor :not(pre) > code {
+  background: #1e293b !important;
+  color: #f1f5f9 !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
