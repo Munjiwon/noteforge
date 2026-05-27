@@ -974,6 +974,11 @@ export function PageStyleMenu({
                       { key: "ol-zero-indexed", label: "0-index OL" },
                       { key: "table-first-column-bold", label: "Bold 1st col" },
                       { key: "page-no-paragraph-margin", label: "Tight paragraphs" },
+                      { key: "h1-aligned-center", label: "Center H1" },
+                      { key: "code-inline-italic", label: "Italic inline" },
+                      { key: "table-stripes-vertical", label: "Vertical stripes" },
+                      { key: "callout-bg-translucent", label: "Glass callout" },
+                      { key: "page-side-tab", label: "Side tab" },
                     ] as const
                   ).map((t) => (
                     <button

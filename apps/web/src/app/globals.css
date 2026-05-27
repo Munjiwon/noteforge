@@ -2571,6 +2571,81 @@ body.page-no-paragraph-margin .bn-editor [data-content-type="paragraph"] {
   margin-bottom: 0 !important;
 }
 
+/* Center H1 — center-align H1 headings for cover-style pages. */
+body.h1-aligned-center .bn-editor h1,
+body.h1-aligned-center .bn-editor [data-content-type="heading"][data-level="1"] {
+  text-align: center !important;
+}
+.dark body.h1-aligned-center .bn-editor h1,
+.dark body.h1-aligned-center .bn-editor [data-content-type="heading"][data-level="1"] {
+  text-align: center !important;
+}
+
+/* Italic inline code — italicize inline code in addition to its mono style. */
+body.code-inline-italic .bn-editor code:not(pre code),
+body.code-inline-italic .bn-editor [data-style="code"] {
+  font-style: italic !important;
+}
+.dark body.code-inline-italic .bn-editor code:not(pre code),
+.dark body.code-inline-italic .bn-editor [data-style="code"] {
+  font-style: italic !important;
+}
+
+/* Vertical table stripes — alternate column backgrounds for matrix-style tables. */
+body.table-stripes-vertical .bn-editor table td:nth-child(even),
+body.table-stripes-vertical .bn-editor [data-content-type="table"] td:nth-child(even) {
+  background: #fafafa !important;
+}
+body.table-stripes-vertical .bn-editor table td:nth-child(odd),
+body.table-stripes-vertical .bn-editor [data-content-type="table"] td:nth-child(odd) {
+  background: #ffffff !important;
+}
+.dark body.table-stripes-vertical .bn-editor table td:nth-child(even),
+.dark body.table-stripes-vertical .bn-editor [data-content-type="table"] td:nth-child(even) {
+  background: #1f1f23 !important;
+}
+.dark body.table-stripes-vertical .bn-editor table td:nth-child(odd),
+.dark body.table-stripes-vertical .bn-editor [data-content-type="table"] td:nth-child(odd) {
+  background: #18181b !important;
+}
+
+/* Glass callout — translucent frosted-glass callout effect. */
+body.callout-bg-translucent .bn-editor [data-content-type="callout"] {
+  background-color: rgba(255, 255, 255, 0.55) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+.dark body.callout-bg-translucent .bn-editor [data-content-type="callout"] {
+  background-color: rgba(24, 24, 27, 0.55) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Side tab — pin a small "DRAFT" tab vertically on the left edge of the editor. */
+body.page-side-tab .bn-editor {
+  position: relative;
+}
+body.page-side-tab .bn-editor::before {
+  content: "DRAFT";
+  position: absolute;
+  top: 50%;
+  left: -2.4em;
+  transform: rotate(-90deg) translateY(-50%);
+  transform-origin: right center;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 0.7em;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  padding: 0.3em 0.9em;
+  border-radius: 6px 6px 0 0;
+  pointer-events: none;
+}
+.dark body.page-side-tab .bn-editor::before {
+  background: #60a5fa;
+  color: #18181b;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

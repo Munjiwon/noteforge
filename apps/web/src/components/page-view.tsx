@@ -562,6 +562,11 @@ export function PageView({
       "ol-zero-indexed",
       "table-first-column-bold",
       "page-no-paragraph-margin",
+      "h1-aligned-center",
+      "code-inline-italic",
+      "table-stripes-vertical",
+      "callout-bg-translucent",
+      "page-side-tab",
     ];
     try {
       for (const k of toggles) {
