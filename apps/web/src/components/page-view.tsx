@@ -597,6 +597,11 @@ export function PageView({
       "table-borderless-headers",
       "callout-pulse-animation",
       "page-print-only-margin",
+      "h2-numbered-roman",
+      "ol-bracket-style",
+      "callout-shadow-soft",
+      "table-merge-header",
+      "page-print-bleed",
     ];
     try {
       for (const k of toggles) {

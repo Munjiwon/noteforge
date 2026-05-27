@@ -1009,6 +1009,11 @@ export function PageStyleMenu({
                       { key: "table-borderless-headers", label: "Header-only border" },
                       { key: "callout-pulse-animation", label: "Pulse callout" },
                       { key: "page-print-only-margin", label: "Print extra margin" },
+                      { key: "h2-numbered-roman", label: "H2 Roman #" },
+                      { key: "ol-bracket-style", label: "[1] OL" },
+                      { key: "callout-shadow-soft", label: "Soft callout shadow" },
+                      { key: "table-merge-header", label: "Merge header bg" },
+                      { key: "page-print-bleed", label: "Print bleed" },
                     ] as const
                   ).map((t) => (
                     <button

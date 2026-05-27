@@ -1804,6 +1804,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Translate the Korean text below into natural Urdu (اردو). RTL 흐름, 격식 ('آپ' 정중 / 'تم' 친근 / 'تو' 더 친근) 원문에 맞춤. Reply with two sections: '**ترجمہ**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
   ux_research_recruitment_screener_ko: (text) =>
     `Build a Korean UX research participant recruitment screener for the target persona below. Use 해요체. Markdown: '**리서치 한 줄**' (1줄 — 무엇을 위한 리서치, 모수 N명), '**참여 조건 (Inclusion)**' (bullets — 구체적 — 직업 / 도구 사용 / 빈도 등), '**제외 조건 (Exclusion)**' (bullets — 우리 / 경쟁사 직원 / 이전 리서치 참가자 등), '**스크리너 질문 (객관식 5-7개)**' (각 질문 + 통과 / 탈락 답변 명시), '**보상**' (1줄 — '기프티콘 X만원 / 1개월 무료 / 사례비 Y만원'), '**참여 안내**' (1단락 — Zoom / 시간 / 녹화 동의 / 익명화).\n\n리서치 / 페르소나:\n${text}`,
+  translate_ko_to_persian: (text) =>
+    `Translate the Korean text below into natural Persian / Farsi (فارسی). RTL 흐름, 격식 ('شما' 정중 / 'تو' 친근) 원문에 맞춤. Reply with two sections: '**ترجمه**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  internal_tools_doc_ko: (text) =>
+    `Write Korean documentation for an internal tool described below. Use 해요체. Markdown: '**Tool 한 줄**' (이름 + 무엇을 위한 도구), '**누가 / 언제 쓰나요**' (1줄), '**접근 방법**' (bullets — URL / SSO / 권한 신청), '**기본 사용 흐름**' (numbered, 각 단계 1줄 + 스크린샷 placeholder), '**자주 쓰는 기능 3-5개**' (각 'h3 + 설명 + 예시'), '**조심할 것**' (2-3 bullets — 데이터 손실 위험 / 다른 팀 영향 / 권한 limit), '**문제 생기면**' (1줄 — Slack 채널 + 책임자).\n\n도구 컨텍스트:\n${text}`,
+  translate_ko_to_burmese: (text) =>
+    `Translate the Korean text below into natural Burmese (မြန်မာ). 격식 ('ခင်ဗျား / ရှင်' 정중 / 'မင်း' 친근) 원문에 맞춤. Reply with two sections: '**ဘာသာပြန်**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  beta_feedback_request_ko: (text) =>
+    `Draft a Korean email asking beta users for structured feedback after 1-2 weeks of use. Use 해요체. Markdown: '**제목**' (1줄, 24자 이내 — '베타 [N]일째, 어떠세요?' 류), '**본문**' (3 단락: 1) 베타 사용 감사 + 1줄 안부, 2) 3가지만 알려달라고 정중히 — '가장 자주 쓰는 기능 / 가장 헷갈렸던 부분 / 없다면 못 살 1가지', 3) 답하기 쉽게 — 'Reply 한 줄도 OK / 5분 통화도 OK / 짧은 설문 X분'), '**P.S.**' (1줄 — 답해주시면 [작은 리워드]).\n\n베타 / 제품 컨텍스트:\n${text}`,
+  translate_ko_to_khmer: (text) =>
+    `Translate the Korean text below into natural Khmer (ខ្មែរ). 격식 ('លោក / លោកស្រី' 정중 / 친근 어말) 원문에 맞춤. Reply with two sections: '**ការបកប្រែ**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  design_review_doc_ko: (text) =>
+    `Build a Korean design review doc for the design described below. Use 해요체. Markdown: '**디자인 한 줄**' (1줄 — 무엇을 / 누구를 위해 / 단계), '**문제 정의**' (2-3줄), '**탐색한 옵션 (3가지)**' (각 'h3: 옵션 + 1줄 설명 + 스크린샷 placeholder + Pros / Cons'), '**선택한 방향**' (1줄 + 1단락 이유), '**Open questions (3 bullets)**' (디자인 리뷰에서 답 받고 싶은 것), '**다음 단계**' (1줄), '**관련 자료**' (bullets).\n\n디자인 컨텍스트:\n${text}`,
+  translate_ko_to_lao: (text) =>
+    `Translate the Korean text below into natural Lao (ລາວ). 격식 원문에 맞춤. Reply with two sections: '**ການແປ**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  customer_renewal_call_prep_ko: (text) =>
+    `Build a Korean prep doc for a customer contract renewal call. Use 해요체. Markdown: '**계약 한 줄**' (계약사 / 금액 / 만기 / 자동갱신 여부), '**계약 동안의 가치**' (3 bullets — 메트릭 + 케이스), '**Health score / 사용 신호**' (3 bullets — adoption / 활성 사용자 / 마지막 30일 트렌드), '**위험 신호**' (2 bullets — 사용량 감소 / 챔피언 이직 / 경쟁사 이름 언급), '**우리가 미팅에서 협상할 것**' (bullets — 갱신 기간 / 가격 / 추가 모듈), '**상대가 협상할 것**' (bullets — 우리 예상), '**대안 / 양보 가능 vs 불가**' (테이블), '**미팅 후 24시간 안에 보낼 follow-up 초안**' (1단락).\n\n계약 / 사용 데이터:\n${text}`,
+  translate_ko_to_mongolian: (text) =>
+    `Translate the Korean text below into natural Mongolian (Cyrillic script — Монгол хэл). 격식 ('Та' 정중 / 'чи' 친근) 원문에 맞춤. Reply with two sections: '**Орчуулга**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  public_roadmap_intro_ko: (text) =>
+    `Write a Korean intro section for a public product roadmap page. Use 해요체. 솔직 + 겸손한 톤 — '약속이 아니라 방향'임을 명확히. Markdown: '**왜 공개하나요 (1단락)**' (3-4줄 — 신뢰 / 협업 / 기대 관리), '**무엇이 들어있나요**' (bullets — Now / Next / Later 분류 / 사용자 영향), '**무엇이 안 들어있나요 (1단락)**' (2-3줄 — 보안 / 가격 / 기밀 제외), '**여러분이 영향 줄 수 있는 방법**' (3 bullets — 투표 / 댓글 / 인터뷰 신청), '**얼마나 자주 업데이트되나요**' (1줄 — 'X 주마다 새로 정렬'), '**범례 (Now/Next/Later)**' (각 1줄 정의 — '이 분기 / 6개월 안 / 1년 안').\n\n로드맵 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

@@ -3005,6 +3005,78 @@ body.callout-pulse-animation .bn-editor [data-content-type="callout"] {
   }
 }
 
+/* H2 Roman numbering — prepend I. II. III. to H2 via counter. */
+body.h2-numbered-roman .bn-editor {
+  counter-reset: nf-h2roman;
+}
+body.h2-numbered-roman .bn-editor h2,
+body.h2-numbered-roman .bn-editor [data-content-type="heading"][data-level="2"] {
+  counter-increment: nf-h2roman;
+}
+body.h2-numbered-roman .bn-editor h2::before,
+body.h2-numbered-roman .bn-editor [data-content-type="heading"][data-level="2"] > *:first-child::before {
+  content: counter(nf-h2roman, upper-roman) ". ";
+  color: #71717a;
+  font-weight: 700;
+  margin-right: 0.3em;
+}
+
+/* Bracket-style OL — render numbered list markers as [1] [2] [3]. */
+body.ol-bracket-style .bn-editor ol,
+body.ol-bracket-style .bn-editor [data-content-type="numberedListItem"] {
+  list-style: none !important;
+  counter-reset: nf-olbr;
+  padding-left: 2em;
+}
+body.ol-bracket-style .bn-editor ol > li,
+body.ol-bracket-style .bn-editor [data-content-type="numberedListItem"] {
+  counter-increment: nf-olbr;
+}
+body.ol-bracket-style .bn-editor ol > li::before,
+body.ol-bracket-style .bn-editor [data-content-type="numberedListItem"]::before {
+  content: "[" counter(nf-olbr) "] ";
+  color: #2563eb;
+  font-weight: 600;
+  margin-left: -1.6em;
+  margin-right: 0.3em;
+}
+.dark body.ol-bracket-style .bn-editor ol > li::before,
+.dark body.ol-bracket-style .bn-editor [data-content-type="numberedListItem"]::before {
+  color: #60a5fa;
+}
+
+/* Soft callout shadow — very gentle drop shadow on callouts. */
+body.callout-shadow-soft .bn-editor [data-content-type="callout"] {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+  border-radius: 6px;
+}
+.dark body.callout-shadow-soft .bn-editor [data-content-type="callout"] {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Merge header bg — table header gets gradient bg for emphasis. */
+body.table-merge-header .bn-editor table th,
+body.table-merge-header .bn-editor [data-content-type="table"] th {
+  background: linear-gradient(180deg, #f3f4f6, #e5e7eb) !important;
+  font-weight: 700 !important;
+}
+.dark body.table-merge-header .bn-editor table th,
+.dark body.table-merge-header .bn-editor [data-content-type="table"] th {
+  background: linear-gradient(180deg, #1f2937, #111827) !important;
+}
+
+/* Print bleed — extend background to page edges on print (no white border). */
+@media print {
+  body.page-print-bleed .bn-editor {
+    margin: 0 !important;
+    padding: 1cm !important;
+  }
+  body.page-print-bleed .bn-editor::after,
+  body.page-print-bleed .bn-editor::before {
+    display: none !important;
+  }
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
