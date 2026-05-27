@@ -1724,6 +1724,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Draft a Korean job offer letter (formal section + warm cover). Use 합쇼체 for formal, 해요체 for cover. Markdown: '**Cover note (1단락)**' (3-4줄 — 따뜻한 어조, 왜 이 사람이 우리에게 중요한지 1줄), '**제안 조건 (테이블)**' ('항목 | 내용'. 직책 / 시작일 / 연봉 / 사이닝 보너스 / 옵션 / 휴가 / 근무 형태), '**기간 / 응답 시점**' (1줄 — '본 제안은 YYYY-MM-DD까지 유효합니다'), '**다음 단계**' (bullets — 수락 시 절차 / 질문 가능한 사람 / 첫 주 안내), '**서명**' (직책 + 이름 + 회사).\n\n포지션 / 조건:\n${text}`,
   translate_ko_to_norwegian: (text) =>
     `Translate the Korean text below into natural Norwegian (Bokmål default). 격식은 원문 톤에 맞춤. 노르웨이어는 대부분 'du' 사용. Reply with two sections: '**Oversettelse**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  investor_followup_silence_ko: (text) =>
+    `Draft a Korean follow-up email to an investor who's been silent 2-3 weeks. Use 합쇼체. 짧고 가볍게, 압박 톤 금지. Markdown: '**제목**' (1줄, 22자 이내, '간단한 업데이트 + 한 줄 질문' 류), '**본문**' (3 단락: 1) 짧은 안부 + 'X 주 전 대화 이후 한 줄 진척', 2) 그쪽 결정에 영향 줄 만한 새 정보 1가지 — 메트릭 / 고객 / 인사 등, 3) 'pass 결정이면 1줄로 알려주셔도 OK입니다' 1줄), '**P.S.**' (1줄).\n\n맥락:\n${text}`,
+  translate_ko_to_finnish: (text) =>
+    `Translate the Korean text below into natural Finnish (suomi). 핀란드어의 15가지 격, 동사 활용, 모음조화를 정확히. 격식은 원문 톤에 맞춤 (대부분 'sinä' 단수 / 'te' 정중 또는 복수). Reply with two sections: '**Käännös**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  brand_color_palette_ko: (text) =>
+    `Generate a Korean brand color palette spec for the brand described below. Use 해요체. Markdown sections: '**브랜드 한 줄 (1줄)**' (1줄 — 톤 형용사 3개), '**Primary (1개)**' (HEX + 이름 + 사용처 1줄), '**Secondary (2개)**' (각 HEX + 이름 + 사용처), '**Neutrals (5단계)**' (테이블 — '이름 | HEX | 사용처'), '**Accent / Status (5개)**' (success / warning / danger / info / muted — 각 HEX + 사용처), '**다크모드 매핑**' (테이블 — 라이트 → 다크 변환표), '**접근성 노트**' (3 bullets — primary on white / on dark 대비비 + WCAG AA 통과 여부), '**금기 (Don'ts)**' (2 bullets — 절대 같이 안 쓸 조합).\n\n브랜드:\n${text}`,
+  customer_pain_interview_qs_ko: (text) =>
+    `Generate 8 Korean customer pain interview questions for the persona / domain below. Use 해요체. 열린 질문 위주, 행동을 묻기, 'why' 보다 'how / when / tell me about a time'. Format: numbered list. 끝에 '**진행 가이드 (3 bullets)**' — 1) 침묵 견디기, 2) follow-up 질문 'tell me more about that', 3) 해결책 미리 묻지 않기.\n\n페르소나 / 도메인:\n${text}`,
+  translate_ko_to_danish: (text) =>
+    `Translate the Korean text below into natural Danish (dansk). 격식은 원문에 맞춤 (대부분 'du'). Reply with two sections: '**Oversættelse**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  sales_email_winback_d60_ko: (text) =>
+    `Draft a Korean D+60 winback sales email — 60일 동안 응답 없는 lead에게. Use 해요체. 마지막 시도 톤 — 짧고 honest. Markdown: '**제목**' (1줄, 20자 이내), '**본문**' (3 단락: 1) 'X 달 전 대화 이후 한 줄 안부', 2) 그동안 우리가 변한 것 1줄 + 그쪽 회사 / 산업에서 우리가 본 1가지 reference, 3) 정확한 질문 — '지금 이게 우선순위 아니면 1줄 답장 부탁드려요. 그러면 더 이상 연락 드리지 않을게요'), '**P.S.**' (1줄).\n\nLead 컨텍스트:\n${text}`,
+  sprint_review_demo_outline_ko: (text) =>
+    `Build a Korean sprint review demo outline (45분 분량). Use 해요체. Markdown: '**스프린트 한 줄**' (1줄), '**Agenda (테이블)**' ('시간 | 항목 | 시연자'. 0-5분 인트로 + 스프린트 목표 리캡, 5-25분 데모 (기능 3-4개), 25-35분 메트릭 + 학습, 35-42분 다음 스프린트 미리보기, 42-45분 Q&A), '**각 데모 항목**' (시연 단계 + 멘트 1줄 + 예상 질문 1개), '**준비물**' (bullets — 데모 환경 / 백업 시나리오 / 화면 공유 누가).\n\n스프린트 결과:\n${text}`,
+  translate_ko_to_czech: (text) =>
+    `Translate the Korean text below into natural Czech (čeština). 격, 성, 동사상 정확히. 격식 ('vy' 정중 / 'ty' 친근) 원문에 맞춤. Reply with two sections: '**Překlad**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  ad_copy_3_variations_ko: (text) =>
+    `Write 3 Korean ad copy variations for the same offer below. Use 해요체. Format: '### V1 — 베네핏형', '### V2 — 페인형', '### V3 — 호기심형'. 각각 'Headline:' (1줄, 14자 이내), 'Body:' (1줄, 40자 이내), 'CTA:' (1줄, 6자 이내). 끝에 '**테스트 가이드**' (2 bullets — 메인 메트릭 + 모수 권장).\n\n오퍼:\n${text}`,
+  ai_eval_rubric_ko: (text) =>
+    `Build a Korean evaluation rubric for an AI feature / agent. Use 합쇼체. Markdown: '**평가 목표 (1줄)**', '**Rubric 차원 (테이블)**' (컬럼: '차원 | 정의 | 1점 | 3점 | 5점 | 가중치'. 차원: 정확성 / 도움 정도 / 안전성 / 톤 / 형식 일관성 / 환각 정도), '**Eval set 구성**' (bullets — N개 케이스 / 카테고리 분포 / 어려운 케이스 비중), '**평가 방법**' (1줄 — 자동 LLM-judge vs 사람 vs 혼합), '**합격 기준**' (1줄 — 전체 평균 X점 / 모든 차원 Y점 이상 등).\n\nAI 기능 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

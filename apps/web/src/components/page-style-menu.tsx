@@ -989,6 +989,11 @@ export function PageStyleMenu({
                       { key: "code-block-rainbow-border", label: "Rainbow code" },
                       { key: "table-zebra-blue", label: "Blue zebra" },
                       { key: "page-spotlight-cursor", label: "Spotlight" },
+                      { key: "ol-uppercase-alpha", label: "A. B. C." },
+                      { key: "h1-with-prefix-section", label: "H1 §" },
+                      { key: "callout-border-thick", label: "Thick callout" },
+                      { key: "table-no-grid", label: "No grid table" },
+                      { key: "page-paper-edge", label: "Paper edge" },
                     ] as const
                   ).map((t) => (
                     <button

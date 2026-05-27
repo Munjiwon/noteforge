@@ -2778,6 +2778,58 @@ body.page-spotlight-cursor .bn-editor [data-content-type]:hover {
   background: radial-gradient(circle at center, rgba(96, 165, 250, 0.12), transparent 70%) !important;
 }
 
+/* Uppercase alpha OL — ordered lists use A. B. C. instead of 1. 2. 3. */
+body.ol-uppercase-alpha .bn-editor ol,
+body.ol-uppercase-alpha .bn-editor [data-content-type="numberedListItem"] {
+  list-style-type: upper-alpha !important;
+}
+
+/* H1 with section prefix — prepend § to every H1. */
+body.h1-with-prefix-section .bn-editor h1::before,
+body.h1-with-prefix-section .bn-editor [data-content-type="heading"][data-level="1"] > *:first-child::before {
+  content: "§ ";
+  color: #71717a;
+  margin-right: 0.2em;
+}
+.dark body.h1-with-prefix-section .bn-editor h1::before,
+.dark body.h1-with-prefix-section .bn-editor [data-content-type="heading"][data-level="1"] > *:first-child::before {
+  color: #a1a1aa;
+}
+
+/* Thick callout border — heavy left accent on callouts. */
+body.callout-border-thick .bn-editor [data-content-type="callout"] {
+  border-left: 6px solid #2563eb !important;
+  background: transparent !important;
+  padding-left: 1em !important;
+}
+.dark body.callout-border-thick .bn-editor [data-content-type="callout"] {
+  border-left-color: #60a5fa !important;
+}
+
+/* No-grid table — strip all table borders and add only bottom-row separators. */
+body.table-no-grid .bn-editor table th,
+body.table-no-grid .bn-editor table td,
+body.table-no-grid .bn-editor [data-content-type="table"] th,
+body.table-no-grid .bn-editor [data-content-type="table"] td {
+  border: none !important;
+  border-bottom: 1px solid #f4f4f5 !important;
+}
+.dark body.table-no-grid .bn-editor table th,
+.dark body.table-no-grid .bn-editor table td,
+.dark body.table-no-grid .bn-editor [data-content-type="table"] th,
+.dark body.table-no-grid .bn-editor [data-content-type="table"] td {
+  border-bottom-color: #27272a !important;
+}
+
+/* Paper edge — soft torn-paper-style shadow at the page edges. */
+body.page-paper-edge .bn-editor {
+  box-shadow: 0 0 0 1px #f4f4f5, 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06) !important;
+  border-radius: 2px;
+}
+.dark body.page-paper-edge .bn-editor {
+  box-shadow: 0 0 0 1px #27272a, 0 1px 2px rgba(0, 0, 0, 0.2), 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

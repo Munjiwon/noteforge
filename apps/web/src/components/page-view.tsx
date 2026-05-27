@@ -577,6 +577,11 @@ export function PageView({
       "code-block-rainbow-border",
       "table-zebra-blue",
       "page-spotlight-cursor",
+      "ol-uppercase-alpha",
+      "h1-with-prefix-section",
+      "callout-border-thick",
+      "table-no-grid",
+      "page-paper-edge",
     ];
     try {
       for (const k of toggles) {
