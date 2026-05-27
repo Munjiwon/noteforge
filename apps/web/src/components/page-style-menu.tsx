@@ -909,6 +909,11 @@ export function PageStyleMenu({
                       { key: "h3-italic", label: "H3 italic" },
                       { key: "checkbox-larger", label: "Big checkbox" },
                       { key: "page-vignette", label: "Vignette" },
+                      { key: "table-zebra", label: "Zebra table" },
+                      { key: "image-rounded-xl", label: "Round images" },
+                      { key: "code-block-stripes", label: "Code stripes" },
+                      { key: "selection-accent", label: "Accent select" },
+                      { key: "scrollbar-thin-accent", label: "Thin scrollbar" },
                     ] as const
                   ).map((t) => (
                     <button

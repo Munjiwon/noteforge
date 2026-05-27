@@ -1669,6 +1669,73 @@ body.page-vignette .bn-editor {
   box-shadow: inset 0 0 80px 12px rgba(0, 0, 0, 0.35) !important;
 }
 
+/* Table zebra — alternate row backgrounds in tables for easier scanning. */
+body.table-zebra .bn-editor table tbody tr:nth-child(even) td,
+body.table-zebra .bn-editor [data-content-type="table"] tr:nth-child(even) td {
+  background: #fafafa !important;
+}
+body.table-zebra .bn-editor table tbody tr:nth-child(odd) td,
+body.table-zebra .bn-editor [data-content-type="table"] tr:nth-child(odd) td {
+  background: #ffffff !important;
+}
+.dark body.table-zebra .bn-editor table tbody tr:nth-child(even) td,
+.dark body.table-zebra .bn-editor [data-content-type="table"] tr:nth-child(even) td {
+  background: #1f1f23 !important;
+}
+.dark body.table-zebra .bn-editor table tbody tr:nth-child(odd) td,
+.dark body.table-zebra .bn-editor [data-content-type="table"] tr:nth-child(odd) td {
+  background: #18181b !important;
+}
+
+/* Rounded images — give embedded images a larger corner radius for a softer feel. */
+body.image-rounded-xl .bn-editor img,
+body.image-rounded-xl .bn-editor [data-content-type="image"] img {
+  border-radius: 14px !important;
+  overflow: hidden;
+}
+.dark body.image-rounded-xl .bn-editor img,
+.dark body.image-rounded-xl .bn-editor [data-content-type="image"] img {
+  border-radius: 14px !important;
+}
+
+/* Code block stripes — alternate line backgrounds inside code blocks. */
+body.code-block-stripes .bn-editor pre {
+  background-image: linear-gradient(to bottom, transparent 0, transparent 1.5em, rgba(0, 0, 0, 0.025) 1.5em, rgba(0, 0, 0, 0.025) 3em) !important;
+  background-size: 100% 3em !important;
+}
+.dark body.code-block-stripes .bn-editor pre {
+  background-image: linear-gradient(to bottom, transparent 0, transparent 1.5em, rgba(255, 255, 255, 0.04) 1.5em, rgba(255, 255, 255, 0.04) 3em) !important;
+  background-size: 100% 3em !important;
+}
+
+/* Selection accent — make text selection use the brand accent color. */
+body.selection-accent ::selection,
+body.selection-accent .bn-editor ::selection {
+  background: #2563eb !important;
+  color: #ffffff !important;
+}
+.dark body.selection-accent ::selection,
+.dark body.selection-accent .bn-editor ::selection {
+  background: #60a5fa !important;
+  color: #18181b !important;
+}
+
+/* Thin accent scrollbar — slim WebKit scrollbars with accent thumb. */
+body.scrollbar-thin-accent ::-webkit-scrollbar {
+  width: 8px !important;
+  height: 8px !important;
+}
+body.scrollbar-thin-accent ::-webkit-scrollbar-thumb {
+  background: #2563eb !important;
+  border-radius: 999px !important;
+}
+body.scrollbar-thin-accent ::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+.dark body.scrollbar-thin-accent ::-webkit-scrollbar-thumb {
+  background: #60a5fa !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

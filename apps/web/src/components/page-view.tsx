@@ -497,6 +497,11 @@ export function PageView({
       "h3-italic",
       "checkbox-larger",
       "page-vignette",
+      "table-zebra",
+      "image-rounded-xl",
+      "code-block-stripes",
+      "selection-accent",
+      "scrollbar-thin-accent",
     ];
     try {
       for (const k of toggles) {
