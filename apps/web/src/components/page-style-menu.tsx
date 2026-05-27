@@ -914,6 +914,11 @@ export function PageStyleMenu({
                       { key: "code-block-stripes", label: "Code stripes" },
                       { key: "selection-accent", label: "Accent select" },
                       { key: "scrollbar-thin-accent", label: "Thin scrollbar" },
+                      { key: "h2-numbered-auto", label: "H2 numbered" },
+                      { key: "image-grayscale", label: "Gray images" },
+                      { key: "callout-shadow", label: "Callout shadow" },
+                      { key: "link-no-underline", label: "Plain links" },
+                      { key: "letter-spacing-body", label: "Body tracking" },
                     ] as const
                   ).map((t) => (
                     <button

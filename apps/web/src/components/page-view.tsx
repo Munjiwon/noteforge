@@ -502,6 +502,11 @@ export function PageView({
       "code-block-stripes",
       "selection-accent",
       "scrollbar-thin-accent",
+      "h2-numbered-auto",
+      "image-grayscale",
+      "callout-shadow",
+      "link-no-underline",
+      "letter-spacing-body",
     ];
     try {
       for (const k of toggles) {

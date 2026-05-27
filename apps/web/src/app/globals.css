@@ -1736,6 +1736,70 @@ body.scrollbar-thin-accent ::-webkit-scrollbar-track {
   background: #60a5fa !important;
 }
 
+/* H2 auto-numbering — auto-prefix H2 with "1.", "2." per page using CSS counter. */
+body.h2-numbered-auto .bn-editor {
+  counter-reset: nf-h2;
+}
+body.h2-numbered-auto .bn-editor h2,
+body.h2-numbered-auto .bn-editor [data-content-type="heading"][data-level="2"] {
+  counter-increment: nf-h2;
+}
+body.h2-numbered-auto .bn-editor h2::before,
+body.h2-numbered-auto .bn-editor [data-content-type="heading"][data-level="2"] > *:first-child::before {
+  content: counter(nf-h2) ". ";
+  color: #71717a !important;
+  font-weight: 600;
+  margin-right: 0.25em;
+}
+.dark body.h2-numbered-auto .bn-editor h2::before,
+.dark body.h2-numbered-auto .bn-editor [data-content-type="heading"][data-level="2"] > *:first-child::before {
+  color: #a1a1aa !important;
+}
+
+/* Image grayscale — desaturate all editor images (good for screenshot-heavy docs). */
+body.image-grayscale .bn-editor img,
+body.image-grayscale .bn-editor [data-content-type="image"] img {
+  filter: grayscale(1) !important;
+  transition: filter 0.25s ease;
+}
+body.image-grayscale .bn-editor img:hover,
+body.image-grayscale .bn-editor [data-content-type="image"] img:hover {
+  filter: grayscale(0) !important;
+}
+
+/* Callout shadow — soft drop shadow on callouts to lift them off the page. */
+body.callout-shadow .bn-editor [data-content-type="callout"] {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+  border-radius: 8px !important;
+}
+.dark body.callout-shadow .bn-editor [data-content-type="callout"] {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Plain links — remove underline; underline only on hover. */
+body.link-no-underline .bn-editor a {
+  text-decoration: none !important;
+  color: #2563eb !important;
+}
+body.link-no-underline .bn-editor a:hover {
+  text-decoration: underline !important;
+}
+.dark body.link-no-underline .bn-editor a {
+  color: #60a5fa !important;
+}
+
+/* Body letter spacing — slightly widen tracking on body text for editorial feel. */
+body.letter-spacing-body .bn-editor [data-content-type="paragraph"],
+body.letter-spacing-body .bn-editor [data-content-type="bulletListItem"],
+body.letter-spacing-body .bn-editor [data-content-type="numberedListItem"] {
+  letter-spacing: 0.015em !important;
+}
+.dark body.letter-spacing-body .bn-editor [data-content-type="paragraph"],
+.dark body.letter-spacing-body .bn-editor [data-content-type="bulletListItem"],
+.dark body.letter-spacing-body .bn-editor [data-content-type="numberedListItem"] {
+  letter-spacing: 0.015em !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
