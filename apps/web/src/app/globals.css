@@ -3135,6 +3135,39 @@ body.page-grid-square .bn-editor {
     linear-gradient(to bottom, #3f3f46 1px, transparent 1px) !important;
 }
 
+/* H1 final marker — prepend 🏁 to every H1, marking a finished section. */
+body.h1-with-final-marker .bn-editor h1::before,
+body.h1-with-final-marker .bn-editor [data-content-type="heading"][data-level="1"] > *:first-child::before {
+  content: "🏁 ";
+  margin-right: 0.2em;
+}
+
+/* Completion stamp — large rotated DONE watermark in the corner of the editor. */
+body.page-completion-stamp .bn-editor {
+  position: relative;
+}
+body.page-completion-stamp .bn-editor::after {
+  content: "DONE";
+  position: absolute;
+  bottom: 18%;
+  right: 6%;
+  font-size: 4.5rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  color: #16a34a;
+  opacity: 0.16;
+  transform: rotate(-12deg);
+  border: 6px solid #16a34a;
+  padding: 0.2em 0.6em;
+  border-radius: 8px;
+  pointer-events: none;
+}
+.dark body.page-completion-stamp .bn-editor::after {
+  color: #4ade80;
+  border-color: #4ade80;
+  opacity: 0.22;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

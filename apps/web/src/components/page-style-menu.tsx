@@ -1019,6 +1019,8 @@ export function PageStyleMenu({
                       { key: "table-fixed-layout", label: "Fixed cols" },
                       { key: "callout-emoji-prefix-warn", label: "⚠ callout" },
                       { key: "page-grid-square", label: "Grid square" },
+                      { key: "h1-with-final-marker", label: "H1 🏁" },
+                      { key: "page-completion-stamp", label: "DONE stamp" },
                     ] as const
                   ).map((t) => (
                     <button

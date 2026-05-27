@@ -1844,6 +1844,10 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Translate the Korean text below into natural Amharic (አማርኛ). Ge'ez script 정확히. 격식 ('እርስዎ' 정중 / 'አንተ/አንቺ' 친근) 원문에 맞춤. Reply with two sections: '**ትርጉም**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
   gdpr_dsr_response_ko: (text) =>
     `Draft a Korean response to a GDPR Data Subject Request (DSR) — access / erasure / portability / rectification request. Use 합쇼체. 30일 안 응답 의무 의식. Markdown: '**제목**' (1줄 — 'GDPR Data Subject Request 응답 — Ref #NNNN'), '**본문**' (4 단락: 1) 요청 수신 확인 + 요청 종류 명시 + 처리 시한 안내, 2) 본인 확인 절차 — 신원 확인 어떻게 진행, 3) 응답 — access면 데이터 사본 / erasure면 삭제 처리 결과 + 제외 항목 (법적 보관 의무) / portability면 포맷 / rectification면 수정 결과, 4) 추가 권리 안내 + 감독기관 신고권 안내), '**서명**' (DPO 또는 책임자 + 연락처).\n\n요청 종류 + 사용자 데이터 컨텍스트:\n${text}`,
+  final_milestone_celebration_email_ko: (text) =>
+    `Draft a Korean internal celebration email for a major milestone — sent to the whole team. Use 해요체. 따뜻하고 진심 어린 톤 — 가식 / 인플레이션된 칭찬 금지. Markdown: '**제목**' (1줄, 28자 이내 — '[마일스톤] 달성! 다 함께 축하해요' 류), '**본문**' (4 단락: 1) 한 줄 — '오늘 우리는 [마일스톤]을 달성했습니다', 2) 이게 왜 중요한지 1단락 — 회사 / 사용자 / 우리에게 어떤 의미, 3) 호명 + 구체적 기여 — 가짜 이름 만들지 말기, 입력에 있는 이름만, 각 '@이름 — 무엇을 한 1줄', 4) 다음 — '다음 마일스톤은 ... / 오늘은 잠시 멈춰서 자축'), '**감사**' (1줄 — 모두에게).\n\n마일스톤 + 기여자:\n${text}`,
+  milestone_complete_announcement_ko: (text) =>
+    `Write a Korean public announcement for a completed major milestone (e.g., 1000번째 출시 / 1M ARR / 신제품 GA). Use 합쇼체. 솔직 + 작은 자축 + 다음 약속. Markdown: '**제목**' (1줄, 30자 이내 — '[회사명], [마일스톤] 달성 — YYYY-MM-DD'), '**본문**' (4 단락: 1) 한 줄로 무엇을 / 언제 / 누구 덕분에, 2) 우리가 어떻게 여기까지 왔는지 — 짧은 history 1단락, 3) 이 마일스톤이 사용자 / 시장에 어떤 의미, 4) 다음 약속 1줄 — '다음 마일스톤은 [무엇] 이고, 그 길에 함께해주세요'), '**감사 (1줄)**' (사용자 / 팀 / 투자자 / 커뮤니티 — 진심으로). 이모지는 제목에 1개 이내.\n\n마일스톤 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

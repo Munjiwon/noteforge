@@ -607,6 +607,8 @@ export function PageView({
       "table-fixed-layout",
       "callout-emoji-prefix-warn",
       "page-grid-square",
+      "h1-with-final-marker",
+      "page-completion-stamp",
     ];
     try {
       for (const k of toggles) {
