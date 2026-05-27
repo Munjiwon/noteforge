@@ -1548,6 +1548,65 @@ body.sidebar-collapsed-init aside:hover {
   overflow: visible;
 }
 
+/* Callout italic text — italicize the body text inside callouts (icons & headings unaffected). */
+body.callout-italic-text .bn-editor [data-content-type="callout"] p,
+body.callout-italic-text .bn-editor [data-content-type="callout"] .bn-inline-content {
+  font-style: italic !important;
+}
+.dark body.callout-italic-text .bn-editor [data-content-type="callout"] p,
+.dark body.callout-italic-text .bn-editor [data-content-type="callout"] .bn-inline-content {
+  font-style: italic !important;
+}
+
+/* Bold list markers — make bullet and numbered list markers bold and accent-colored. */
+body.list-marker-bold .bn-editor ul.bn-block-content > li::marker,
+body.list-marker-bold .bn-editor ol.bn-block-content > li::marker,
+body.list-marker-bold .bn-editor [data-content-type="bulletListItem"]::marker,
+body.list-marker-bold .bn-editor [data-content-type="numberedListItem"]::marker {
+  font-weight: 700 !important;
+  color: #2563eb !important;
+}
+.dark body.list-marker-bold .bn-editor ul.bn-block-content > li::marker,
+.dark body.list-marker-bold .bn-editor ol.bn-block-content > li::marker,
+.dark body.list-marker-bold .bn-editor [data-content-type="bulletListItem"]::marker,
+.dark body.list-marker-bold .bn-editor [data-content-type="numberedListItem"]::marker {
+  color: #60a5fa !important;
+}
+
+/* H1 letter spacing — widen tracking on top-level headings for a more editorial feel. */
+body.h1-letter-spacing .bn-editor h1,
+body.h1-letter-spacing .bn-editor [data-content-type="heading"][data-level="1"] {
+  letter-spacing: 0.04em !important;
+}
+.dark body.h1-letter-spacing .bn-editor h1,
+.dark body.h1-letter-spacing .bn-editor [data-content-type="heading"][data-level="1"] {
+  letter-spacing: 0.04em !important;
+}
+
+/* Paragraph justify — justify body paragraphs (headings and list items unaffected). */
+body.paragraph-justify .bn-editor [data-content-type="paragraph"] p,
+body.paragraph-justify .bn-editor [data-content-type="paragraph"] .bn-inline-content {
+  text-align: justify !important;
+  text-justify: inter-word !important;
+  hyphens: auto;
+}
+.dark body.paragraph-justify .bn-editor [data-content-type="paragraph"] p,
+.dark body.paragraph-justify .bn-editor [data-content-type="paragraph"] .bn-inline-content {
+  text-align: justify !important;
+}
+
+/* Lead paragraph — first paragraph after an H1 gets larger, looser text (magazine-style intro). */
+body.first-paragraph-lead .bn-editor [data-content-type="heading"][data-level="1"] + [data-content-type="paragraph"] p,
+body.first-paragraph-lead .bn-editor [data-content-type="heading"][data-level="1"] + [data-content-type="paragraph"] .bn-inline-content {
+  font-size: 1.18em !important;
+  line-height: 1.7 !important;
+  color: #3f3f46 !important;
+}
+.dark body.first-paragraph-lead .bn-editor [data-content-type="heading"][data-level="1"] + [data-content-type="paragraph"] p,
+.dark body.first-paragraph-lead .bn-editor [data-content-type="heading"][data-level="1"] + [data-content-type="paragraph"] .bn-inline-content {
+  color: #d4d4d8 !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

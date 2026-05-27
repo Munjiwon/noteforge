@@ -899,6 +899,11 @@ export function PageStyleMenu({
                       { key: "page-side-ribbon", label: "Side ribbon" },
                       { key: "smaller-callout-emoji", label: "Small callout emoji" },
                       { key: "sidebar-collapsed-init", label: "Sidebar mini" },
+                      { key: "callout-italic-text", label: "Callout italic" },
+                      { key: "list-marker-bold", label: "Bold markers" },
+                      { key: "h1-letter-spacing", label: "H1 tracking" },
+                      { key: "paragraph-justify", label: "Justify body" },
+                      { key: "first-paragraph-lead", label: "Lead paragraph" },
                     ] as const
                   ).map((t) => (
                     <button

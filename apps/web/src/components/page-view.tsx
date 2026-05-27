@@ -487,6 +487,11 @@ export function PageView({
       "page-side-ribbon",
       "smaller-callout-emoji",
       "sidebar-collapsed-init",
+      "callout-italic-text",
+      "list-marker-bold",
+      "h1-letter-spacing",
+      "paragraph-justify",
+      "first-paragraph-lead",
     ];
     try {
       for (const k of toggles) {
