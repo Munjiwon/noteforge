@@ -602,6 +602,11 @@ export function PageView({
       "callout-shadow-soft",
       "table-merge-header",
       "page-print-bleed",
+      "h6-italic-tiny",
+      "code-block-no-radius",
+      "table-fixed-layout",
+      "callout-emoji-prefix-warn",
+      "page-grid-square",
     ];
     try {
       for (const k of toggles) {

@@ -1824,6 +1824,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Translate the Korean text below into natural Mongolian (Cyrillic script — Монгол хэл). 격식 ('Та' 정중 / 'чи' 친근) 원문에 맞춤. Reply with two sections: '**Орчуулга**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
   public_roadmap_intro_ko: (text) =>
     `Write a Korean intro section for a public product roadmap page. Use 해요체. 솔직 + 겸손한 톤 — '약속이 아니라 방향'임을 명확히. Markdown: '**왜 공개하나요 (1단락)**' (3-4줄 — 신뢰 / 협업 / 기대 관리), '**무엇이 들어있나요**' (bullets — Now / Next / Later 분류 / 사용자 영향), '**무엇이 안 들어있나요 (1단락)**' (2-3줄 — 보안 / 가격 / 기밀 제외), '**여러분이 영향 줄 수 있는 방법**' (3 bullets — 투표 / 댓글 / 인터뷰 신청), '**얼마나 자주 업데이트되나요**' (1줄 — 'X 주마다 새로 정렬'), '**범례 (Now/Next/Later)**' (각 1줄 정의 — '이 분기 / 6개월 안 / 1년 안').\n\n로드맵 컨텍스트:\n${text}`,
+  translate_ko_to_uzbek: (text) =>
+    `Translate the Korean text below into natural Uzbek (Oʻzbek). Latin script default. 격식 ('Siz' 정중 / 'sen' 친근) 원문에 맞춤. Reply with two sections: '**Tarjima**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  board_meeting_prep_doc_ko: (text) =>
+    `Build a Korean board meeting prep doc — sent to board members 1 week before the meeting. Use 합쇼체. Markdown: '**미팅 한 줄 (1줄)**' (목적 + 핵심 결정 1-2개), '**Agenda (테이블)**' ('시간 | 항목 | 진행자 | 결정 / 토론'), '**한 줄 회사 상태**' (1줄 — 'on track / at risk + 1줄 근거'), '**핵심 메트릭 5개 (테이블)**' ('KPI | 현재 | 목표 | 전분기'), '**잘 된 것 3가지 / 안 된 것 3가지**' (각 bullets), '**보드에 요청할 결정 (numbered)**' (각 '결정 사항 / 옵션 / 우리 추천 / 영향'), '**Open questions to discuss**' (bullets), '**부록**' (bullets — 첨부 자료 placeholder).\n\n분기 데이터:\n${text}`,
+  translate_ko_to_kazakh: (text) =>
+    `Translate the Korean text below into natural Kazakh (Қазақ тілі). Cyrillic 또는 Latin script — 입력 맥락 추론. 격식 ('Сіз' 정중 / 'сен' 친근) 원문에 맞춤. Reply with two sections: '**Аударма**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  employee_handbook_intro_ko: (text) =>
+    `Write a Korean employee handbook intro section for the company described below. Use 해요체. Markdown: '**환영합니다 (1단락)**' (3-4줄 — 따뜻한 환영 + 핸드북 이용법 1줄), '**우리 회사 한 줄 (미션)**' (1줄), '**우리가 믿는 것 (가치 3-5개)**' (각 '### 가치명 — 1줄 정의 + 1줄 행동 예시'), '**일하는 방식 (3 bullets)**' (회의 / 의사결정 / 도구), '**필수 정책 안내 링크**' (bullets — 휴가 / 보안 / 윤리 / 채용 / 평가 — 각 1줄 + placeholder), '**모르겠을 때**' (1줄 — Slack 채널 + 사람).\n\n회사 / 단계:\n${text}`,
+  translate_ko_to_georgian: (text) =>
+    `Translate the Korean text below into natural Georgian (ქართული). Georgian script 정확히. 격식 ('თქვენ' 정중 / 'შენ' 친근) 원문에 맞춤. Reply with two sections: '**თარგმანი**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  sales_demo_followup_email_ko: (text) =>
+    `Draft a Korean sales demo follow-up email — sent within 24 hours of a product demo. Use 해요체. Markdown: '**제목**' (1줄, 25자 이내 — '[제품명] 데모 follow-up + 질문 답변'), '**본문**' (4 단락: 1) 시간 감사 + 데모에서 가장 기억 남는 1줄, 2) 그쪽이 물어본 질문에 대한 답 — 1-2개 핵심, 3) 우리가 약속한 자료 / 사례 / 트라이얼 링크 (구체적), 4) 다음 단계 제안 — 'X 결정에 30분 더 깊은 대화 어떠세요'), '**P.S.**' (1줄 — 데모 녹화 링크 또는 추가 자료).\n\n데모 / 고객:\n${text}`,
+  translate_ko_to_armenian: (text) =>
+    `Translate the Korean text below into natural Armenian (Հայերեն). Armenian script 정확히. 격식 ('Դուք' 정중 / 'դու' 친근) 원문에 맞춤. Reply with two sections: '**Թարգմանություն**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  contractor_offer_email_ko: (text) =>
+    `Draft a Korean contractor offer email (계약직 / 프리랜서 영입). Use 해요체. 정직원이 아니라는 점을 분명히 + 따뜻하게. Markdown: '**제목**' (1줄, 24자 이내 — '[프로젝트명] 계약직 제안' 류), '**본문**' (4 단락: 1) 만나서 반가웠다 + 본인 추천한 1줄, 2) 제안 — 역할 / 기간 / 시간 / 보수 / 결제 주기 — 정확히, 3) 산출물 / 기대치 / 의사결정 범위, 4) 다음 단계 — '관심 있으시면 ~까지 답장 + 짧은 SOW 보내드릴게요'), '**참고**' (1줄 — 비밀유지 / 지적재산권 등 표준 조항 안내).\n\n프로젝트 / 조건:\n${text}`,
+  translate_ko_to_amharic: (text) =>
+    `Translate the Korean text below into natural Amharic (አማርኛ). Ge'ez script 정확히. 격식 ('እርስዎ' 정중 / 'አንተ/አንቺ' 친근) 원문에 맞춤. Reply with two sections: '**ትርጉም**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  gdpr_dsr_response_ko: (text) =>
+    `Draft a Korean response to a GDPR Data Subject Request (DSR) — access / erasure / portability / rectification request. Use 합쇼체. 30일 안 응답 의무 의식. Markdown: '**제목**' (1줄 — 'GDPR Data Subject Request 응답 — Ref #NNNN'), '**본문**' (4 단락: 1) 요청 수신 확인 + 요청 종류 명시 + 처리 시한 안내, 2) 본인 확인 절차 — 신원 확인 어떻게 진행, 3) 응답 — access면 데이터 사본 / erasure면 삭제 처리 결과 + 제외 항목 (법적 보관 의무) / portability면 포맷 / rectification면 수정 결과, 4) 추가 권리 안내 + 감독기관 신고권 안내), '**서명**' (DPO 또는 책임자 + 연락처).\n\n요청 종류 + 사용자 데이터 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

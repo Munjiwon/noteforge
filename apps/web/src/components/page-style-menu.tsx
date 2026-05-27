@@ -1014,6 +1014,11 @@ export function PageStyleMenu({
                       { key: "callout-shadow-soft", label: "Soft callout shadow" },
                       { key: "table-merge-header", label: "Merge header bg" },
                       { key: "page-print-bleed", label: "Print bleed" },
+                      { key: "h6-italic-tiny", label: "H6 italic tiny" },
+                      { key: "code-block-no-radius", label: "Square code" },
+                      { key: "table-fixed-layout", label: "Fixed cols" },
+                      { key: "callout-emoji-prefix-warn", label: "⚠ callout" },
+                      { key: "page-grid-square", label: "Grid square" },
                     ] as const
                   ).map((t) => (
                     <button

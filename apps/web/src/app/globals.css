@@ -3077,6 +3077,64 @@ body.table-merge-header .bn-editor [data-content-type="table"] th {
   }
 }
 
+/* H6 italic tiny — italic + very small for legend-style annotations. */
+body.h6-italic-tiny .bn-editor h6,
+body.h6-italic-tiny .bn-editor [data-content-type="heading"][data-level="6"] {
+  font-style: italic !important;
+  font-size: 0.75em !important;
+  color: #71717a !important;
+}
+.dark body.h6-italic-tiny .bn-editor h6,
+.dark body.h6-italic-tiny .bn-editor [data-content-type="heading"][data-level="6"] {
+  color: #a1a1aa !important;
+}
+
+/* Square code blocks — zero border-radius. */
+body.code-block-no-radius .bn-editor pre,
+body.code-block-no-radius .bn-editor [data-content-type="codeBlock"] {
+  border-radius: 0 !important;
+}
+
+/* Fixed-layout tables — fixed column widths regardless of content. */
+body.table-fixed-layout .bn-editor table,
+body.table-fixed-layout .bn-editor [data-content-type="table"] {
+  table-layout: fixed !important;
+  width: 100% !important;
+}
+
+/* Warning callout — prepend ⚠ and color border red. */
+body.callout-emoji-prefix-warn .bn-editor [data-content-type="callout"] {
+  border-left: 4px solid #dc2626 !important;
+  background: #fef2f2 !important;
+  padding-left: 1em !important;
+}
+body.callout-emoji-prefix-warn .bn-editor [data-content-type="callout"]::before {
+  content: "⚠ ";
+  color: #dc2626;
+  font-weight: 700;
+  margin-right: 0.3em;
+}
+.dark body.callout-emoji-prefix-warn .bn-editor [data-content-type="callout"] {
+  background: #450a0a !important;
+  border-left-color: #f87171 !important;
+}
+.dark body.callout-emoji-prefix-warn .bn-editor [data-content-type="callout"]::before {
+  color: #fca5a5;
+}
+
+/* Square grid background — small square grid behind editor. */
+body.page-grid-square .bn-editor {
+  background-image:
+    linear-gradient(to right, #e4e4e7 1px, transparent 1px),
+    linear-gradient(to bottom, #e4e4e7 1px, transparent 1px) !important;
+  background-size: 20px 20px !important;
+}
+.dark body.page-grid-square .bn-editor {
+  background-image:
+    linear-gradient(to right, #3f3f46 1px, transparent 1px),
+    linear-gradient(to bottom, #3f3f46 1px, transparent 1px) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
