@@ -532,6 +532,11 @@ export function PageView({
       "code-block-rounded",
       "tag-pill-style",
       "image-shadow-soft",
+      "h1-with-emoji-divider",
+      "ul-checkmarks",
+      "table-rounded",
+      "code-block-numbered",
+      "page-edge-glow",
     ];
     try {
       for (const k of toggles) {

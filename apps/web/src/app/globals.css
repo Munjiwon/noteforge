@@ -2108,6 +2108,90 @@ body.image-shadow-soft .bn-editor [data-content-type="image"] img {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3) !important;
 }
 
+/* H1 emoji divider — append a decorative ✦ after H1 text. */
+body.h1-with-emoji-divider .bn-editor h1::after,
+body.h1-with-emoji-divider .bn-editor [data-content-type="heading"][data-level="1"] > *:last-child::after {
+  content: "  ✦";
+  color: #2563eb !important;
+  font-size: 0.7em;
+  margin-left: 0.4em;
+  opacity: 0.6;
+}
+.dark body.h1-with-emoji-divider .bn-editor h1::after,
+.dark body.h1-with-emoji-divider .bn-editor [data-content-type="heading"][data-level="1"] > *:last-child::after {
+  color: #60a5fa !important;
+}
+
+/* Checkmark bullets — replace bullet markers with green checkmarks. */
+body.ul-checkmarks .bn-editor ul,
+body.ul-checkmarks .bn-editor [data-content-type="bulletListItem"] {
+  list-style: none !important;
+  padding-left: 1.6em;
+}
+body.ul-checkmarks .bn-editor ul > li::before,
+body.ul-checkmarks .bn-editor [data-content-type="bulletListItem"]::before {
+  content: "✓ ";
+  color: #16a34a !important;
+  font-weight: 700;
+  margin-left: -1.2em;
+  margin-right: 0.4em;
+}
+.dark body.ul-checkmarks .bn-editor ul > li::before,
+.dark body.ul-checkmarks .bn-editor [data-content-type="bulletListItem"]::before {
+  color: #4ade80 !important;
+}
+
+/* Rounded tables — apply border-radius to tables and clip cell backgrounds. */
+body.table-rounded .bn-editor table,
+body.table-rounded .bn-editor [data-content-type="table"] {
+  border-radius: 10px !important;
+  overflow: hidden;
+  border: 1px solid #e4e4e7 !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+.dark body.table-rounded .bn-editor table,
+.dark body.table-rounded .bn-editor [data-content-type="table"] {
+  border-color: #3f3f46 !important;
+}
+
+/* Code block line numbers — show CSS-counter-based line numbers in code blocks. */
+body.code-block-numbered .bn-editor pre,
+body.code-block-numbered .bn-editor [data-content-type="codeBlock"] {
+  counter-reset: nf-codeline;
+  padding-left: 3.4em !important;
+  position: relative;
+}
+body.code-block-numbered .bn-editor pre code > *,
+body.code-block-numbered .bn-editor [data-content-type="codeBlock"] > div > div {
+  counter-increment: nf-codeline;
+  position: relative;
+}
+body.code-block-numbered .bn-editor pre code > *::before,
+body.code-block-numbered .bn-editor [data-content-type="codeBlock"] > div > div::before {
+  content: counter(nf-codeline);
+  position: absolute;
+  left: -2.8em;
+  width: 2.2em;
+  text-align: right;
+  color: #a1a1aa;
+  font-size: 0.85em;
+  user-select: none;
+}
+.dark body.code-block-numbered .bn-editor pre code > *::before,
+.dark body.code-block-numbered .bn-editor [data-content-type="codeBlock"] > div > div::before {
+  color: #71717a;
+}
+
+/* Page edge glow — a subtle outer glow around the page editor for focus. */
+body.page-edge-glow .bn-editor {
+  box-shadow: 0 0 30px 4px rgba(37, 99, 235, 0.18) !important;
+  border-radius: 8px;
+}
+.dark body.page-edge-glow .bn-editor {
+  box-shadow: 0 0 36px 6px rgba(96, 165, 250, 0.24) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

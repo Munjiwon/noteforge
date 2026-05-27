@@ -944,6 +944,11 @@ export function PageStyleMenu({
                       { key: "code-block-rounded", label: "Round code" },
                       { key: "tag-pill-style", label: "Tag pills" },
                       { key: "image-shadow-soft", label: "Soft img shadow" },
+                      { key: "h1-with-emoji-divider", label: "H1 ✦ divider" },
+                      { key: "ul-checkmarks", label: "✓ bullets" },
+                      { key: "table-rounded", label: "Round table" },
+                      { key: "code-block-numbered", label: "Line numbers" },
+                      { key: "page-edge-glow", label: "Edge glow" },
                     ] as const
                   ).map((t) => (
                     <button
