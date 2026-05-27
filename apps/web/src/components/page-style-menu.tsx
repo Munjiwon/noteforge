@@ -954,6 +954,11 @@ export function PageStyleMenu({
                       { key: "callout-tip-emoji", label: "Callout label" },
                       { key: "table-header-bold-bg", label: "Table header bg" },
                       { key: "page-side-margins-wider", label: "Wide margins" },
+                      { key: "h2-with-underline-gradient", label: "H2 grad underline" },
+                      { key: "code-block-no-background", label: "Code no bg" },
+                      { key: "table-borderless", label: "Borderless table" },
+                      { key: "callout-numbered-prefix", label: "Callout #" },
+                      { key: "page-corner-flag", label: "Corner flag" },
                     ] as const
                   ).map((t) => (
                     <button

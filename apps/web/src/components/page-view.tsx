@@ -542,6 +542,11 @@ export function PageView({
       "callout-tip-emoji",
       "table-header-bold-bg",
       "page-side-margins-wider",
+      "h2-with-underline-gradient",
+      "code-block-no-background",
+      "table-borderless",
+      "callout-numbered-prefix",
+      "page-corner-flag",
     ];
     try {
       for (const k of toggles) {
