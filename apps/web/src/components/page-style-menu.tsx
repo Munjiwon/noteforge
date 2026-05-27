@@ -964,6 +964,11 @@ export function PageStyleMenu({
                       { key: "ul-arrow-marker", label: "→ bullets" },
                       { key: "table-cell-padding-wider", label: "Roomy cells" },
                       { key: "callout-rounded-pill", label: "Callout pill" },
+                      { key: "h3-color-blue", label: "Blue H3" },
+                      { key: "ul-dash-marker", label: "— bullets" },
+                      { key: "table-row-hover", label: "Row hover" },
+                      { key: "code-inline-uppercase", label: "Inline UPPER" },
+                      { key: "page-margin-rule", label: "Margin rule" },
                     ] as const
                   ).map((t) => (
                     <button

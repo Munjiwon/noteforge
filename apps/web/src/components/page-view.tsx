@@ -552,6 +552,11 @@ export function PageView({
       "ul-arrow-marker",
       "table-cell-padding-wider",
       "callout-rounded-pill",
+      "h3-color-blue",
+      "ul-dash-marker",
+      "table-row-hover",
+      "code-inline-uppercase",
+      "page-margin-rule",
     ];
     try {
       for (const k of toggles) {

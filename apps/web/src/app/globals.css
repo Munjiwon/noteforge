@@ -2438,6 +2438,68 @@ body.callout-rounded-pill .bn-editor [data-content-type="callout"] {
   border-radius: 999px !important;
 }
 
+/* Blue H3 — recolor H3 headings to the brand accent blue. */
+body.h3-color-blue .bn-editor h3,
+body.h3-color-blue .bn-editor [data-content-type="heading"][data-level="3"] {
+  color: #2563eb !important;
+}
+.dark body.h3-color-blue .bn-editor h3,
+.dark body.h3-color-blue .bn-editor [data-content-type="heading"][data-level="3"] {
+  color: #60a5fa !important;
+}
+
+/* Dash bullets — replace bullet markers with em dashes. */
+body.ul-dash-marker .bn-editor ul,
+body.ul-dash-marker .bn-editor [data-content-type="bulletListItem"] {
+  list-style: none !important;
+  padding-left: 1.6em;
+}
+body.ul-dash-marker .bn-editor ul > li::before,
+body.ul-dash-marker .bn-editor [data-content-type="bulletListItem"]::before {
+  content: "— ";
+  color: #71717a !important;
+  font-weight: 600;
+  margin-left: -1.2em;
+  margin-right: 0.4em;
+}
+.dark body.ul-dash-marker .bn-editor ul > li::before,
+.dark body.ul-dash-marker .bn-editor [data-content-type="bulletListItem"]::before {
+  color: #a1a1aa !important;
+}
+
+/* Table row hover — softly highlight a table row on hover for easier reading. */
+body.table-row-hover .bn-editor table tbody tr:hover td,
+body.table-row-hover .bn-editor [data-content-type="table"] tr:hover td {
+  background: rgba(37, 99, 235, 0.07) !important;
+  transition: background 0.15s ease;
+}
+.dark body.table-row-hover .bn-editor table tbody tr:hover td,
+.dark body.table-row-hover .bn-editor [data-content-type="table"] tr:hover td {
+  background: rgba(96, 165, 250, 0.12) !important;
+}
+
+/* Inline code uppercase — uppercase + tighter chip for inline code. */
+body.code-inline-uppercase .bn-editor code:not(pre code),
+body.code-inline-uppercase .bn-editor [data-style="code"] {
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  font-size: 0.85em !important;
+}
+.dark body.code-inline-uppercase .bn-editor code:not(pre code),
+.dark body.code-inline-uppercase .bn-editor [data-style="code"] {
+  text-transform: uppercase !important;
+}
+
+/* Margin rule — vertical ruler line at the left margin of the editor (notebook feel). */
+body.page-margin-rule .bn-editor {
+  border-left: 1px solid #fca5a5 !important;
+  padding-left: 1.5rem !important;
+  margin-left: 1.5rem;
+}
+.dark body.page-margin-rule .bn-editor {
+  border-left-color: #ef4444 !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
