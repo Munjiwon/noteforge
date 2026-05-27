@@ -969,6 +969,11 @@ export function PageStyleMenu({
                       { key: "table-row-hover", label: "Row hover" },
                       { key: "code-inline-uppercase", label: "Inline UPPER" },
                       { key: "page-margin-rule", label: "Margin rule" },
+                      { key: "h6-monospace", label: "H6 mono" },
+                      { key: "code-block-large-text", label: "Big code" },
+                      { key: "ol-zero-indexed", label: "0-index OL" },
+                      { key: "table-first-column-bold", label: "Bold 1st col" },
+                      { key: "page-no-paragraph-margin", label: "Tight paragraphs" },
                     ] as const
                   ).map((t) => (
                     <button

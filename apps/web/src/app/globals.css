@@ -2500,6 +2500,77 @@ body.page-margin-rule .bn-editor {
   border-left-color: #ef4444 !important;
 }
 
+/* H6 monospace — render H6 in a monospace font for code-style sublabels. */
+body.h6-monospace .bn-editor h6,
+body.h6-monospace .bn-editor [data-content-type="heading"][data-level="6"] {
+  font-family: "JetBrains Mono", "SF Mono", "Fira Code", ui-monospace, Menlo, monospace !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+}
+.dark body.h6-monospace .bn-editor h6,
+.dark body.h6-monospace .bn-editor [data-content-type="heading"][data-level="6"] {
+  font-family: "JetBrains Mono", "SF Mono", "Fira Code", ui-monospace, Menlo, monospace !important;
+}
+
+/* Big code blocks — enlarge code block font size for presentations / screenshots. */
+body.code-block-large-text .bn-editor pre,
+body.code-block-large-text .bn-editor pre code,
+body.code-block-large-text .bn-editor [data-content-type="codeBlock"] {
+  font-size: 1.15em !important;
+  line-height: 1.55 !important;
+}
+.dark body.code-block-large-text .bn-editor pre,
+.dark body.code-block-large-text .bn-editor pre code,
+.dark body.code-block-large-text .bn-editor [data-content-type="codeBlock"] {
+  font-size: 1.15em !important;
+}
+
+/* 0-indexed ordered list — start numbered lists at 0 instead of 1 (programmer style). */
+body.ol-zero-indexed .bn-editor ol,
+body.ol-zero-indexed .bn-editor [data-content-type="numberedListItem"] {
+  counter-reset: nf-ol-zero -1 !important;
+  list-style: none !important;
+}
+body.ol-zero-indexed .bn-editor ol > li,
+body.ol-zero-indexed .bn-editor [data-content-type="numberedListItem"] {
+  counter-increment: nf-ol-zero !important;
+}
+body.ol-zero-indexed .bn-editor ol > li::before,
+body.ol-zero-indexed .bn-editor [data-content-type="numberedListItem"]::before {
+  content: counter(nf-ol-zero) ". ";
+  margin-right: 0.35em;
+  color: #71717a;
+}
+.dark body.ol-zero-indexed .bn-editor ol > li::before,
+.dark body.ol-zero-indexed .bn-editor [data-content-type="numberedListItem"]::before {
+  color: #a1a1aa;
+}
+
+/* Bold first column — render the first table column cells in bold for label tables. */
+body.table-first-column-bold .bn-editor table td:first-child,
+body.table-first-column-bold .bn-editor table th:first-child,
+body.table-first-column-bold .bn-editor [data-content-type="table"] td:first-child,
+body.table-first-column-bold .bn-editor [data-content-type="table"] th:first-child {
+  font-weight: 700 !important;
+  color: #18181b !important;
+}
+.dark body.table-first-column-bold .bn-editor table td:first-child,
+.dark body.table-first-column-bold .bn-editor table th:first-child,
+.dark body.table-first-column-bold .bn-editor [data-content-type="table"] td:first-child,
+.dark body.table-first-column-bold .bn-editor [data-content-type="table"] th:first-child {
+  color: #f4f4f5 !important;
+}
+
+/* Tight paragraphs — eliminate vertical margin between paragraphs for dense layouts. */
+body.page-no-paragraph-margin .bn-editor [data-content-type="paragraph"] {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+.dark body.page-no-paragraph-margin .bn-editor [data-content-type="paragraph"] {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

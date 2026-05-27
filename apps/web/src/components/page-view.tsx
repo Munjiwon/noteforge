@@ -557,6 +557,11 @@ export function PageView({
       "table-row-hover",
       "code-inline-uppercase",
       "page-margin-rule",
+      "h6-monospace",
+      "code-block-large-text",
+      "ol-zero-indexed",
+      "table-first-column-bold",
+      "page-no-paragraph-margin",
     ];
     try {
       for (const k of toggles) {
