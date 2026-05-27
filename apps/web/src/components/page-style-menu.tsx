@@ -994,6 +994,11 @@ export function PageStyleMenu({
                       { key: "callout-border-thick", label: "Thick callout" },
                       { key: "table-no-grid", label: "No grid table" },
                       { key: "page-paper-edge", label: "Paper edge" },
+                      { key: "h2-color-purple", label: "Purple H2" },
+                      { key: "code-block-glass", label: "Glass code" },
+                      { key: "table-row-numbered", label: "Row #" },
+                      { key: "callout-quote-style", label: "Quote callout" },
+                      { key: "page-corner-fold", label: "Corner fold" },
                     ] as const
                   ).map((t) => (
                     <button

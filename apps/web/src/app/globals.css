@@ -2830,6 +2830,78 @@ body.page-paper-edge .bn-editor {
   box-shadow: 0 0 0 1px #27272a, 0 1px 2px rgba(0, 0, 0, 0.2), 0 8px 24px rgba(0, 0, 0, 0.4) !important;
 }
 
+/* Purple H2 — recolor H2 to purple accent. */
+body.h2-color-purple .bn-editor h2,
+body.h2-color-purple .bn-editor [data-content-type="heading"][data-level="2"] {
+  color: #7c3aed !important;
+}
+.dark body.h2-color-purple .bn-editor h2,
+.dark body.h2-color-purple .bn-editor [data-content-type="heading"][data-level="2"] {
+  color: #a78bfa !important;
+}
+
+/* Glass code blocks — translucent frosted glass effect on code blocks. */
+body.code-block-glass .bn-editor pre,
+body.code-block-glass .bn-editor [data-content-type="codeBlock"] {
+  background: rgba(255, 255, 255, 0.55) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+.dark body.code-block-glass .bn-editor pre,
+.dark body.code-block-glass .bn-editor [data-content-type="codeBlock"] {
+  background: rgba(24, 24, 27, 0.55) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Row-numbered table — prepend row index to every table body row. */
+body.table-row-numbered .bn-editor table tbody {
+  counter-reset: nf-rownum;
+}
+body.table-row-numbered .bn-editor table tbody tr {
+  counter-increment: nf-rownum;
+}
+body.table-row-numbered .bn-editor table tbody tr td:first-child::before {
+  content: counter(nf-rownum) ". ";
+  color: #71717a;
+  margin-right: 0.4em;
+  font-size: 0.85em;
+}
+.dark body.table-row-numbered .bn-editor table tbody tr td:first-child::before {
+  color: #a1a1aa;
+}
+
+/* Quote-style callout — render callouts with quote-block styling. */
+body.callout-quote-style .bn-editor [data-content-type="callout"] {
+  font-style: italic !important;
+  border-left: 4px solid #a1a1aa !important;
+  background: transparent !important;
+  padding-left: 1.2em !important;
+  color: #52525b !important;
+}
+.dark body.callout-quote-style .bn-editor [data-content-type="callout"] {
+  border-left-color: #71717a !important;
+  color: #d4d4d8 !important;
+}
+
+/* Corner fold — small dog-eared paper fold in top-right of editor. */
+body.page-corner-fold .bn-editor {
+  position: relative;
+}
+body.page-corner-fold .bn-editor::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(225deg, #e4e4e7 50%, transparent 50%);
+  pointer-events: none;
+}
+.dark body.page-corner-fold .bn-editor::after {
+  background: linear-gradient(225deg, #3f3f46 50%, transparent 50%);
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

@@ -582,6 +582,11 @@ export function PageView({
       "callout-border-thick",
       "table-no-grid",
       "page-paper-edge",
+      "h2-color-purple",
+      "code-block-glass",
+      "table-row-numbered",
+      "callout-quote-style",
+      "page-corner-fold",
     ];
     try {
       for (const k of toggles) {

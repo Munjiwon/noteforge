@@ -1744,6 +1744,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write 3 Korean ad copy variations for the same offer below. Use 해요체. Format: '### V1 — 베네핏형', '### V2 — 페인형', '### V3 — 호기심형'. 각각 'Headline:' (1줄, 14자 이내), 'Body:' (1줄, 40자 이내), 'CTA:' (1줄, 6자 이내). 끝에 '**테스트 가이드**' (2 bullets — 메인 메트릭 + 모수 권장).\n\n오퍼:\n${text}`,
   ai_eval_rubric_ko: (text) =>
     `Build a Korean evaluation rubric for an AI feature / agent. Use 합쇼체. Markdown: '**평가 목표 (1줄)**', '**Rubric 차원 (테이블)**' (컬럼: '차원 | 정의 | 1점 | 3점 | 5점 | 가중치'. 차원: 정확성 / 도움 정도 / 안전성 / 톤 / 형식 일관성 / 환각 정도), '**Eval set 구성**' (bullets — N개 케이스 / 카테고리 분포 / 어려운 케이스 비중), '**평가 방법**' (1줄 — 자동 LLM-judge vs 사람 vs 혼합), '**합격 기준**' (1줄 — 전체 평균 X점 / 모든 차원 Y점 이상 등).\n\nAI 기능 컨텍스트:\n${text}`,
+  translate_ko_to_greek: (text) =>
+    `Translate the Korean text below into natural Greek (ελληνικά). 격, 성, 동사 활용 정확히. 격식 ('εσείς' 정중 / 'εσύ' 친근) 원문에 맞춤. Reply with two sections: '**Μετάφραση**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  contract_negotiation_email_ko: (text) =>
+    `Draft a Korean contract redline email — sent when sending back marked-up contract. Use 합쇼체. Markdown: '**제목**' (1줄, 27자 이내 — '[계약 종류] 검토 의견 전달 — YYYY-MM-DD'), '**본문**' (4 단락: 1) 검토 시간 감사 + 첨부 안내, 2) 핵심 변경 3가지 — '조항 N: ... 수정 — 이유 1줄', 3) 우리 입장 — 양보 가능 vs 깨질 수 없는 것 명확히, 4) 다음 단계 — '내부 변호사 검토 후 X일 안에 회신'), '**첨부**' (1줄).\n\n계약 / 변경 요구:\n${text}`,
+  podcast_pitch_to_show_ko: (text) =>
+    `Draft a Korean cold pitch email to a podcast host to be a guest. Use 해요체. Markdown: '**제목**' (1줄, 24자 이내 — '[팟캐스트명] 게스트 제안: [주제 한 줄]'), '**본문**' (4 단락: 1) 어떤 에피소드를 들었는지 + 구체적 통찰 1줄, 2) 본인 + 회사 한 줄 + 이 팟캐스트 청취자가 왜 흥미로워할지, 3) 제안하는 에피소드 주제 1개 + 3-5 talking points, 4) 'NO도 정말 괜찮습니다' 1줄), '**자료**' (bullets — 본인 사진 / 회사 1페이저 / 이전 출연 영상 등 placeholder).\n\n호스트 / 본인:\n${text}`,
+  translate_ko_to_hungarian: (text) =>
+    `Translate the Korean text below into natural Hungarian (magyar). 헝가리어의 접미사 시스템, 모음조화, 격 정확히. 격식 ('Ön' 정중 / 'te' 친근) 원문에 맞춤. Reply with two sections: '**Fordítás**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  customer_referral_request_ko: (text) =>
+    `Draft a Korean email asking an existing customer for a referral. Use 해요체. 짧고 진심으로. Markdown: '**제목**' (1줄, 22자 이내 — '비슷한 분 한 분 추천 부탁드려요' 류), '**본문**' (3 단락: 1) 한 줄 감사 + 그쪽이 우리한테 한 구체적 1가지 reference, 2) 우리가 찾는 분 정확히 — '비슷한 산업 / 비슷한 페인 가진 분 1-2명', 3) 부탁 — '소개 메일 한 줄 써주시면 정말 큰 도움이에요. 못 해도 OK 톤'), '**리워드 (선택)**' (1줄 — 입력에 있으면).\n\n고객 컨텍스트:\n${text}`,
+  translate_ko_to_romanian: (text) =>
+    `Translate the Korean text below into natural Romanian (română). 격, 성, 동사 활용 정확히. 격식 ('dumneavoastră' 정중 / 'tu' 친근) 원문에 맞춤. Reply with two sections: '**Traducere**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  weekly_ic_writeup_ko: (text) =>
+    `Convert an IC (Individual Contributor) engineer's weekly notes into a clean Korean writeup. Use 해요체. Markdown: '**한 줄 요약**' (1줄 — 이번 주 본인 가장 큰 기여), '**Shipped**' (bullets — 머지된 PR 1줄씩), '**진행 중**' (bullets — 다음 주 끝낼 것 + 현재 % + 막힘 여부), '**막힌 것 / 도움 필요**' (bullets — 정확히 누구의 무엇 필요), '**배운 것**' (1-2 bullets — 기술적 / 협업 학습), '**다음 주 베팅**' (2 bullets).\n\nIC 노트:\n${text}`,
+  faq_from_support_tickets_ko: (text) =>
+    `Generate a Korean FAQ from recurring support ticket themes below. Use 해요체. Format: '### Q. [질문]' + '**A.** [답 2-3줄 — 친근하고 단계적으로]' + '**관련 도움말 / 액션**' (1줄 placeholder). 자주 묻는 5-8개를 추출, 유사 질문은 1개로 통합. 끝에 '**Internal 노트**' (2 bullets — 1) 어떤 질문이 가장 자주 오는지 1줄, 2) 제품 / UI에서 고치면 이 FAQ 자체가 줄어들 만한 것).\n\n티켓 모음:\n${text}`,
+  translate_ko_to_swahili: (text) =>
+    `Translate the Korean text below into natural Swahili (Kiswahili). 격식 ('mwalimu' 호칭 / 'wewe' 친근) 원문에 맞춤. 스와힐리어 명사 클래스 정확히. Reply with two sections: '**Tafsiri**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  growth_loop_design_ko: (text) =>
+    `Design a Korean growth loop for the product described below. Use 해요체. Markdown: '**Loop 한 줄**' (1줄 — '[trigger] → [action] → [output] → [trigger]' 형식), '**단계별 정의 (테이블)**' ('단계 | 트리거 | 행동 | 결과 | 다음 트리거로 어떻게 이어지나'), '**핵심 메트릭 (각 단계마다)**' (bullets — 각 단계 통과율 측정 가능한 1개씩), '**Loop이 무너지는 지점 (3가지)**' (numbered — 각 어떤 신호로 알 수 있나), '**가속 레버 (3가지)**' (bullets — 어떤 변화가 loop 속도를 높일 수 있나), '**유사 / 다른 회사 사례**' (1줄).\n\n제품 / 페르소나:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
