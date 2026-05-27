@@ -517,6 +517,11 @@ export function PageView({
       "list-spacing-airy",
       "table-header-uppercase",
       "checkbox-strikethrough",
+      "h4-uppercase",
+      "code-block-tab-2",
+      "paragraph-narrow-line",
+      "callout-emoji-large",
+      "page-background-paper",
     ];
     try {
       for (const k of toggles) {

@@ -929,6 +929,11 @@ export function PageStyleMenu({
                       { key: "list-spacing-airy", label: "Airy lists" },
                       { key: "table-header-uppercase", label: "TABLE HEADERS" },
                       { key: "checkbox-strikethrough", label: "Strike done" },
+                      { key: "h4-uppercase", label: "H4 UPPER" },
+                      { key: "code-block-tab-2", label: "Code tab 2" },
+                      { key: "paragraph-narrow-line", label: "Tight lines" },
+                      { key: "callout-emoji-large", label: "Big callout 🔔" },
+                      { key: "page-background-paper", label: "Paper bg" },
                     ] as const
                   ).map((t) => (
                     <button

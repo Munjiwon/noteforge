@@ -1927,6 +1927,71 @@ body.checkbox-strikethrough .bn-editor [data-checked="true"] {
   color: #71717a !important;
 }
 
+/* H4 uppercase — render H4 in uppercase with wider tracking. */
+body.h4-uppercase .bn-editor h4,
+body.h4-uppercase .bn-editor [data-content-type="heading"][data-level="4"] {
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  font-size: 0.95em !important;
+  color: #52525b !important;
+}
+.dark body.h4-uppercase .bn-editor h4,
+.dark body.h4-uppercase .bn-editor [data-content-type="heading"][data-level="4"] {
+  color: #d4d4d8 !important;
+}
+
+/* Code block tab 2 — render tabs in code blocks as 2 spaces wide. */
+body.code-block-tab-2 .bn-editor pre,
+body.code-block-tab-2 .bn-editor pre code,
+body.code-block-tab-2 .bn-editor [data-content-type="codeBlock"] {
+  tab-size: 2 !important;
+  -moz-tab-size: 2 !important;
+}
+.dark body.code-block-tab-2 .bn-editor pre,
+.dark body.code-block-tab-2 .bn-editor pre code,
+.dark body.code-block-tab-2 .bn-editor [data-content-type="codeBlock"] {
+  tab-size: 2 !important;
+  -moz-tab-size: 2 !important;
+}
+
+/* Tight paragraph line height — tighten line-height on body paragraphs for denser reading. */
+body.paragraph-narrow-line .bn-editor [data-content-type="paragraph"] p,
+body.paragraph-narrow-line .bn-editor [data-content-type="paragraph"] .bn-inline-content {
+  line-height: 1.35 !important;
+}
+.dark body.paragraph-narrow-line .bn-editor [data-content-type="paragraph"] p,
+.dark body.paragraph-narrow-line .bn-editor [data-content-type="paragraph"] .bn-inline-content {
+  line-height: 1.35 !important;
+}
+
+/* Big callout emoji — enlarge the callout's leading emoji / icon. */
+body.callout-emoji-large .bn-editor [data-content-type="callout"] [data-content-type="emoji"],
+body.callout-emoji-large .bn-editor [data-content-type="callout"] .bn-block-content > span:first-child,
+body.callout-emoji-large .bn-editor [data-content-type="callout"] .bn-icon {
+  font-size: 1.8em !important;
+  line-height: 1 !important;
+  margin-right: 0.5em !important;
+}
+.dark body.callout-emoji-large .bn-editor [data-content-type="callout"] [data-content-type="emoji"],
+.dark body.callout-emoji-large .bn-editor [data-content-type="callout"] .bn-block-content > span:first-child,
+.dark body.callout-emoji-large .bn-editor [data-content-type="callout"] .bn-icon {
+  font-size: 1.8em !important;
+}
+
+/* Paper background — subtle paper-like fibrous texture behind the editor. */
+body.page-background-paper .bn-editor {
+  background-color: #fbfaf7 !important;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(180, 160, 120, 0.04) 0 2px, transparent 2px 6px),
+    repeating-linear-gradient(-45deg, rgba(180, 160, 120, 0.04) 0 2px, transparent 2px 6px) !important;
+}
+.dark body.page-background-paper .bn-editor {
+  background-color: #1f1d1a !important;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(255, 240, 200, 0.03) 0 2px, transparent 2px 6px),
+    repeating-linear-gradient(-45deg, rgba(255, 240, 200, 0.03) 0 2px, transparent 2px 6px) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
