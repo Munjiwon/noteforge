@@ -939,6 +939,11 @@ export function PageStyleMenu({
                       { key: "code-inline-color", label: "Color inline" },
                       { key: "image-border-thick", label: "Thick img border" },
                       { key: "selection-mono-font", label: "Select mono" },
+                      { key: "page-icon-bigger", label: "Big page icon" },
+                      { key: "h3-with-bar", label: "H3 bar" },
+                      { key: "code-block-rounded", label: "Round code" },
+                      { key: "tag-pill-style", label: "Tag pills" },
+                      { key: "image-shadow-soft", label: "Soft img shadow" },
                     ] as const
                   ).map((t) => (
                     <button

@@ -2048,6 +2048,66 @@ body.selection-mono-font .bn-editor ::selection {
   font-family: "JetBrains Mono", "SF Mono", "Fira Code", ui-monospace, Menlo, monospace !important;
 }
 
+/* Bigger page icon — enlarge the large page-icon button at the top of the page. */
+body.page-icon-bigger .nf-page-icon {
+  font-size: 1.4em !important;
+  transform: scale(1.25);
+  transform-origin: left top;
+  margin-bottom: 0.4em;
+}
+.dark body.page-icon-bigger .nf-page-icon {
+  font-size: 1.4em !important;
+}
+
+/* H3 with leading bar — place a short vertical accent bar to the left of H3. */
+body.h3-with-bar .bn-editor h3,
+body.h3-with-bar .bn-editor [data-content-type="heading"][data-level="3"] {
+  border-left: 3px solid #2563eb !important;
+  padding-left: 0.5em !important;
+}
+.dark body.h3-with-bar .bn-editor h3,
+.dark body.h3-with-bar .bn-editor [data-content-type="heading"][data-level="3"] {
+  border-left-color: #60a5fa !important;
+}
+
+/* Round code blocks — give code blocks a more rounded radius. */
+body.code-block-rounded .bn-editor pre,
+body.code-block-rounded .bn-editor [data-content-type="codeBlock"] {
+  border-radius: 14px !important;
+  padding: 1em 1.2em !important;
+}
+.dark body.code-block-rounded .bn-editor pre,
+.dark body.code-block-rounded .bn-editor [data-content-type="codeBlock"] {
+  border-radius: 14px !important;
+}
+
+/* Tag pills — render inline code as pill-shaped tags with bold weight. */
+body.tag-pill-style .bn-editor code:not(pre code),
+body.tag-pill-style .bn-editor [data-style="code"] {
+  background: #e0e7ff !important;
+  color: #1e3a8a !important;
+  border-radius: 999px !important;
+  padding: 0.15em 0.7em !important;
+  font-weight: 600 !important;
+  font-size: 0.86em !important;
+}
+.dark body.tag-pill-style .bn-editor code:not(pre code),
+.dark body.tag-pill-style .bn-editor [data-style="code"] {
+  background: #1e3a8a !important;
+  color: #dbeafe !important;
+}
+
+/* Soft image shadow — wrap embedded images in a soft drop shadow for depth. */
+body.image-shadow-soft .bn-editor img,
+body.image-shadow-soft .bn-editor [data-content-type="image"] img {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+  border-radius: 6px;
+}
+.dark body.image-shadow-soft .bn-editor img,
+.dark body.image-shadow-soft .bn-editor [data-content-type="image"] img {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

@@ -527,6 +527,11 @@ export function PageView({
       "code-inline-color",
       "image-border-thick",
       "selection-mono-font",
+      "page-icon-bigger",
+      "h3-with-bar",
+      "code-block-rounded",
+      "tag-pill-style",
+      "image-shadow-soft",
     ];
     try {
       for (const k of toggles) {
