@@ -999,6 +999,11 @@ export function PageStyleMenu({
                       { key: "table-row-numbered", label: "Row #" },
                       { key: "callout-quote-style", label: "Quote callout" },
                       { key: "page-corner-fold", label: "Corner fold" },
+                      { key: "h3-with-decoration", label: "H3 ✦ deco" },
+                      { key: "ul-emoji-marker", label: "👉 bullets" },
+                      { key: "table-large-font", label: "Big table text" },
+                      { key: "code-block-shadow", label: "Shadow code" },
+                      { key: "callout-icon-emoji-only", label: "Icon-only callout" },
                     ] as const
                   ).map((t) => (
                     <button

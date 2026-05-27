@@ -587,6 +587,11 @@ export function PageView({
       "table-row-numbered",
       "callout-quote-style",
       "page-corner-fold",
+      "h3-with-decoration",
+      "ul-emoji-marker",
+      "table-large-font",
+      "code-block-shadow",
+      "callout-icon-emoji-only",
     ];
     try {
       for (const k of toggles) {

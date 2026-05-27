@@ -1764,6 +1764,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Translate the Korean text below into natural Swahili (Kiswahili). 격식 ('mwalimu' 호칭 / 'wewe' 친근) 원문에 맞춤. 스와힐리어 명사 클래스 정확히. Reply with two sections: '**Tafsiri**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
   growth_loop_design_ko: (text) =>
     `Design a Korean growth loop for the product described below. Use 해요체. Markdown: '**Loop 한 줄**' (1줄 — '[trigger] → [action] → [output] → [trigger]' 형식), '**단계별 정의 (테이블)**' ('단계 | 트리거 | 행동 | 결과 | 다음 트리거로 어떻게 이어지나'), '**핵심 메트릭 (각 단계마다)**' (bullets — 각 단계 통과율 측정 가능한 1개씩), '**Loop이 무너지는 지점 (3가지)**' (numbered — 각 어떤 신호로 알 수 있나), '**가속 레버 (3가지)**' (bullets — 어떤 변화가 loop 속도를 높일 수 있나), '**유사 / 다른 회사 사례**' (1줄).\n\n제품 / 페르소나:\n${text}`,
+  translate_ko_to_ukrainian: (text) =>
+    `Translate the Korean text below into natural Ukrainian (українська). 격, 성, 동사상 정확히. 격식 ('Ви' 정중 / 'ти' 친근) 원문에 맞춤. Reply with two sections: '**Переклад**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  decision_log_entry_ko: (text) =>
+    `Write a Korean decision log entry for the decision below. Use 합쇼체. Markdown: '**Decision ID + 제목**' (1줄 — 'DEC-NNN — [짧은 제목]'), '**Date / Decider**' (1줄), '**Context (3-4줄)**' (배경 — 왜 결정이 필요했는지), '**Options considered**' (bullets — 옵션 + 장단점 1줄씩), '**Decision (한 줄 굵게)**' (1줄), '**Why**' (2-3줄 — 결정 근거), '**Risks**' (2 bullets — 이 결정이 깨질 만한 조건), '**Review trigger**' (1줄 — 언제 재평가).\n\n결정 컨텍스트:\n${text}`,
+  customer_video_testimonial_brief_ko: (text) =>
+    `Build a Korean brief for filming a customer video testimonial. Use 해요체. Markdown: '**Subject 한 줄**' (1줄 — 누구 + 어떤 페인이 풀렸는지), '**준비물**' (bullets — 카메라 / 마이크 / 조명 / 장소), '**인터뷰 질문 5-7개**' (numbered — '이 도구 쓰기 전엔 어떻게 하셨어요?' 류 열린 질문 위주), '**핵심 쇼트 (B-roll 후보)**' (bullets — 5-6개 — 사용자의 작업 환경 / 화면 클로즈업 등), '**촬영 후 편집 노트**' (3 bullets — 길이 60-90초 / 자막 필수 / 끝에 사용자 사진 + 회사 로고).\n\n고객 / 스토리:\n${text}`,
+  translate_ko_to_bulgarian: (text) =>
+    `Translate the Korean text below into natural Bulgarian (български). 격, 성, 정관사 활용 정확히. 격식 ('Вие' 정중 / 'ти' 친근) 원문에 맞춤. Reply with two sections: '**Превод**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  recruiter_inmail_ko: (text) =>
+    `Draft a Korean LinkedIn InMail from a recruiter to a passive candidate. Use 해요체, 짧고 personalized. Markdown: '**제목**' (1줄, 24자 이내), '**본문 (4 단락, 전체 500자 이내)**' (1) 어떻게 알게 됐나 + 그분이 한 일 구체적 1가지, 2) 우리 회사 / 포지션 1줄 + 그분이 흥미로워할 1가지, 3) 부담 없는 다음 단계 — '15분 짧은 통화 가능하실까요', 4) 'NO도 진심으로 OK' 1줄), '**P.S.**' (1줄 — 채용 안 가도 도움 될 자료 1개 placeholder).\n\n후보자 / 포지션:\n${text}`,
+  translate_ko_to_serbian: (text) =>
+    `Translate the Korean text below into natural Serbian (српски). Cyrillic 또는 Latin script — 입력 맥락에서 추론, 둘 다 가능하면 Latin 기본. 격, 성, 동사 활용 정확히. 격식 ('Vi' 정중 / 'ti' 친근) 원문에 맞춤. Reply with two sections: '**Prevod**' and '**번역 노트**' (3 bullets in Korean — script 선택 1가지 포함).\n\n원문:\n${text}`,
+  npm_package_readme_ko: (text) =>
+    `Generate a Korean npm package README from the package info below. Output ready-to-paste markdown. Sections: '# 패키지 이름' + 1줄 tagline, badges 3개 placeholder (npm / build / license), '## 설치', code block ('npm install ...'), '## 사용 예', code block (가장 짧은 use case), '## API', 핵심 함수 / 옵션 2-4개 — 각 '### fnName(args)' + 1줄 설명 + 예제 코드, '## 옵션', bullet 또는 테이블, '## 기여 / 이슈', 1줄 + 링크 placeholder, '## 라이선스' (1줄). 한국어 자연스럽게.\n\n패키지 정보:\n${text}`,
+  translate_ko_to_filipino: (text) =>
+    `Translate the Korean text below into natural Filipino (Tagalog). 격식 ('po / ho' 정중 어말 / 없으면 친근) 원문에 맞춤. 한국어 한자어는 필리핀에서 통용되는 표현 또는 영어 외래어로. Reply with two sections: '**Pagsasalin**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  sales_qbr_internal_ko: (text) =>
+    `Write a Korean internal sales QBR (Quarterly Business Review) doc — for the sales team's own review, not customer-facing. Use 합쇼체. Markdown: '**분기 한 줄**' (1줄 — 'Q[X] 목표 X달성 / Y미달성'), '**숫자 (테이블)**' ('지표 | 목표 | 실적 | 달성률 | 전분기 대비'. ARR / 신규 계약 / 평균 deal 크기 / sales cycle 길이 / win rate / pipeline coverage), '**잘 된 것**' (3 bullets — 큰 win / 새 채널 / 효과 본 활동), '**안 된 것**' (3 bullets — lost deal 패턴 / 막힌 단계), '**다음 분기 베팅**' (3 bullets — 산업 / 페르소나 / 메시지 변경), '**필요한 지원**' (bullets — 마케팅 / 제품 / CS에 부탁할 것).\n\n분기 데이터:\n${text}`,
+  dei_statement_ko: (text) =>
+    `Draft a Korean DEI (Diversity, Equity, Inclusion) statement for a company at the stage described below. Use 해요체. 솔직한 톤 — 빈말 / 과장 금지, 우리가 실제로 한 것 / 안 한 것 / 할 것을 명확히. Markdown: '**우리의 신념 (1단락)**' (3-4줄), '**지금 우리가 한 것**' (3 bullets — 데이터 또는 구체적 행동), '**지금 우리가 부족한 것**' (2 bullets — 솔직히), '**올해 commit**' (3 bullets — 측정 가능한 약속 + 시점), '**누가 책임지나**' (1줄 — 이름 / 역할).\n\n회사 / 현재 상태:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

@@ -2902,6 +2902,62 @@ body.page-corner-fold .bn-editor::after {
   background: linear-gradient(225deg, #3f3f46 50%, transparent 50%);
 }
 
+/* H3 with leading decoration — small ✦ before H3 text. */
+body.h3-with-decoration .bn-editor h3::before,
+body.h3-with-decoration .bn-editor [data-content-type="heading"][data-level="3"] > *:first-child::before {
+  content: "✦ ";
+  color: #f59e0b !important;
+  margin-right: 0.2em;
+}
+.dark body.h3-with-decoration .bn-editor h3::before,
+.dark body.h3-with-decoration .bn-editor [data-content-type="heading"][data-level="3"] > *:first-child::before {
+  color: #fbbf24 !important;
+}
+
+/* Pointing emoji bullets — bullet marker is 👉. */
+body.ul-emoji-marker .bn-editor ul,
+body.ul-emoji-marker .bn-editor [data-content-type="bulletListItem"] {
+  list-style: none !important;
+  padding-left: 1.8em;
+}
+body.ul-emoji-marker .bn-editor ul > li::before,
+body.ul-emoji-marker .bn-editor [data-content-type="bulletListItem"]::before {
+  content: "👉 ";
+  margin-left: -1.4em;
+  margin-right: 0.4em;
+}
+
+/* Larger table text — slightly larger font for table content. */
+body.table-large-font .bn-editor table,
+body.table-large-font .bn-editor [data-content-type="table"] {
+  font-size: 1.05em !important;
+}
+.dark body.table-large-font .bn-editor table,
+.dark body.table-large-font .bn-editor [data-content-type="table"] {
+  font-size: 1.05em !important;
+}
+
+/* Shadow code blocks — drop shadow around code blocks. */
+body.code-block-shadow .bn-editor pre,
+body.code-block-shadow .bn-editor [data-content-type="codeBlock"] {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+  border-radius: 8px !important;
+}
+.dark body.code-block-shadow .bn-editor pre,
+.dark body.code-block-shadow .bn-editor [data-content-type="codeBlock"] {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Icon-only callouts — hide callout text, show only the leading icon. */
+body.callout-icon-emoji-only .bn-editor [data-content-type="callout"] {
+  font-size: 0 !important;
+}
+body.callout-icon-emoji-only .bn-editor [data-content-type="callout"] [data-content-type="emoji"],
+body.callout-icon-emoji-only .bn-editor [data-content-type="callout"] .bn-icon,
+body.callout-icon-emoji-only .bn-editor [data-content-type="callout"] .bn-block-content > span:first-child {
+  font-size: 2.4rem !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
