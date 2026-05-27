@@ -904,6 +904,11 @@ export function PageStyleMenu({
                       { key: "h1-letter-spacing", label: "H1 tracking" },
                       { key: "paragraph-justify", label: "Justify body" },
                       { key: "first-paragraph-lead", label: "Lead paragraph" },
+                      { key: "code-inline-mono", label: "Inline mono" },
+                      { key: "blockquote-large", label: "Big quote" },
+                      { key: "h3-italic", label: "H3 italic" },
+                      { key: "checkbox-larger", label: "Big checkbox" },
+                      { key: "page-vignette", label: "Vignette" },
                     ] as const
                   ).map((t) => (
                     <button

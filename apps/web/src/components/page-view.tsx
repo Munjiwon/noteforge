@@ -492,6 +492,11 @@ export function PageView({
       "h1-letter-spacing",
       "paragraph-justify",
       "first-paragraph-lead",
+      "code-inline-mono",
+      "blockquote-large",
+      "h3-italic",
+      "checkbox-larger",
+      "page-vignette",
     ];
     try {
       for (const k of toggles) {

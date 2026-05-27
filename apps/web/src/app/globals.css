@@ -1607,6 +1607,68 @@ body.first-paragraph-lead .bn-editor [data-content-type="heading"][data-level="1
   color: #d4d4d8 !important;
 }
 
+/* Inline mono — give inline code a different mono stack with chip-style background. */
+body.code-inline-mono .bn-editor code:not(pre code),
+body.code-inline-mono .bn-editor [data-style="code"] {
+  font-family: "JetBrains Mono", "SF Mono", "Fira Code", ui-monospace, Menlo, monospace !important;
+  background: #f4f4f5 !important;
+  padding: 0.1em 0.4em !important;
+  border-radius: 4px !important;
+  font-size: 0.92em !important;
+}
+.dark body.code-inline-mono .bn-editor code:not(pre code),
+.dark body.code-inline-mono .bn-editor [data-style="code"] {
+  background: #27272a !important;
+  color: #f4f4f5 !important;
+}
+
+/* Big blockquote — enlarge blockquote text with a strong accent border. */
+body.blockquote-large .bn-editor blockquote,
+body.blockquote-large .bn-editor [data-content-type="quote"] {
+  font-size: 1.22em !important;
+  line-height: 1.6 !important;
+  padding: 0.6em 0 0.6em 1.2em !important;
+  border-left: 4px solid #2563eb !important;
+  color: #27272a !important;
+}
+.dark body.blockquote-large .bn-editor blockquote,
+.dark body.blockquote-large .bn-editor [data-content-type="quote"] {
+  border-left-color: #60a5fa !important;
+  color: #e4e4e7 !important;
+}
+
+/* H3 italic — italicize H3 for a softer subsection style. */
+body.h3-italic .bn-editor h3,
+body.h3-italic .bn-editor [data-content-type="heading"][data-level="3"] {
+  font-style: italic !important;
+}
+.dark body.h3-italic .bn-editor h3,
+.dark body.h3-italic .bn-editor [data-content-type="heading"][data-level="3"] {
+  font-style: italic !important;
+}
+
+/* Big checkbox — enlarge checkboxes in checklist blocks for higher visibility. */
+body.checkbox-larger .bn-editor [data-content-type="checkListItem"] input[type="checkbox"],
+body.checkbox-larger .bn-editor input[type="checkbox"] {
+  width: 1.25em !important;
+  height: 1.25em !important;
+  transform: translateY(-1px);
+  accent-color: #2563eb;
+}
+.dark body.checkbox-larger .bn-editor [data-content-type="checkListItem"] input[type="checkbox"],
+.dark body.checkbox-larger .bn-editor input[type="checkbox"] {
+  accent-color: #60a5fa;
+}
+
+/* Page vignette — apply a subtle darkened-edge vignette to the page container for focus. */
+body.page-vignette .bn-editor {
+  box-shadow: inset 0 0 80px 12px rgba(0, 0, 0, 0.06) !important;
+  border-radius: 6px;
+}
+.dark body.page-vignette .bn-editor {
+  box-shadow: inset 0 0 80px 12px rgba(0, 0, 0, 0.35) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
