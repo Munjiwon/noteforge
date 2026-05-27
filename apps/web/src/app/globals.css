@@ -2958,6 +2958,53 @@ body.callout-icon-emoji-only .bn-editor [data-content-type="callout"] .bn-block-
   font-size: 2.4rem !important;
 }
 
+/* H1 tight tracking — negative letter-spacing for a modern compressed H1. */
+body.h1-tracking-tight .bn-editor h1,
+body.h1-tracking-tight .bn-editor [data-content-type="heading"][data-level="1"] {
+  letter-spacing: -0.025em !important;
+}
+
+/* Wrap code lines — wrap long code lines instead of horizontal scroll. */
+body.code-line-wrap .bn-editor pre,
+body.code-line-wrap .bn-editor pre code,
+body.code-line-wrap .bn-editor [data-content-type="codeBlock"] {
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+  overflow-x: visible !important;
+}
+
+/* Header-only-border table — only the header row has a border. */
+body.table-borderless-headers .bn-editor table th,
+body.table-borderless-headers .bn-editor [data-content-type="table"] th {
+  border: none !important;
+  border-bottom: 3px solid #2563eb !important;
+}
+body.table-borderless-headers .bn-editor table td,
+body.table-borderless-headers .bn-editor [data-content-type="table"] td {
+  border: none !important;
+}
+.dark body.table-borderless-headers .bn-editor table th,
+.dark body.table-borderless-headers .bn-editor [data-content-type="table"] th {
+  border-bottom-color: #60a5fa !important;
+}
+
+/* Pulse callout animation — gentle pulse on callout backgrounds. */
+@keyframes nf-callout-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.2); }
+  50% { box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); }
+}
+body.callout-pulse-animation .bn-editor [data-content-type="callout"] {
+  animation: nf-callout-pulse 2.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+/* Print-only extra margin — wider page margins on print only. */
+@media print {
+  body.page-print-only-margin .bn-editor {
+    padding: 3cm 2.5cm !important;
+  }
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

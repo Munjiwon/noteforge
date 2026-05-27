@@ -1784,6 +1784,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean internal sales QBR (Quarterly Business Review) doc — for the sales team's own review, not customer-facing. Use 합쇼체. Markdown: '**분기 한 줄**' (1줄 — 'Q[X] 목표 X달성 / Y미달성'), '**숫자 (테이블)**' ('지표 | 목표 | 실적 | 달성률 | 전분기 대비'. ARR / 신규 계약 / 평균 deal 크기 / sales cycle 길이 / win rate / pipeline coverage), '**잘 된 것**' (3 bullets — 큰 win / 새 채널 / 효과 본 활동), '**안 된 것**' (3 bullets — lost deal 패턴 / 막힌 단계), '**다음 분기 베팅**' (3 bullets — 산업 / 페르소나 / 메시지 변경), '**필요한 지원**' (bullets — 마케팅 / 제품 / CS에 부탁할 것).\n\n분기 데이터:\n${text}`,
   dei_statement_ko: (text) =>
     `Draft a Korean DEI (Diversity, Equity, Inclusion) statement for a company at the stage described below. Use 해요체. 솔직한 톤 — 빈말 / 과장 금지, 우리가 실제로 한 것 / 안 한 것 / 할 것을 명확히. Markdown: '**우리의 신념 (1단락)**' (3-4줄), '**지금 우리가 한 것**' (3 bullets — 데이터 또는 구체적 행동), '**지금 우리가 부족한 것**' (2 bullets — 솔직히), '**올해 commit**' (3 bullets — 측정 가능한 약속 + 시점), '**누가 책임지나**' (1줄 — 이름 / 역할).\n\n회사 / 현재 상태:\n${text}`,
+  translate_ko_to_malay: (text) =>
+    `Translate the Korean text below into natural Malay (Bahasa Melayu). 격식 ('anda' 정중 / 'kamu' 친근) 원문에 맞춤. Reply with two sections: '**Terjemahan**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  customer_call_prep_qbr_ko: (text) =>
+    `Build a Korean prep doc for a customer QBR call. Use 해요체. Markdown: '**고객 1줄**' (회사 / 산업 / 우리와의 관계 기간), '**지난 분기 우리가 한 것**' (bullets — 출시 / 지원 / 신규 도입 기능), '**고객 사용 패턴**' (3 bullets — 어떤 기능을 / 얼마나 / 누가), '**잘 된 것 (인용 가능하면)**' (1-2 bullets), '**막힌 것 / 우리가 들어줘야 할 것**' (bullets — 티켓 / 피드백 from CSM), '**다음 분기 같이 할 3가지**' (numbered — 구체적 action), '**갱신 / 확장 신호**' (1줄 — 갱신 의향 / 추가 모듈 / 좌석 확장), '**미팅 진행 가이드**' (3 bullets — 누가 진행 / 시간 분배 / 결정 1개 commit).\n\n고객 / 계약:\n${text}`,
+  translate_ko_to_hindi: (text) =>
+    `Translate the Korean text below into natural Hindi (हिन्दी). 격식 ('आप' 정중 / 'तुम' 친근 / 'तू' 더 친근) 원문에 맞춤. Devanagari script 정확히. Reply with two sections: '**अनुवाद**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  slack_channel_charter_ko: (text) =>
+    `Draft a Korean Slack channel charter pinned message for the channel described below. Use 해요체. Markdown: '**한 줄 목적**' (1줄 — '이 채널은 ...를 위한 채널입니다'), '**누가 참여하나요**' (1줄), '**여기서 다루는 것**' (bullets), '**여기서 다루지 않는 것 (다른 채널 안내)**' (bullets — '~ 질문은 #other-channel로'), '**채널 룰 (3-5개)**' (numbered — 응답 SLA / 스레드 사용 / @here 자제 등), '**관리자 / 담당자**' (1줄 — 이름).\n\n채널 컨텍스트:\n${text}`,
+  translate_ko_to_bengali: (text) =>
+    `Translate the Korean text below into natural Bengali (বাংলা). 격식 ('আপনি' 정중 / 'তুমি' 친근 / 'তুই' 더 친근) 원문에 맞춤. Reply with two sections: '**অনুবাদ**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  perf_calibration_doc_ko: (text) =>
+    `Build a Korean performance calibration doc for the engineer / employee described below. Use 합쇼체. Markdown: '**평가 기간**' (1줄), '**평가 대상**' (1줄 — 직책 / 레벨), '**기간 임팩트 요약 (3-5 bullets)**' (결과 + 데이터), '**Strength (3 bullets)**' (구체적 행동 + 영향), '**Growth area (2 bullets)**' (구체적 + 다음 분기 개선 방향), '**제안 평가 (Rating)**' (1줄 — 'Exceeds / Meets / Below + 1줄 근거'), '**Calibration 노트**' (2 bullets — 매니저가 다른 calibrator에게 설명해야 할 미묘한 컨텍스트), '**제안 발전 액션**' (2 bullets — 다음 사이클까지 구체적 액션).\n\n임팩트 / 피드백 노트:\n${text}`,
+  translate_ko_to_tamil: (text) =>
+    `Translate the Korean text below into natural Tamil (தமிழ்). 격식 ('நீங்கள்' 정중 / 'நீ' 친근) 원문에 맞춤. Tamil script 정확히. Reply with two sections: '**மொழிபெயர்ப்பு**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  employer_brand_post_ko: (text) =>
+    `Write a Korean employer brand post for LinkedIn / careers page. Use 해요체. 'we are hiring' 영업 톤 금지 — 우리 회사가 어떤 곳인지 보여주는 톤. Markdown: '**Hook (1-2줄)**' (의외의 사실 또는 사람 이야기로 시작), '**우리가 누구인가요 (1단락)**' (3-4줄 — 회사 / 미션 / 사람), '**여기서 일하면 어떤 것 (3 bullets)**' (구체적 — 'X 결정에 참여' / 'Y 도구 사용' / 'Z 학습' — 빈말 금지), '**우리에게 안 맞을 수도 있는 사람 (1-2 bullets)**' (솔직히 — 차별이 아니라 fit), '**열린 포지션 + CTA**' (1줄 — 채용 페이지 placeholder).\n\n회사 / 채용 컨텍스트:\n${text}`,
+  translate_ko_to_urdu: (text) =>
+    `Translate the Korean text below into natural Urdu (اردو). RTL 흐름, 격식 ('آپ' 정중 / 'تم' 친근 / 'تو' 더 친근) 원문에 맞춤. Reply with two sections: '**ترجمہ**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  ux_research_recruitment_screener_ko: (text) =>
+    `Build a Korean UX research participant recruitment screener for the target persona below. Use 해요체. Markdown: '**리서치 한 줄**' (1줄 — 무엇을 위한 리서치, 모수 N명), '**참여 조건 (Inclusion)**' (bullets — 구체적 — 직업 / 도구 사용 / 빈도 등), '**제외 조건 (Exclusion)**' (bullets — 우리 / 경쟁사 직원 / 이전 리서치 참가자 등), '**스크리너 질문 (객관식 5-7개)**' (각 질문 + 통과 / 탈락 답변 명시), '**보상**' (1줄 — '기프티콘 X만원 / 1개월 무료 / 사례비 Y만원'), '**참여 안내**' (1단락 — Zoom / 시간 / 녹화 동의 / 익명화).\n\n리서치 / 페르소나:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

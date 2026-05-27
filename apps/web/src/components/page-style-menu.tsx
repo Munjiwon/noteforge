@@ -1004,6 +1004,11 @@ export function PageStyleMenu({
                       { key: "table-large-font", label: "Big table text" },
                       { key: "code-block-shadow", label: "Shadow code" },
                       { key: "callout-icon-emoji-only", label: "Icon-only callout" },
+                      { key: "h1-tracking-tight", label: "H1 tight" },
+                      { key: "code-line-wrap", label: "Wrap code lines" },
+                      { key: "table-borderless-headers", label: "Header-only border" },
+                      { key: "callout-pulse-animation", label: "Pulse callout" },
+                      { key: "page-print-only-margin", label: "Print extra margin" },
                     ] as const
                   ).map((t) => (
                     <button
