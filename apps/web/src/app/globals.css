@@ -1260,6 +1260,56 @@ body.paragraph-separators .bn-editor p {
   border-bottom-color: rgba(255, 255, 255, 0.06);
 }
 
+/* Title underline — bold line beneath the page title row. */
+body.title-underline .nf-page-title {
+  border-bottom: 3px solid #1e293b;
+  padding-bottom: 0.5rem;
+}
+.dark body.title-underline .nf-page-title {
+  border-bottom-color: #e2e8f0;
+}
+
+/* Quote left ribbon — thick colored bar on the left edge of blockquotes. */
+body.quote-left-ribbon .bn-editor blockquote {
+  border-left: 6px solid #6366f1 !important;
+  padding-left: 1rem;
+  background: rgba(99, 102, 241, 0.04);
+  border-radius: 0 4px 4px 0;
+}
+.dark body.quote-left-ribbon .bn-editor blockquote {
+  border-left-color: #818cf8 !important;
+  background: rgba(129, 140, 248, 0.08);
+}
+
+/* Image rounded-xl — friendlier large-radius corners on images. */
+body.image-rounded-xl .bn-editor img {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* Sidebar accent — give the current page row a brand-colored left bar. */
+body.sidebar-accent aside a[aria-current="page"],
+body.sidebar-accent aside [data-active="true"],
+body.sidebar-accent aside .bg-black\/5 {
+  border-left: 3px solid #2563eb;
+  padding-left: calc(0.5rem - 3px);
+}
+.dark body.sidebar-accent aside a[aria-current="page"],
+.dark body.sidebar-accent aside [data-active="true"],
+.dark body.sidebar-accent aside .bg-black\/5 {
+  border-left-color: #60a5fa;
+}
+
+/* Compact spacing — tighten the vertical rhythm between editor blocks. */
+body.compact-spacing .bn-editor .bn-block {
+  margin-top: 0.1rem !important;
+  margin-bottom: 0.1rem !important;
+}
+body.compact-spacing .bn-editor p,
+body.compact-spacing .bn-editor li {
+  line-height: 1.45 !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

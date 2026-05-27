@@ -874,6 +874,11 @@ export function PageStyleMenu({
                       { key: "thin-scrollbar", label: "Thin scrollbar" },
                       { key: "lock-page-title", label: "Lock page title" },
                       { key: "paragraph-separators", label: "¶ separators" },
+                      { key: "title-underline", label: "Title underline" },
+                      { key: "quote-left-ribbon", label: "Quote ribbon" },
+                      { key: "image-rounded-xl", label: "Image rounded-xl" },
+                      { key: "sidebar-accent", label: "Sidebar accent" },
+                      { key: "compact-spacing", label: "Compact spacing" },
                     ] as const
                   ).map((t) => (
                     <button

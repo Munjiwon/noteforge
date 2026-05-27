@@ -462,6 +462,11 @@ export function PageView({
       "thin-scrollbar",
       "lock-page-title",
       "paragraph-separators",
+      "title-underline",
+      "quote-left-ribbon",
+      "image-rounded-xl",
+      "sidebar-accent",
+      "compact-spacing",
     ];
     try {
       for (const k of toggles) {
