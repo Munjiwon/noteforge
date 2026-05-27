@@ -507,6 +507,11 @@ export function PageView({
       "callout-shadow",
       "link-no-underline",
       "letter-spacing-body",
+      "ul-disc-square",
+      "ol-roman",
+      "page-grid-bg",
+      "first-line-indent",
+      "caption-italic",
     ];
     try {
       for (const k of toggles) {

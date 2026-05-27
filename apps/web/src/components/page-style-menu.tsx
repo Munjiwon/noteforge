@@ -919,6 +919,11 @@ export function PageStyleMenu({
                       { key: "callout-shadow", label: "Callout shadow" },
                       { key: "link-no-underline", label: "Plain links" },
                       { key: "letter-spacing-body", label: "Body tracking" },
+                      { key: "ul-disc-square", label: "Square bullets" },
+                      { key: "ol-roman", label: "Roman numerals" },
+                      { key: "page-grid-bg", label: "Grid bg" },
+                      { key: "first-line-indent", label: "First-line indent" },
+                      { key: "caption-italic", label: "Italic captions" },
                     ] as const
                   ).map((t) => (
                     <button

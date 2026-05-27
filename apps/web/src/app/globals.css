@@ -1800,6 +1800,59 @@ body.letter-spacing-body .bn-editor [data-content-type="numberedListItem"] {
   letter-spacing: 0.015em !important;
 }
 
+/* Square bullets — switch bullet list markers to filled squares. */
+body.ul-disc-square .bn-editor ul,
+body.ul-disc-square .bn-editor [data-content-type="bulletListItem"] {
+  list-style-type: square !important;
+}
+.dark body.ul-disc-square .bn-editor ul,
+.dark body.ul-disc-square .bn-editor [data-content-type="bulletListItem"] {
+  list-style-type: square !important;
+}
+
+/* Roman numerals — switch ordered lists to upper Roman numerals. */
+body.ol-roman .bn-editor ol,
+body.ol-roman .bn-editor [data-content-type="numberedListItem"] {
+  list-style-type: upper-roman !important;
+}
+.dark body.ol-roman .bn-editor ol,
+.dark body.ol-roman .bn-editor [data-content-type="numberedListItem"] {
+  list-style-type: upper-roman !important;
+}
+
+/* Page grid background — subtle dot grid behind the editor for sketchier vibe. */
+body.page-grid-bg .bn-editor {
+  background-image: radial-gradient(circle, #e4e4e7 1px, transparent 1px) !important;
+  background-size: 24px 24px !important;
+}
+.dark body.page-grid-bg .bn-editor {
+  background-image: radial-gradient(circle, #3f3f46 1px, transparent 1px) !important;
+  background-size: 24px 24px !important;
+}
+
+/* First-line indent — indent the first line of paragraphs for a book-like layout. */
+body.first-line-indent .bn-editor [data-content-type="paragraph"] p,
+body.first-line-indent .bn-editor [data-content-type="paragraph"] .bn-inline-content {
+  text-indent: 1.6em !important;
+}
+.dark body.first-line-indent .bn-editor [data-content-type="paragraph"] p,
+.dark body.first-line-indent .bn-editor [data-content-type="paragraph"] .bn-inline-content {
+  text-indent: 1.6em !important;
+}
+
+/* Italic captions — italicize image captions / figcaptions for editorial polish. */
+body.caption-italic .bn-editor figcaption,
+body.caption-italic .bn-editor [data-content-type="image"] [data-caption],
+body.caption-italic .bn-editor [data-content-type="image"] figcaption {
+  font-style: italic !important;
+  color: #71717a !important;
+}
+.dark body.caption-italic .bn-editor figcaption,
+.dark body.caption-italic .bn-editor [data-content-type="image"] [data-caption],
+.dark body.caption-italic .bn-editor [data-content-type="image"] figcaption {
+  color: #a1a1aa !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
