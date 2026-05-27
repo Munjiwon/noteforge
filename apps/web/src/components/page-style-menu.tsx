@@ -959,6 +959,11 @@ export function PageStyleMenu({
                       { key: "table-borderless", label: "Borderless table" },
                       { key: "callout-numbered-prefix", label: "Callout #" },
                       { key: "page-corner-flag", label: "Corner flag" },
+                      { key: "page-watermark-text", label: "DRAFT watermark" },
+                      { key: "h1-shadow-text", label: "H1 text shadow" },
+                      { key: "ul-arrow-marker", label: "→ bullets" },
+                      { key: "table-cell-padding-wider", label: "Roomy cells" },
+                      { key: "callout-rounded-pill", label: "Callout pill" },
                     ] as const
                   ).map((t) => (
                     <button

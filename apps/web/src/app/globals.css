@@ -2360,6 +2360,84 @@ body.page-corner-flag .bn-editor::after {
   color: #18181b;
 }
 
+/* Page watermark — diagonal "DRAFT" watermark behind the editor content. */
+body.page-watermark-text .bn-editor {
+  position: relative;
+  isolation: isolate;
+}
+body.page-watermark-text .bn-editor::before {
+  content: "DRAFT";
+  position: absolute;
+  top: 35%;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 8rem;
+  font-weight: 900;
+  letter-spacing: 0.4em;
+  color: #18181b;
+  opacity: 0.04;
+  transform: rotate(-22deg);
+  pointer-events: none;
+  z-index: 0;
+}
+.dark body.page-watermark-text .bn-editor::before {
+  color: #fafafa;
+  opacity: 0.05;
+}
+
+/* H1 text shadow — soft offset shadow for a slightly playful H1. */
+body.h1-shadow-text .bn-editor h1,
+body.h1-shadow-text .bn-editor [data-content-type="heading"][data-level="1"] {
+  text-shadow: 3px 3px 0 rgba(37, 99, 235, 0.18) !important;
+}
+.dark body.h1-shadow-text .bn-editor h1,
+.dark body.h1-shadow-text .bn-editor [data-content-type="heading"][data-level="1"] {
+  text-shadow: 3px 3px 0 rgba(96, 165, 250, 0.28) !important;
+}
+
+/* Arrow bullets — render bullet list markers as → arrows. */
+body.ul-arrow-marker .bn-editor ul,
+body.ul-arrow-marker .bn-editor [data-content-type="bulletListItem"] {
+  list-style: none !important;
+  padding-left: 1.6em;
+}
+body.ul-arrow-marker .bn-editor ul > li::before,
+body.ul-arrow-marker .bn-editor [data-content-type="bulletListItem"]::before {
+  content: "→ ";
+  color: #2563eb !important;
+  font-weight: 700;
+  margin-left: -1.2em;
+  margin-right: 0.4em;
+}
+.dark body.ul-arrow-marker .bn-editor ul > li::before,
+.dark body.ul-arrow-marker .bn-editor [data-content-type="bulletListItem"]::before {
+  color: #60a5fa !important;
+}
+
+/* Wider table cell padding — give table cells more breathing room. */
+body.table-cell-padding-wider .bn-editor table th,
+body.table-cell-padding-wider .bn-editor table td,
+body.table-cell-padding-wider .bn-editor [data-content-type="table"] th,
+body.table-cell-padding-wider .bn-editor [data-content-type="table"] td {
+  padding: 0.85em 1.1em !important;
+}
+.dark body.table-cell-padding-wider .bn-editor table th,
+.dark body.table-cell-padding-wider .bn-editor table td,
+.dark body.table-cell-padding-wider .bn-editor [data-content-type="table"] th,
+.dark body.table-cell-padding-wider .bn-editor [data-content-type="table"] td {
+  padding: 0.85em 1.1em !important;
+}
+
+/* Callout pill — render callouts as fully-rounded pill-shaped blocks. */
+body.callout-rounded-pill .bn-editor [data-content-type="callout"] {
+  border-radius: 999px !important;
+  padding: 0.6em 1.4em !important;
+}
+.dark body.callout-rounded-pill .bn-editor [data-content-type="callout"] {
+  border-radius: 999px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
