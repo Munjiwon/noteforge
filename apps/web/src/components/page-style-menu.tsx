@@ -869,6 +869,11 @@ export function PageStyleMenu({
                       { key: "strikethrough-faded", label: "Strike faded" },
                       { key: "drop-cap", label: "Drop cap" },
                       { key: "highlight-accent", label: "Highlight accent" },
+                      { key: "cream-bg", label: "Cream background" },
+                      { key: "outline-current-ring", label: "Outline current" },
+                      { key: "thin-scrollbar", label: "Thin scrollbar" },
+                      { key: "lock-page-title", label: "Lock page title" },
+                      { key: "paragraph-separators", label: "¶ separators" },
                     ] as const
                   ).map((t) => (
                     <button

@@ -457,6 +457,11 @@ export function PageView({
       "strikethrough-faded",
       "drop-cap",
       "highlight-accent",
+      "cream-bg",
+      "outline-current-ring",
+      "thin-scrollbar",
+      "lock-page-title",
+      "paragraph-separators",
     ];
     try {
       for (const k of toggles) {

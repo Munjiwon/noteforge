@@ -129,6 +129,7 @@ export function PageOutline({ content }: { content: string }) {
           <a
             key={h.id}
             href={`#${h.id}`}
+            data-outline-active={active ? "true" : undefined}
             onClick={(e) => {
               e.preventDefault();
               setMobileOpen(false);

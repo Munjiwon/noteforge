@@ -1206,6 +1206,60 @@ body.highlight-accent .bn-editor mark {
   color: #18181b !important;
 }
 
+/* Cream background — soft sepia/cream tone for the page surface. */
+body.cream-bg {
+  background: #fdf6e3 !important;
+}
+body.cream-bg .bn-editor {
+  background: transparent !important;
+}
+.dark body.cream-bg {
+  background: #1c1917 !important;
+}
+
+/* Outline current ring — give the active outline link a stronger pill highlight. */
+body.outline-current-ring [data-outline-active="true"] {
+  background: rgba(59, 130, 246, 0.12);
+  border-radius: 0.25rem;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.35);
+  padding-right: 4px;
+}
+.dark body.outline-current-ring [data-outline-active="true"] {
+  background: rgba(96, 165, 250, 0.18);
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.4);
+}
+
+/* Thin scrollbar — slim down the scrollbar thumb (WebKit + Firefox). */
+body.thin-scrollbar * {
+  scrollbar-width: thin;
+}
+body.thin-scrollbar *::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+body.thin-scrollbar *::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 3px;
+}
+.dark body.thin-scrollbar *::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Lock page title — disable selection on the title row so it can't be highlighted by accident. */
+body.lock-page-title .nf-page-title input {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+/* Paragraph separators — gentle horizontal rule under each editor paragraph. */
+body.paragraph-separators .bn-editor p {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  padding-bottom: 0.25rem;
+}
+.dark body.paragraph-separators .bn-editor p {
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
