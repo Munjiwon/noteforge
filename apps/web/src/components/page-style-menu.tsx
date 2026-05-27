@@ -889,6 +889,11 @@ export function PageStyleMenu({
                       { key: "bold-accent", label: "Bold accent" },
                       { key: "internal-link-arrow", label: "Internal → arrow" },
                       { key: "no-focus-ring", label: "No focus ring" },
+                      { key: "reading-focus-card", label: "Focus card" },
+                      { key: "title-gradient", label: "Title gradient" },
+                      { key: "list-marker-bold", label: "List marker bold" },
+                      { key: "print-no-header", label: "Print: no header" },
+                      { key: "custom-toggle-arrow", label: "▶ toggle arrow" },
                     ] as const
                   ).map((t) => (
                     <button

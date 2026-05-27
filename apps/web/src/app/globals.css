@@ -1421,6 +1421,81 @@ body.no-focus-ring *:focus-visible {
   box-shadow: none !important;
 }
 
+/* Reading focus card — wrap the page body in a card that floats above the bg. */
+body.reading-focus-card {
+  background: #f1f5f9;
+}
+body.reading-focus-card .max-w-3xl,
+body.reading-focus-card .max-w-5xl {
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px -8px rgba(0, 0, 0, 0.12);
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.dark body.reading-focus-card {
+  background: #0f172a;
+}
+.dark body.reading-focus-card .max-w-3xl,
+.dark body.reading-focus-card .max-w-5xl {
+  background: #1e293b;
+  box-shadow: 0 4px 20px -8px rgba(0, 0, 0, 0.5);
+}
+
+/* Title gradient — paint the page title with a brand gradient. */
+body.title-gradient .nf-page-title input {
+  background: linear-gradient(90deg, #6366f1 0%, #ec4899 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  font-weight: 700;
+}
+
+/* List marker bold — heavier list bullets/numbers for visual hierarchy. */
+body.list-marker-bold .bn-editor ul > li::marker,
+body.list-marker-bold .bn-editor ol > li::marker {
+  font-weight: 800;
+  color: #1f2937;
+}
+.dark body.list-marker-bold .bn-editor ul > li::marker,
+.dark body.list-marker-bold .bn-editor ol > li::marker {
+  color: #e5e7eb;
+}
+
+/* Print: no header — drop top breadcrumb/menus while printing (more page room). */
+@media print {
+  body.print-no-header header,
+  body.print-no-header nav.no-print,
+  body.print-no-header [data-page-breadcrumb],
+  body.print-no-header [data-page-controls] {
+    display: none !important;
+  }
+}
+
+/* Custom toggle arrow — swap the default <details> marker for a chunky ▶. */
+body.custom-toggle-arrow details > summary {
+  list-style: none;
+  cursor: pointer;
+  position: relative;
+  padding-left: 1.25rem;
+}
+body.custom-toggle-arrow details > summary::-webkit-details-marker {
+  display: none;
+}
+body.custom-toggle-arrow details > summary::before {
+  content: "▶";
+  position: absolute;
+  left: 0;
+  top: 0.05em;
+  font-size: 0.8em;
+  color: #2563eb;
+  transition: transform 120ms ease;
+}
+body.custom-toggle-arrow details[open] > summary::before {
+  transform: rotate(90deg);
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

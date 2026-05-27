@@ -477,6 +477,11 @@ export function PageView({
       "bold-accent",
       "internal-link-arrow",
       "no-focus-ring",
+      "reading-focus-card",
+      "title-gradient",
+      "list-marker-bold",
+      "print-no-header",
+      "custom-toggle-arrow",
     ];
     try {
       for (const k of toggles) {
