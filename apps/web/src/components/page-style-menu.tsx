@@ -949,6 +949,11 @@ export function PageStyleMenu({
                       { key: "table-rounded", label: "Round table" },
                       { key: "code-block-numbered", label: "Line numbers" },
                       { key: "page-edge-glow", label: "Edge glow" },
+                      { key: "h5-uppercase-tiny", label: "H5 tiny CAPS" },
+                      { key: "code-block-window-bar", label: "Code window" },
+                      { key: "callout-tip-emoji", label: "Callout label" },
+                      { key: "table-header-bold-bg", label: "Table header bg" },
+                      { key: "page-side-margins-wider", label: "Wide margins" },
                     ] as const
                   ).map((t) => (
                     <button

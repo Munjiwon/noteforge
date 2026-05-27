@@ -537,6 +537,11 @@ export function PageView({
       "table-rounded",
       "code-block-numbered",
       "page-edge-glow",
+      "h5-uppercase-tiny",
+      "code-block-window-bar",
+      "callout-tip-emoji",
+      "table-header-bold-bg",
+      "page-side-margins-wider",
     ];
     try {
       for (const k of toggles) {

@@ -2192,6 +2192,88 @@ body.page-edge-glow .bn-editor {
   box-shadow: 0 0 36px 6px rgba(96, 165, 250, 0.24) !important;
 }
 
+/* H5 tiny caps — render H5 small, uppercase, tracked — section-label style. */
+body.h5-uppercase-tiny .bn-editor h5,
+body.h5-uppercase-tiny .bn-editor [data-content-type="heading"][data-level="5"] {
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+  font-size: 0.78em !important;
+  font-weight: 700 !important;
+  color: #71717a !important;
+}
+.dark body.h5-uppercase-tiny .bn-editor h5,
+.dark body.h5-uppercase-tiny .bn-editor [data-content-type="heading"][data-level="5"] {
+  color: #a1a1aa !important;
+}
+
+/* Code block window bar — add a faux macOS-style window title bar above code blocks. */
+body.code-block-window-bar .bn-editor pre,
+body.code-block-window-bar .bn-editor [data-content-type="codeBlock"] {
+  position: relative;
+  padding-top: 2.4em !important;
+}
+body.code-block-window-bar .bn-editor pre::before,
+body.code-block-window-bar .bn-editor [data-content-type="codeBlock"]::before {
+  content: "● ● ●";
+  position: absolute;
+  top: 0.5em;
+  left: 1em;
+  color: #ef4444;
+  letter-spacing: 0.2em;
+  font-size: 0.7em;
+  text-shadow: 1.2em 0 0 #facc15, 2.4em 0 0 #22c55e;
+  opacity: 0.85;
+}
+.dark body.code-block-window-bar .bn-editor pre::before,
+.dark body.code-block-window-bar .bn-editor [data-content-type="codeBlock"]::before {
+  opacity: 0.75;
+}
+
+/* Callout tip-emoji label — prepend "TIP:" label to all callouts. */
+body.callout-tip-emoji .bn-editor [data-content-type="callout"]::before {
+  content: "💡 TIP";
+  display: inline-block;
+  font-size: 0.7em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #f59e0b;
+  margin-right: 0.6em;
+  vertical-align: middle;
+}
+.dark body.callout-tip-emoji .bn-editor [data-content-type="callout"]::before {
+  color: #fbbf24;
+}
+
+/* Bold table header bg — give table header cells a strong background and bold text. */
+body.table-header-bold-bg .bn-editor table th,
+body.table-header-bold-bg .bn-editor [data-content-type="table"] th {
+  background: #1e293b !important;
+  color: #f8fafc !important;
+  font-weight: 700 !important;
+  padding: 0.6em 0.8em !important;
+}
+.dark body.table-header-bold-bg .bn-editor table th,
+.dark body.table-header-bold-bg .bn-editor [data-content-type="table"] th {
+  background: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+/* Wider side margins — add extra horizontal padding on the editor for breathing room. */
+body.page-side-margins-wider .bn-editor {
+  padding-left: 6rem !important;
+  padding-right: 6rem !important;
+}
+.dark body.page-side-margins-wider .bn-editor {
+  padding-left: 6rem !important;
+  padding-right: 6rem !important;
+}
+@media (max-width: 900px) {
+  body.page-side-margins-wider .bn-editor {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
