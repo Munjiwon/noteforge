@@ -924,6 +924,11 @@ export function PageStyleMenu({
                       { key: "page-grid-bg", label: "Grid bg" },
                       { key: "first-line-indent", label: "First-line indent" },
                       { key: "caption-italic", label: "Italic captions" },
+                      { key: "h1-italic-accent", label: "H1 italic stripe" },
+                      { key: "quote-marks-large", label: "Big quotes" },
+                      { key: "list-spacing-airy", label: "Airy lists" },
+                      { key: "table-header-uppercase", label: "TABLE HEADERS" },
+                      { key: "checkbox-strikethrough", label: "Strike done" },
                     ] as const
                   ).map((t) => (
                     <button

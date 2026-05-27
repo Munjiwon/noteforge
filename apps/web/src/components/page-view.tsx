@@ -512,6 +512,11 @@ export function PageView({
       "page-grid-bg",
       "first-line-indent",
       "caption-italic",
+      "h1-italic-accent",
+      "quote-marks-large",
+      "list-spacing-airy",
+      "table-header-uppercase",
+      "checkbox-strikethrough",
     ];
     try {
       for (const k of toggles) {

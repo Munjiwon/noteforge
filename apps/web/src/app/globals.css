@@ -1853,6 +1853,80 @@ body.caption-italic .bn-editor [data-content-type="image"] figcaption {
   color: #a1a1aa !important;
 }
 
+/* H1 italic + accent stripe — italicize H1 and add an accent stripe at the left edge. */
+body.h1-italic-accent .bn-editor h1,
+body.h1-italic-accent .bn-editor [data-content-type="heading"][data-level="1"] {
+  font-style: italic !important;
+  border-left: 4px solid #2563eb !important;
+  padding-left: 0.6em !important;
+}
+.dark body.h1-italic-accent .bn-editor h1,
+.dark body.h1-italic-accent .bn-editor [data-content-type="heading"][data-level="1"] {
+  border-left-color: #60a5fa !important;
+}
+
+/* Big quote marks — show a giant pseudo opening quotation mark on quote blocks. */
+body.quote-marks-large .bn-editor blockquote,
+body.quote-marks-large .bn-editor [data-content-type="quote"] {
+  position: relative;
+  padding-left: 2em !important;
+}
+body.quote-marks-large .bn-editor blockquote::before,
+body.quote-marks-large .bn-editor [data-content-type="quote"]::before {
+  content: "\\201C";
+  position: absolute;
+  left: 0.1em;
+  top: -0.3em;
+  font-size: 2.6em;
+  line-height: 1;
+  color: #2563eb;
+  font-family: Georgia, serif;
+  opacity: 0.55;
+}
+.dark body.quote-marks-large .bn-editor blockquote::before,
+.dark body.quote-marks-large .bn-editor [data-content-type="quote"]::before {
+  color: #60a5fa;
+}
+
+/* Airy lists — increase vertical spacing between list items for readability. */
+body.list-spacing-airy .bn-editor [data-content-type="bulletListItem"],
+body.list-spacing-airy .bn-editor [data-content-type="numberedListItem"],
+body.list-spacing-airy .bn-editor [data-content-type="checkListItem"] {
+  margin-top: 0.55em !important;
+  margin-bottom: 0.55em !important;
+}
+.dark body.list-spacing-airy .bn-editor [data-content-type="bulletListItem"],
+.dark body.list-spacing-airy .bn-editor [data-content-type="numberedListItem"],
+.dark body.list-spacing-airy .bn-editor [data-content-type="checkListItem"] {
+  margin-top: 0.55em !important;
+  margin-bottom: 0.55em !important;
+}
+
+/* Uppercase table headers — render <th> cells in uppercase with tracking. */
+body.table-header-uppercase .bn-editor table th,
+body.table-header-uppercase .bn-editor [data-content-type="table"] th {
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  font-size: 0.86em !important;
+  color: #52525b !important;
+}
+.dark body.table-header-uppercase .bn-editor table th,
+.dark body.table-header-uppercase .bn-editor [data-content-type="table"] th {
+  color: #d4d4d8 !important;
+}
+
+/* Strikethrough done — make completed checklist items struck through with muted color. */
+body.checkbox-strikethrough .bn-editor [data-content-type="checkListItem"][data-checked="true"],
+body.checkbox-strikethrough .bn-editor [data-checked="true"] {
+  text-decoration: line-through !important;
+  color: #a1a1aa !important;
+  opacity: 0.7;
+}
+.dark body.checkbox-strikethrough .bn-editor [data-content-type="checkListItem"][data-checked="true"],
+.dark body.checkbox-strikethrough .bn-editor [data-checked="true"] {
+  color: #71717a !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
