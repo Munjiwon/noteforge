@@ -572,6 +572,11 @@ export function PageView({
       "table-alt-text-color",
       "callout-border-dashed",
       "page-rule-tip-corner",
+      "bullet-numbered-prefix",
+      "h4-color-orange",
+      "code-block-rainbow-border",
+      "table-zebra-blue",
+      "page-spotlight-cursor",
     ];
     try {
       for (const k of toggles) {

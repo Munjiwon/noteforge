@@ -984,6 +984,11 @@ export function PageStyleMenu({
                       { key: "table-alt-text-color", label: "Alt row text" },
                       { key: "callout-border-dashed", label: "Dashed callout" },
                       { key: "page-rule-tip-corner", label: "Tip corner" },
+                      { key: "bullet-numbered-prefix", label: "Auto # bullets" },
+                      { key: "h4-color-orange", label: "Orange H4" },
+                      { key: "code-block-rainbow-border", label: "Rainbow code" },
+                      { key: "table-zebra-blue", label: "Blue zebra" },
+                      { key: "page-spotlight-cursor", label: "Spotlight" },
                     ] as const
                   ).map((t) => (
                     <button

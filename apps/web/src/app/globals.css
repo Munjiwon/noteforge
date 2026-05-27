@@ -2713,6 +2713,71 @@ body.page-rule-tip-corner .bn-editor [data-content-type="callout"]::after {
   color: #18181b;
 }
 
+/* Bullet auto-numbered prefix — prepend (1) (2) (3) ... to bullet items via counter. */
+body.bullet-numbered-prefix .bn-editor ul,
+body.bullet-numbered-prefix .bn-editor [data-content-type="bulletListItem"] {
+  list-style: none !important;
+  counter-reset: nf-blnum;
+  padding-left: 1.6em;
+}
+body.bullet-numbered-prefix .bn-editor ul > li,
+body.bullet-numbered-prefix .bn-editor [data-content-type="bulletListItem"] {
+  counter-increment: nf-blnum;
+}
+body.bullet-numbered-prefix .bn-editor ul > li::before,
+body.bullet-numbered-prefix .bn-editor [data-content-type="bulletListItem"]::before {
+  content: "(" counter(nf-blnum) ") ";
+  color: #2563eb !important;
+  font-weight: 600;
+  margin-left: -1.2em;
+  margin-right: 0.4em;
+}
+.dark body.bullet-numbered-prefix .bn-editor ul > li::before,
+.dark body.bullet-numbered-prefix .bn-editor [data-content-type="bulletListItem"]::before {
+  color: #60a5fa !important;
+}
+
+/* Orange H4 — recolor H4 to a warm orange accent. */
+body.h4-color-orange .bn-editor h4,
+body.h4-color-orange .bn-editor [data-content-type="heading"][data-level="4"] {
+  color: #ea580c !important;
+}
+.dark body.h4-color-orange .bn-editor h4,
+.dark body.h4-color-orange .bn-editor [data-content-type="heading"][data-level="4"] {
+  color: #fb923c !important;
+}
+
+/* Rainbow code border — multi-color top border on code blocks. */
+body.code-block-rainbow-border .bn-editor pre,
+body.code-block-rainbow-border .bn-editor [data-content-type="codeBlock"] {
+  border-top: 4px solid transparent !important;
+  border-image: linear-gradient(90deg, #ef4444, #f59e0b, #22c55e, #2563eb, #a855f7) 1 !important;
+}
+.dark body.code-block-rainbow-border .bn-editor pre,
+.dark body.code-block-rainbow-border .bn-editor [data-content-type="codeBlock"] {
+  border-image: linear-gradient(90deg, #f87171, #fbbf24, #4ade80, #60a5fa, #c084fc) 1 !important;
+}
+
+/* Blue zebra table — alternate row backgrounds in blue tint. */
+body.table-zebra-blue .bn-editor table tbody tr:nth-child(even) td,
+body.table-zebra-blue .bn-editor [data-content-type="table"] tr:nth-child(even) td {
+  background: #eff6ff !important;
+}
+.dark body.table-zebra-blue .bn-editor table tbody tr:nth-child(even) td,
+.dark body.table-zebra-blue .bn-editor [data-content-type="table"] tr:nth-child(even) td {
+  background: #172554 !important;
+}
+
+/* Spotlight cursor — radial gradient around the editor's active block on hover. */
+body.page-spotlight-cursor .bn-editor .bn-block:hover,
+body.page-spotlight-cursor .bn-editor [data-content-type]:hover {
+  background: radial-gradient(circle at center, rgba(37, 99, 235, 0.08), transparent 70%) !important;
+}
+.dark body.page-spotlight-cursor .bn-editor .bn-block:hover,
+.dark body.page-spotlight-cursor .bn-editor [data-content-type]:hover {
+  background: radial-gradient(circle at center, rgba(96, 165, 250, 0.12), transparent 70%) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
