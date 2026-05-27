@@ -884,6 +884,11 @@ export function PageStyleMenu({
                       { key: "bigger-cursor", label: "Bigger cursor" },
                       { key: "title-no-emoji", label: "Title no emoji" },
                       { key: "dark-code-always", label: "Dark code always" },
+                      { key: "tag-pills", label: "Tag pills" },
+                      { key: "numbered-outline", label: "# outline" },
+                      { key: "bold-accent", label: "Bold accent" },
+                      { key: "internal-link-arrow", label: "Internal → arrow" },
+                      { key: "no-focus-ring", label: "No focus ring" },
                     ] as const
                   ).map((t) => (
                     <button

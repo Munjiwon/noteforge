@@ -472,6 +472,11 @@ export function PageView({
       "bigger-cursor",
       "title-no-emoji",
       "dark-code-always",
+      "tag-pills",
+      "numbered-outline",
+      "bold-accent",
+      "internal-link-arrow",
+      "no-focus-ring",
     ];
     try {
       for (const k of toggles) {

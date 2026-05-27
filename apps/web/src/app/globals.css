@@ -1360,6 +1360,67 @@ body.dark-code-always .bn-editor :not(pre) > code {
   color: #f1f5f9 !important;
 }
 
+/* Tag pills — make page tags fully rounded pill shapes with brand tint. */
+body.tag-pills [data-page-tags] a,
+body.tag-pills [data-page-tags] button,
+body.tag-pills [data-page-tags] span {
+  border-radius: 9999px !important;
+  padding: 0.1rem 0.6rem !important;
+  background: #eef2ff !important;
+  color: #4338ca !important;
+  border: 1px solid rgba(67, 56, 202, 0.18) !important;
+  font-size: 0.75rem !important;
+}
+.dark body.tag-pills [data-page-tags] a,
+.dark body.tag-pills [data-page-tags] button,
+.dark body.tag-pills [data-page-tags] span {
+  background: rgba(99, 102, 241, 0.2) !important;
+  color: #c7d2fe !important;
+  border-color: rgba(199, 210, 254, 0.3) !important;
+}
+
+/* Numbered outline — CSS counters give the table-of-contents auto numbering. */
+body.numbered-outline [data-page-outline] nav {
+  counter-reset: tocsection;
+}
+body.numbered-outline [data-page-outline] nav a::before {
+  counter-increment: tocsection;
+  content: counter(tocsection) ". ";
+  color: #6b7280;
+  margin-right: 0.25rem;
+  font-weight: 500;
+}
+
+/* Bold accent — give <strong> a stronger brand color, not just weight. */
+body.bold-accent .bn-editor strong,
+body.bold-accent .bn-editor b {
+  color: #b91c1c;
+}
+.dark body.bold-accent .bn-editor strong,
+.dark body.bold-accent .bn-editor b {
+  color: #fca5a5;
+}
+
+/* Internal link arrow — append → to anchors that point inside this workspace. */
+body.internal-link-arrow .bn-editor a[href^="/w/"]::after,
+body.internal-link-arrow .bn-editor a[href^="#"]::after {
+  content: " →";
+  font-size: 0.9em;
+  color: #2563eb;
+  margin-left: 1px;
+}
+.dark body.internal-link-arrow .bn-editor a[href^="/w/"]::after,
+.dark body.internal-link-arrow .bn-editor a[href^="#"]::after {
+  color: #60a5fa;
+}
+
+/* No focus ring — strip browser focus outlines (cosmetic; reduces a11y signal). */
+body.no-focus-ring *:focus,
+body.no-focus-ring *:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
