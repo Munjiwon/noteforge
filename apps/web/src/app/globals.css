@@ -1496,6 +1496,58 @@ body.custom-toggle-arrow details[open] > summary::before {
   transform: rotate(90deg);
 }
 
+/* Bullet emoji — swap default disc bullets for a sparkle emoji. */
+body.bullet-emoji .bn-editor ul > li {
+  list-style: none;
+  position: relative;
+  padding-left: 1.5rem;
+}
+body.bullet-emoji .bn-editor ul > li::before {
+  content: "✨";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 0.85em;
+}
+
+/* Heading uppercase — auto-uppercase h2/h3 with tracking for an editorial feel. */
+body.heading-uppercase .bn-editor h2,
+body.heading-uppercase .bn-editor h3 {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Page side ribbon — a thin brand-color vertical bar on the left of the page body. */
+body.page-side-ribbon .max-w-3xl,
+body.page-side-ribbon .max-w-5xl {
+  border-left: 4px solid #6366f1;
+  padding-left: calc(1rem + 4px) !important;
+}
+.dark body.page-side-ribbon .max-w-3xl,
+.dark body.page-side-ribbon .max-w-5xl {
+  border-left-color: #818cf8;
+}
+
+/* Smaller callout emoji — reduce the emoji button size in callout blocks. */
+body.smaller-callout-emoji [data-content-type="callout"] button {
+  font-size: 0.9rem !important;
+  line-height: 1 !important;
+}
+
+/* Sidebar collapsed init — start the sidebar narrow (icons + short labels). */
+body.sidebar-collapsed-init aside {
+  width: 64px !important;
+  min-width: 64px !important;
+  max-width: 64px !important;
+  overflow: hidden;
+}
+body.sidebar-collapsed-init aside:hover {
+  width: 240px !important;
+  min-width: 240px !important;
+  max-width: 240px !important;
+  overflow: visible;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

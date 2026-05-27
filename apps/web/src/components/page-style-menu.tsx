@@ -894,6 +894,11 @@ export function PageStyleMenu({
                       { key: "list-marker-bold", label: "List marker bold" },
                       { key: "print-no-header", label: "Print: no header" },
                       { key: "custom-toggle-arrow", label: "▶ toggle arrow" },
+                      { key: "bullet-emoji", label: "Emoji bullets" },
+                      { key: "heading-uppercase", label: "Heading UPPER" },
+                      { key: "page-side-ribbon", label: "Side ribbon" },
+                      { key: "smaller-callout-emoji", label: "Small callout emoji" },
+                      { key: "sidebar-collapsed-init", label: "Sidebar mini" },
                     ] as const
                   ).map((t) => (
                     <button

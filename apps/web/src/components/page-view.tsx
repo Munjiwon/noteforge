@@ -482,6 +482,11 @@ export function PageView({
       "list-marker-bold",
       "print-no-header",
       "custom-toggle-arrow",
+      "bullet-emoji",
+      "heading-uppercase",
+      "page-side-ribbon",
+      "smaller-callout-emoji",
+      "sidebar-collapsed-init",
     ];
     try {
       for (const k of toggles) {
