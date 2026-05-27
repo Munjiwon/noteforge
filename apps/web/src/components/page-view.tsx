@@ -522,6 +522,11 @@ export function PageView({
       "paragraph-narrow-line",
       "callout-emoji-large",
       "page-background-paper",
+      "block-hover-highlight",
+      "h2-numbered-dot",
+      "code-inline-color",
+      "image-border-thick",
+      "selection-mono-font",
     ];
     try {
       for (const k of toggles) {

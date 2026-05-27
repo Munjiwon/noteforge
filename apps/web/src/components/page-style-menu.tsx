@@ -934,6 +934,11 @@ export function PageStyleMenu({
                       { key: "paragraph-narrow-line", label: "Tight lines" },
                       { key: "callout-emoji-large", label: "Big callout 🔔" },
                       { key: "page-background-paper", label: "Paper bg" },
+                      { key: "block-hover-highlight", label: "Hover blocks" },
+                      { key: "h2-numbered-dot", label: "H2 • prefix" },
+                      { key: "code-inline-color", label: "Color inline" },
+                      { key: "image-border-thick", label: "Thick img border" },
+                      { key: "selection-mono-font", label: "Select mono" },
                     ] as const
                   ).map((t) => (
                     <button

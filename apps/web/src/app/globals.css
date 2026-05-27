@@ -1992,6 +1992,62 @@ body.page-background-paper .bn-editor {
     repeating-linear-gradient(-45deg, rgba(255, 240, 200, 0.03) 0 2px, transparent 2px 6px) !important;
 }
 
+/* Block hover highlight — softly highlight the hovered block in the editor for focus. */
+body.block-hover-highlight .bn-editor .bn-block:hover,
+body.block-hover-highlight .bn-editor [data-content-type]:hover {
+  background-color: rgba(37, 99, 235, 0.06) !important;
+  border-radius: 4px;
+  transition: background-color 0.15s ease;
+}
+.dark body.block-hover-highlight .bn-editor .bn-block:hover,
+.dark body.block-hover-highlight .bn-editor [data-content-type]:hover {
+  background-color: rgba(96, 165, 250, 0.08) !important;
+}
+
+/* H2 with dot prefix — prepend a colored bullet dot to H2 headings. */
+body.h2-numbered-dot .bn-editor h2::before,
+body.h2-numbered-dot .bn-editor [data-content-type="heading"][data-level="2"] > *:first-child::before {
+  content: "• ";
+  color: #2563eb !important;
+  font-weight: 700;
+  margin-right: 0.25em;
+}
+.dark body.h2-numbered-dot .bn-editor h2::before,
+.dark body.h2-numbered-dot .bn-editor [data-content-type="heading"][data-level="2"] > *:first-child::before {
+  color: #60a5fa !important;
+}
+
+/* Color inline code — accent color for inline code text in addition to the chip bg. */
+body.code-inline-color .bn-editor code:not(pre code),
+body.code-inline-color .bn-editor [data-style="code"] {
+  color: #dc2626 !important;
+}
+.dark body.code-inline-color .bn-editor code:not(pre code),
+.dark body.code-inline-color .bn-editor [data-style="code"] {
+  color: #fca5a5 !important;
+}
+
+/* Thick image border — wrap embedded images with a thicker bordered frame. */
+body.image-border-thick .bn-editor img,
+body.image-border-thick .bn-editor [data-content-type="image"] img {
+  border: 4px solid #e4e4e7 !important;
+  padding: 4px;
+  background: #ffffff;
+}
+.dark body.image-border-thick .bn-editor img,
+.dark body.image-border-thick .bn-editor [data-content-type="image"] img {
+  border-color: #3f3f46 !important;
+  background: #18181b;
+}
+
+/* Selection in mono — text selection switches the font to monospace for inspection. */
+body.selection-mono-font .bn-editor ::selection {
+  font-family: "JetBrains Mono", "SF Mono", "Fira Code", ui-monospace, Menlo, monospace !important;
+}
+.dark body.selection-mono-font .bn-editor ::selection {
+  font-family: "JetBrains Mono", "SF Mono", "Fira Code", ui-monospace, Menlo, monospace !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
