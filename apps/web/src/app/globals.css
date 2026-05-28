@@ -6938,6 +6938,41 @@ body.page-bg-soft-grid-dots .bn-editor {
   background-size: 22px 22px !important;
 }
 
+/* Heading underline gradient — a gradient underline beneath headings. */
+body.heading-underline-gradient .bn-editor [data-content-type="heading"] {
+  border-bottom: 3px solid transparent !important;
+  border-image: linear-gradient(90deg, #6366f1, #ec4899) 1 !important;
+  padding-bottom: 0.12em !important;
+}
+
+/* Code block Night Owl light — light Night Owl palette for code blocks. */
+body.code-block-night-owl-light .bn-editor pre {
+  background: #fbfbfb !important;
+  border: 1px solid #e0e0e0 !important;
+}
+body.code-block-night-owl-light .bn-editor pre code {
+  color: #403f53 !important;
+}
+
+/* Table dashed cells — dashed borders on every table cell. */
+body.table-cell-borders-dashed .bn-editor table td,
+body.table-cell-borders-dashed .bn-editor table th {
+  border: 1px dashed #a1a1aa !important;
+}
+
+/* Callout big shadow — a pronounced drop shadow for elevated callouts. */
+body.callout-shadow-lg .bn-editor [data-content-type="callout"] {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Page bg radial dots — dots arranged with a radial vignette falloff. */
+body.page-bg-radial-dots .bn-editor {
+  background-image: radial-gradient(rgba(99, 102, 241, 0.18) 1.5px, transparent 2px) !important;
+  background-size: 18px 18px !important;
+  -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%) !important;
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

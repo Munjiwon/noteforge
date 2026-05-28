@@ -1388,6 +1388,11 @@ export function PageStyleMenu({
                       { key: "table-header-lowercase", label: "lower head" },
                       { key: "callout-thin-border", label: "Thin border" },
                       { key: "page-bg-soft-grid-dots", label: "Soft dots" },
+                      { key: "heading-underline-gradient", label: "Gradient line" },
+                      { key: "code-block-night-owl-light", label: "Night Owl lt" },
+                      { key: "table-cell-borders-dashed", label: "Dashed cells" },
+                      { key: "callout-shadow-lg", label: "Big shadow" },
+                      { key: "page-bg-radial-dots", label: "Radial dots" },
                     ] as const
                   ).map((t) => (
                     <button

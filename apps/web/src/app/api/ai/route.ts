@@ -3312,6 +3312,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean assumption log — makes a project's assumptions explicit and trackable. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄), '**가정 목록 (테이블)**' ('ID | 가정 | 근거 | 확신도(상/중/하) | 틀릴 경우 영향 | 검증 방법 | 상태'), '**검증 우선순위 (bullets)**' (영향 큰데 확신 낮은 것 먼저), '**검증된 / 깨진 가정 (bullets)**' (있으면), '**모니터링 (1줄)**' (언제 재검토), '**주의 (1줄)**' (암묵적 가정도 적기). 위험한 가정을 빛으로.\n\n가정 컨텍스트:\n${text}`,
   internal_meeting_action_tracker_ko: (text) =>
     `Build a Korean meeting action tracker — turns recurring-meeting action items into a tracked, accountable list. Use 합쇼체. Markdown: '**한 줄 (회의)**' (1줄 — 어떤 정기 회의), '**열린 액션 (테이블)**' ('ID | 액션 | 담당 | 생성일 | 시한 | 상태'), '**이번 회의 신규 (bullets)**', '**완료된 것 (bullets)**' (이번에 닫힌), '**지연/막힌 것 (테이블)**' ('액션 | 왜 지연 | 필요'), '**오래된 항목 점검 (1줄)**' (30일+ 미완), '**다음 점검 (1줄)**'. 책임 + 추적성 강조.\n\n액션 트래킹 컨텍스트:\n${text}`,
+  translate_ko_to_low_german: (text) =>
+    `Translate the Korean text below into natural Low German (Plattdüütsch) — a West Germanic language of northern Germany and the eastern Netherlands. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Plattdüütsch**' and '**번역 노트**' (3 bullets in Korean — note Low German is distinct from Standard High German, lacking the High German consonant shift).\n\n원문:\n${text}`,
+  translate_ko_to_limburgish: (text) =>
+    `Translate the Korean text below into natural Limburgish (Lèmburgs) — a Low Franconian language of the Limburg region (Netherlands, Belgium, Germany). 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Lèmburgs**' and '**번역 노트**' (3 bullets in Korean — note Limburgish is tonal, unusual among Germanic languages).\n\n원문:\n${text}`,
+  translate_ko_to_picard: (text) =>
+    `Translate the Korean text below into natural Picard (Ch'ti) — a Romance (Oïl) language of northern France and Wallonia, Belgium. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Picard**' and '**번역 노트**' (3 bullets in Korean — note Picard is a langue d'oïl closely related to French but distinct, popularly called Ch'ti).\n\n원문:\n${text}`,
+  translate_ko_to_norman: (text) =>
+    `Translate the Korean text below into natural Norman (Normaund) — a Romance (Oïl) language of Normandy and the Channel Islands. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Normaund**' and '**번역 노트**' (3 bullets in Korean — note Norman is a langue d'oïl; Jèrriais and Guernésiais are its Channel Island varieties).\n\n원문:\n${text}`,
+  translate_ko_to_gascon: (text) =>
+    `Translate the Korean text below into natural Gascon — an Occitano-Romance variety of southwestern France. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Gascon**' and '**번역 노트**' (3 bullets in Korean — note Gascon is a distinctive Occitan variety with features attributed to an Aquitanian/Basque substrate).\n\n원문:\n${text}`,
+  internal_okr_grading_ko: (text) =>
+    `Write a Korean OKR grading (end-of-cycle scoring) — scores OKRs at the end of a cycle and extracts learning. Use 합쇼체. Markdown: '**한 줄 (총평)**' (1줄 — 전반 달성 + 핵심 교훈), '**Objective (1줄)**', '**KR 채점 (테이블)**' ('KR | 목표 | 실제 | 점수(0.0-1.0) | 코멘트'), '**잘 달성한 것 (bullets)**' (왜 됐나), '**미달한 것 (bullets)**' (왜 안 됐나 — 솔직), '**점수 해석 (1줄)**' (0.7이 이상적인 이유 / 1.0은 목표가 낮았던 것), '**교훈 (bullets)**' (다음 사이클에), '**캐리오버 / 종료 (1줄)**'. 점수보다 학습 강조.\n\nOKR 결과 컨텍스트:\n${text}`,
+  sales_post_demo_email_ko: (text) =>
+    `Draft a Korean post-demo follow-up email — sent right after a product demo to keep momentum. Use 합쇼체 (간결 + 가치). Markdown: '**제목**' (1줄), '**본문**' (3-4 단락: 1) 시간 감사 + 데모 핵심 1줄 요약, 2) 그들의 페인에 우리가 어떻게 맞는지 1-2줄 — 데모에서 본 것 연결, 3) 약속한 자료/답변 + 다음 단계 명확히, 4) 가벼운 CTA — 다음 미팅 제안), '**첨부 제안 (bullets)**' (덱 / 녹화 / ROI), '**다음 단계 (1줄)**'. 100단어 이내, 압박 없이.\n\n데모 컨텍스트:\n${text}`,
+  customer_risk_mitigation_plan_ko: (text) =>
+    `Write a Korean customer risk mitigation plan — a focused plan to rescue an at-risk account. Use 합쇼체. Markdown: '**한 줄 (리스크)**' (1줄 — 무슨 리스크 / 심각도), '**상황 (1단락)**' (어쩌다 여기까지 — 사실), '**리스크 요인 (테이블)**' ('요인 | 신호 | 심각도'), '**근본 우려 (1줄)**' (고객의 진짜 걱정), '**완화 액션 (테이블)**' ('액션 | 목표 | 담당 | 시한'), '**필요 자원 (bullets)**' (임원 후원 / 제품 / 크레딧), '**성공 신호 (bullets)**' (회복됐다는 증거), '**에스컬레이션 (1줄)**', '**체크인 리듬 (1줄)**'. 신속 + 구체.\n\n리스크 컨텍스트:\n${text}`,
+  pm_feature_rollout_comms_ko: (text) =>
+    `Write Korean feature rollout communications — coordinates internal+external messaging for a feature rollout. Use 합쇼체. Markdown: '**한 줄 (롤아웃)**' (1줄 — 무슨 기능 / 누구에게 / 언제), '**대상별 메시지 (테이블)**' ('대상 | 핵심 메시지 | 채널 | 시점'): 내부 / 기존고객 / 신규 / 미디어, '**단계별 공지 (numbered)**' (티저 → 출시 → 후속), '**인앱/이메일 카피 (bullets)**' (핵심 카피 초안), '**FAQ 핵심 (bullets)**', '**지원팀 브리핑 (1줄)**', '**측정 (bullets)**' (인지 / 채택). 일관된 메시지 강조.\n\n롤아웃 컨텍스트:\n${text}`,
+  internal_eng_oncall_review_ko: (text) =>
+    `Write a Korean on-call review — reviews a past on-call period to reduce toil and improve health. Use 합쇼체. Markdown: '**한 줄 (총평)**' (1줄 — 부담 정도 + 핵심), '**알림 통계 (테이블)**' ('지표 | 값'): 총 페이지 / 야간 페이지 / 실행불요(오탐)% / 평균 대응시간, '**가장 시끄러운 알림 (bullets)**' (각 '알림 — 빈도 — 조치'), '**반복 이슈 (bullets)**' (근본 해결 후보), '**오탐 정리 (bullets)**' (튜닝/삭제할 알림), '**번아웃 신호 (1줄)**', '**개선 액션 (테이블)**' ('액션 | 기대 | 담당'), '**다음 검토 (1줄)**'. toil 감소 중심.\n\n온콜 데이터 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
