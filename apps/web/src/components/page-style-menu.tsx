@@ -1393,6 +1393,11 @@ export function PageStyleMenu({
                       { key: "table-cell-borders-dashed", label: "Dashed cells" },
                       { key: "callout-shadow-lg", label: "Big shadow" },
                       { key: "page-bg-radial-dots", label: "Radial dots" },
+                      { key: "heading-pill-bg", label: "Pill bg" },
+                      { key: "code-block-min-light", label: "Min light" },
+                      { key: "table-compact-font", label: "Small font" },
+                      { key: "callout-icon-square", label: "Icon square" },
+                      { key: "page-bg-soft-noise2", label: "Fine noise" },
                     ] as const
                   ).map((t) => (
                     <button

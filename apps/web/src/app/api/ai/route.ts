@@ -3332,6 +3332,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write Korean feature rollout communications — coordinates internal+external messaging for a feature rollout. Use 합쇼체. Markdown: '**한 줄 (롤아웃)**' (1줄 — 무슨 기능 / 누구에게 / 언제), '**대상별 메시지 (테이블)**' ('대상 | 핵심 메시지 | 채널 | 시점'): 내부 / 기존고객 / 신규 / 미디어, '**단계별 공지 (numbered)**' (티저 → 출시 → 후속), '**인앱/이메일 카피 (bullets)**' (핵심 카피 초안), '**FAQ 핵심 (bullets)**', '**지원팀 브리핑 (1줄)**', '**측정 (bullets)**' (인지 / 채택). 일관된 메시지 강조.\n\n롤아웃 컨텍스트:\n${text}`,
   internal_eng_oncall_review_ko: (text) =>
     `Write a Korean on-call review — reviews a past on-call period to reduce toil and improve health. Use 합쇼체. Markdown: '**한 줄 (총평)**' (1줄 — 부담 정도 + 핵심), '**알림 통계 (테이블)**' ('지표 | 값'): 총 페이지 / 야간 페이지 / 실행불요(오탐)% / 평균 대응시간, '**가장 시끄러운 알림 (bullets)**' (각 '알림 — 빈도 — 조치'), '**반복 이슈 (bullets)**' (근본 해결 후보), '**오탐 정리 (bullets)**' (튜닝/삭제할 알림), '**번아웃 신호 (1줄)**', '**개선 액션 (테이블)**' ('액션 | 기대 | 담당'), '**다음 검토 (1줄)**'. toil 감소 중심.\n\n온콜 데이터 컨텍스트:\n${text}`,
+  translate_ko_to_sorani: (text) =>
+    `Translate the Korean text below into natural Sorani Kurdish (کوردیی ناوەندی) — Central Kurdish of Iraqi Kurdistan and western Iran. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**سۆرانی**' and '**번역 노트**' (3 bullets in Korean — note Sorani is written in an Arabic-derived alphabet, right-to-left, distinct from Kurmanji's Latin script).\n\n원문:\n${text}`,
+  translate_ko_to_kurmanji: (text) =>
+    `Translate the Korean text below into natural Kurmanji Kurdish (Kurmancî) — Northern Kurdish of Turkey, Syria and northern Iraq. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Kurmancî**' and '**번역 노트**' (3 bullets in Korean — note Kurmanji is the most widely spoken Kurdish variety, written in a Latin-based alphabet).\n\n원문:\n${text}`,
+  translate_ko_to_zazaki: (text) =>
+    `Translate the Korean text below into natural Zazaki (Zazakî) — a Northwestern Iranian language of eastern Turkey. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Zazakî**' and '**번역 노트**' (3 bullets in Korean — note Zazaki is an Iranian language distinct from Kurdish, written in Latin script).\n\n원문:\n${text}`,
+  translate_ko_to_gilaki: (text) =>
+    `Translate the Korean text below into natural Gilaki — a Caspian (Northwestern Iranian) language of Gilan province, northern Iran. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Gilaki**' and '**번역 노트**' (3 bullets in Korean — note Gilaki is spoken along the Caspian Sea coast, usually written in Perso-Arabic script).\n\n원문:\n${text}`,
+  translate_ko_to_mazandarani: (text) =>
+    `Translate the Korean text below into natural Mazandarani (مازرونی) — a Caspian (Northwestern Iranian) language of Mazandaran province, northern Iran. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**مازرونی**' and '**번역 노트**' (3 bullets in Korean — note Mazandarani is a Caspian language with one of the oldest literary traditions among Iranian languages).\n\n원문:\n${text}`,
+  internal_deploy_checklist_ko: (text) =>
+    `Write a Korean deployment checklist — a pre/during/post checklist for a production deploy. Use 합쇼체. Markdown: '**한 줄 (배포)**' (1줄 — 무엇을 / 언제), '**배포 전 (체크 bullets)**' (테스트 / 리뷰 / 마이그레이션 / 롤백 준비 / 알림 무음), '**배포 중 (체크 bullets)**' (단계 / 모니터링 지표 / 헬스 확인), '**배포 후 (체크 bullets)**' (스모크 테스트 / 지표 정상 / 알림 복구), '**롤백 트리거 (bullets)**' (이러면 되돌림), '**롤백 절차 (numbered)**', '**커뮤니케이션 (1줄)**' (누구에게 언제), '**담당 (1줄)**'. 각 항목 검증 가능하게.\n\n배포 컨텍스트:\n${text}`,
+  sales_proposal_followup_ko: (text) =>
+    `Draft a Korean proposal follow-up email — sent after sending a proposal to drive a decision. Use 합쇼체 (정중 + 가치 재확인). Markdown: '**제목**' (1줄), '**본문**' (3-4 단락: 1) 제안 검토 시간 감사 + 핵심 가치 1줄 재강조, 2) 우려/질문 있는지 묻고 답할 준비 됐음, 3) 다음 단계 명확히 — 미팅 제안 / 결정 일정 확인, 4) 가벼운 마무리), '**자주 묻는 점 선제 답변 (bullets)**' (1-2개), '**다음 단계 (1줄)**'. 압박 아닌 도움, 100단어 내외.\n\n제안 컨텍스트:\n${text}`,
+  customer_nps_response_plan_ko: (text) =>
+    `Write a Korean NPS response plan — turns NPS survey results into segmented follow-up actions. Use 합쇼체. Markdown: '**한 줄 (NPS)**' (1줄 — 점수 + 추세), '**분포 (bullets)**' (프로모터 / 패시브 / 디트랙터 비율), '**핵심 테마 (테이블)**' ('세그먼트 | 주요 코멘트 테마 | 빈도'), '**디트랙터 대응 (bullets)**' (클로즈드 루프 — 누가 언제 연락), '**패시브 → 프로모터 (bullets)**' (전환 기회), '**프로모터 활용 (bullets)**' (레퍼런스 / 리뷰 요청), '**제품/CS 시사점 (bullets)**', '**액션 (테이블)**' ('액션 | 담당 | 시한'). 루프 닫기 강조.\n\nNPS 결과 컨텍스트:\n${text}`,
+  pm_survey_design_ko: (text) =>
+    `Design a Korean product survey — designs a survey that yields actionable, unbiased data. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄 — 무슨 결정에 쓸 데이터), '**핵심 질문 (bullets)**' (답하고 싶은 것), '**설문 문항 (테이블)**' ('문항 | 유형(척도/단답/객관식) | 측정 의도'), '**편향 방지 (bullets)**' (유도 질문 / 이중 질문 / 순서 효과 피하기), '**길이 / 구성 (1줄)**' (응답 피로 고려), '**대상 / 표본 (1줄)**', '**분석 계획 (1줄)**' (어떻게 해석), '**주의 (1줄)**' (설문의 한계). 짧고 깨끗한 데이터 우선.\n\n설문 컨텍스트:\n${text}`,
+  internal_eng_capacity_review_ko: (text) =>
+    `Write a Korean engineering capacity review — reviews where engineering time actually went vs. plan. Use 합쇼체. Markdown: '**한 줄 (총평)**' (1줄 — 계획 대비 실제 + 핵심), '**시간 배분 (테이블)**' ('영역 | 계획% | 실제% | 차이'): 신규 / 유지보수 / 버그 / 인시던트 / 기술부채 / 회의, '**계획 이탈 (bullets)**' (왜 — 인시던트 / 범위확대 등), '**생산성 신호 (bullets)**', '**병목 / 시간 낭비 (bullets)**', '**다음 분기 조정 (테이블)**' ('조정 | 이유'), '**권고 (1줄)**'. 데이터 기반 + 비난 없이.\n\n캐파 데이터 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

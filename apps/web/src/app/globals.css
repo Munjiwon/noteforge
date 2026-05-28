@@ -6973,6 +6973,46 @@ body.page-bg-radial-dots .bn-editor {
   mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%) !important;
 }
 
+/* Heading pill bg — wrap heading text in a rounded pill background. */
+body.heading-pill-bg .bn-editor [data-content-type="heading"] > *:first-child {
+  background: rgba(99, 102, 241, 0.12) !important;
+  padding: 0.1em 0.6em !important;
+  border-radius: 999px !important;
+  display: inline-block !important;
+}
+
+/* Code block Min light — a minimal light palette for code blocks. */
+body.code-block-min-light .bn-editor pre {
+  background: #fafafa !important;
+  border: 1px solid #eaeaea !important;
+}
+body.code-block-min-light .bn-editor pre code {
+  color: #1a1a1a !important;
+}
+
+/* Table compact font — smaller font size in table cells for density. */
+body.table-compact-font .bn-editor table td,
+body.table-compact-font .bn-editor table th {
+  font-size: 0.85em !important;
+}
+
+/* Callout icon square — render the callout icon in a rounded square. */
+body.callout-icon-square .bn-editor [data-content-type="callout"] > *:first-child {
+  background: rgba(99, 102, 241, 0.15) !important;
+  border-radius: 6px !important;
+  width: 1.8em !important;
+  height: 1.8em !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Page bg fine noise — a very fine speckle texture behind the editor. */
+body.page-bg-soft-noise2 .bn-editor {
+  background-image: radial-gradient(rgba(99, 102, 241, 0.08) 0.5px, transparent 0.5px) !important;
+  background-size: 5px 5px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
