@@ -1900,6 +1900,11 @@ export function PageStyleMenu({
                       { key: "callout-fwp-3", label: "callout fwp3" },
                       { key: "page-bg-fwp-4", label: "page-bg fwp4" },
                       { key: "heading-fwp-5", label: "heading fwp5" },
+                      { key: "code-block-fxe-1", label: "code-block fxe1" },
+                      { key: "table-fxe-2", label: "table fxe2" },
+                      { key: "callout-fxe-3", label: "callout fxe3" },
+                      { key: "page-bg-fxe-4", label: "page-bg fxe4" },
+                      { key: "heading-fxe-5", label: "heading fxe5" },
                     ] as const
                   ).map((t) => (
                     <button
