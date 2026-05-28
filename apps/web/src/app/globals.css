@@ -6166,6 +6166,44 @@ body.page-bg-honeycomb .bn-editor {
   background-size: 30px 52px !important;
 }
 
+/* Heading gradient fill — fill heading text with a color gradient. */
+body.heading-gradient-fill .bn-editor [data-content-type="heading"] {
+  background: linear-gradient(90deg, #6366f1, #ec4899) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+}
+
+/* Code block Dracula Pro — Dracula Pro palette for code blocks. */
+body.code-block-dracula-pro .bn-editor pre {
+  background: #22212c !important;
+  border: 1px solid #2d2b38 !important;
+}
+body.code-block-dracula-pro .bn-editor pre code {
+  color: #f8f8f2 !important;
+}
+
+/* Table hover highlight — highlight a table row on hover. */
+body.table-hover-highlight .bn-editor table tr:hover td {
+  background: rgba(99, 102, 241, 0.1) !important;
+}
+
+/* Callout emoji hidden — hide the leading icon/emoji on callouts. */
+body.callout-emoji-hidden .bn-editor [data-content-type="callout"] [class*="emoji"],
+body.callout-emoji-hidden .bn-editor [data-content-type="callout"] > *:first-child:not(p):not(div) {
+  display: none !important;
+}
+
+/* Page bg circuit — a circuit-board-like line texture behind the editor. */
+body.page-bg-circuit .bn-editor {
+  background-image:
+    linear-gradient(rgba(16, 185, 129, 0.08) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(16, 185, 129, 0.08) 2px, transparent 2px),
+    radial-gradient(circle, rgba(16, 185, 129, 0.18) 2px, transparent 3px) !important;
+  background-size: 40px 40px, 40px 40px, 40px 40px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

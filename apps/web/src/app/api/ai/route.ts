@@ -2932,6 +2932,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean North Star metric definition — defines and justifies a product's single guiding metric. Use 합쇼체. Markdown: '**한 줄 (노스스타)**' (1줄 — 지표 한 문장), '**왜 이 지표 (1단락)**' (고객 가치 ↔ 비즈니스 연결), '**정의 (bullets)**' (정확한 계산식 + 포함/제외), '**입력 지표 (테이블)**' ('인풋 지표 | 노스스타에 미치는 영향 | 누가 영향'), '**현재 값 / 목표 (1줄)**', '**안티-게이밍 가드레일 (bullets)**' (이 지표만 좇으면 안 되는 이유 + 보호 지표), '**리뷰 주기 (1줄)**'.\n\n제품 / 컨텍스트:\n${text}`,
   internal_quarterly_planning_ko: (text) =>
     `Write a Korean quarterly planning doc — sets a team's priorities and goals for the quarter. Use 합쇼체. Markdown: '**한 줄 (분기 테마)**' (1줄), '**지난 분기 회고 (bullets)**' (달성 / 미달 / 교훈), '**이번 분기 목표 (테이블)**' ('목표 | 핵심 결과 | 담당'), '**우선순위 (numbered)**' (P0 / P1 / P2 + 근거), '**의도적으로 안 할 것 (bullets)**', '**리소스 / 캐파 (1줄)**', '**의존성 / 리스크 (bullets)**', '**측정 / 체크인 (1줄)**' (언제 점검). 집중과 트레이드오프 강조.\n\n분기 컨텍스트:\n${text}`,
+  translate_ko_to_kalanga: (text) =>
+    `Translate the Korean text below into natural Kalanga (TjiKalanga) — Bantu language of southwestern Zimbabwe and northeastern Botswana. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**TjiKalanga**' and '**번역 노트**' (3 bullets in Korean — note Kalanga is related to Shona but distinct, spoken across the Zimbabwe-Botswana border).\n\n원문:\n${text}`,
+  translate_ko_to_ndau: (text) =>
+    `Translate the Korean text below into natural Ndau (ChiNdau) — Bantu language of eastern Zimbabwe and central Mozambique. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**ChiNdau**' and '**번역 노트**' (3 bullets in Korean — note Ndau is part of the Shona language cluster spoken near the Mozambique border).\n\n원문:\n${text}`,
+  translate_ko_to_manyika: (text) =>
+    `Translate the Korean text below into natural Manyika (ChiManyika) — a Shona dialect of eastern Zimbabwe and Manica province, Mozambique. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**ChiManyika**' and '**번역 노트**' (3 bullets in Korean — note Manyika is a Shona variety of the eastern highlands).\n\n원문:\n${text}`,
+  translate_ko_to_sena: (text) =>
+    `Translate the Korean text below into natural Sena (ChiSena) — Bantu language of the lower Zambezi valley in Mozambique and Malawi. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**ChiSena**' and '**번역 노트**' (3 bullets in Korean — note Sena is spoken along the lower Zambezi River).\n\n원문:\n${text}`,
+  translate_ko_to_chopi: (text) =>
+    `Translate the Korean text below into natural Chopi (Cicopi) — Bantu language of the coastal Inhambane province, Mozambique. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Cicopi**' and '**번역 노트**' (3 bullets in Korean — note Chopi people are renowned for their timbila xylophone music tradition).\n\n원문:\n${text}`,
+  internal_design_critique_notes_ko: (text) =>
+    `Structure Korean design critique notes — captures structured feedback from a design critique session. Use 합쇼체. Markdown: '**한 줄 (무엇을 리뷰)**' (1줄), '**디자인 목표 (1줄)**' (이 디자인이 풀려는 것), '**잘된 점 (bullets)**', '**개선 피드백 (테이블)**' ('영역 | 피드백 | 심각도(blocker/major/minor) | 제안'), '**열린 질문 (bullets)**', '**의사결정 (bullets)**' (이 자리에서 정한 것), '**액션 아이템 (테이블)**' ('액션 | 담당 | 시한'), '**다음 리뷰 (1줄)**'. 사람이 아닌 작업에 대한 피드백으로.\n\n크리틱 컨텍스트:\n${text}`,
+  sales_account_plan_ko: (text) =>
+    `Write a Korean strategic account plan — a plan to grow and retain a key account. Use 합쇼체. Markdown: '**한 줄 (계정 전략)**' (1줄), '**계정 개요 (bullets)**' (산업 / 규모 / 현재 ARR / 갱신), '**관계 맵 (테이블)**' ('이름 | 역할 | 영향력 | 우리 관계 강도'), '**고객 목표 (bullets)**' (그들의 비즈니스 우선순위), '**성장 기회 (테이블)**' ('기회 | 가치 | 가능성 | 다음 액션'), '**리스크 (bullets)**', '**12개월 목표 (bullets)**', '**90일 액션 (테이블)**' ('액션 | 담당 | 시한').\n\n계정 컨텍스트:\n${text}`,
+  customer_voice_of_customer_ko: (text) =>
+    `Synthesize a Korean Voice of the Customer (VoC) report — turns customer feedback across sources into themes for the org. Use 합쇼체. Markdown: '**한 줄 (핵심 시그널)**' (1줄), '**데이터 출처 (bullets)**' (설문 / 인터뷰 / 지원 / 리뷰 — 표본), '**핵심 테마 (테이블)**' ('테마 | 빈도 | 감정 | 대표 인용'), '**가장 큰 불만 (bullets)**', '**가장 큰 칭찬 (bullets)**', '**세그먼트별 차이 (bullets)**' (있으면), '**시사점 (bullets)**' (제품 / CS / 마케팅), '**권고 액션 (테이블)**' ('액션 | 담당 | 우선순위'). 인용은 고객 언어 그대로.\n\nVoC 원자료:\n${text}`,
+  pm_gtm_launch_plan_ko: (text) =>
+    `Write a Korean go-to-market launch plan — coordinates a cross-functional product launch. Use 합쇼체. Markdown: '**한 줄 (런치)**' (1줄 — 무엇을 / 언제 / 누구에게), '**런치 목표 (테이블)**' ('지표 | 목표 | 기간'), '**타깃 / 메시지 (bullets)**', '**런치 티어 (1줄)**' (T1/T2/T3 규모), '**기능별 준비 (테이블)**' ('팀 | 산출물 | 상태 | 담당'): Product / Marketing / Sales / Support / Docs, '**타임라인 (테이블)**' ('단계 | 날짜 | 게이트'), '**리스크 (bullets)**', '**Go/No-go 기준 (bullets)**', '**런치 후 측정 (bullets)**'.\n\n런치 컨텍스트:\n${text}`,
+  internal_skip_level_prep_ko: (text) =>
+    `Help prepare for a Korean skip-level meeting — helps an IC or manager prepare for a skip-level 1:1 with a senior leader. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄 — 이 미팅에서 얻고 싶은 것), '**나/팀 현황 요약 (bullets)**' (간결 — 무엇을 하고 있나), '**자랑할 것 (bullets)**' (가시성 필요한 성과), '**솔직히 공유할 어려움 (bullets)**' (도움 필요한 것), '**물어볼 질문 (bullets)**' (전략 / 우선순위 / 커리어), '**피드백 줄 것 (1-2 bullets)**' (위로 향하는 건설적 피드백), '**하지 말 것 (1줄)**' (직속 상사 험담 등). 솔직 + 프로페셔널.\n\n스킵레벨 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

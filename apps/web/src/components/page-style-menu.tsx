@@ -1293,6 +1293,11 @@ export function PageStyleMenu({
                       { key: "table-striped-thick", label: "Thick stripe" },
                       { key: "callout-neon-outline", label: "Neon outline" },
                       { key: "page-bg-honeycomb", label: "Honeycomb" },
+                      { key: "heading-gradient-fill", label: "Gradient text" },
+                      { key: "code-block-dracula-pro", label: "Dracula Pro" },
+                      { key: "table-hover-highlight", label: "Hover row" },
+                      { key: "callout-emoji-hidden", label: "Hide icon" },
+                      { key: "page-bg-circuit", label: "Circuit" },
                     ] as const
                   ).map((t) => (
                     <button
