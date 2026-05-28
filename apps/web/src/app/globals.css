@@ -5381,6 +5381,48 @@ body.page-bg-wave .bn-editor {
     radial-gradient(ellipse 30px 8px at 0 0, transparent 48%, rgba(129, 140, 248, 0.1) 50%, transparent 52%);
 }
 
+/* H2 with dotted underline. */
+body.h2-with-dotted-underline .bn-editor [data-content-type="heading"][data-level="2"] {
+  border-bottom: 2px dotted #8b5cf6;
+  padding-bottom: 0.12em;
+}
+.dark body.h2-with-dotted-underline .bn-editor [data-content-type="heading"][data-level="2"] {
+  border-bottom-color: #a78bfa;
+}
+
+/* Midnight blue code. */
+body.code-block-midnight-blue .bn-editor pre {
+  background: #0a1128 !important;
+  color: #93c5fd !important;
+  border: 1px solid #1e3a8a;
+}
+body.code-block-midnight-blue .bn-editor pre code {
+  color: #bfdbfe !important;
+}
+
+/* Warm gradient header. */
+body.table-header-gradient-warm .bn-editor table th {
+  background: linear-gradient(135deg, #f97316, #ec4899) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+/* Purple glow callout. */
+body.callout-glow-purple .bn-editor [data-content-type="callout"] {
+  box-shadow: 0 0 4px #c084fc, 0 0 12px rgba(192, 132, 252, 0.5);
+  border: 1px solid #c084fc;
+}
+
+/* Confetti page background — scattered colored dots. */
+body.page-bg-confetti .bn-editor {
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(239, 68, 68, 0.15) 2px, transparent 3px),
+    radial-gradient(circle at 70% 40%, rgba(59, 130, 246, 0.15) 2px, transparent 3px),
+    radial-gradient(circle at 40% 70%, rgba(34, 197, 94, 0.15) 2px, transparent 3px),
+    radial-gradient(circle at 85% 80%, rgba(234, 179, 8, 0.15) 2px, transparent 3px) !important;
+  background-size: 60px 60px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

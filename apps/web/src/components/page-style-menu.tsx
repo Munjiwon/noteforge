@@ -1206,6 +1206,11 @@ export function PageStyleMenu({
                       { key: "table-header-gradient", label: "Grad header" },
                       { key: "callout-glow-blue", label: "Blue glow" },
                       { key: "page-bg-wave", label: "Wave bg" },
+                      { key: "h2-with-dotted-underline", label: "H2 dot underline" },
+                      { key: "code-block-midnight-blue", label: "Midnight" },
+                      { key: "table-header-gradient-warm", label: "Warm header" },
+                      { key: "callout-glow-purple", label: "Purple glow" },
+                      { key: "page-bg-confetti", label: "Confetti" },
                     ] as const
                   ).map((t) => (
                     <button
