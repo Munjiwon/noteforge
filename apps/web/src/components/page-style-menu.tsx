@@ -1473,6 +1473,8 @@ export function PageStyleMenu({
                       { key: "table-zebra-fuchsia", label: "Fuchsia zebra" },
                       { key: "callout-glow-bottom", label: "Bottom glow" },
                       { key: "page-bg-soft-glow-tr", label: "TR glow" },
+                      { key: "h1-with-d-series-marker", label: "H1 🏆" },
+                      { key: "page-d-series-complete-stamp", label: "D-SERIES stamp" },
                     ] as const
                   ).map((t) => (
                     <button

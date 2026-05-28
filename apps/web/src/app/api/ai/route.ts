@@ -3652,6 +3652,10 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean feature post-launch review — reviews how a feature performed after launch against its goals. Use 합쇼체. Markdown: '**한 줄 (결과)**' (1줄 — 성공/혼합/미달 + 핵심), '**목표 대비 (테이블)**' ('지표 | 목표 | 실제 | 달성도'), '**채택 (bullets)**' (얼마나 / 누가 쓰나), '**사용자 반응 (bullets)**' (피드백 / 지원), '**예상 밖 (bullets)**' (의외의 사용/문제), '**가설 검증 (1줄)**' (출시 가설 맞았나), '**다음 (bullets)**' (개선 / 확대 / 폐기), '**교훈 (1줄)**'. 정직한 사후 평가.\n\n출시 후 컨텍스트:\n${text}`,
   internal_decision_postmortem_ko: (text) =>
     `Write a Korean decision postmortem — reviews a past significant decision to learn how to decide better. Use 합쇼체. 결과가 아닌 의사결정 과정 중심. Markdown: '**한 줄 (결정)**' (1줄 — 무슨 결정 / 결과), '**당시 맥락 (1단락)**' (무엇을 알았고 몰랐나 — 사후확신 편향 경계), '**결정 과정 (bullets)**' (어떻게 정했나 / 누가 / 무슨 근거), '**결과 (bullets)**' (실제로 어떻게 됐나), '**좋은 결정 vs 좋은 결과 (1줄)**' (과정과 운 구분), '**프로세스 교훈 (bullets)**' (다음엔 어떻게 더 잘 결정), '**적용 (1줄)**'. 결과 탓이 아닌 과정 학습.\n\n결정 컨텍스트:\n${text}`,
+  d_series_completion_announcement_ko: (text) =>
+    `Write a Korean internal announcement celebrating the completion of a very large, sustained multi-phase build initiative. Use 해요체. 따뜻 + 진심 + 가식 없이. Markdown: '**제목**' (1줄, 28자 이내 — '[이니셔티브] 완주 — 끝까지 해냈어요'), '**본문**' (4 단락: 1) 한 줄 — '오늘 우리는 [이니셔티브]를 끝까지 완성했습니다', 2) 이 규모가 왜 대단한지 1단락 — 끈기 / 일관성 / 누적된 노력, 3) 호명 + 구체적 기여 — 입력에 있는 이름만, 각 '@이름 — 무엇을 한 1줄', 4) 다음 — '잠시 멈춰 자축하고, 다음으로'), '**감사 (1줄)**' (모두에게).\n\n이니셔티브 + 기여자:\n${text}`,
+  full_program_celebration_ko: (text) =>
+    `Write a Korean reflective program-completion celebration note for finishing a long, multi-stage program (the kind shared at an all-hands or in a team channel). Use 해요체. 진정성 + 회고 + 겸손. Markdown: '**한 줄 (마일스톤)**' (1줄 — 무엇을 완성했는지), '**여정 회고 (1단락)**' (4-5줄 — 어디서 시작해, 얼마나 길었고, 어떤 고비를 지나, 어떻게 끝까지 왔는지), '**우리가 배운 것 (3 bullets)**' (구체적 — 인내 / 일관성 / 시스템), '**기여한 사람들 (1단락)**' (입력에 있는 이름만 호명), '**다음 (1줄)**' (이 완주가 연 다음 가능성), '**감사 (1줄)**' (진심으로). 이모지는 절제해서.\n\n프로그램 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

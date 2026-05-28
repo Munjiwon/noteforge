@@ -1061,6 +1061,8 @@ export function PageView({
       "table-zebra-fuchsia",
       "callout-glow-bottom",
       "page-bg-soft-glow-tr",
+      "h1-with-d-series-marker",
+      "page-d-series-complete-stamp",
     ];
     try {
       for (const k of toggles) {
