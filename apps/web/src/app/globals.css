@@ -3957,6 +3957,61 @@ body.page-side-binder-rings .bn-editor::before {
   box-shadow: 0 60px 0 #94a3b8, 0 120px 0 #94a3b8;
 }
 
+/* H2 with page mark — prepends § to H2 headings. */
+body.h2-with-page-mark .bn-editor [data-content-type="heading"][data-level="2"] > *:first-child::before {
+  content: "§ ";
+  color: #334155;
+  margin-right: 0.2em;
+  font-weight: 400;
+}
+.dark body.h2-with-page-mark .bn-editor [data-content-type="heading"][data-level="2"] > *:first-child::before {
+  color: #cbd5e1;
+}
+
+/* Night Owl theme — deep navy code palette. */
+body.code-block-night-owl .bn-editor pre {
+  background: #011627 !important;
+  color: #d6deeb !important;
+  border: 1px solid #1d3b53;
+}
+body.code-block-night-owl .bn-editor pre code {
+  color: #addb67 !important;
+}
+
+/* Dashed row dividers — between rows. */
+body.table-row-divider-dashed .bn-editor table tr + tr > * {
+  border-top: 1px dashed #94a3b8 !important;
+}
+.dark body.table-row-divider-dashed .bn-editor table tr + tr > * {
+  border-top-color: #64748b !important;
+}
+
+/* Yellow corner flag — small yellow triangle in top-right of callouts. */
+body.callout-corner-flag-yellow .bn-editor [data-content-type="callout"] {
+  position: relative;
+}
+body.callout-corner-flag-yellow .bn-editor [data-content-type="callout"]::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-top: 20px solid #facc15;
+  border-left: 20px solid transparent;
+}
+
+/* Perforated edge — left edge with circular cutouts simulating paper perforations. */
+body.page-side-perforated .bn-editor {
+  position: relative;
+  padding-left: 2rem !important;
+  background-image:
+    radial-gradient(circle 4px at 12px 24px, transparent 99%, #e2e8f0 100%);
+  background-size: 1px 30px;
+  background-repeat: repeat-y;
+  background-position: 8px 12px;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

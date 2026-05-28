@@ -1086,6 +1086,11 @@ export function PageStyleMenu({
                       { key: "table-row-divider-thick", label: "Thick row div" },
                       { key: "callout-corner-flag", label: "Corner flag" },
                       { key: "page-side-binder-rings", label: "Binder rings" },
+                      { key: "h2-with-page-mark", label: "H2 §" },
+                      { key: "code-block-night-owl", label: "Night Owl" },
+                      { key: "table-row-divider-dashed", label: "Dashed rows" },
+                      { key: "callout-corner-flag-yellow", label: "Yellow flag" },
+                      { key: "page-side-perforated", label: "Perforated" },
                     ] as const
                   ).map((t) => (
                     <button
