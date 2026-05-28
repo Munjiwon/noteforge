@@ -1383,6 +1383,11 @@ export function PageStyleMenu({
                       { key: "table-rounded-header", label: "Round header" },
                       { key: "callout-left-tab-label", label: "Tab label" },
                       { key: "page-bg-carbon", label: "Carbon" },
+                      { key: "heading-all-bold-black", label: "Black weight" },
+                      { key: "code-block-github-dark", label: "GitHub dark" },
+                      { key: "table-header-lowercase", label: "lower head" },
+                      { key: "callout-thin-border", label: "Thin border" },
+                      { key: "page-bg-soft-grid-dots", label: "Soft dots" },
                     ] as const
                   ).map((t) => (
                     <button

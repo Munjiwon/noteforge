@@ -6906,6 +6906,38 @@ body.page-bg-carbon .bn-editor {
   background-size: 10px 10px !important;
 }
 
+/* Heading black weight — push all headings to the heaviest weight. */
+body.heading-all-bold-black .bn-editor [data-content-type="heading"] {
+  font-weight: 900 !important;
+}
+
+/* Code block GitHub dark — GitHub Dark palette for code blocks. */
+body.code-block-github-dark .bn-editor pre {
+  background: #0d1117 !important;
+  border: 1px solid #21262d !important;
+}
+body.code-block-github-dark .bn-editor pre code {
+  color: #c9d1d9 !important;
+}
+
+/* Table header lowercase — force header cells to lowercase. */
+body.table-header-lowercase .bn-editor table th {
+  text-transform: lowercase !important;
+  font-variant: small-caps !important;
+}
+
+/* Callout thin border — a minimal 1px border on callouts. */
+body.callout-thin-border .bn-editor [data-content-type="callout"] {
+  border: 1px solid rgba(99, 102, 241, 0.4) !important;
+  background: transparent !important;
+}
+
+/* Page bg soft grid dots — faint dots at grid intersections. */
+body.page-bg-soft-grid-dots .bn-editor {
+  background-image: radial-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1.5px) !important;
+  background-size: 22px 22px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

@@ -3292,6 +3292,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean feature KPI definition — defines how to measure whether a shipped feature succeeded. Use 합쇼체. Markdown: '**한 줄 (기능)**' (1줄 — 무엇을 / 어떤 성공), '**성공 가설 (1줄)**', '**핵심 지표 (테이블)**' ('지표 | 정의 | 베이스라인 | 목표 | 측정 시점'), '**선행 지표 (bullets)**' (채택 / 활성화), '**후행 지표 (bullets)**' (리텐션 / 매출 영향), '**가드레일 (bullets)**' (악화되면 안 되는 것), '**측정 방법 (1줄)**' (이벤트 / 출처), '**판정 기준 (1줄)**' (성공/실패를 언제 어떻게). 활동이 아닌 결과 측정.\n\n기능 컨텍스트:\n${text}`,
   internal_sprint_demo_notes_ko: (text) =>
     `Structure Korean sprint demo (review) notes — captures what was shown and feedback at a sprint review. Use 합쇼체. Markdown: '**한 줄 (스프린트)**' (1줄 — 무엇을 데모), '**보여준 것 (테이블)**' ('항목 | 누가 | 상태(완료/부분) | 피드백'), '**잘 받은 것 (bullets)**', '**우려 / 변경 요청 (bullets)**', '**미완 / 캐리오버 (bullets)**' (이유), '**이해관계자 피드백 (bullets)**' (출처 표기), '**액션 아이템 (테이블)**' ('액션 | 담당 | 시한'), '**다음 스프린트 시사점 (1줄)**'. 데모 → 학습 → 액션.\n\n데모 컨텍스트:\n${text}`,
+  translate_ko_to_kashubian: (text) =>
+    `Translate the Korean text below into natural Kashubian (Kaszëbsczi) — West Slavic language of the Pomerania region, northern Poland. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Kaszëbsczi**' and '**번역 노트**' (3 bullets in Korean — note Kashubian is a West Slavic language related to Polish, written in Latin script with extra diacritics).\n\n원문:\n${text}`,
+  translate_ko_to_silesian: (text) =>
+    `Translate the Korean text below into natural Silesian (ślōnskŏ gŏdka) — West Slavic lect of Upper Silesia, southern Poland. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Ślōnskŏ gŏdka**' and '**번역 노트**' (3 bullets in Korean — note Silesian is debated as a language vs. Polish dialect; it has German loanwords from the region's history).\n\n원문:\n${text}`,
+  translate_ko_to_rusyn: (text) =>
+    `Translate the Korean text below into natural Rusyn — East Slavic language of the Carpathian region (Slovakia, Ukraine, Poland, Serbia). 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Русиньскый**' and '**번역 노트**' (3 bullets in Korean — note Rusyn is an East Slavic language written in Cyrillic, recognized as a minority language in several countries).\n\n원문:\n${text}`,
+  translate_ko_to_sami_northern: (text) =>
+    `Translate the Korean text below into natural Northern Sami (Davvisámegiella) — Uralic (Sámi) language of northern Norway, Sweden and Finland. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Davvisámegiella**' and '**번역 노트**' (3 bullets in Korean — note Northern Sami is the most widely spoken Sámi language, written in Latin with special letters like č, đ, ŋ, š, ŧ, ž).\n\n원문:\n${text}`,
+  translate_ko_to_voro: (text) =>
+    `Translate the Korean text below into natural Võro — a Finnic language of southeastern Estonia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Võro kiil**' and '**번역 노트**' (3 bullets in Korean — note Võro is a South Estonian Finnic variety with its own literary tradition, distinct from standard Estonian).\n\n원문:\n${text}`,
+  internal_status_report_exec_ko: (text) =>
+    `Write a Korean executive status report — a concise project status for leadership. Use 합쇼체. 한 화면에 들어오게. Markdown: '**한 줄 (상태)**' (1줄 — 🟢/🟡/🔴 + 핵심), '**진척 (1줄)**' (목표 대비 % / 마일스톤), '**이번 기간 성과 (bullets)**' (결과 중심 — 3개 이내), '**리스크 / 이슈 (테이블)**' ('이슈 | 영향 | 대응 | 필요 결정'), '**의사결정/지원 요청 (bullets)**' (임원이 해줄 것), '**다음 마일스톤 (1줄)**', '**예산/일정 (1줄)**'. 임원 시간 존중 — 액션 중심.\n\n프로젝트 컨텍스트:\n${text}`,
+  sales_renewal_email_sequence_ko: (text) =>
+    `Write a Korean renewal email sequence — a 3-email sequence leading up to a renewal date. Use 합쇼체 (따뜻 + 명확). Markdown: '**시퀀스 목표 (1줄)**', '**이메일 1 — 가치 리마인드 (D-60)**' ('제목:' + 본문 4-5줄: 성과 데이터 + 갱신 다가옴 안내 + 가벼운 논의 제안), '**이메일 2 — 제안 (D-30)**' (구체적 갱신 옵션 + 미래 가치), '**이메일 3 — 마무리 (D-7)**' (간단 리마인드 + 도움 제안 + 다음 단계), '**팁 (2 bullets)**' (타이밍 / 개인화). 각 이메일 100단어 이내, 압박 없이.\n\n갱신 컨텍스트:\n${text}`,
+  customer_business_outcomes_review_ko: (text) =>
+    `Write a Korean business outcomes review — ties product usage to the customer's actual business outcomes. Use 합쇼체. Markdown: '**한 줄 (성과)**' (1줄 — 비즈니스 임팩트 한 문장), '**고객 비즈니스 목표 (bullets)**' (그들이 추구하는 결과), '**우리 기여 (테이블)**' ('비즈니스 목표 | 우리 제품의 역할 | 측정된 결과'), '**정량 성과 (bullets)**' (매출 / 비용 / 시간 — 출처), '**정성 성과 (bullets)**', '**아직 미달 (bullets)**' (기회), '**다음 단계 (1줄)**', '**한 줄 요약 (1줄)**' (임원용). 제품 지표가 아닌 비즈니스 결과 중심.\n\n성과 컨텍스트:\n${text}`,
+  pm_assumption_log_ko: (text) =>
+    `Write a Korean assumption log — makes a project's assumptions explicit and trackable. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄), '**가정 목록 (테이블)**' ('ID | 가정 | 근거 | 확신도(상/중/하) | 틀릴 경우 영향 | 검증 방법 | 상태'), '**검증 우선순위 (bullets)**' (영향 큰데 확신 낮은 것 먼저), '**검증된 / 깨진 가정 (bullets)**' (있으면), '**모니터링 (1줄)**' (언제 재검토), '**주의 (1줄)**' (암묵적 가정도 적기). 위험한 가정을 빛으로.\n\n가정 컨텍스트:\n${text}`,
+  internal_meeting_action_tracker_ko: (text) =>
+    `Build a Korean meeting action tracker — turns recurring-meeting action items into a tracked, accountable list. Use 합쇼체. Markdown: '**한 줄 (회의)**' (1줄 — 어떤 정기 회의), '**열린 액션 (테이블)**' ('ID | 액션 | 담당 | 생성일 | 시한 | 상태'), '**이번 회의 신규 (bullets)**', '**완료된 것 (bullets)**' (이번에 닫힌), '**지연/막힌 것 (테이블)**' ('액션 | 왜 지연 | 필요'), '**오래된 항목 점검 (1줄)**' (30일+ 미완), '**다음 점검 (1줄)**'. 책임 + 추적성 강조.\n\n액션 트래킹 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
