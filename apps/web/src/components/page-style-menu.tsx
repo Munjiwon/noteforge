@@ -1031,6 +1031,11 @@ export function PageStyleMenu({
                       { key: "table-zebra-vertical", label: "V-zebra" },
                       { key: "callout-rotate-tiny", label: "Tilt callout" },
                       { key: "page-frame-border", label: "Frame border" },
+                      { key: "h3-with-double-bar", label: "H3 ‖ bar" },
+                      { key: "code-block-traffic-lights", label: "Traffic lights" },
+                      { key: "table-header-emoji-prefix", label: "📌 header" },
+                      { key: "callout-corner-fold-decoration", label: "Callout fold" },
+                      { key: "page-edge-rule-left", label: "Edge rule" },
                     ] as const
                   ).map((t) => (
                     <button

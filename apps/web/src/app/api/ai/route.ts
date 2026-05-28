@@ -1888,6 +1888,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Translate the Korean text below into natural Bosnian (bosanski). 격식 ('Vi' 정중 / 'ti' 친근) 원문에 맞춤. Reply with two sections: '**Prijevod**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
   product_principles_doc_ko: (text) =>
     `Draft a Korean product principles doc — short, opinionated, posted in #product Slack as a pinned message. Use 해요체. 5-7개 원칙. 각 원칙은 '하지 마라' 측과 '해라' 측이 모두 있어야 진짜 원칙. Markdown: '**왜 원칙이 필요한가요 (1단락)**' (2-3줄), '**원칙 (각 원칙 — h3 + 1줄 + Do / Don't 2-3 bullets + 사례 1줄)**', '**원칙이 충돌할 때**' (1단락 — 우선순위 또는 'PM이 결정'), '**Revisit**' (1줄 — '6개월마다 재검토').\n\n제품 / 회사 컨텍스트:\n${text}`,
+  translate_ko_to_montenegrin: (text) =>
+    `Translate the Korean text below into natural Montenegrin (crnogorski). Latin script default. 격식 ('Vi' 정중 / 'ti' 친근) 원문에 맞춤. Reply with two sections: '**Prevod**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  growth_marketing_funnel_audit_ko: (text) =>
+    `Build a Korean growth marketing funnel audit doc — for a CMO / 마케팅 리드 reviewing why pipeline 또는 매출이 정체되었는지. Use 합쇼체. 솔직 + 구체적. Markdown: '**한 줄 결론**' (1줄 — 'X 단계에서 Y% drop, 이유는 Z'), '**퍼널 단계별 메트릭 (테이블)**' ('단계 | 정의 | 이번 분기 | 전 분기 | Δ | benchmark vs 우리'), '**가장 큰 누수 3곳**' (각 'h3 + 데이터 + 가설 + 검증할 실험 1개'), '**Quick wins (1주 안 시도 가능)**' (3 bullets), '**구조적 변경 (분기 단위)**' (3 bullets — 채널 / 메시지 / 자동화), '**필요한 자원**' (1줄 — 사람 / 예산 / 도구).\n\n퍼널 데이터:\n${text}`,
+  translate_ko_to_maltese: (text) =>
+    `Translate the Korean text below into natural Maltese (Malti). 격식 ('Inti' 친근 / 'Intom' 정중) 원문에 맞춤. Reply with two sections: '**Traduzzjoni**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  internal_comms_layoff_announcement_ko: (text) =>
+    `Draft a Korean internal layoff announcement — sent by the CEO to the whole company. Use 합쇼체. 직설 + 진심 + 책임. 가식 / 'reorg' / 'restructuring' 같은 완곡 어구 금지. Markdown: '**제목**' (1줄, 22자 이내 — '회사 정리해고 안내 — YYYY-MM-DD'), '**본문**' (5 단락 + 모든 단락 직설: 1) 1-2줄 — '오늘 [N]명을 정리해고했습니다. 이 결정은 제가 내렸습니다.', 2) 왜 — 회사 상황 / 시장 / 우리가 한 잘못 — 회피 없이, 3) 누가 영향 — 어느 팀 / 어느 지역 / 어떻게 알게 되는지 시한, 4) 떠나는 분들께 제공 — 퇴직금 / 의료 / 비자 / job placement, 5) 남는 분들께 — 우리가 어디로 가는지 / 다음 all-hands 시점), '**Q&A는 [시간]에 진행합니다**' (1줄).\n\n회사 / 결정 컨텍스트:\n${text}`,
+  translate_ko_to_icelandic: (text) =>
+    `Translate the Korean text below into natural Icelandic (Íslenska). 격식 ('þér' 매우 정중 — 거의 안 씀 / 'þú' 표준) 원문에 맞춤. Reply with two sections: '**Þýðing**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  customer_referral_program_intro_ko: (text) =>
+    `Write a Korean customer referral program intro email + landing page copy. Use 해요체. 사기처럼 들리지 않게 — 보상 명확 + 시간 명확. Markdown: '**제목 (이메일)**' (1줄, 24자 이내 — '주변에 소개해주세요. 양쪽 다 [보상]'), '**본문 (이메일)**' (3 단락: 1) 1줄 — 우리 제품을 좋아해주셔서 감사 + 다음 한 줄, 2) 프로그램 — 추천인이 가입 후 X 액션 완료하면 양쪽 다 [보상] — 명확히, 3) 추천 방법 — 링크 / 코드 1줄), '**랜딩 페이지 헤드라인**' (1줄), '**랜딩 3 bullets**' (어떻게 작동 / 보상 / FAQ 링크), '**조건 (작은 글씨)**' (bullets — 자격 / 제외 / 보상 지급 시점).\n\n프로그램 컨텍스트:\n${text}`,
+  translate_ko_to_welsh: (text) =>
+    `Translate the Korean text below into natural Welsh (Cymraeg). 격식 ('chi' 정중 / 'ti' 친근) 원문에 맞춤. Reply with two sections: '**Cyfieithiad**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  sales_negotiation_concession_ladder_ko: (text) =>
+    `Build a Korean sales negotiation concession ladder doc — used internally before entering a price negotiation. Use 합쇼체. Markdown: '**거래 한 줄**' (고객사 / 제품 / 시작 가격 / 만기), '**우리 최대 안 (Best Case)**' (1줄 — 가격 + 조건), '**우리 walk-away**' (1줄 — 'X 이하 / Y 조건 없으면 안 함'), '**양보 사다리 (테이블)**' ('단계 | 우리가 양보 | 우리가 요구 받는 것 | 누구 결재 필요'), '**상대가 요청할 가능성 높은 것 + 우리 답변**' (3-5쌍), '**ZOPA (Zone of Possible Agreement)**' (1줄 — 양쪽 walk-away 사이), '**비가격 양보 (가치 있지만 cost가 작은 것)**' (bullets — 컨설팅 시간 / 빠른 onboarding / 사례 노출), '**시간 압박 활용**' (1줄 — 분기 마감 / 우리 / 그쪽 deadline).\n\n거래 / 고객 컨텍스트:\n${text}`,
+  translate_ko_to_irish: (text) =>
+    `Translate the Korean text below into natural Irish (Gaeilge). 격식 ('sibh' 정중 / 'tú' 친근) 원문에 맞춤. Reply with two sections: '**Aistriúchán**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  quarterly_growth_review_email_ko: (text) =>
+    `Draft a Korean quarterly growth review email — sent by Head of Growth to leadership team. Use 합쇼체. Markdown: '**제목**' (1줄, 28자 이내 — 'Q[X] Growth Review — 한 줄 요약'), '**본문**' (5 단락: 1) 한 줄 결론 + 신호등 (Green/Yellow/Red), 2) 핵심 메트릭 (4-5개 — 각 'X: A → B, 목표 C, 결론'), 3) 잘 된 실험 / 채널 — 2-3개, 무엇을 / 왜 작동 / 어떻게 확장, 4) 안 된 실험 / 채널 — 2-3개, 무엇을 / 왜 안 됨 / 멈출지 계속할지, 5) 다음 분기 베팅 3가지 + 필요한 자원), '**부록**' (bullets — 메트릭 dashboard / 실험 결과 raw).\n\n분기 데이터:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

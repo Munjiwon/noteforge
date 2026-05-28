@@ -3271,6 +3271,69 @@ body.page-frame-border .bn-editor {
   border-color: #374151;
 }
 
+/* H3 with double bar — prepends ‖ to H3 headings. */
+body.h3-with-double-bar .bn-editor [data-content-type="heading"][data-level="3"] > *:first-child::before {
+  content: "‖ ";
+  color: #8b5cf6;
+  margin-right: 0.2em;
+  font-weight: 700;
+}
+.dark body.h3-with-double-bar .bn-editor [data-content-type="heading"][data-level="3"] > *:first-child::before {
+  color: #a78bfa;
+}
+
+/* Code block traffic lights — macOS-style red/yellow/green circles in corner. */
+body.code-block-traffic-lights .bn-editor pre {
+  position: relative;
+  padding-top: 2rem !important;
+}
+body.code-block-traffic-lights .bn-editor pre::before {
+  content: "";
+  position: absolute;
+  top: 0.6rem;
+  left: 0.8rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ff5f57;
+  box-shadow: 18px 0 0 #febc2e, 36px 0 0 #28c840;
+}
+
+/* Table header emoji prefix — adds 📌 before each header label. */
+body.table-header-emoji-prefix .bn-editor table th::before {
+  content: "📌 ";
+  margin-right: 0.2em;
+}
+
+/* Callout corner fold — folded corner triangle in top-right. */
+body.callout-corner-fold-decoration .bn-editor [data-content-type="callout"] {
+  position: relative;
+  overflow: hidden;
+}
+body.callout-corner-fold-decoration .bn-editor [data-content-type="callout"]::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-top: 18px solid rgba(0, 0, 0, 0.12);
+  border-left: 18px solid transparent;
+  pointer-events: none;
+}
+.dark body.callout-corner-fold-decoration .bn-editor [data-content-type="callout"]::after {
+  border-top-color: rgba(255, 255, 255, 0.18);
+}
+
+/* Edge rule left — vertical line on the left edge of the editor. */
+body.page-edge-rule-left .bn-editor {
+  border-left: 3px solid #f59e0b;
+  padding-left: 1.5rem !important;
+}
+.dark body.page-edge-rule-left .bn-editor {
+  border-left-color: #fbbf24;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

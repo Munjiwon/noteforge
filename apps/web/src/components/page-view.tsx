@@ -619,6 +619,11 @@ export function PageView({
       "table-zebra-vertical",
       "callout-rotate-tiny",
       "page-frame-border",
+      "h3-with-double-bar",
+      "code-block-traffic-lights",
+      "table-header-emoji-prefix",
+      "callout-corner-fold-decoration",
+      "page-edge-rule-left",
     ];
     try {
       for (const k of toggles) {
