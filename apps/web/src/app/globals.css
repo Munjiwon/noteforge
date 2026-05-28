@@ -7670,6 +7670,53 @@ body.page-d-series-complete-stamp .bn-editor::after {
   opacity: 0.2;
 }
 
+/* Rosé Pine Moon — muted purple code block theme. */
+body.code-block-rose-pine-moon .bn-editor pre {
+  background: #232136 !important;
+  color: #e0def4 !important;
+  border: 1px solid #393552;
+}
+body.code-block-rose-pine-moon .bn-editor pre code {
+  color: #e0def4 !important;
+}
+
+/* Double emerald table border. */
+body.table-border-double-emerald .bn-editor table {
+  border: 3px double #059669;
+}
+body.table-border-double-emerald .bn-editor table td,
+body.table-border-double-emerald .bn-editor table th {
+  border: 1px solid #6ee7b7;
+}
+
+/* Emerald-tinted callout background with accent bar. */
+body.callout-emerald-tint .bn-editor [data-content-type="callout"] {
+  background: rgba(16, 185, 129, 0.1);
+  border-left: 3px solid #10b981;
+}
+.dark body.callout-emerald-tint .bn-editor [data-content-type="callout"] {
+  background: rgba(16, 185, 129, 0.16);
+}
+
+/* Engraved grid page background. */
+body.page-bg-engraved-grid .bn-editor {
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.dark body.page-bg-engraved-grid .bn-editor {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
+/* Emerald underline under every heading. */
+body.heading-emerald-underline .bn-editor [data-content-type="heading"] {
+  border-bottom: 2px solid #10b981;
+  padding-bottom: 0.15em;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

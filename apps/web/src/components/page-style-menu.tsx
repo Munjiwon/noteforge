@@ -1475,6 +1475,11 @@ export function PageStyleMenu({
                       { key: "page-bg-soft-glow-tr", label: "TR glow" },
                       { key: "h1-with-d-series-marker", label: "H1 🏆" },
                       { key: "page-d-series-complete-stamp", label: "D-SERIES stamp" },
+                      { key: "code-block-rose-pine-moon", label: "Rosé Pine" },
+                      { key: "table-border-double-emerald", label: "Double emerald" },
+                      { key: "callout-emerald-tint", label: "Emerald tint" },
+                      { key: "page-bg-engraved-grid", label: "Engraved grid" },
+                      { key: "heading-emerald-underline", label: "Emerald underline" },
                     ] as const
                   ).map((t) => (
                     <button

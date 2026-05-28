@@ -1063,6 +1063,11 @@ export function PageView({
       "page-bg-soft-glow-tr",
       "h1-with-d-series-marker",
       "page-d-series-complete-stamp",
+      "code-block-rose-pine-moon",
+      "table-border-double-emerald",
+      "callout-emerald-tint",
+      "page-bg-engraved-grid",
+      "heading-emerald-underline",
     ];
     try {
       for (const k of toggles) {

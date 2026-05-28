@@ -3656,6 +3656,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean internal announcement celebrating the completion of a very large, sustained multi-phase build initiative. Use 해요체. 따뜻 + 진심 + 가식 없이. Markdown: '**제목**' (1줄, 28자 이내 — '[이니셔티브] 완주 — 끝까지 해냈어요'), '**본문**' (4 단락: 1) 한 줄 — '오늘 우리는 [이니셔티브]를 끝까지 완성했습니다', 2) 이 규모가 왜 대단한지 1단락 — 끈기 / 일관성 / 누적된 노력, 3) 호명 + 구체적 기여 — 입력에 있는 이름만, 각 '@이름 — 무엇을 한 1줄', 4) 다음 — '잠시 멈춰 자축하고, 다음으로'), '**감사 (1줄)**' (모두에게).\n\n이니셔티브 + 기여자:\n${text}`,
   full_program_celebration_ko: (text) =>
     `Write a Korean reflective program-completion celebration note for finishing a long, multi-stage program (the kind shared at an all-hands or in a team channel). Use 해요체. 진정성 + 회고 + 겸손. Markdown: '**한 줄 (마일스톤)**' (1줄 — 무엇을 완성했는지), '**여정 회고 (1단락)**' (4-5줄 — 어디서 시작해, 얼마나 길었고, 어떤 고비를 지나, 어떻게 끝까지 왔는지), '**우리가 배운 것 (3 bullets)**' (구체적 — 인내 / 일관성 / 시스템), '**기여한 사람들 (1단락)**' (입력에 있는 이름만 호명), '**다음 (1줄)**' (이 완주가 연 다음 가능성), '**감사 (1줄)**' (진심으로). 이모지는 절제해서.\n\n프로그램 컨텍스트:\n${text}`,
+  translate_ko_to_classical_chinese: (text) =>
+    `Translate the following Korean text into Classical Chinese (漢文 / 文言文), the literary language of premodern East Asia — NOT modern Mandarin vernacular. Use authentic classical grammar and characters. Provide: the 漢文 rendering, then a Korean 독음 gloss line, then a 1-line Korean note on any term with no classical equivalent. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_ko_to_old_norse: (text) =>
+    `Translate the following Korean text into Old Norse, the medieval North Germanic language of the Icelandic sagas. Use proper Old Norse orthography (þ, ð, æ, ǫ) and grammar. Provide: the Old Norse text, then a romanized pronunciation line, then a short Korean note on words you had to approximate. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_ko_to_egyptian_arabic: (text) =>
+    `Translate the following Korean text into Egyptian Arabic (Masri) as actually spoken in Cairo — NOT Modern Standard Arabic. Use everyday colloquial vocabulary and phrasing. Provide: the Arabic script, then a Latin transliteration, then a 1-line Korean note on register. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_ko_to_gulf_arabic: (text) =>
+    `Translate the following Korean text into Gulf Arabic (Khaleeji) as spoken across the Gulf states — NOT MSA. Use authentic Gulf colloquial features. Provide: the Arabic script, a Latin transliteration, and a 1-line Korean note on any regionalisms. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_ko_to_bavarian: (text) =>
+    `Translate the following Korean text into Bavarian (Boarisch), the Upper German dialect of Bavaria and Austria — NOT Standard German. Use authentic Bavarian spelling and vocabulary. Provide: the Bavarian text, then a Standard German gloss line, then a 1-line Korean note. Output only the translation block.\n\nKorean text:\n${text}`,
+  incident_postmortem_detailed_ko: (text) =>
+    `Write a detailed Korean engineering incident postmortem (장애 회고). 비난 없는(blameless) 톤, 객관적 사실 중심. Markdown 섹션: '**요약**' (1-2줄 — 무슨 장애가 언제, 영향 범위), '**영향**' (영향받은 사용자/지표 — 가능하면 수치), '**타임라인**' (감지 → 대응 → 복구, 시각 + 행동 bullets), '**근본 원인**' (1단락 — 왜 발생했는지), '**대응 / 복구**' (어떻게 해결했는지), '**재발 방지 (Action Items)**' (체크박스 + 담당 표기), '**배운 점**' (2-3 bullets). 입력에 있는 사실만 사용하고, 모르는 값은 'TBD'로.\n\n장애 정보:\n${text}`,
+  vendor_evaluation_memo_ko: (text) =>
+    `Write a Korean vendor/solution evaluation memo (벤더 평가 메모) for an internal purchasing decision. 객관적이고 의사결정 지향적인 톤. Markdown: '**평가 대상**' (벤더/제품명 + 한 줄 목적), '**평가 기준**' (기능/비용/보안/지원/확장성 — 입력 기준 위주), '**후보 비교**' (표: 항목 | 후보A | 후보B …), '**장단점**' (각 후보별 bullets), '**리스크**' (도입 시 우려), '**권고안**' (1단락 — 추천 + 근거), '**다음 단계**' (체크박스). 입력에 있는 정보만 사용.\n\n평가 컨텍스트:\n${text}`,
+  sprint_review_script_ko: (text) =>
+    `Write a Korean sprint review / demo presentation script (스프린트 리뷰 발표 스크립트) for a PM or engineer presenting completed work to stakeholders. 자연스러운 구어체(해요체). Markdown: '**오프닝 (30초)**' (스프린트 목표 한 줄 + 무엇을 보여줄지), '**데모 흐름**' (기능별 — 무엇을 / 왜 중요한지 / 어떻게 보여줄지, 입력 기능 순서대로), '**성과 수치**' (있으면), '**다음 스프린트 예고 (1줄)**', '**Q&A 대비 (예상 질문 3개 + 답변 1줄씩)**'. 입력에 있는 작업만.\n\n스프린트 내용:\n${text}`,
+  hiring_scorecard_ko: (text) =>
+    `Write a Korean interview scorecard / 평가표 template for evaluating a candidate after an interview. 공정하고 구조화된 톤. Markdown: '**지원자 / 포지션**' (1줄), '**평가 역량**' (입력의 직무 기준으로 4-6개 역량 — 각 역량별 정의 1줄 + 4점 척도 기준), '**인터뷰 노트**' (관찰 근거를 적는 빈 칸 안내), '**종합 점수 / 추천**' (Strong Hire / Hire / No Hire / Strong No Hire 중 택1 + 근거 1단락), '**후속 확인 사항**' (다음 라운드에서 검증할 점). 입력에 있는 직무/역량만.\n\n포지션 정보:\n${text}`,
+  customer_success_qbr_ko: (text) =>
+    `Write a Korean Quarterly Business Review (QBR) outline for a Customer Success Manager presenting to a key account. 신뢰감 + 가치 입증 톤. Markdown: '**분기 요약 (1줄)**', '**달성한 가치 / 성과**' (지표 + 비즈니스 임팩트 — 입력 데이터 기반), '**제품 활용 현황**' (사용량/도입 기능 bullets), '**오픈 이슈 / 리스크**' (해결 상태 포함), '**다음 분기 목표**' (체크박스), '**확장 / 갱신 제안 (1단락)**'. 입력에 있는 사실만, 수치 없으면 '데이터 확인 필요'로 표기.\n\n계정 정보:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
