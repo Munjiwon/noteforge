@@ -1910,6 +1910,11 @@ export function PageStyleMenu({
                       { key: "callout-fxt-3", label: "callout fxt3" },
                       { key: "page-bg-fxt-4", label: "page-bg fxt4" },
                       { key: "heading-fxt-5", label: "heading fxt5" },
+                      { key: "code-block-fyi-1", label: "code-block fyi1" },
+                      { key: "table-fyi-2", label: "table fyi2" },
+                      { key: "callout-fyi-3", label: "callout fyi3" },
+                      { key: "page-bg-fyi-4", label: "page-bg fyi4" },
+                      { key: "heading-fyi-5", label: "heading fyi5" },
                     ] as const
                   ).map((t) => (
                     <button
