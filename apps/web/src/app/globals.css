@@ -6364,6 +6364,42 @@ body.page-bg-droplets .bn-editor {
   background-size: 120px 120px !important;
 }
 
+/* Heading small caps — render heading text in small caps. */
+body.heading-small-caps .bn-editor [data-content-type="heading"] {
+  font-variant: small-caps !important;
+  letter-spacing: 0.03em !important;
+}
+
+/* Code block Rosé Pine — Rosé Pine palette for code blocks. */
+body.code-block-rose-pine .bn-editor pre {
+  background: #191724 !important;
+  border: 1px solid #26233a !important;
+}
+body.code-block-rose-pine .bn-editor pre code {
+  color: #e0def4 !important;
+}
+
+/* Table alt column tint — tint odd columns for readability. */
+body.table-alt-col-tint .bn-editor table tr > td:nth-child(odd),
+body.table-alt-col-tint .bn-editor table tr > th:nth-child(odd) {
+  background: rgba(236, 72, 153, 0.06) !important;
+}
+
+/* Callout inset border — a border drawn inset from the callout edge. */
+body.callout-inset-border .bn-editor [data-content-type="callout"] {
+  outline: 1.5px solid #6366f1 !important;
+  outline-offset: -6px !important;
+}
+
+/* Page bg plus grid — a grid of small plus signs behind the editor. */
+body.page-bg-plus-grid .bn-editor {
+  background-image:
+    linear-gradient(rgba(99, 102, 241, 0.14) 1.5px, transparent 1.5px),
+    linear-gradient(90deg, rgba(99, 102, 241, 0.14) 1.5px, transparent 1.5px) !important;
+  background-size: 26px 26px !important;
+  background-position: center center !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

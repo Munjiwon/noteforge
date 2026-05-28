@@ -906,6 +906,11 @@ export function PageView({
       "table-vertical-lines",
       "callout-soft-tint",
       "page-bg-droplets",
+      "heading-small-caps",
+      "code-block-rose-pine",
+      "table-alt-col-tint",
+      "callout-inset-border",
+      "page-bg-plus-grid",
     ];
     try {
       for (const k of toggles) {

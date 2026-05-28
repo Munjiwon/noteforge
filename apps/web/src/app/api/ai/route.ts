@@ -3032,6 +3032,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean Jobs-to-be-Done (JTBD) analysis — frames what customers are really trying to accomplish. Use 합쇼체. Markdown: '**한 줄 (핵심 잡)**' (1줄 — '~할 때, ~하고 싶다, 그래서 ~'), '**잡 스토리 (bullets)**' (상황 + 동기 + 기대 결과 형태로), '**기능적 / 감정적 / 사회적 잡 (테이블)**' ('차원 | 고객이 원하는 것'), '**현재 해결책 + 불만 (bullets)**' (지금 어떻게 / 왜 부족), '**성공 기준 (bullets)**' (고객 관점의 '잘 됐다'), '**기회 (bullets)**' (덜 충족된 잡), '**시사점 (1줄)**'. 솔루션이 아닌 잡에 집중.\n\n고객 / 컨텍스트:\n${text}`,
   internal_retro_action_review_ko: (text) =>
     `Write a Korean retro action review — checks whether past retrospective action items actually got done and why. Use 합쇼체. Markdown: '**한 줄 (총평)**' (1줄 — 실행률 + 패턴), '**지난 액션 점검 (테이블)**' ('액션 | 담당 | 상태(완료/진행/미착수) | 결과/막힌 이유'), '**완료된 것의 효과 (bullets)**' (실제 개선됐나), '**반복되는 미완 패턴 (bullets)**' (왜 자꾸 안 되나), '**시스템 원인 (1단락)**' (개인 탓 아님 — 프로세스), '**개선 제안 (bullets)**' (액션이 실행되게 만드는 방법), '**이번 사이클 캐리오버 (bullets)**'. 책임 추궁 아닌 학습.\n\n액션 리뷰 컨텍스트:\n${text}`,
+  translate_ko_to_chin: (text) =>
+    `Translate the Korean text below into natural Hakha Chin (Lai) — Kuki-Chin (Sino-Tibetan) language of Chin State, Myanmar, and Mizoram. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Hakha Chin**' and '**번역 노트**' (3 bullets in Korean — note Hakha Chin is a major lingua franca among Chin communities, written in Latin script).\n\n원문:\n${text}`,
+  translate_ko_to_rakhine: (text) =>
+    `Translate the Korean text below into natural Rakhine (Arakanese) — a Burmish language of Rakhine State, western Myanmar. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Rakhine**' and '**번역 노트**' (3 bullets in Korean — note Rakhine is closely related to Burmese but preserves an older 'r' sound, written in Burmese script).\n\n원문:\n${text}`,
+  translate_ko_to_jingpho: (text) =>
+    `Translate the Korean text below into natural Jingpho (Kachin) — Sino-Tibetan language of Kachin State, Myanmar, and Yunnan. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Jinghpaw**' and '**번역 노트**' (3 bullets in Korean — note Jingpho is the main Kachin language, written in Latin script).\n\n원문:\n${text}`,
+  translate_ko_to_palaung: (text) =>
+    `Translate the Korean text below into natural Palaung (Ta'ang) — Austroasiatic (Mon-Khmer) language of northern Shan State, Myanmar. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Palaung**' and '**번역 노트**' (3 bullets in Korean — note Palaung is a Mon-Khmer language of tea-growing highland communities).\n\n원문:\n${text}`,
+  translate_ko_to_wa: (text) =>
+    `Translate the Korean text below into natural Wa (Vāx) — Austroasiatic (Mon-Khmer) language of the Myanmar-China border highlands. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Wa**' and '**번역 노트**' (3 bullets in Korean — note Wa is a Palaungic Mon-Khmer language, written in a Latin-based orthography).\n\n원문:\n${text}`,
+  internal_architecture_overview_ko: (text) =>
+    `Write a Korean system architecture overview — gives a newcomer or reviewer a clear mental model of a system. Use 합쇼체. Markdown: '**한 줄 (시스템)**' (1줄 — 무엇을 하는 시스템), '**핵심 책임 (bullets)**', '**주요 컴포넌트 (테이블)**' ('컴포넌트 | 역할 | 기술 | 소유'), '**데이터 흐름 (numbered)**' (요청이 들어와 나가기까지), '**외부 의존성 (bullets)**', '**데이터 저장 (bullets)**' (무엇을 어디에), '**확장 / 장애 포인트 (bullets)**', '**알려진 한계 / 기술 부채 (bullets)**', '**더 알아볼 곳 (1줄)**'. 다이어그램 없이도 그림이 그려지게.\n\n시스템 컨텍스트:\n${text}`,
+  sales_proof_of_concept_plan_ko: (text) =>
+    `Write a Korean Proof of Concept (POC) plan — defines a time-boxed POC to prove value before a deal. Use 합쇼체. Markdown: '**한 줄 (POC 목표)**' (1줄 — 무엇을 증명), '**성공 기준 (테이블)**' ('기준 | 측정 | 합격선') — 사전 합의 강조, '**범위 (bullets)**' (포함 / 제외), '**기간 / 마일스톤 (테이블)**' ('단계 | 활동 | 시한 | 담당'), '**필요 자원 (bullets)**' (양측), '**리스크 / 가정 (bullets)**', '**평가 / 의사결정 (1줄)**' (끝나고 누가 어떻게 판단), '**POC 후 전환 (1줄)**'. 명확한 합격 기준이 핵심.\n\nPOC 컨텍스트:\n${text}`,
+  customer_renewal_proposal_ko: (text) =>
+    `Write a Korean renewal proposal — presents a renewal offer that reinforces value. Use 합쇼체. Markdown: '**한 줄 (제안)**' (1줄 — 갱신 조건 핵심), '**지난 기간 가치 (bullets)**' (데이터 + 성과 — 왜 계속할 가치가 있나), '**갱신 옵션 (테이블)**' ('옵션 | 기간 | 가격 | 포함'), '**변경 사항 (bullets)**' (가격/패키지 변화 — 투명하게), '**확장 제안 (1줄)**' (있으면), '**총 가치 / ROI (1줄)**', '**일정 (1줄)**' (갱신일 / 결정 필요 시점), '**다음 단계 (1줄)**'. 가치 재확인 → 자연스러운 갱신.\n\n갱신 컨텍스트:\n${text}`,
+  pm_release_readiness_checklist_ko: (text) =>
+    `Write a Korean release readiness checklist — a go/no-go checklist before shipping. Use 합쇼체. Markdown: '**한 줄 (릴리스)**' (1줄 — 무엇을 / 언제), '**기능 완성도 (체크박스 bullets)**' (스펙 충족 / 엣지케이스), '**품질 (체크박스 bullets)**' (테스트 / QA / 회귀), '**운영 준비 (체크박스 bullets)**' (모니터링 / 알림 / 롤백 / 런북), '**문서 / 지원 (체크박스 bullets)**' (릴리스 노트 / 지원팀 / FAQ), '**비즈니스 (체크박스 bullets)**' (마케팅 / 세일즈 / 법무), '**Go/No-go (테이블)**' ('항목 | 상태 | 차단 여부'), '**최종 판정 (1줄)**'. 각 항목 담당 표기.\n\n릴리스 컨텍스트:\n${text}`,
+  internal_team_health_survey_ko: (text) =>
+    `Design a Korean team health survey — a short pulse survey to gauge team health and morale. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄), '**설문 문항 (테이블)**' ('영역 | 문항 | 척도'): 업무 명확성 / 자율성 / 협업 / 워크로드 / 성장 / 인정 / 심리적 안전 — 각 1-2문항, '**자유 응답 (bullets)**' (2-3개 개방형), '**운영 (bullets)**' (익명 / 주기 / 소요시간), '**분석 / 후속 (1줄)**' (결과를 어떻게 행동으로), '**주의 (1줄)**' (서베이 피로 / 응답 신뢰). 짧고 행동으로 이어지게.\n\n팀 / 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

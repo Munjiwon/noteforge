@@ -1318,6 +1318,11 @@ export function PageStyleMenu({
                       { key: "table-vertical-lines", label: "V-lines only" },
                       { key: "callout-soft-tint", label: "Soft tint" },
                       { key: "page-bg-droplets", label: "Droplets" },
+                      { key: "heading-small-caps", label: "Small caps" },
+                      { key: "code-block-rose-pine", label: "Rosé Pine" },
+                      { key: "table-alt-col-tint", label: "Alt col tint" },
+                      { key: "callout-inset-border", label: "Inset border" },
+                      { key: "page-bg-plus-grid", label: "Plus grid" },
                     ] as const
                   ).map((t) => (
                     <button
