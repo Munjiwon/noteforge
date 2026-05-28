@@ -1231,6 +1231,11 @@ export function PageStyleMenu({
                       { key: "table-cell-hover-row-col", label: "Cross hover" },
                       { key: "callout-glow-cyan", label: "Cyan glow" },
                       { key: "page-bg-cross-hatch", label: "Cross-hatch" },
+                      { key: "h1-with-box-around", label: "H1 box" },
+                      { key: "code-block-crimson", label: "Crimson code" },
+                      { key: "table-header-sticky-shadow", label: "Sticky shadow" },
+                      { key: "callout-stripe-left", label: "Stripe left" },
+                      { key: "page-bg-zigzag", label: "Zigzag bg" },
                     ] as const
                   ).map((t) => (
                     <button

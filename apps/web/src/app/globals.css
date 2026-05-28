@@ -5596,6 +5596,71 @@ body.page-bg-cross-hatch .bn-editor {
     repeating-linear-gradient(-45deg, rgba(148, 163, 184, 0.06) 0, rgba(148, 163, 184, 0.06) 1px, transparent 1px, transparent 9px) !important;
 }
 
+/* H1 with box around. */
+body.h1-with-box-around .bn-editor [data-content-type="heading"][data-level="1"] {
+  border: 2px solid #6366f1;
+  border-radius: 8px;
+  padding: 0.25em 0.6em;
+}
+.dark body.h1-with-box-around .bn-editor [data-content-type="heading"][data-level="1"] {
+  border-color: #818cf8;
+}
+
+/* Crimson code — deep crimson red palette. */
+body.code-block-crimson .bn-editor pre {
+  background: #2d0a14 !important;
+  color: #fda4af !important;
+  border: 1px solid #9f1239;
+}
+body.code-block-crimson .bn-editor pre code {
+  color: #fecdd3 !important;
+}
+
+/* Sticky shadow header — header sticks with a drop shadow when scrolling. */
+body.table-header-sticky-shadow .bn-editor table th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  background: #ffffff;
+}
+.dark body.table-header-sticky-shadow .bn-editor table th {
+  background: #18181b;
+}
+
+/* Stripe left callout — vertical striped pattern on the left edge. */
+body.callout-stripe-left .bn-editor [data-content-type="callout"] {
+  position: relative;
+  padding-left: 2.2rem !important;
+}
+body.callout-stripe-left .bn-editor [data-content-type="callout"]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1.2rem;
+  background: repeating-linear-gradient(
+    45deg,
+    currentColor 0,
+    currentColor 3px,
+    transparent 3px,
+    transparent 7px
+  );
+  opacity: 0.5;
+}
+
+/* Zigzag page background. */
+body.page-bg-zigzag .bn-editor {
+  background-image:
+    linear-gradient(135deg, rgba(99, 102, 241, 0.05) 25%, transparent 25%),
+    linear-gradient(225deg, rgba(99, 102, 241, 0.05) 25%, transparent 25%),
+    linear-gradient(45deg, rgba(99, 102, 241, 0.05) 25%, transparent 25%),
+    linear-gradient(315deg, rgba(99, 102, 241, 0.05) 25%, transparent 25%) !important;
+  background-size: 20px 20px !important;
+  background-position: 0 0, 10px 0, 10px -10px, 0 10px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
