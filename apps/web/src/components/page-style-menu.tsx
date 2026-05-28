@@ -1710,6 +1710,11 @@ export function PageStyleMenu({
                       { key: "callout-faq-3", label: "callout faq3" },
                       { key: "page-bg-faq-4", label: "page-bg faq4" },
                       { key: "heading-faq-5", label: "heading faq5" },
+                      { key: "code-block-fbf-1", label: "code-block fbf1" },
+                      { key: "table-fbf-2", label: "table fbf2" },
+                      { key: "callout-fbf-3", label: "callout fbf3" },
+                      { key: "page-bg-fbf-4", label: "page-bg fbf4" },
+                      { key: "heading-fbf-5", label: "heading fbf5" },
                     ] as const
                   ).map((t) => (
                     <button
