@@ -846,6 +846,11 @@ export function PageView({
       "table-first-col-bold",
       "callout-left-accent-thick",
       "page-bg-diagonal-stripes",
+      "h4-with-bullet",
+      "code-block-one-dark",
+      "table-zebra-columns",
+      "callout-icon-large",
+      "page-bg-graph-paper",
     ];
     try {
       for (const k of toggles) {

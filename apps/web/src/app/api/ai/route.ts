@@ -2792,6 +2792,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean engineering design doc (RFC) — proposes a technical approach for review. Use 합쇼체. Markdown: '**한 줄 (제안)**' (1줄 — 무엇을 만들/바꿀지), '**배경 / 문제 (1단락)**', '**목표 / 비목표 (bullets)**', '**제안 설계 (1-2단락)**' (핵심 아이디어 + 동작 방식), '**대안 (테이블)**' ('대안 | 장점 | 단점 | 채택 여부'), '**데이터/스키마 변경 (bullets)**' (있으면), '**롤아웃 plan (numbered)**', '**리스크 / 트레이드오프 (bullets)**', '**열린 질문 (bullets)**'.\n\n설계 컨텍스트:\n${text}`,
   internal_team_offsite_agenda_ko: (text) =>
     `Write a Korean team offsite agenda — structures a productive in-person team offsite. Use 합쇼체. Markdown: '**한 줄 (오프사이트)**' (1줄 — 목적 + 기대 결과), '**준비물 (bullets)**' (사전 읽기 / 준비), '**아젠다 (테이블)**' ('시간 | 세션 | 진행 | 목표'), '**핵심 토론 주제 (bullets)**', '**팀 빌딩 (1-2 bullets)**', '**의사결정 필요 항목 (bullets)**', '**마무리 / 액션 (1줄)**', '**로지스틱스 (1줄)**' (장소 / 식사 / 이동).\n\n오프사이트 컨텍스트:\n${text}`,
+  translate_ko_to_kirundi: (text) =>
+    `Translate the Korean text below into natural Kirundi (Rundi) — Bantu language of Burundi. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Ikirundi**' and '**번역 노트**' (3 bullets in Korean — note Kirundi is the national language of Burundi, closely related to Kinyarwanda).\n\n원문:\n${text}`,
+  translate_ko_to_luganda: (text) =>
+    `Translate the Korean text below into natural Luganda (Ganda) — Bantu language of the Buganda region, central Uganda. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Luganda**' and '**번역 노트**' (3 bullets in Korean — note Luganda is the most widely spoken Ugandan language after English).\n\n원문:\n${text}`,
+  translate_ko_to_kikuyu: (text) =>
+    `Translate the Korean text below into natural Gikuyu (Kikuyu) — Bantu language of central Kenya. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Gĩkũyũ**' and '**번역 노트**' (3 bullets in Korean — note Gikuyu is the language of Kenya's largest ethnic group).\n\n원문:\n${text}`,
+  translate_ko_to_luo: (text) =>
+    `Translate the Korean text below into natural Dholuo (Luo) — Nilotic language of western Kenya and northern Tanzania. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Dholuo**' and '**번역 노트**' (3 bullets in Korean — note Dholuo is a Nilotic language, not Bantu, with a tonal system).\n\n원문:\n${text}`,
+  translate_ko_to_wolof: (text) =>
+    `Translate the Korean text below into natural Wolof — Senegambian language of Senegal, the Gambia and Mauritania. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Wolof**' and '**번역 노트**' (3 bullets in Korean — note Wolof is the main lingua franca of Senegal, written in Latin or Arabic script).\n\n원문:\n${text}`,
+  sales_qbr_deck_outline_ko: (text) =>
+    `Outline a Korean sales QBR (Quarterly Business Review) deck — slide-by-slide structure for a customer-facing quarterly review. Use 합쇼체. Markdown numbered list, each item '**슬라이드 N — 제목**' + 1줄 (그 슬라이드에 들어갈 핵심): 1) 표지 + 목적, 2) 지난 분기 요약, 3) 합의 목표 대비 성과 (테이블 톤), 4) 핵심 성과 / 가치 실현, 5) 사용 현황 / 채택, 6) 이슈 / 리스크 + 해결, 7) 로드맵 / 신규 기능, 8) 다음 분기 목표, 9) 액션 아이템, 10) Q&A / 마무리. 마지막에 '**프레젠테이션 팁 (2 bullets)**'.\n\nQBR 컨텍스트:\n${text}`,
+  internal_postmortem_action_tracker_ko: (text) =>
+    `Build a Korean postmortem action tracker — turns postmortem findings into a trackable action list. Use 합쇼체. Markdown: '**한 줄 (인시던트)**' (1줄), '**액션 트래커 (테이블)**' ('ID | 액션 | 유형(예방/탐지/완화/문서) | 담당 | 시한 | 상태'), '**우선순위 근거 (bullets)**' (왜 이 순서인지), '**의존성 (bullets)**' (선행 필요 항목), '**완료 정의 (bullets)**' (각 액션이 '완료'되는 기준), '**리뷰 주기 (1줄)**' (언제 다시 점검). 액션은 구체적 + 검증 가능하게.\n\n포스트모템 findings:\n${text}`,
+  customer_adoption_plan_ko: (text) =>
+    `Write a Korean customer adoption plan — drives a customer from onboarding to active, expanding usage. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 어떤 채택 상태를 목표로), '**현재 채택 수준 (1줄)**' (어디쯤), '**핵심 유스케이스 (테이블)**' ('유스케이스 | 가치 | 현재 채택 | 목표'), '**단계별 plan (numbered)**' (각 단계: 목표 + 활동 + 성공 기준), '**필요한 지원 (bullets)**' (교육 / 리소스 / 임원 후원), '**측정 지표 (bullets)**', '**리스크 (1-2 bullets)**', '**다음 30일 액션 (테이블)**' ('액션 | 담당 | 시한').\n\n고객 / 채택 컨텍스트:\n${text}`,
+  pm_feature_spec_ko: (text) =>
+    `Write a Korean PM feature spec — defines a single feature clearly enough to build. Use 합쇼체. Markdown: '**한 줄 (기능)**' (1줄 — 무엇을 / 누구를 위해), '**문제 (1단락)**' (왜 필요한지 + 근거), '**목표 / 성공 지표 (bullets)**', '**유저 스토리 (bullets)**' ('~로서 ~하고 싶다, 왜냐면 ~'), '**기능 요구사항 (numbered)**' (구체적 동작), '**비기능 요구사항 (bullets)**' (성능 / 권한 / 접근성), '**엣지 케이스 (bullets)**', '**범위 밖 (bullets)**', '**오픈 퀘스천 (bullets)**'.\n\n기능 컨텍스트:\n${text}`,
+  internal_perf_review_self_ko: (text) =>
+    `Write a Korean self-assessment for a performance review — an employee's reflective self-review. Use 합쇼체. 균형 (성과 + 성장 영역) + 근거 기반. Markdown: '**한 줄 (요약)**' (1줄 — 이 기간 나의 한 문장), '**핵심 성과 (bullets)**' (각 '무엇을 — 임팩트(가능하면 수치) — 내 역할'), '**잘한 점 (2 bullets)**', '**성장한 영역 (bullets)**' (작년 대비), '**아쉬운 점 / 배운 것 (bullets)**' (솔직하게), '**다음 기간 목표 (bullets)**', '**필요한 지원 (1줄)**'. 과장 없이, 구체적 사례 중심.\n\n자기평가 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

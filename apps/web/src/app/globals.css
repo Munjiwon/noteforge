@@ -5899,6 +5899,47 @@ body.page-bg-diagonal-stripes .bn-editor {
   background-image: repeating-linear-gradient(45deg, rgba(99, 102, 241, 0.05) 0, rgba(99, 102, 241, 0.05) 10px, transparent 10px, transparent 20px) !important;
 }
 
+/* H4 with bullet — prepends "• " to H4 headings. */
+body.h4-with-bullet .bn-editor [data-content-type="heading"][data-level="4"] > *:first-child::before {
+  content: "\2022 ";
+  color: #ec4899;
+  font-weight: 700;
+  margin-right: 0.15em;
+}
+
+/* Code block One Dark — Atom One Dark palette for code blocks. */
+body.code-block-one-dark .bn-editor pre {
+  background: #282c34 !important;
+  border: 1px solid #3e4451 !important;
+}
+body.code-block-one-dark .bn-editor pre code {
+  color: #abb2bf !important;
+}
+
+/* Table zebra columns — alternate background shading by column. */
+body.table-zebra-columns .bn-editor table tr > td:nth-child(even),
+body.table-zebra-columns .bn-editor table tr > th:nth-child(even) {
+  background: rgba(99, 102, 241, 0.06) !important;
+}
+.dark body.table-zebra-columns .bn-editor table tr > td:nth-child(even),
+.dark body.table-zebra-columns .bn-editor table tr > th:nth-child(even) {
+  background: rgba(129, 140, 248, 0.1) !important;
+}
+
+/* Callout icon large — enlarge the callout's leading icon/emoji. */
+body.callout-icon-large .bn-editor [data-content-type="callout"] [class*="emoji"],
+body.callout-icon-large .bn-editor [data-content-type="callout"] > *:first-child {
+  font-size: 1.5em;
+}
+
+/* Page bg graph paper — fine grid graph-paper texture behind the editor. */
+body.page-bg-graph-paper .bn-editor {
+  background-image:
+    linear-gradient(rgba(99, 102, 241, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99, 102, 241, 0.07) 1px, transparent 1px) !important;
+  background-size: 18px 18px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

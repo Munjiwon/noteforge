@@ -1258,6 +1258,11 @@ export function PageStyleMenu({
                       { key: "table-first-col-bold", label: "1st col bold" },
                       { key: "callout-left-accent-thick", label: "Thick accent" },
                       { key: "page-bg-diagonal-stripes", label: "Diagonal" },
+                      { key: "h4-with-bullet", label: "H4 •" },
+                      { key: "code-block-one-dark", label: "One Dark" },
+                      { key: "table-zebra-columns", label: "Zebra cols" },
+                      { key: "callout-icon-large", label: "Big icon" },
+                      { key: "page-bg-graph-paper", label: "Graph paper" },
                     ] as const
                   ).map((t) => (
                     <button
