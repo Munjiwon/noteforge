@@ -3092,6 +3092,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean feature deprecation plan — retires a feature with minimal user pain. Use 합쇼체. Markdown: '**한 줄 (폐기)**' (1줄 — 무슨 기능 / 왜), '**근거 (bullets)**' (사용량 / 비용 / 전략 — 데이터), '**영향받는 사용자 (테이블)**' ('세그먼트 | 사용 정도 | 대안'), '**마이그레이션 경로 (numbered)**' (사용자가 옮겨갈 길), '**커뮤니케이션 plan (테이블)**' ('대상 | 메시지 | 시점'), '**타임라인 (테이블)**' ('단계 | 날짜'): 공지 / 신규차단 / 읽기전용 / 완전제거, '**예외 처리 (1줄)**', '**롤백 트리거 (1줄)**'. 사용자 신뢰 보호 우선.\n\n폐기 컨텍스트:\n${text}`,
   internal_proposal_one_pager_ko: (text) =>
     `Write a Korean one-page proposal — a single-page pitch to get buy-in for an idea. Use 합쇼체. 1페이지 엄수. Markdown: '**제목 (1줄)**', '**한 줄 요약 (1줄)**' (무엇을 / 왜 / 요청), '**문제 (2-3줄)**', '**제안 (2-3줄)**' (핵심 아이디어), '**기대 효과 (bullets)**' (3개 — 가능하면 수치), '**필요 자원 (1줄)**', '**리스크 (1-2 bullets)**', '**요청 (1줄)**' (의사결정자에게 정확히 무엇을). 길면 실패 — 날카롭게.\n\n제안 컨텍스트:\n${text}`,
+  translate_ko_to_zhuang: (text) =>
+    `Translate the Korean text below into natural Zhuang (Vahcuengh) — Tai-Kadai language of Guangxi, southern China. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Vahcuengh**' and '**번역 노트**' (3 bullets in Korean — note Standard Zhuang is written in a Latin-based orthography and is the largest minority language of China).\n\n원문:\n${text}`,
+  translate_ko_to_uyghur: (text) =>
+    `Translate the Korean text below into natural Uyghur (ئۇيغۇرچە) — Turkic language of Xinjiang, China. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**ئۇيغۇرچە**' and '**번역 노트**' (3 bullets in Korean — note Uyghur is a Karluk Turkic language written in an Arabic-derived script, right-to-left).\n\n원문:\n${text}`,
+  translate_ko_to_tibetan: (text) =>
+    `Translate the Korean text below into natural Standard Tibetan (བོད་སྐད) — Sino-Tibetan language of Tibet. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**བོད་སྐད**' and '**번역 노트**' (3 bullets in Korean — note Tibetan has an honorific register and is written in the Tibetan abugida script).\n\n원문:\n${text}`,
+  translate_ko_to_dungan: (text) =>
+    `Translate the Korean text below into natural Dungan — a Sinitic language of Central Asia (Kyrgyzstan, Kazakhstan) descended from northwestern Mandarin. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Хуэйзў йүян**' and '**번역 노트**' (3 bullets in Korean — note Dungan is the only Sinitic language conventionally written in Cyrillic).\n\n원문:\n${text}`,
+  translate_ko_to_salar: (text) =>
+    `Translate the Korean text below into natural Salar — Oghuz Turkic language of Qinghai and Gansu, China. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Sal​ır**' and '**번역 노트**' (3 bullets in Korean — note Salar is an Oghuz Turkic language surrounded by Sinitic and Tibetan, with heavy borrowing).\n\n원문:\n${text}`,
+  internal_security_review_ko: (text) =>
+    `Write a Korean security review — reviews a feature/system for security risks before launch. Use 합쇼체. Markdown: '**한 줄 (결론)**' (1줄 — 출시 가능 / 조건부 / 불가), '**범위 (1줄)**' (무엇을 리뷰), '**데이터 / 신뢰 경계 (bullets)**' (어떤 데이터 / 어디서 어디로), '**위협 (테이블)**' ('위협 | 가능성 | 영향 | 등급'): 인증/인가 / 입력검증 / 데이터노출 / 의존성 / 비밀관리, '**발견 사항 (테이블)**' ('이슈 | 심각도 | 권고'), '**필수 수정 (bullets)**' (출시 전), '**권장 수정 (bullets)**', '**잔여 리스크 (1줄)**'. 사실 + 실행 가능한 권고.\n\n보안 리뷰 컨텍스트:\n${text}`,
+  sales_reference_request_ko: (text) =>
+    `Draft a Korean customer reference request — asks a happy customer to be a reference, respectfully. Use 합쇼체 (정중 + 부담 없이). Markdown: '**제목**' (1줄), '**본문**' (3-4 단락: 1) 따뜻한 인사 + 함께한 성과 1줄 인정, 2) 부탁 — 무엇을 (레퍼런스 콜 / 케이스 스터디 / 리뷰) + 왜 그들이 적임, 3) 부담 줄이기 — 소요 시간 / 유연성 / 거절해도 괜찮음, 4) 감사 + 다음 단계), '**옵션 제시 (bullets)**' (참여 방식 몇 가지), '**보상/감사 (1줄)**' (있으면). 관계 우선, 압박 금지.\n\n레퍼런스 컨텍스트:\n${text}`,
+  customer_health_check_call_notes_ko: (text) =>
+    `Structure Korean health check call notes — captures a regular customer health check-in. Use 합쇼체. Markdown: '**한 줄 (헬스)**' (1줄 — 🟢/🟡/🔴 + 핵심), '**참석자 (1줄)**', '**잘 되는 것 (bullets)**' (고객 언어로), '**우려 / 페인 (테이블)**' ('이슈 | 영향 | 긴급도'), '**사용 / 채택 신호 (bullets)**', '**고객 목표 업데이트 (1줄)**' (바뀐 것), '**기회 (bullets)**' (확장 / 가치 확대), '**액션 (테이블)**' ('액션 | 담당 | 시한'), '**다음 체크인 (1줄)**'. 관계 + 가치 신호 포착.\n\n콜 노트:\n${text}`,
+  pm_competitive_positioning_ko: (text) =>
+    `Write a Korean competitive positioning statement — defines how a product is positioned against alternatives. Use 합쇼체. Markdown: '**한 줄 (포지셔닝)**' (1줄 — '~를 위한 ~로서, 우리는 ~이다, ~와 달리 ~'), '**타깃 (1줄)**' (누구를 위해), '**카테고리 (1줄)**' (어떤 시장으로 인식되길), '**핵심 차별점 (bullets)**' (각 '차별점 — 근거 — 왜 중요'), '**경쟁 프레임 (테이블)**' ('대안 | 그들의 포지션 | 우리 대비'), '**증거 (bullets)**' (포지셔닝 뒷받침), '**메시지 기둥 (bullets)**', '**피할 메시지 (1줄)**'. 차별화 + 신뢰성.\n\n포지셔닝 컨텍스트:\n${text}`,
+  internal_quarterly_retro_ko: (text) =>
+    `Facilitate a Korean quarterly retrospective — a higher-altitude retro reflecting on a whole quarter. Use 합쇼체. Markdown: '**한 줄 (분기 총평)**' (1줄), '**목표 대비 성과 (테이블)**' ('목표 | 결과 | 달성도 | 코멘트'), '**잘된 것 (bullets)**' (반복하고 싶은 패턴), '**아쉬운 것 (bullets)**' (시스템 관점), '**놀란 것 / 배운 것 (bullets)**', '**팀 / 협업 신호 (1단락)**' (사기 / 번아웃 / 성장), '**다음 분기 바꿀 것 (테이블)**' ('변화 | 이유 | 담당'), '**한 줄 다짐 (1줄)**'. 개인 비난 없이 패턴과 학습.\n\n분기 retro 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

@@ -1333,6 +1333,11 @@ export function PageStyleMenu({
                       { key: "table-zebra-rounded", label: "Zebra round" },
                       { key: "callout-quote-bar", label: "Quote bar" },
                       { key: "page-bg-scales", label: "Scales" },
+                      { key: "heading-bg-highlight", label: "Highlight bg" },
+                      { key: "code-block-material", label: "Material" },
+                      { key: "table-first-row-accent", label: "Row accent" },
+                      { key: "callout-icon-circle", label: "Icon circle" },
+                      { key: "page-bg-waves", label: "Waves" },
                     ] as const
                   ).map((t) => (
                     <button

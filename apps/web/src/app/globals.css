@@ -6476,6 +6476,44 @@ body.page-bg-scales .bn-editor {
   background-size: 24px 12px !important;
 }
 
+/* Heading bg highlight — a highlighter-style background behind heading text. */
+body.heading-bg-highlight .bn-editor [data-content-type="heading"] > *:first-child {
+  background: linear-gradient(transparent 55%, rgba(250, 204, 21, 0.5) 55%) !important;
+}
+
+/* Code block Material — Material Theme palette for code blocks. */
+body.code-block-material .bn-editor pre {
+  background: #263238 !important;
+  border: 1px solid #37474f !important;
+}
+body.code-block-material .bn-editor pre code {
+  color: #eeffff !important;
+}
+
+/* Table first row accent — give the first data row a subtle accent. */
+body.table-first-row-accent .bn-editor table tbody tr:first-child td {
+  background: rgba(99, 102, 241, 0.1) !important;
+  font-weight: 600 !important;
+}
+
+/* Callout icon circle — wrap the callout icon in a colored circle. */
+body.callout-icon-circle .bn-editor [data-content-type="callout"] > *:first-child {
+  background: rgba(99, 102, 241, 0.15) !important;
+  border-radius: 999px !important;
+  width: 1.8em !important;
+  height: 1.8em !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Page bg waves — a gentle horizontal wave pattern behind the editor. */
+body.page-bg-waves .bn-editor {
+  background-image:
+    radial-gradient(circle at 50% 0, transparent 9px, rgba(56, 189, 248, 0.08) 10px, transparent 11px) !important;
+  background-size: 36px 18px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
