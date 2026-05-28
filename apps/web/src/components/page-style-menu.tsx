@@ -1283,6 +1283,11 @@ export function PageStyleMenu({
                       { key: "table-header-sticky", label: "Sticky head" },
                       { key: "callout-pill-shape", label: "Pill shape" },
                       { key: "page-bg-stars", label: "Stars" },
+                      { key: "heading-underline-all", label: "Underlined" },
+                      { key: "code-block-synthwave", label: "Synthwave" },
+                      { key: "table-no-borders", label: "Borderless" },
+                      { key: "callout-3d-raised", label: "Raised" },
+                      { key: "page-bg-blueprint", label: "Blueprint" },
                     ] as const
                   ).map((t) => (
                     <button

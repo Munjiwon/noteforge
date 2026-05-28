@@ -871,6 +871,11 @@ export function PageView({
       "table-header-sticky",
       "callout-pill-shape",
       "page-bg-stars",
+      "heading-underline-all",
+      "code-block-synthwave",
+      "table-no-borders",
+      "callout-3d-raised",
+      "page-bg-blueprint",
     ];
     try {
       for (const k of toggles) {

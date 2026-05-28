@@ -2892,6 +2892,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Produce a Korean RICE prioritization analysis — scores and ranks initiatives by Reach, Impact, Confidence, Effort. Use 합쇼체. Markdown: '**한 줄 (추천)**' (1줄 — 무엇을 먼저), '**RICE 점수 (테이블)**' ('항목 | Reach | Impact | Confidence(%) | Effort(인월) | RICE 점수'), '**점수 산정 노트 (bullets)**' (각 항목 가정 근거), '**우선순위 결과 (numbered)**' (점수 순 + 1줄 코멘트), '**주의 (bullets)**' (점수의 한계 / 전략적 예외), '**다음 액션 (1줄)**'. RICE = (Reach×Impact×Confidence)/Effort.\n\n이니셔티브 목록:\n${text}`,
   internal_onboarding_buddy_guide_ko: (text) =>
     `Write a Korean onboarding buddy guide — helps a buddy support a new hire's first weeks. Use 해요체 (친근 + 실용). Markdown: '**한 줄 (역할)**' (1줄 — 버디로서 무엇을), '**첫날 (bullets)**' (환영 / 소개 / 점심), '**첫 주 (bullets)**' (체크인 / 셋업 / 문화), '**첫 30일 (bullets)**' (점진적 깊이), '**정기 체크인 질문 (bullets)**' ('이번 주 막힌 거 있어요?' 류), '**소개해줄 사람 (bullets)**', '**하지 말 것 (1-2 bullets)**' (압도 금지 등), '**에스컬레이션 (1줄)**' (걱정되면 누구에게).\n\n온보딩 컨텍스트:\n${text}`,
+  translate_ko_to_lingala: (text) =>
+    `Translate the Korean text below into natural Lingala (Lingála) — Bantu language of the Congo River region, DR Congo and Republic of the Congo. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Lingála**' and '**번역 노트**' (3 bullets in Korean — note Lingala is a major lingua franca of the Congos and Congolese music).\n\n원문:\n${text}`,
+  translate_ko_to_kongo: (text) =>
+    `Translate the Korean text below into natural Kikongo (Kongo) — Bantu language of the lower Congo region. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Kikongo**' and '**번역 노트**' (3 bullets in Korean — note Kikongo is the historic language of the Kingdom of Kongo, spoken across Angola, DR Congo and Congo).\n\n원문:\n${text}`,
+  translate_ko_to_tshiluba: (text) =>
+    `Translate the Korean text below into natural Tshiluba (Luba-Kasai) — Bantu language of the Kasai region, DR Congo. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Tshiluba**' and '**번역 노트**' (3 bullets in Korean — note Tshiluba is one of the four national languages of DR Congo).\n\n원문:\n${text}`,
+  translate_ko_to_sango: (text) =>
+    `Translate the Korean text below into natural Sango (Sängö) — Ngbandi-based creole and national language of the Central African Republic. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Sängö**' and '**번역 노트**' (3 bullets in Korean — note Sango is the national lingua franca of the Central African Republic).\n\n원문:\n${text}`,
+  translate_ko_to_mongo: (text) =>
+    `Translate the Korean text below into natural Mongo (Lomongo) — Bantu language of the central Congo basin, DR Congo. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Lomongo**' and '**번역 노트**' (3 bullets in Korean — note Mongo is spoken across the equatorial rainforest of central DR Congo).\n\n원문:\n${text}`,
+  internal_kickoff_doc_ko: (text) =>
+    `Write a Korean project kickoff doc — aligns a team at the start of a project. Use 합쇼체. Markdown: '**한 줄 (프로젝트)**' (1줄 — 무엇을 / 왜 / 언제까지), '**배경 (1단락)**' (왜 지금 이걸), '**목표 / 성공 기준 (bullets)**', '**범위 / 비범위 (bullets)**', '**팀 / 역할 (테이블)**' ('이름 | 역할 | 책임'), '**마일스톤 (테이블)**' ('마일스톤 | 산출물 | 시한'), '**리스크 / 가정 (bullets)**', '**커뮤니케이션 (1줄)**' (어디서 / 얼마나 자주), '**다음 액션 (테이블)**' ('액션 | 담당 | 시한').\n\n프로젝트 컨텍스트:\n${text}`,
+  sales_battlecard_ko: (text) =>
+    `Write a Korean sales battlecard — a quick-reference card for reps to win against a competitor. Use 합쇼체. 스캔 가능 + 실전형. Markdown: '**경쟁사 (1줄)**' (한 줄 포지셔닝), '**한 줄 우리 포지션 (1줄)**' (그들 대비 우리), '**우리가 이기는 지점 (bullets)**' (각 '강점 — 증거'), '**그들이 이기는 지점 + 대응 (테이블)**' ('그들 강점 | 우리 대응 멘트'), '**랜드마인 질문 (bullets)**' (고객이 그들에게 물으면 불리해지는 질문), '**대표 반론 처리 (테이블)**' ('고객 우려 | 응답'), '**금지 멘트 (1-2 bullets)**' (하면 안 되는 말).\n\n경쟁사 / 컨텍스트:\n${text}`,
+  customer_exec_business_review_ebr_ko: (text) =>
+    `Outline a Korean Executive Business Review (EBR) — a strategic, exec-level review (higher altitude than a QBR). Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄), '**비즈니스 성과 (테이블)**' ('고객 비즈니스 목표 | 우리 기여 | 결과'), '**전략적 정렬 (1단락)**' (우리 로드맵 ↔ 고객 전략), '**가치 요약 (bullets)**' (임원이 들을 한 줄들), '**리스크 / 기회 (테이블)**' ('항목 | 영향 | 제안'), '**다음 6-12개월 공동 비전 (bullets)**', '**임원 요청 (1줄)**' (스폰서십 / 확장 / 레퍼런스), '**액션 (테이블)**'. C레벨 톤.\n\nEBR 컨텍스트:\n${text}`,
+  pm_experiment_design_ko: (text) =>
+    `Write a Korean A/B experiment design — defines a rigorous product experiment. Use 합쇼체. Markdown: '**한 줄 (실험)**' (1줄 — 무엇을 검증), '**가설 (1줄)**' ('만약 ~하면 ~할 것이다, 왜냐면 ~'), '**지표 (bullets)**' (primary 1개 + guardrail 2-3개), '**변형 (테이블)**' ('그룹 | 처리 | 비율'), '**대상 / 분할 (1줄)**', '**표본 크기 / 기간 (1줄)**' (MDE + 가정), '**분석 방법 (1줄)**', '**의사결정 규칙 (bullets)**' ('이기면 ~, 지면 ~, 무의미하면 ~'), '**리스크 (bullets)**'.\n\n실험 컨텍스트:\n${text}`,
+  internal_oncall_handoff_ko: (text) =>
+    `Write a Korean on-call handoff note — hands off context at the end of an on-call shift. Use 합쇼체. 간결 + 실행 가능. Markdown: '**한 줄 (교대)**' (1줄 — 전반 상태 🟢/🟡/🔴), '**진행 중 이슈 (테이블)**' ('이슈 | 심각도 | 현재 상태 | 다음 액션'), '**주의 깊게 볼 것 (bullets)**' (불안정 신호 / 재발 가능), '**최근 변경 (bullets)**' (배포 / 설정), '**침묵시킨 알림 (bullets)**' (있으면 — 왜 / 언제 풀지), '**유용한 링크 (bullets)**' (대시보드 / 런북), '**인계 확인 (1줄)**'.\n\n온콜 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

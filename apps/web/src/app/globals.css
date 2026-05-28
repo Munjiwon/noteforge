@@ -6094,6 +6094,42 @@ body.page-bg-stars .bn-editor {
   background-position: 0 0, 25px 25px !important;
 }
 
+/* Heading underline all — underline all heading levels. */
+body.heading-underline-all .bn-editor [data-content-type="heading"] {
+  text-decoration: underline !important;
+  text-underline-offset: 4px !important;
+}
+
+/* Code block Synthwave — neon Synthwave '84 palette for code blocks. */
+body.code-block-synthwave .bn-editor pre {
+  background: #2b213a !important;
+  border: 1px solid #463465 !important;
+}
+body.code-block-synthwave .bn-editor pre code {
+  color: #f92aad !important;
+}
+
+/* Table no borders — remove all table cell borders for a clean look. */
+body.table-no-borders .bn-editor table td,
+body.table-no-borders .bn-editor table th {
+  border: none !important;
+}
+
+/* Callout 3D raised — a raised, elevated look for callouts. */
+body.callout-3d-raised .bn-editor [data-content-type="callout"] {
+  box-shadow: 0 4px 0 rgba(99, 102, 241, 0.35), 0 6px 12px rgba(0, 0, 0, 0.12) !important;
+  transform: translateY(-1px);
+}
+
+/* Page bg blueprint — a blueprint-style grid on a tinted background. */
+body.page-bg-blueprint .bn-editor {
+  background-color: rgba(37, 99, 235, 0.04) !important;
+  background-image:
+    linear-gradient(rgba(37, 99, 235, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37, 99, 235, 0.12) 1px, transparent 1px) !important;
+  background-size: 22px 22px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
