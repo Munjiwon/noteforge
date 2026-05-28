@@ -1061,6 +1061,11 @@ export function PageStyleMenu({
                       { key: "table-header-pill", label: "Pill header" },
                       { key: "callout-cut-corner", label: "Cut corner" },
                       { key: "page-side-folder-tab", label: "Folder tab" },
+                      { key: "h3-with-folder-prefix", label: "H3 📁" },
+                      { key: "code-block-mint-bg", label: "Mint code" },
+                      { key: "table-cells-shadowed", label: "Cell shadow" },
+                      { key: "callout-leaf-marker", label: "🍃 callout" },
+                      { key: "page-tabbed-edge-top", label: "Top tab" },
                     ] as const
                   ).map((t) => (
                     <button

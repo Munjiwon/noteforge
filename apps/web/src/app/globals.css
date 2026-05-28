@@ -3653,6 +3653,68 @@ body.page-side-folder-tab .bn-editor::before {
   background: #b45309;
 }
 
+/* H3 with folder prefix — prepends 📁 to H3 headings. */
+body.h3-with-folder-prefix .bn-editor [data-content-type="heading"][data-level="3"] > *:first-child::before {
+  content: "📁 ";
+  margin-right: 0.2em;
+}
+
+/* Mint code background — fresh mint green tint. */
+body.code-block-mint-bg .bn-editor pre {
+  background: #ecfdf5 !important;
+  border: 1px solid #a7f3d0;
+}
+.dark body.code-block-mint-bg .bn-editor pre {
+  background: #022c22 !important;
+  border-color: #064e3b;
+}
+
+/* Cell shadowed — each table cell gets an inset shadow for depth. */
+body.table-cells-shadowed .bn-editor table td,
+body.table-cells-shadowed .bn-editor table th {
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.06), inset 2px 0 0 rgba(0, 0, 0, 0.04);
+}
+.dark body.table-cells-shadowed .bn-editor table td,
+.dark body.table-cells-shadowed .bn-editor table th {
+  box-shadow: inset 0 -2px 0 rgba(255, 255, 255, 0.05), inset 2px 0 0 rgba(255, 255, 255, 0.04);
+}
+
+/* Leaf marker callout — 🍃 marker in the corner. */
+body.callout-leaf-marker .bn-editor [data-content-type="callout"] {
+  position: relative;
+}
+body.callout-leaf-marker .bn-editor [data-content-type="callout"]::after {
+  content: "🍃";
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 1.1rem;
+  opacity: 0.7;
+}
+
+/* Top tab — small folder-like tab above the editor. */
+body.page-tabbed-edge-top .bn-editor {
+  position: relative;
+  margin-top: 30px;
+  border-top: 3px solid #6366f1;
+}
+body.page-tabbed-edge-top .bn-editor::before {
+  content: "";
+  position: absolute;
+  top: -22px;
+  left: 24px;
+  width: 90px;
+  height: 22px;
+  background: #6366f1;
+  border-radius: 6px 6px 0 0;
+}
+.dark body.page-tabbed-edge-top .bn-editor {
+  border-top-color: #818cf8;
+}
+.dark body.page-tabbed-edge-top .bn-editor::before {
+  background: #818cf8;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

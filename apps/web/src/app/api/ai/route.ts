@@ -2008,6 +2008,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Translate the Korean text below into natural Papiamento (spoken in Aruba, Curaçao, Bonaire). 격식 ('bo' 친근 표준 / 더 정중하게는 회사명 / 호칭 사용) 원문에 맞춤. Reply with two sections: '**Tradukshon**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
   customer_check_in_30_day_email_ko: (text) =>
     `Draft a Korean customer 30-day check-in email — sent by CSM to a new customer at D+30. Use 해요체. 따뜻 + 데이터 + 행동 제안. Markdown: '**제목**' (1줄, 24자 이내 — '한 달 어떠세요? 30일 후 안부'), '**본문**' (4 단락: 1) 1줄 — 30일 함께해 줘서 감사 + 본인 안부, 2) 우리가 본 그쪽 사용 — 구체 데이터 — '로그인 N회 / 핵심 기능 X 사용 / 팀원 Y명 참여', 3) 비슷한 단계 고객이 보통 이 시기에 하는 것 — '대부분 다음 30일에 Z를 시도해요' — 부담 없이 1-2개 제안, 4) 짧은 부탁 — '5분 통화 가능? 잘 된 / 막힌 것 듣고 싶어요' + 일정 후보 2개), '**P.S.**' (1줄 — 도움 문서 / 슬랙 채널 placeholder).\n\n고객 / 사용 데이터:\n${text}`,
+  translate_ko_to_swiss_french: (text) =>
+    `Translate the Korean text below into natural Swiss French (français de Suisse). 격식 ('vous' 정중 / 'tu' 친근) 원문에 맞춤. Use Swiss numerals (septante / huitante / nonante 가능). Reply with two sections: '**Traduction**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  customer_executive_qbr_pre_brief_ko: (text) =>
+    `Build a Korean exec-level pre-brief for a customer QBR — sent to our Exec sponsor 24 hours before the meeting so they can show up sharp. Use 합쇼체. 1 페이지 max. Markdown: '**미팅 한 줄**' (1줄 — '내일 [고객사] QBR, 우리 목적 1줄'), '**고객 핵심 인물 (3명)**' (각 'h3: 이름 + 직책 + 우리에 대한 sentiment + 우리가 알아야 할 1줄'), '**최근 90일 우리 가치 (3 bullets)**' (메트릭 + 1줄), '**우리가 받을 가능성 높은 질문 + 추천 답변 (3쌍)**' ('Q: ... / A: 1줄'), '**우리가 묻고 싶은 1가지**' (1줄 — 가장 중요한 정보), '**위험 신호 / 우리가 피해야 할 주제**' (2 bullets — 사전 경고), '**미팅에서 commit 가능한 1가지 (Exec 결재 ready)**' (1줄).\n\n고객 / 컨텍스트:\n${text}`,
+  translate_ko_to_quebec_french: (text) =>
+    `Translate the Korean text below into natural Quebec French (français québécois). 격식 ('vous' 정중 / 'tu' 친근) 원문에 맞춤. Use Quebec expressions and vocabulary where natural (e.g., 'courriel' for email, 'magasiner' for shopping). Reply with two sections: '**Traduction**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  brand_naming_brainstorm_ko: (text) =>
+    `Build a Korean brand / product naming brainstorm doc — for a new product / company. Use 해요체. Markdown: '**명명 대상 한 줄**' (1줄 — 무엇 / 누구를 위해 / 어떤 느낌), '**기준 (3-5개)**' (bullets — 도메인 가능 / 1-3 음절 / 발음 쉬움 / 영문 명사 X 등), '**1차 후보 (15-25개, 분류별)**' (테이블 — '이름 | 분류 (단어 / 합성 / 신조어 / 인물) | 의미 1줄 | 느낌 | 도메인 추정'), '**상위 5개 (각 1단락 분석)**' ('h3: 이름 — 왜 좋은가 / 약점 / 도메인 / 상표 위험 / 다른 언어에서 부정적 의미 체크'), '**탈락 후보 + 이유**' (bullets), '**다음 단계**' (1줄 — '5개로 사용자 X명에게 reaction test').\n\n제품 / 브랜드 컨텍스트:\n${text}`,
+  translate_ko_to_brazilian_portuguese: (text) =>
+    `Translate the Korean text below into natural Brazilian Portuguese (português brasileiro). 격식 ('você' 표준 — 정중 / 'tu' 일부 지역) 원문에 맞춤. Use Brazilian vocabulary (e.g., 'ônibus' for bus, 'celular' for cellphone). Reply with two sections: '**Tradução**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  internal_announcement_promotion_ko: (text) =>
+    `Draft a Korean internal announcement of an employee promotion — sent by manager to the team. Use 해요체. 진심 + 구체적 + 잘난 척 없게. Markdown: '**제목**' (1줄, 26자 이내 — '[이름] 승진 안내 — [새 직책]'), '**본문**' (3 단락: 1) 1줄 — 오늘부로 [이름]이 [새 직책]으로 승진, 2) 왜 — 지난 X개월 동안 본 구체적 임팩트 3가지 + 동료 / 고객이 본 그녀의 강점 1줄, 3) 다음 — 새 역할에서 무엇을 책임지나 + 팀이 어떻게 그녀를 지원할 수 있나), '**축하 한 줄**' (1줄 — 본인에게 직접 슬랙 가능), '**Q&A**' (1줄 — '궁금한 점은 [매니저]에게 DM').\n\n승진 / 컨텍스트:\n${text}`,
+  translate_ko_to_mexican_spanish: (text) =>
+    `Translate the Korean text below into natural Mexican Spanish (español mexicano). 격식 ('usted' 정중 / 'tú' 친근) 원문에 맞춤. Use Mexican vocabulary and expressions where natural (e.g., 'mucho' modifiers, 'andale' style). Reply with two sections: '**Traducción**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  customer_complaint_response_ko: (text) =>
+    `Draft a Korean response to a customer complaint — escalated case, sent by support lead or CSM. Use 해요체. 인정 + 책임 + 액션 + 사람 냄새. 'we apologize for inconvenience' 같은 형식 답변 금지. Markdown: '**제목**' (1줄, 24자 이내 — '[티켓번호] 답변 — [한 줄 요약]'), '**본문**' (4 단락: 1) 1-2줄 — 그쪽 frustration 인정 + 우리 잘못 인정 (책임 회피 X), 2) 무엇이 일어났는지 — 우리 측 정보 정확히, 회피 X, 3) 우리가 한 / 할 것 — 즉시 액션 + 장기 액션 — 구체적 + 시한, 4) 보상 (가능하면) + 다시는 같은 문제 안 일어나게 무엇이 달라질지), '**서명**' (이름 + 직책 — 본인 책임이라는 신호).\n\n불만 / 컨텍스트:\n${text}`,
+  translate_ko_to_argentinian_spanish: (text) =>
+    `Translate the Korean text below into natural Argentinian Spanish (español rioplatense). 격식 ('usted' 정중 / 'vos' 친근 — Argentinian voseo) 원문에 맞춤. Use 'vos' conjugations where natural (e.g., 'tenés', 'querés'). Reply with two sections: '**Traducción**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  team_okr_check_in_doc_ko: (text) =>
+    `Build a Korean monthly team OKR check-in doc — used in a 30-min team meeting mid-quarter. Use 해요체. 빠른 확인 + 솔직. Markdown: '**한 줄 (이번 달)**' (1줄 — 'on track / at risk / off track + 1줄 근거'), '**KR별 (테이블)**' ('KR | 목표 | 현재 | 진행률 % | 신호등 | 가장 큰 위험'), '**at risk / off track KR — 깊은 분석**' (각 'h3 + 왜 (구체적) + 회복할지 / 다시 baseline 다시 잡을지 + 누구 도움'), '**잘 가고 있는 것 — 가속화 기회**' (bullets), '**자원 부족 / 막힘**' (bullets — 매니저 / 다른 팀에 부탁), '**다음 30일 commit (3가지)**' (numbered).\n\nOKR 상태 / 데이터:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
