@@ -2772,6 +2772,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Summarize Korean product beta feedback — synthesizes scattered beta-tester feedback into themes a PM can act on. Use 합쇼체. Markdown: '**한 줄 (전반)**' (1줄 — 전반 반응 + 핵심 시그널), '**참여 (1줄)**' (몇 명 / 얼마나 활발), '**좋아한 것 (테이블)**' ('테마 | 빈도 | 대표 인용'), '**불만 / 막힌 점 (테이블)**' ('이슈 | 심각도 | 빈도 | 대표 인용'), '**기능 요청 (bullets)**' (빈도 순), '**의외의 인사이트 (1-2 bullets)**', '**우선순위 제안 (테이블)**' ('항목 | 영향 | 노력 | 추천'), '**GA 준비도 (1줄)**'.\n\n베타 피드백 원문:\n${text}`,
   internal_hiring_scorecard_ko: (text) =>
     `Produce a Korean interview hiring scorecard — a structured post-interview evaluation to reduce bias and force a clear recommendation. Use 합쇼체. Markdown: '**한 줄 (추천)**' (1줄 — 'Strong Yes / Yes / No / Strong No' + 핵심 이유), '**지원자 / 직무 (1줄)**', '**평가 항목 (테이블)**' ('역량 | 점수(1-4) | 근거(구체적 사례)'): 직무 역량 / 문제 해결 / 협업 / 커뮤니케이션 / 컬처 애드, '**강점 (2 bullets)**' (관찰 기반), '**우려 (bullets)**' (각 '우려 — 근거 — 확인 방법'), '**추가 검증 필요 (bullets)**', '**최종 추천 (1단락)**' (명확하게 — 애매하게 끝내지 말 것).\n\n인터뷰 노트:\n${text}`,
+  translate_ko_to_ndebele: (text) =>
+    `Translate the Korean text below into natural isiNdebele (Southern Ndebele) — Nguni Bantu language of Mpumalanga, South Africa. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**isiNdebele**' and '**번역 노트**' (3 bullets in Korean — note isiNdebele is one of South Africa's official Nguni languages, famous for its geometric mural art).\n\n원문:\n${text}`,
+  translate_ko_to_swati: (text) =>
+    `Translate the Korean text below into natural siSwati (Swazi) — Nguni Bantu language of Eswatini and South Africa. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**siSwati**' and '**번역 노트**' (3 bullets in Korean — note siSwati is the national language of Eswatini).\n\n원문:\n${text}`,
+  translate_ko_to_chichewa: (text) =>
+    `Translate the Korean text below into natural Chichewa (Nyanja) — Bantu language of Malawi, Zambia and Mozambique. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Chichewa**' and '**번역 노트**' (3 bullets in Korean — note Chichewa is the national language of Malawi).\n\n원문:\n${text}`,
+  translate_ko_to_bemba: (text) =>
+    `Translate the Korean text below into natural Bemba (Chibemba) — Bantu language widely spoken across northern Zambia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Chibemba**' and '**번역 노트**' (3 bullets in Korean — note Bemba is a major lingua franca of Zambia's Copperbelt).\n\n원문:\n${text}`,
+  translate_ko_to_kinyarwanda: (text) =>
+    `Translate the Korean text below into natural Kinyarwanda — Bantu language of Rwanda. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Kinyarwanda**' and '**번역 노트**' (3 bullets in Korean — note Kinyarwanda is the national language of Rwanda, closely related to Kirundi).\n\n원문:\n${text}`,
+  gtm_campaign_brief_ko: (text) =>
+    `Write a Korean marketing campaign brief — aligns a team before launching a campaign. Use 합쇼체. Markdown: '**한 줄 (캠페인)**' (1줄 — 무엇을 / 누구에게 / 왜 지금), '**배경 (1단락)**', '**목표 (테이블)**' ('지표 | 현재 | 목표 | 기간'), '**타깃 (bullets)**' (세그먼트 + 핵심 인사이트), '**핵심 메시지 (1줄)**', '**채널 (테이블)**' ('채널 | 콘텐츠 | 담당 | 시한'), '**예산 (1줄)**', '**성공 기준 (bullets)**', '**리스크 (1-2 bullets)**'.\n\n캠페인 컨텍스트:\n${text}`,
+  internal_okr_checkin_ko: (text) =>
+    `Write a Korean OKR check-in — a mid-cycle status update on objectives and key results. Use 합쇼체. Markdown: '**한 줄 (전반)**' (1줄 — on track / at risk / off track), '**Objective (1줄)**', '**Key Results (테이블)**' ('KR | 목표 | 현재 | 신뢰도(%) | 상태'), '**잘 되는 것 (2 bullets)**', '**막힌 것 (bullets)**' (각 '이슈 — 필요한 도움'), '**이번 사이클 조정 (1줄)**' (목표 유지/하향/상향 + 근거), '**다음 2주 포커스 (bullets)**'.\n\nOKR 컨텍스트:\n${text}`,
+  customer_churn_analysis_ko: (text) =>
+    `Produce a Korean customer churn analysis — explains why an account churned and what to learn. Use 합쇼체. Markdown: '**한 줄 (이탈)**' (1줄 — 누가 / 언제 / 핵심 이유), '**계정 요약 (bullets)**' (규모 / 기간 / ARR), '**이탈 신호 타임라인 (테이블)**' ('시점 | 신호 | 우리가 인지했나'), '**근본 원인 (1단락)**', '**우리가 놓친 것 (bullets)**', '**막을 수 있었나 (1줄)**' (솔직하게), '**재발 방지 (테이블)**' ('교훈 | 액션 | 담당'), '**윈백 가능성 (1줄)**'.\n\n이탈 컨텍스트:\n${text}`,
+  eng_design_doc_ko: (text) =>
+    `Write a Korean engineering design doc (RFC) — proposes a technical approach for review. Use 합쇼체. Markdown: '**한 줄 (제안)**' (1줄 — 무엇을 만들/바꿀지), '**배경 / 문제 (1단락)**', '**목표 / 비목표 (bullets)**', '**제안 설계 (1-2단락)**' (핵심 아이디어 + 동작 방식), '**대안 (테이블)**' ('대안 | 장점 | 단점 | 채택 여부'), '**데이터/스키마 변경 (bullets)**' (있으면), '**롤아웃 plan (numbered)**', '**리스크 / 트레이드오프 (bullets)**', '**열린 질문 (bullets)**'.\n\n설계 컨텍스트:\n${text}`,
+  internal_team_offsite_agenda_ko: (text) =>
+    `Write a Korean team offsite agenda — structures a productive in-person team offsite. Use 합쇼체. Markdown: '**한 줄 (오프사이트)**' (1줄 — 목적 + 기대 결과), '**준비물 (bullets)**' (사전 읽기 / 준비), '**아젠다 (테이블)**' ('시간 | 세션 | 진행 | 목표'), '**핵심 토론 주제 (bullets)**', '**팀 빌딩 (1-2 bullets)**', '**의사결정 필요 항목 (bullets)**', '**마무리 / 액션 (1줄)**', '**로지스틱스 (1줄)**' (장소 / 식사 / 이동).\n\n오프사이트 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

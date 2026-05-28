@@ -5866,6 +5866,39 @@ body.page-bg-vertical-rule .bn-editor {
   background-image: linear-gradient(to right, transparent 2.4rem, rgba(244, 114, 182, 0.4) 2.4rem, rgba(244, 114, 182, 0.4) calc(2.4rem + 1.5px), transparent calc(2.4rem + 1.5px)) !important;
 }
 
+/* H3 with chevron — prepends "› " to H3 headings. */
+body.h3-with-chevron .bn-editor [data-content-type="heading"][data-level="3"] > *:first-child::before {
+  content: "\203A ";
+  color: #8b5cf6;
+  font-weight: 700;
+  margin-right: 0.15em;
+}
+
+/* Code block GitHub light — light GitHub-style code block. */
+body.code-block-github-light .bn-editor pre {
+  background: #f6f8fa !important;
+  border: 1px solid #d0d7de !important;
+}
+body.code-block-github-light .bn-editor pre code {
+  color: #24292f !important;
+}
+
+/* Table first column bold — emphasize the first column of tables. */
+body.table-first-col-bold .bn-editor table tr > td:first-child,
+body.table-first-col-bold .bn-editor table tr > th:first-child {
+  font-weight: 700 !important;
+}
+
+/* Callout left accent thick — a thick colored bar on the callout's left edge. */
+body.callout-left-accent-thick .bn-editor [data-content-type="callout"] {
+  border-left: 6px solid #6366f1 !important;
+}
+
+/* Page bg diagonal stripes — subtle diagonal stripe texture behind the editor. */
+body.page-bg-diagonal-stripes .bn-editor {
+  background-image: repeating-linear-gradient(45deg, rgba(99, 102, 241, 0.05) 0, rgba(99, 102, 241, 0.05) 10px, transparent 10px, transparent 20px) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

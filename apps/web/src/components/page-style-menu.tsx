@@ -1253,6 +1253,11 @@ export function PageStyleMenu({
                       { key: "table-cell-roomy", label: "Roomy cells" },
                       { key: "callout-corner-fold", label: "Corner fold" },
                       { key: "page-bg-vertical-rule", label: "Vertical rule" },
+                      { key: "h3-with-chevron", label: "H3 ›" },
+                      { key: "code-block-github-light", label: "GitHub light" },
+                      { key: "table-first-col-bold", label: "1st col bold" },
+                      { key: "callout-left-accent-thick", label: "Thick accent" },
+                      { key: "page-bg-diagonal-stripes", label: "Diagonal" },
                     ] as const
                   ).map((t) => (
                     <button
