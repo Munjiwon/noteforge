@@ -6435,6 +6435,47 @@ body.page-bg-maze .bn-editor {
   background-position: 0 0, 15px 15px !important;
 }
 
+/* Heading colored H1 — give H1 a distinct accent color. */
+body.heading-colored-h1 .bn-editor [data-content-type="heading"][data-level="1"] {
+  color: #4f46e5 !important;
+}
+.dark body.heading-colored-h1 .bn-editor [data-content-type="heading"][data-level="1"] {
+  color: #a5b4fc !important;
+}
+
+/* Code block Oceanic — Oceanic Next palette for code blocks. */
+body.code-block-oceanic .bn-editor pre {
+  background: #1b2b34 !important;
+  border: 1px solid #2b3a42 !important;
+}
+body.code-block-oceanic .bn-editor pre code {
+  color: #c0c5ce !important;
+}
+
+/* Table zebra rounded — zebra striping with rounded outer table corners. */
+body.table-zebra-rounded .bn-editor table {
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+body.table-zebra-rounded .bn-editor table tr:nth-child(odd) td {
+  background: rgba(20, 184, 166, 0.07) !important;
+}
+
+/* Callout quote bar — style callouts like a blockquote with a left quote bar. */
+body.callout-quote-bar .bn-editor [data-content-type="callout"] {
+  border-left: 4px solid #94a3b8 !important;
+  font-style: italic !important;
+  background: transparent !important;
+  padding-left: 1em !important;
+}
+
+/* Page bg scales — a fish-scale (semicircle) pattern behind the editor. */
+body.page-bg-scales .bn-editor {
+  background-image:
+    radial-gradient(circle at 50% 100%, transparent 9px, rgba(99, 102, 241, 0.08) 10px, rgba(99, 102, 241, 0.08) 11px, transparent 12px) !important;
+  background-size: 24px 12px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

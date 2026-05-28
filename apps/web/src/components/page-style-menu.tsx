@@ -1328,6 +1328,11 @@ export function PageStyleMenu({
                       { key: "table-header-tracked", label: "Tracked head" },
                       { key: "callout-bg-striped", label: "Striped bg" },
                       { key: "page-bg-maze", label: "Maze" },
+                      { key: "heading-colored-h1", label: "Color H1" },
+                      { key: "code-block-oceanic", label: "Oceanic" },
+                      { key: "table-zebra-rounded", label: "Zebra round" },
+                      { key: "callout-quote-bar", label: "Quote bar" },
+                      { key: "page-bg-scales", label: "Scales" },
                     ] as const
                   ).map((t) => (
                     <button

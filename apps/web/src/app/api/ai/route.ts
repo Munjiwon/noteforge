@@ -3072,6 +3072,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean metrics dashboard spec — defines what a product/business dashboard should show and why. Use 합쇼체. Markdown: '**한 줄 (대시보드)**' (1줄 — 누구를 위해 / 무슨 결정), '**핵심 질문 (bullets)**' (이 대시보드가 답해야 할 것), '**지표 (테이블)**' ('지표 | 정의 | 분할 | 목표/벤치마크 | 시각화'), '**레이아웃 (numbered)**' (위→아래 우선순위), '**필터 / 인터랙션 (bullets)**', '**갱신 주기 / 출처 (1줄)**', '**오해 방지 (bullets)**' (잘못 읽힐 여지 + 주석), '**안 넣을 것 (1줄)**' (노이즈 방지). 결정 중심 설계.\n\n대시보드 컨텍스트:\n${text}`,
   internal_promotion_case_ko: (text) =>
     `Write a Korean promotion case (packet) — argues that someone is already operating at the next level. Use 합쇼체. 근거 + 임팩트 중심. Markdown: '**한 줄 (추천)**' (1줄 — 누구 / 어느 레벨로), '**현재 vs 다음 레벨 (1줄)**', '**핵심 근거 (테이블)**' ('역량 | 다음 레벨 기대 | 실제 사례 + 임팩트'), '**대표 성과 (bullets)**' (각 '무엇 — 범위 — 결과(수치)'), '**범위 / 영향력 (1단락)**' (팀/조직 차원), '**리더십 / 협업 증거 (bullets)**', '**주변 평가 (bullets)**' (동료/이해관계자 인용), '**한 줄 결론 (1줄)**'. '이미 그 레벨로 일하고 있다'를 증명.\n\n승진 컨텍스트:\n${text}`,
+  translate_ko_to_dogri: (text) =>
+    `Translate the Korean text below into natural Dogri — Indo-Aryan language of the Jammu region and Himachal Pradesh, India. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**डोगरी**' and '**번역 노트**' (3 bullets in Korean — note Dogri is a scheduled language of India, a tonal Indo-Aryan language written in Devanagari).\n\n원문:\n${text}`,
+  translate_ko_to_bodo: (text) =>
+    `Translate the Korean text below into natural Bodo — Sino-Tibetan (Tibeto-Burman) language of Assam, India. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**बर'**' and '**번역 노트**' (3 bullets in Korean — note Bodo is a scheduled language of India, the largest Tibeto-Burman language of Assam, written in Devanagari).\n\n원문:\n${text}`,
+  translate_ko_to_manipuri: (text) =>
+    `Translate the Korean text below into natural Meitei (Manipuri) — Sino-Tibetan language of Manipur, India. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**ꯃꯩꯇꯩꯂꯣꯟ**' and '**번역 노트**' (3 bullets in Korean — note Meitei is a scheduled language of India with its own Meitei Mayek script).\n\n원문:\n${text}`,
+  translate_ko_to_khasi: (text) =>
+    `Translate the Korean text below into natural Khasi — Austroasiatic language of Meghalaya, India. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Khasi**' and '**번역 노트**' (3 bullets in Korean — note Khasi is a Mon-Khmer language unusual for its location in northeast India, written in Latin script).\n\n원문:\n${text}`,
+  translate_ko_to_mizo: (text) =>
+    `Translate the Korean text below into natural Mizo (Lushai) — Kuki-Chin (Sino-Tibetan) language of Mizoram, India. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Mizo ṭawng**' and '**번역 노트**' (3 bullets in Korean — note Mizo is written in Latin script and is the main language of Mizoram).\n\n원문:\n${text}`,
+  internal_dev_env_setup_guide_ko: (text) =>
+    `Write a Korean developer environment setup guide — gets a new engineer's local environment running. Use 합쇼체. 따라하면 되는 형태. Markdown: '**한 줄 (목표)**' (1줄 — 끝나면 무엇이 돌아가나), '**사전 요구사항 (bullets)**' (OS / 버전 / 계정 / 권한), '**설치 단계 (numbered)**' (각 단계: 명령 + 기대 출력 + 확인), '**환경 변수 / 설정 (bullets)**', '**실행 / 검증 (bullets)**' ('이게 보이면 성공'), '**자주 겪는 문제 (테이블)**' ('증상 | 원인 | 해결'), '**다음 (1줄)**' (첫 기여까지). 막힘 없이 따라가게.\n\n환경 컨텍스트:\n${text}`,
+  sales_close_plan_ko: (text) =>
+    `Write a Korean deal close plan — maps the final steps to get a deal signed by a target date. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 언제까지 / 얼마), '**현재 단계 (1줄)**' (어디까지 왔나), '**남은 단계 (테이블)**' ('단계 | 활동 | 우리/고객 담당 | 시한 | 상태'), '**의사결정 프로세스 (bullets)**' (누가 사인 / 어떤 승인), '**남은 장애물 (bullets)**' (각 '장애물 — 해소 방법'), '**필요 자원 (bullets)**' (법무 / 보안 / 임원), '**리스크 (1줄)**', '**다음 48시간 액션 (bullets)**'. 마감 역산 + 구체성.\n\n딜 컨텍스트:\n${text}`,
+  customer_executive_alignment_ko: (text) =>
+    `Write a Korean executive alignment doc — aligns customer and vendor execs on a shared strategic direction. Use 합쇼체. Markdown: '**한 줄 (정렬 목표)**' (1줄), '**고객 전략 우선순위 (bullets)**' (그들의 비즈니스 목표), '**우리 기여 (테이블)**' ('고객 우선순위 | 우리가 돕는 방식 | 증거'), '**공동 목표 (bullets)**' (양측이 함께 추구), '**거버넌스 (1줄)**' (임원 간 점검 리듬), '**필요한 임원 후원 (bullets)**', '**리스크 / 의존성 (bullets)**', '**12개월 비전 (1줄)**'. C레벨 언어, 전술 아닌 전략.\n\n정렬 컨텍스트:\n${text}`,
+  pm_feature_deprecation_plan_ko: (text) =>
+    `Write a Korean feature deprecation plan — retires a feature with minimal user pain. Use 합쇼체. Markdown: '**한 줄 (폐기)**' (1줄 — 무슨 기능 / 왜), '**근거 (bullets)**' (사용량 / 비용 / 전략 — 데이터), '**영향받는 사용자 (테이블)**' ('세그먼트 | 사용 정도 | 대안'), '**마이그레이션 경로 (numbered)**' (사용자가 옮겨갈 길), '**커뮤니케이션 plan (테이블)**' ('대상 | 메시지 | 시점'), '**타임라인 (테이블)**' ('단계 | 날짜'): 공지 / 신규차단 / 읽기전용 / 완전제거, '**예외 처리 (1줄)**', '**롤백 트리거 (1줄)**'. 사용자 신뢰 보호 우선.\n\n폐기 컨텍스트:\n${text}`,
+  internal_proposal_one_pager_ko: (text) =>
+    `Write a Korean one-page proposal — a single-page pitch to get buy-in for an idea. Use 합쇼체. 1페이지 엄수. Markdown: '**제목 (1줄)**', '**한 줄 요약 (1줄)**' (무엇을 / 왜 / 요청), '**문제 (2-3줄)**', '**제안 (2-3줄)**' (핵심 아이디어), '**기대 효과 (bullets)**' (3개 — 가능하면 수치), '**필요 자원 (1줄)**', '**리스크 (1-2 bullets)**', '**요청 (1줄)**' (의사결정자에게 정확히 무엇을). 길면 실패 — 날카롭게.\n\n제안 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
