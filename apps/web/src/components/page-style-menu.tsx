@@ -1413,6 +1413,11 @@ export function PageStyleMenu({
                       { key: "table-cell-monospace", label: "Mono cells" },
                       { key: "callout-rounded-2xl", label: "Extra round" },
                       { key: "page-bg-mesh-gradient", label: "Mesh" },
+                      { key: "heading-tag-prefix", label: "#tag prefix" },
+                      { key: "code-block-poimandres", label: "Poimandres" },
+                      { key: "table-cell-top-align", label: "Top align" },
+                      { key: "callout-no-padding", label: "Tight" },
+                      { key: "page-bg-blobs", label: "Blobs" },
                     ] as const
                   ).map((t) => (
                     <button

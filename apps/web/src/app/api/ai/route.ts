@@ -3412,6 +3412,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Produce a Korean impact/effort prioritization matrix — sorts initiatives into a 2x2 of impact vs. effort. Use 합쇼체. Markdown: '**한 줄 (추천)**' (1줄 — 무엇부터), '**사분면 (bullets per quadrant)**': '**Quick Wins (고임팩트·저노력)**', '**Big Bets (고임팩트·고노력)**', '**Fill-ins (저임팩트·저노력)**', '**Time Sinks (저임팩트·고노력 — 피할 것)**', '**평가 근거 (테이블)**' ('항목 | 임팩트(상/중/하) | 노력(상/중/하) | 사분면'), '**권고 순서 (numbered)**', '**주의 (1줄)**' (추정의 불확실성). Quick Wins 먼저, Time Sinks 회피.\n\n이니셔티브 목록:\n${text}`,
   internal_team_skills_matrix_ko: (text) =>
     `Build a Korean team skills matrix — maps team members' skills to find gaps and growth paths. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄), '**스킬 매트릭스 (테이블)**' ('스킬 | 멤버1 | 멤버2 | ... (수준 0-3)'), '**커버리지 분석 (bullets)**' (단일 의존(bus factor) / 공백 스킬), '**강점 영역 (bullets)**', '**리스크 (bullets)**' (한 명만 아는 핵심 영역), '**성장 매칭 (테이블)**' ('멤버 | 키우고 싶은 스킬 | 멘토/기회'), '**채용/교육 시사점 (bullets)**', '**다음 액션 (1줄)**'. 공백과 성장 둘 다.\n\n팀 / 스킬 컨텍스트:\n${text}`,
+  translate_ko_to_kodava: (text) =>
+    `Translate the Korean text below into natural Kodava (Kodava takk) — a Dravidian language of the Kodagu (Coorg) region, Karnataka, India. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Kodava takk**' and '**번역 노트**' (3 bullets in Korean — note Kodava is a Dravidian language usually written in the Kannada script).\n\n원문:\n${text}`,
+  translate_ko_to_badaga: (text) =>
+    `Translate the Korean text below into natural Badaga — a Dravidian language of the Nilgiri Hills, Tamil Nadu, India. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Badaga**' and '**번역 노트**' (3 bullets in Korean — note Badaga is a South Dravidian language closely related to Kannada).\n\n원문:\n${text}`,
+  translate_ko_to_gondi: (text) =>
+    `Translate the Korean text below into natural Gondi — a Dravidian language of central India (Madhya Pradesh, Maharashtra, Telangana). 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Gondi**' and '**번역 노트**' (3 bullets in Korean — note Gondi is a Central Dravidian language of the Gond people, with its own Gunjala Gondi script).\n\n원문:\n${text}`,
+  translate_ko_to_kui: (text) =>
+    `Translate the Korean text below into natural Kui — a Dravidian language of Odisha, eastern India. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Kui**' and '**번역 노트**' (3 bullets in Korean — note Kui is a Central Dravidian language of the Kondh people, usually written in the Odia script).\n\n원문:\n${text}`,
+  translate_ko_to_brahui: (text) =>
+    `Translate the Korean text below into natural Brahui — a Dravidian language of Balochistan, Pakistan. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Brahui**' and '**번역 노트**' (3 bullets in Korean — note Brahui is remarkable as a Dravidian language isolated far northwest of the others, written in a Perso-Arabic script).\n\n원문:\n${text}`,
+  internal_data_pipeline_design_ko: (text) =>
+    `Write a Korean data pipeline design doc — designs an ETL/data pipeline for review. Use 합쇼체. Markdown: '**한 줄 (파이프라인)**' (1줄 — 무엇을 / 왜), '**소스 → 싱크 (1줄)**' (어디서 어디로), '**데이터 흐름 (numbered)**' (추출 → 변환 → 적재 각 단계), '**스키마 / 계약 (bullets)**' (입력/출력 형태), '**스케줄 / 트리거 (1줄)**' (배치/스트리밍 + 빈도), '**데이터 품질 (bullets)**' (검증 / 결측 / 중복 처리), '**장애 처리 (bullets)**' (재시도 / 멱등성 / 백필), '**모니터링 (bullets)**' (지연 / 볼륨 / 신선도), '**비용 / 확장 (1줄)**'. 신뢰성 + 멱등성 강조.\n\n파이프라인 컨텍스트:\n${text}`,
+  sales_renewal_kickoff_ko: (text) =>
+    `Write a Korean renewal kickoff plan — kicks off the renewal motion well ahead of the date. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 갱신일 + 목표), '**계정 상태 점검 (bullets)**' (헬스 / 챔피언 / 사용), '**갱신 팀 (테이블)**' ('역할 | 누구'), '**가치 스토리 준비 (bullets)**' (어떤 데이터로), '**리스크 사전 평가 (bullets)**', '**타임라인 (테이블)**' ('시점 | 활동 | 담당'), '**확장 가능성 (1줄)**', '**첫 액션 (bullets)**'. 조기 시작 + 선제.\n\n갱신 컨텍스트:\n${text}`,
+  customer_onboarding_kickoff_email_ko: (text) =>
+    `Draft a Korean onboarding kickoff email — the first warm email to a new customer to start onboarding. Use 합쇼체 (따뜻 + 명확). Markdown: '**제목**' (1줄), '**본문**' (4 단락: 1) 환영 + 함께하게 되어 기쁨 + 1줄, 2) 우리가 함께 이룰 것 — 성공 그림 1-2줄, 3) 첫 단계 명확히 — 킥오프 미팅 제안(날짜 옵션) + 준비물, 4) 담당자 소개 + 언제든 연락), '**첫 30일 미리보기 (bullets)**' (3단계), '**다음 액션 (1줄)**'. 안심 + 추진력.\n\n온보딩 컨텍스트:\n${text}`,
+  pm_quarterly_roadmap_review_ko: (text) =>
+    `Write a Korean quarterly roadmap review — reviews roadmap progress and adjusts for the next quarter. Use 합쇼체. Markdown: '**한 줄 (총평)**' (1줄), '**계획 대비 출시 (테이블)**' ('계획 항목 | 상태 | 비고'), '**이동/취소된 것 (bullets)**' (왜 — 우선순위 변화), '**배운 것 (bullets)**' (가정 검증 결과), '**다음 분기 조정 (테이블)**' ('테마 | 변화 | 이유'), '**Now/Next/Later 업데이트 (bullets)**', '**리스크 / 의존성 (bullets)**', '**이해관계자 메시지 (1줄)**'. 방향과 근거 중심.\n\n로드맵 컨텍스트:\n${text}`,
+  internal_incident_severity_guide_ko: (text) =>
+    `Write a Korean incident severity guide — defines severity levels so responders classify incidents consistently. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄), '**심각도 정의 (테이블)**' ('레벨(SEV1-4) | 정의 | 예시 | 대응 기대 | 누가 관여'), '**판단 기준 (bullets)**' (영향 범위 / 데이터 / 매출 / 평판), '**에스컬레이션 매핑 (1줄)**' (레벨 → 누구), '**커뮤니케이션 요구 (테이블)**' ('레벨 | 내부 | 외부 | 빈도'), '**상향/하향 조정 (1줄)**' (진행 중 재분류), '**예시 시나리오 (bullets)**'. 일관성 + 빠른 판단.\n\n심각도 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
