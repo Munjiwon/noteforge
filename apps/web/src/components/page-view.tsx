@@ -1073,6 +1073,11 @@ export function PageView({
       "callout-eap-3",
       "page-bg-eap-4",
       "heading-eap-5",
+      "code-block-ebe-1",
+      "table-ebe-2",
+      "callout-ebe-3",
+      "page-bg-ebe-4",
+      "heading-ebe-5",
     ];
     try {
       for (const k of toggles) {
