@@ -1680,6 +1680,11 @@ export function PageStyleMenu({
                       { key: "callout-exd-3", label: "callout exd3" },
                       { key: "page-bg-exd-4", label: "page-bg exd4" },
                       { key: "heading-exd-5", label: "heading exd5" },
+                      { key: "code-block-exs-1", label: "code-block exs1" },
+                      { key: "table-exs-2", label: "table exs2" },
+                      { key: "callout-exs-3", label: "callout exs3" },
+                      { key: "page-bg-exs-4", label: "page-bg exs4" },
+                      { key: "heading-exs-5", label: "heading exs5" },
                     ] as const
                   ).map((t) => (
                     <button
