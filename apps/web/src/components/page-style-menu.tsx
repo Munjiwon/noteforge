@@ -1221,6 +1221,11 @@ export function PageStyleMenu({
                       { key: "table-header-gradient-purple", label: "Purple header" },
                       { key: "callout-glow-red", label: "Red glow" },
                       { key: "page-bg-triangles", label: "Triangles" },
+                      { key: "h5-with-dotted-underline", label: "H5 dot underline" },
+                      { key: "code-block-emerald", label: "Emerald code" },
+                      { key: "table-cell-hover-highlight", label: "Cell hover" },
+                      { key: "callout-glow-amber", label: "Amber glow" },
+                      { key: "page-bg-plus-pattern", label: "Plus pattern" },
                     ] as const
                   ).map((t) => (
                     <button

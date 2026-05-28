@@ -5506,6 +5506,53 @@ body.page-bg-triangles .bn-editor {
     linear-gradient(-60deg, rgba(129, 140, 248, 0.07) 25%, transparent 25%) !important;
 }
 
+/* H5 with dotted underline. */
+body.h5-with-dotted-underline .bn-editor [data-content-type="heading"][data-level="5"] {
+  border-bottom: 2px dotted #ec4899;
+  padding-bottom: 0.06em;
+}
+
+/* Emerald code — rich emerald green palette. */
+body.code-block-emerald .bn-editor pre {
+  background: #022c22 !important;
+  color: #6ee7b7 !important;
+  border: 1px solid #047857;
+}
+body.code-block-emerald .bn-editor pre code {
+  color: #a7f3d0 !important;
+}
+
+/* Cell hover highlight — highlight individual cell on hover. */
+body.table-cell-hover-highlight .bn-editor table td:hover,
+body.table-cell-hover-highlight .bn-editor table th:hover {
+  background: rgba(99, 102, 241, 0.12) !important;
+  outline: 1px solid rgba(99, 102, 241, 0.4);
+}
+.dark body.table-cell-hover-highlight .bn-editor table td:hover,
+.dark body.table-cell-hover-highlight .bn-editor table th:hover {
+  background: rgba(129, 140, 248, 0.18) !important;
+}
+
+/* Amber glow callout. */
+body.callout-glow-amber .bn-editor [data-content-type="callout"] {
+  box-shadow: 0 0 4px #fbbf24, 0 0 12px rgba(251, 191, 36, 0.5);
+  border: 1px solid #fbbf24;
+}
+
+/* Plus pattern page background — small plus signs. */
+body.page-bg-plus-pattern .bn-editor {
+  background-image:
+    linear-gradient(rgba(100, 116, 139, 0.1) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(100, 116, 139, 0.1) 2px, transparent 2px) !important;
+  background-size: 22px 22px !important;
+  background-position: center !important;
+}
+.dark body.page-bg-plus-pattern .bn-editor {
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.1) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.1) 2px, transparent 2px) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
