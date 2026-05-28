@@ -1081,6 +1081,11 @@ export function PageStyleMenu({
                       { key: "table-emphasized-row-first", label: "1st row big" },
                       { key: "callout-arrow-marker-right", label: "Arrow right" },
                       { key: "page-side-clip", label: "Side clip" },
+                      { key: "h1-with-page-mark", label: "H1 §" },
+                      { key: "code-block-github-light", label: "GH light" },
+                      { key: "table-row-divider-thick", label: "Thick row div" },
+                      { key: "callout-corner-flag", label: "Corner flag" },
+                      { key: "page-side-binder-rings", label: "Binder rings" },
                     ] as const
                   ).map((t) => (
                     <button
