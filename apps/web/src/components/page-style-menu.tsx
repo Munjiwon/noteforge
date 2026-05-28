@@ -1840,6 +1840,11 @@ export function PageStyleMenu({
                       { key: "callout-fpr-3", label: "callout fpr3" },
                       { key: "page-bg-fpr-4", label: "page-bg fpr4" },
                       { key: "heading-fpr-5", label: "heading fpr5" },
+                      { key: "code-block-fqg-1", label: "code-block fqg1" },
+                      { key: "table-fqg-2", label: "table fqg2" },
+                      { key: "callout-fqg-3", label: "callout fqg3" },
+                      { key: "page-bg-fqg-4", label: "page-bg fqg4" },
+                      { key: "heading-fqg-5", label: "heading fqg5" },
                     ] as const
                   ).map((t) => (
                     <button
