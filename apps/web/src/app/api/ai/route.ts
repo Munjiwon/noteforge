@@ -3632,6 +3632,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean user segmentation analysis — defines meaningful user segments to inform product decisions. Use 합쇼체. Markdown: '**한 줄 (핵심)**' (1줄 — 가장 중요한 세그먼트 구분), '**세그먼트 기준 (1줄)**' (무엇으로 나누나 — 행동/니즈/가치), '**세그먼트 (테이블)**' ('세그먼트 | 정의 | 규모 | 핵심 니즈 | 가치/수익성'), '**세그먼트별 행동 차이 (bullets)**', '**우선 세그먼트 (1줄)**' (집중할 곳 + 이유), '**시사점 (bullets)**' (제품 / GTM), '**주의 (1줄)**' (과도한 세분화 경계). 행동 기반 우선.\n\n세그먼트 컨텍스트:\n${text}`,
   internal_team_ritual_design_ko: (text) =>
     `Write a Korean team ritual design doc — designs a recurring team ritual (standup, planning, retro, demo) intentionally. Use 합쇼체. Markdown: '**한 줄 (의식)**' (1줄 — 무슨 리추얼 / 목적), '**왜 (1줄)**' (이게 풀어야 할 문제), '**형식 (테이블)**' ('항목 | 설정'): 주기 / 길이 / 참석자 / 진행자, '**아젠다 (numbered)**', '**산출물 (bullets)**' (끝나고 무엇이 남나), '**잘 돌아가는 신호 (bullets)**', '**안티패턴 (bullets)**' (의미 없어지는 징후 + 대응), '**점검 (1줄)**' (언제 이 리추얼 자체를 재검토). 목적 없는 회의 방지.\n\n리추얼 컨텍스트:\n${text}`,
+  translate_ko_to_garifuna: (text) =>
+    `Translate the Korean text below into natural Garifuna — an Arawakan language of the Caribbean coast of Central America (Honduras, Belize, Guatemala). 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Garifuna**' and '**번역 노트**' (3 bullets in Korean — note Garifuna is an Arawakan language with Carib and African influence, with distinct men's and women's vocabulary historically).\n\n원문:\n${text}`,
+  translate_ko_to_miskito: (text) =>
+    `Translate the Korean text below into natural Miskito — a Misumalpan language of the Caribbean coast of Nicaragua and Honduras. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Miskito**' and '**번역 노트**' (3 bullets in Korean — note Miskito is the most widely spoken indigenous language of the Mosquito Coast, with English loanwords).\n\n원문:\n${text}`,
+  translate_ko_to_kuna: (text) =>
+    `Translate the Korean text below into natural Guna (Kuna / Dulegaya) — a Chibchan language of the Guna Yala region of Panama and Colombia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Dulegaya**' and '**번역 노트**' (3 bullets in Korean — note Guna is a Chibchan language of the San Blas islands, known for mola textile art).\n\n원문:\n${text}`,
+  translate_ko_to_embera: (text) =>
+    `Translate the Korean text below into natural Emberá — a Chocoan language of Panama and Colombia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Emberá**' and '**번역 노트**' (3 bullets in Korean — note Emberá is a Chocoan language of the Darién and Pacific rainforest regions).\n\n원문:\n${text}`,
+  translate_ko_to_ngabere: (text) =>
+    `Translate the Korean text below into natural Ngäbere (Guaymí) — a Chibchan language of western Panama and Costa Rica. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Ngäbere**' and '**번역 노트**' (3 bullets in Korean — note Ngäbere is the most widely spoken indigenous language of Panama, a Chibchan language).\n\n원문:\n${text}`,
+  internal_incident_trends_review_ko: (text) =>
+    `Write a Korean incident trends review — analyzes incident frequency and patterns over a period. Use 합쇼체. Markdown: '**한 줄 (추세)**' (1줄 — 빈도/심각도 방향 + 핵심), '**통계 (테이블)**' ('지표 | 이번 기간 | 지난 기간 | 변화'): 총 건수 / SEV별 / MTTR / 재발률, '**패턴 (테이블)**' ('패턴 | 빈도 | 대표 사례'), '**핫스팟 (bullets)**' (자주 터지는 영역/서비스), '**개선 효과 (1줄)**' (지난 액션이 효과 있었나), '**구조적 권고 (bullets)**', '**액션 (테이블)**' ('액션 | 담당 | 시한'). 개별 사고 너머 패턴.\n\n인시던트 추세 컨텍스트:\n${text}`,
+  sales_quota_planning_ko: (text) =>
+    `Write a Korean sales quota plan — sets and justifies sales quotas for a team/period. Use 합쇼체. Markdown: '**한 줄 (쿼터)**' (1줄 — 총 목표 + 기준), '**전제 (bullets)**' (시장 / 캐파 / 전환율 가정), '**배분 (테이블)**' ('담당 | 쿼터 | 근거(영역/램프/세그먼트)'), '**램프 고려 (bullets)**' (신규 인원 조정), '**달성 가능성 (1줄)**' (스트레치 vs 현실), '**리스크 (bullets)**', '**보상 연계 (1줄)**', '**점검 주기 (1줄)**'. 공정성 + 동기부여 균형.\n\n쿼터 컨텍스트:\n${text}`,
+  customer_onboarding_completion_review_ko: (text) =>
+    `Write a Korean onboarding completion review — assesses whether onboarding succeeded and transitions to ongoing CS. Use 합쇼체. Markdown: '**한 줄 (완료 상태)**' (1줄 — 성공/부분/지연 + 핵심), '**목표 달성 (테이블)**' ('온보딩 목표 | 달성 여부 | 비고'), '**Time-to-value (1줄)**' (목표 대비), '**고객 만족 신호 (bullets)**', '**미완 / 이월 (bullets)**' (정상 CS로 넘길 것), '**리스크 (1줄)**' (안착 실패 신호), '**핸드오프 to CS (bullets)**' (정상 운영팀에 넘길 컨텍스트), '**다음 마일스톤 (1줄)**'. 온보딩 → 안착 전환 명확히.\n\n온보딩 완료 컨텍스트:\n${text}`,
+  pm_feature_postlaunch_review_ko: (text) =>
+    `Write a Korean feature post-launch review — reviews how a feature performed after launch against its goals. Use 합쇼체. Markdown: '**한 줄 (결과)**' (1줄 — 성공/혼합/미달 + 핵심), '**목표 대비 (테이블)**' ('지표 | 목표 | 실제 | 달성도'), '**채택 (bullets)**' (얼마나 / 누가 쓰나), '**사용자 반응 (bullets)**' (피드백 / 지원), '**예상 밖 (bullets)**' (의외의 사용/문제), '**가설 검증 (1줄)**' (출시 가설 맞았나), '**다음 (bullets)**' (개선 / 확대 / 폐기), '**교훈 (1줄)**'. 정직한 사후 평가.\n\n출시 후 컨텍스트:\n${text}`,
+  internal_decision_postmortem_ko: (text) =>
+    `Write a Korean decision postmortem — reviews a past significant decision to learn how to decide better. Use 합쇼체. 결과가 아닌 의사결정 과정 중심. Markdown: '**한 줄 (결정)**' (1줄 — 무슨 결정 / 결과), '**당시 맥락 (1단락)**' (무엇을 알았고 몰랐나 — 사후확신 편향 경계), '**결정 과정 (bullets)**' (어떻게 정했나 / 누가 / 무슨 근거), '**결과 (bullets)**' (실제로 어떻게 됐나), '**좋은 결정 vs 좋은 결과 (1줄)**' (과정과 운 구분), '**프로세스 교훈 (bullets)**' (다음엔 어떻게 더 잘 결정), '**적용 (1줄)**'. 결과 탓이 아닌 과정 학습.\n\n결정 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

@@ -7604,6 +7604,40 @@ body.page-bg-soft-glow-bl .bn-editor {
   background-image: radial-gradient(circle at 0% 100%, rgba(16, 185, 129, 0.12), transparent 45%) !important;
 }
 
+/* Heading circle marker — prepend a "● " marker to all headings. */
+body.heading-marker-circle .bn-editor [data-content-type="heading"] > *:first-child::before {
+  content: "\25CF ";
+  color: #14b8a6;
+  margin-right: 0.25em;
+}
+
+/* Code block Tokyo Day — Tokyo Night Day (light) palette for code blocks. */
+body.code-block-tokyo-day .bn-editor pre {
+  background: #e1e2e7 !important;
+  border: 1px solid #c4c8da !important;
+}
+body.code-block-tokyo-day .bn-editor pre code {
+  color: #3760bf !important;
+}
+
+/* Table fuchsia zebra — fuchsia-tinted zebra striping on rows. */
+body.table-zebra-fuchsia .bn-editor table tr:nth-child(even) td {
+  background: rgba(217, 70, 239, 0.09) !important;
+}
+.dark body.table-zebra-fuchsia .bn-editor table tr:nth-child(even) td {
+  background: rgba(217, 70, 239, 0.16) !important;
+}
+
+/* Callout bottom glow — a soft glow beneath the callout. */
+body.callout-glow-bottom .bn-editor [data-content-type="callout"] {
+  box-shadow: 0 8px 16px -4px rgba(99, 102, 241, 0.5) !important;
+}
+
+/* Page bg top-right glow — a soft glow from the top-right corner. */
+body.page-bg-soft-glow-tr .bn-editor {
+  background-image: radial-gradient(circle at 100% 0%, rgba(168, 85, 247, 0.12), transparent 45%) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
