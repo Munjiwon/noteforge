@@ -1141,6 +1141,11 @@ export function PageStyleMenu({
                       { key: "table-row-divider-color-red", label: "Red rows" },
                       { key: "callout-side-tab-square", label: "Sq tab" },
                       { key: "page-side-tab-bottom", label: "Bottom tab" },
+                      { key: "h1-with-side-marker", label: "H1 L-bar" },
+                      { key: "code-block-grayscale-banded", label: "Banded gray" },
+                      { key: "table-row-divider-color-green", label: "Green rows" },
+                      { key: "callout-side-tab-arrow", label: "Arrow tab" },
+                      { key: "page-side-tab-top-right", label: "TR tab" },
                     ] as const
                   ).map((t) => (
                     <button

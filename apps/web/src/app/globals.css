@@ -4618,6 +4618,83 @@ body.page-side-tab-bottom .bn-editor::after {
   background: #2dd4bf;
 }
 
+/* H1 with side marker — thick left vertical bar before H1. */
+body.h1-with-side-marker .bn-editor [data-content-type="heading"][data-level="1"] {
+  border-left: 6px solid #ef4444;
+  padding-left: 0.75rem;
+}
+.dark body.h1-with-side-marker .bn-editor [data-content-type="heading"][data-level="1"] {
+  border-left-color: #f87171;
+}
+
+/* Grayscale banded code — alternating gray bands for readability. */
+body.code-block-grayscale-banded .bn-editor pre {
+  background: repeating-linear-gradient(
+    to bottom,
+    #e5e7eb 0,
+    #e5e7eb 24px,
+    #f3f4f6 24px,
+    #f3f4f6 48px
+  ) !important;
+  color: #1f2937 !important;
+  border: 1px solid #d1d5db;
+}
+.dark body.code-block-grayscale-banded .bn-editor pre {
+  background: repeating-linear-gradient(
+    to bottom,
+    #1f2937 0,
+    #1f2937 24px,
+    #111827 24px,
+    #111827 48px
+  ) !important;
+  color: #e5e7eb !important;
+  border-color: #374151;
+}
+
+/* Green row dividers. */
+body.table-row-divider-color-green .bn-editor table tr + tr > * {
+  border-top: 2px solid #22c55e !important;
+}
+
+/* Arrow side tab — small ▶ arrow on the left of callouts. */
+body.callout-side-tab-arrow .bn-editor [data-content-type="callout"] {
+  position: relative;
+  padding-left: 2.2rem !important;
+}
+body.callout-side-tab-arrow .bn-editor [data-content-type="callout"]::before {
+  content: "▶";
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: currentColor;
+  opacity: 0.7;
+  font-size: 1rem;
+}
+
+/* Top-right tab — folder tab on the top-right of the editor. */
+body.page-side-tab-top-right .bn-editor {
+  position: relative;
+  margin-top: 22px;
+  border-top: 3px solid #d97706;
+}
+body.page-side-tab-top-right .bn-editor::before {
+  content: "";
+  position: absolute;
+  top: -22px;
+  right: 24px;
+  width: 90px;
+  height: 22px;
+  background: #d97706;
+  border-radius: 6px 6px 0 0;
+}
+.dark body.page-side-tab-top-right .bn-editor {
+  border-top-color: #f59e0b;
+}
+.dark body.page-side-tab-top-right .bn-editor::before {
+  background: #f59e0b;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

@@ -729,6 +729,11 @@ export function PageView({
       "table-row-divider-color-red",
       "callout-side-tab-square",
       "page-side-tab-bottom",
+      "h1-with-side-marker",
+      "code-block-grayscale-banded",
+      "table-row-divider-color-green",
+      "callout-side-tab-arrow",
+      "page-side-tab-top-right",
     ];
     try {
       for (const k of toggles) {
