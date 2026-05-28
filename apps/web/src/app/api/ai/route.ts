@@ -3512,6 +3512,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean release scope decision doc — decides what makes the cut for a release under time pressure. Use 합쇼체. Markdown: '**한 줄 (결정)**' (1줄 — 무엇을 넣고 뺄지), '**제약 (1줄)**' (날짜 / 리소스 고정), '**후보 항목 (테이블)**' ('항목 | 가치 | 노력 | 리스크 | 판정(IN/OUT/STRETCH)'), '**반드시 포함 (bullets)**' (이유), '**제외 (bullets)**' (다음으로 — 이유), '**스트레치 (bullets)**' (시간 남으면), '**트레이드오프 (1단락)**' (무엇을 포기), '**커뮤니케이션 (1줄)**' (이해관계자에게). 날짜 사수 vs 범위 명확히.\n\n범위 결정 컨텍스트:\n${text}`,
   internal_engineering_glossary_ko: (text) =>
     `Write a Korean engineering glossary — defines team/domain-specific terms so everyone shares vocabulary. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄), '**용어 (테이블)**' ('용어 | 정의 | 예시/맥락 | 혼동 주의'), '**도메인 약어 (bullets)**' (자주 쓰는 약어 풀이), '**내부 코드네임 (bullets)**' (프로젝트/시스템 별칭 → 실제), '**쓰지 말 것 (bullets)**' (모호/중복 용어 + 대체어), '**유지 관리 (1줄)**' (누가 / 언제 갱신). 신규 입사자가 빨리 따라잡게.\n\n용어 컨텍스트:\n${text}`,
+  translate_ko_to_kiche: (text) =>
+    `Translate the Korean text below into natural K'iche' (Quiché) — a Mayan language of the Guatemalan highlands. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**K'iche'**' and '**번역 노트**' (3 bullets in Korean — note K'iche' is the most widely spoken Mayan language of Guatemala, the language of the Popol Vuh).\n\n원문:\n${text}`,
+  translate_ko_to_qeqchi: (text) =>
+    `Translate the Korean text below into natural Q'eqchi' — a Mayan language of central Guatemala and Belize. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Q'eqchi'**' and '**번역 노트**' (3 bullets in Korean — note Q'eqchi' is one of the fastest-growing Mayan languages, written in Latin script with apostrophes for ejectives).\n\n원문:\n${text}`,
+  translate_ko_to_mam: (text) =>
+    `Translate the Korean text below into natural Mam — a Mayan language of the western Guatemalan highlands and Chiapas, Mexico. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Mam**' and '**번역 노트**' (3 bullets in Korean — note Mam is a major Mayan language with a complex consonant system).\n\n원문:\n${text}`,
+  translate_ko_to_kaqchikel: (text) =>
+    `Translate the Korean text below into natural Kaqchikel — a Mayan language of the central Guatemalan highlands. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Kaqchikel**' and '**번역 노트**' (3 bullets in Korean — note Kaqchikel is closely related to K'iche' and Tz'utujil around Lake Atitlán).\n\n원문:\n${text}`,
+  translate_ko_to_tzotzil: (text) =>
+    `Translate the Korean text below into natural Tzotzil (Bats'i k'op) — a Mayan language of the Chiapas highlands, Mexico. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Bats'i k'op**' and '**번역 노트**' (3 bullets in Korean — note Tzotzil is a Mayan language of highland Chiapas, closely related to Tzeltal).\n\n원문:\n${text}`,
+  internal_eng_roadmap_ko: (text) =>
+    `Write a Korean engineering roadmap — a forward-looking plan of technical investments (not features). Use 합쇼체. Markdown: '**한 줄 (방향)**' (1줄 — 기술적으로 어디로), '**왜 (1단락)**' (제품 전략 / 스케일 / 부채), '**테마 (테이블)**' ('테마 | 왜 | 대표 작업 | 기간(Now/Next/Later)'): 신뢰성 / 확장성 / 개발자경험 / 보안, '**Now (bullets)**', '**Next (bullets)**', '**Later (bullets)**', '**의존성 / 리스크 (bullets)**', '**성공 모습 (1줄)**'. 기능이 아닌 기반 투자 중심.\n\n기술 로드맵 컨텍스트:\n${text}`,
+  sales_quarterly_review_internal_ko: (text) =>
+    `Write a Korean internal quarterly sales review — a team's internal QBR of its own sales performance. Use 합쇼체. Markdown: '**한 줄 (총평)**' (1줄 — 목표 달성 + 핵심), '**성과 (테이블)**' ('지표 | 목표 | 실제 | 달성도'): 매출 / 신규 / 갱신 / 파이프라인, '**잘된 것 (bullets)**' (반복할 패턴), '**아쉬운 것 (bullets)**' (원인 분석), '**승패 패턴 (bullets)**' (왜 이기고 지나), '**다음 분기 우선순위 (bullets)**', '**필요 지원 / 리소스 (bullets)**', '**예측 (1줄)**'. 솔직 + 학습 중심.\n\n분기 영업 컨텍스트:\n${text}`,
+  customer_stakeholder_map_ko: (text) =>
+    `Build a Korean customer stakeholder map — maps the people in an account to manage the relationship. Use 합쇼체. Markdown: '**한 줄 (계정)**' (1줄), '**스테이크홀더 (테이블)**' ('이름 | 역할 | 영향력(상/중/하) | 우리에 대한 태도(지지/중립/회의) | 관계 강도'), '**챔피언 (bullets)**' (누가 / 얼마나 견고), '**리스크 인물 (bullets)**' (블로커 / 이탈 시 위험), '**커버리지 갭 (bullets)**' (관계 없는 핵심 인물), '**관계 강화 액션 (테이블)**' ('대상 | 액션 | 담당'), '**멀티스레딩 전략 (1줄)**'. 단일 의존 리스크 가시화.\n\n계정 / 인물 컨텍스트:\n${text}`,
+  pm_feature_sunset_comms_ko: (text) =>
+    `Write Korean feature sunset communications — messages to users about retiring a feature. Use 합쇼체 (투명 + 배려). Markdown: '**한 줄 (안내)**' (1줄 — 무엇이 / 언제 종료), '**사용자 공지 (1단락)**' (무엇이 바뀌나 + 왜 — 솔직하게), '**영향 (bullets)**' (사용자가 잃는 것), '**대안 / 마이그레이션 (bullets)**' (어떻게 옮겨가나 — 구체적), '**타임라인 (1줄)**' (주요 날짜), '**도움 (1줄)**' (질문 / 지원 경로), '**톤 (1줄)**' (사과보다 배려 + 명확). 신뢰 보호 우선.\n\n폐기 컨텍스트:\n${text}`,
+  internal_engineering_principles_ko: (text) =>
+    `Write Korean engineering principles — a small set of durable principles that guide how the team builds. Use 합쇼체. Markdown: '**한 줄 (왜 원칙)**' (1줄), '**원칙 (numbered)**' (4-6개, 각 '**원칙명 (1줄)**' + 설명 2줄 + '적용 예' 1줄 + 트레이드오프 — 'A를 B보다'), '**적용 (bullets)**' (실제 결정에 어떻게), '**원칙 아님 (1줄)**' (규칙/슬로건과 구분). 트레이드오프를 담아 실제 판단에 쓰이게.\n\n엔지니어링 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

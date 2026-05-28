@@ -1438,6 +1438,11 @@ export function PageStyleMenu({
                       { key: "table-cell-borders-thick", label: "Thick cells" },
                       { key: "callout-rounded-bottom", label: "Round bottom" },
                       { key: "page-bg-soft-checker2", label: "Big checker" },
+                      { key: "heading-ribbon", label: "Ribbon head" },
+                      { key: "code-block-gruvbox-material", label: "Gruvbox Mat" },
+                      { key: "table-header-dark", label: "Dark header" },
+                      { key: "callout-elevated-card", label: "Card" },
+                      { key: "page-bg-soft-glow-center", label: "Center glow" },
                     ] as const
                   ).map((t) => (
                     <button

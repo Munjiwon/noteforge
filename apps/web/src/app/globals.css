@@ -7337,6 +7337,47 @@ body.page-bg-soft-checker2 .bn-editor {
   background-position: 0 0, 28px 28px !important;
 }
 
+/* Heading ribbon — a folded ribbon look behind heading text. */
+body.heading-ribbon .bn-editor [data-content-type="heading"] > *:first-child {
+  background: #6366f1 !important;
+  color: #ffffff !important;
+  padding: 0.12em 0.7em !important;
+  display: inline-block !important;
+  box-shadow: 4px 4px 0 rgba(99, 102, 241, 0.3) !important;
+}
+
+/* Code block Gruvbox Material — Gruvbox Material palette for code blocks. */
+body.code-block-gruvbox-material .bn-editor pre {
+  background: #292828 !important;
+  border: 1px solid #32302f !important;
+}
+body.code-block-gruvbox-material .bn-editor pre code {
+  color: #d4be98 !important;
+}
+
+/* Table dark header — a dark header row regardless of theme. */
+body.table-header-dark .bn-editor table th {
+  background: #1f2937 !important;
+  color: #f9fafb !important;
+}
+
+/* Callout elevated card — render callouts as elevated white cards. */
+body.callout-elevated-card .bn-editor [data-content-type="callout"] {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1) !important;
+}
+.dark body.callout-elevated-card .bn-editor [data-content-type="callout"] {
+  background: #1f2937 !important;
+  border-color: #374151 !important;
+}
+
+/* Page bg center glow — a soft glow radiating from the editor center. */
+body.page-bg-soft-glow-center .bn-editor {
+  background-image: radial-gradient(ellipse at 50% 50%, rgba(99, 102, 241, 0.1), transparent 60%) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
