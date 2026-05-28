@@ -886,6 +886,11 @@ export function PageView({
       "table-hover-highlight",
       "callout-emoji-hidden",
       "page-bg-circuit",
+      "heading-numbered-auto",
+      "code-block-horizon",
+      "table-cell-center",
+      "callout-top-border-accent",
+      "page-bg-noise",
     ];
     try {
       for (const k of toggles) {

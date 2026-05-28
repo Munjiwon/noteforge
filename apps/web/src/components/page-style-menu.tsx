@@ -1298,6 +1298,11 @@ export function PageStyleMenu({
                       { key: "table-hover-highlight", label: "Hover row" },
                       { key: "callout-emoji-hidden", label: "Hide icon" },
                       { key: "page-bg-circuit", label: "Circuit" },
+                      { key: "heading-numbered-auto", label: "Auto number" },
+                      { key: "code-block-horizon", label: "Horizon" },
+                      { key: "table-cell-center", label: "Center cells" },
+                      { key: "callout-top-border-accent", label: "Top accent" },
+                      { key: "page-bg-noise", label: "Noise" },
                     ] as const
                   ).map((t) => (
                     <button

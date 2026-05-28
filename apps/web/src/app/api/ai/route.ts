@@ -2952,6 +2952,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean go-to-market launch plan — coordinates a cross-functional product launch. Use 합쇼체. Markdown: '**한 줄 (런치)**' (1줄 — 무엇을 / 언제 / 누구에게), '**런치 목표 (테이블)**' ('지표 | 목표 | 기간'), '**타깃 / 메시지 (bullets)**', '**런치 티어 (1줄)**' (T1/T2/T3 규모), '**기능별 준비 (테이블)**' ('팀 | 산출물 | 상태 | 담당'): Product / Marketing / Sales / Support / Docs, '**타임라인 (테이블)**' ('단계 | 날짜 | 게이트'), '**리스크 (bullets)**', '**Go/No-go 기준 (bullets)**', '**런치 후 측정 (bullets)**'.\n\n런치 컨텍스트:\n${text}`,
   internal_skip_level_prep_ko: (text) =>
     `Help prepare for a Korean skip-level meeting — helps an IC or manager prepare for a skip-level 1:1 with a senior leader. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄 — 이 미팅에서 얻고 싶은 것), '**나/팀 현황 요약 (bullets)**' (간결 — 무엇을 하고 있나), '**자랑할 것 (bullets)**' (가시성 필요한 성과), '**솔직히 공유할 어려움 (bullets)**' (도움 필요한 것), '**물어볼 질문 (bullets)**' (전략 / 우선순위 / 커리어), '**피드백 줄 것 (1-2 bullets)**' (위로 향하는 건설적 피드백), '**하지 말 것 (1줄)**' (직속 상사 험담 등). 솔직 + 프로페셔널.\n\n스킵레벨 컨텍스트:\n${text}`,
+  translate_ko_to_enga: (text) =>
+    `Translate the Korean text below into natural Enga — Engan language of the Enga Province, highlands of Papua New Guinea. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Enga**' and '**번역 노트**' (3 bullets in Korean — note Enga is one of the largest indigenous languages of Papua New Guinea by speakers).\n\n원문:\n${text}`,
+  translate_ko_to_huli: (text) =>
+    `Translate the Korean text below into natural Huli — language of the Hela Province, southern highlands of Papua New Guinea. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Huli**' and '**번역 노트**' (3 bullets in Korean — note Huli has an unusual base-15 numeral system).\n\n원문:\n${text}`,
+  translate_ko_to_tolai: (text) =>
+    `Translate the Korean text below into natural Tolai (Kuanua) — Austronesian language of East New Britain, Papua New Guinea. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Kuanua**' and '**번역 노트**' (3 bullets in Korean — note Tolai is an Oceanic language and traditional shell money (tabu) is central to its culture).\n\n원문:\n${text}`,
+  translate_ko_to_kuman: (text) =>
+    `Translate the Korean text below into natural Kuman — Chimbu language of the Simbu Province, Papua New Guinea highlands. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Kuman**' and '**번역 노트**' (3 bullets in Korean — note Kuman is a Trans-New Guinea language of the central highlands).\n\n원문:\n${text}`,
+  translate_ko_to_melpa: (text) =>
+    `Translate the Korean text below into natural Melpa — language of the Western Highlands around Mount Hagen, Papua New Guinea. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Melpa**' and '**번역 노트**' (3 bullets in Korean — note Melpa is known from the moka ceremonial gift-exchange system).\n\n원문:\n${text}`,
+  internal_brainstorm_summary_ko: (text) =>
+    `Summarize a Korean brainstorm session — turns a messy brainstorm into organized, actionable output. Use 합쇼체. Markdown: '**한 줄 (주제)**' (1줄 — 무엇을 brainstorm), '**아이디어 클러스터 (테이블)**' ('테마 | 아이디어들 | 유망도'), '**탑 아이디어 (numbered)**' (각 '아이디어 — 왜 유망 — 다음 검증'), '**와일드카드 (bullets)**' (엉뚱하지만 흥미로운), '**제외 / 보류 (bullets)**' (이유 1줄), '**열린 질문 (bullets)**', '**다음 액션 (테이블)**' ('액션 | 담당 | 시한'). 판단보다 가능성 포착 우선.\n\n브레인스토밍 원자료:\n${text}`,
+  sales_win_loss_analysis_ko: (text) =>
+    `Write a Korean win/loss analysis — learns why a deal was won or lost. Use 합쇼체. Markdown: '**한 줄 (결과)**' (1줄 — 승/패 + 핵심 이유), '**딜 요약 (bullets)**' (규모 / 경쟁 / 기간), '**결정 요인 (테이블)**' ('요인 | 우리에게 유리/불리 | 근거'): 제품 / 가격 / 관계 / 타이밍 / 프로세스, '**고객이 말한 이유 (bullets)**' (그들의 언어로), '**우리가 잘한 것 (bullets)**', '**놓친 것 (bullets)**', '**교훈 (bullets)**' (반복 가능한), '**프로세스 개선 제안 (테이블)**' ('제안 | 담당').\n\n딜 컨텍스트:\n${text}`,
+  customer_qbr_prep_internal_ko: (text) =>
+    `Write a Korean internal QBR prep doc — the team's internal prep before a customer QBR. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 이 QBR에서 이루고 싶은 것), '**계정 상태 (bullets)**' (헬스 / ARR / 갱신일), '**우리가 보여줄 가치 (bullets)**' (데이터 + 스토리), '**고객 우려 예상 (테이블)**' ('우려 | 우리 답변'), '**물어볼 질문 (bullets)**' (확장 / 전략 단서), '**리스크 (bullets)**', '**원하는 결과 / 액션 (1줄)**', '**역할 분담 (테이블)**' ('누가 | 어느 파트'). 고객 앞에서가 아닌 내부 솔직 버전.\n\nQBR 컨텍스트:\n${text}`,
+  pm_feature_flag_rollout_ko: (text) =>
+    `Write a Korean feature flag rollout plan — plans a safe, staged rollout behind a feature flag. Use 합쇼체. Markdown: '**한 줄 (롤아웃)**' (1줄 — 무슨 기능 / 어떻게 단계적으로), '**플래그 정보 (bullets)**' (이름 / 기본값 / 소유), '**단계 (테이블)**' ('단계 | 대상(% 또는 그룹) | 기간 | 진입 기준'), '**모니터링 지표 (bullets)**' (성공 + 가드레일), '**자동 롤백 조건 (bullets)**', '**수동 점검 (bullets)**', '**완전 출시 기준 (1줄)**', '**플래그 정리 (1줄)**' (언제 제거). 안전 우선.\n\n기능 / 롤아웃 컨텍스트:\n${text}`,
+  internal_doc_style_guide_ko: (text) =>
+    `Write a Korean documentation style guide — sets writing conventions for a team's docs. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄), '**원칙 (bullets)**' (명확 / 간결 / 독자 우선), '**문체 (bullets)**' (존댓말 정책 / 능동태 / 시제), '**용어 (테이블)**' ('쓸 것 | 쓰지 말 것 | 이유'), '**서식 (bullets)**' (제목 / 목록 / 코드 / 링크 규칙), '**구조 템플릿 (bullets)**' (문서 기본 골격), '**예시 (before/after 1쌍)**', '**리뷰 체크리스트 (bullets)**'. 규칙은 예시와 함께.\n\n스타일 가이드 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

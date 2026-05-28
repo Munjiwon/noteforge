@@ -6204,6 +6204,46 @@ body.page-bg-circuit .bn-editor {
   background-size: 40px 40px, 40px 40px, 40px 40px !important;
 }
 
+/* Heading numbered auto — auto-number H2 headings with a CSS counter. */
+body.heading-numbered-auto .bn-editor {
+  counter-reset: hauto;
+}
+body.heading-numbered-auto .bn-editor [data-content-type="heading"][data-level="2"] > *:first-child::before {
+  counter-increment: hauto;
+  content: counter(hauto) ". ";
+  color: #6366f1;
+  font-weight: 700;
+}
+
+/* Code block Horizon — Horizon dark palette for code blocks. */
+body.code-block-horizon .bn-editor pre {
+  background: #1c1e26 !important;
+  border: 1px solid #2e303e !important;
+}
+body.code-block-horizon .bn-editor pre code {
+  color: #e0e0e0 !important;
+}
+
+/* Table cell center — center-align all table cell content. */
+body.table-cell-center .bn-editor table td,
+body.table-cell-center .bn-editor table th {
+  text-align: center !important;
+}
+
+/* Callout top border accent — a colored accent bar across the callout top. */
+body.callout-top-border-accent .bn-editor [data-content-type="callout"] {
+  border-top: 4px solid #ec4899 !important;
+}
+
+/* Page bg noise — a subtle speckled noise texture behind the editor. */
+body.page-bg-noise .bn-editor {
+  background-image:
+    radial-gradient(rgba(99, 102, 241, 0.1) 0.5px, transparent 0.5px),
+    radial-gradient(rgba(99, 102, 241, 0.08) 0.5px, transparent 0.5px) !important;
+  background-size: 7px 7px, 11px 11px !important;
+  background-position: 0 0, 3px 4px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
