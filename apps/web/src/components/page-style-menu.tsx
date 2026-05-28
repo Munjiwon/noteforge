@@ -1176,6 +1176,11 @@ export function PageStyleMenu({
                       { key: "table-cell-corner-accent", label: "Corner accent" },
                       { key: "callout-rounded-large-shadow", label: "Round shadow" },
                       { key: "page-bg-subtle-dots", label: "Subtle dots" },
+                      { key: "h2-with-underline-double", label: "H2 2x underline" },
+                      { key: "code-block-forest-green", label: "Forest code" },
+                      { key: "table-cell-corner-accent-tr", label: "TR accent" },
+                      { key: "callout-glow-border", label: "Glow border" },
+                      { key: "page-bg-subtle-lines", label: "Subtle lines" },
                     ] as const
                   ).map((t) => (
                     <button

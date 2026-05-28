@@ -5077,6 +5077,65 @@ body.page-bg-subtle-dots .bn-editor {
   background-image: radial-gradient(circle, rgba(148, 163, 184, 0.16) 1px, transparent 1px) !important;
 }
 
+/* H2 with double underline. */
+body.h2-with-underline-double .bn-editor [data-content-type="heading"][data-level="2"] {
+  border-bottom: 3px double #334155;
+  padding-bottom: 0.15em;
+}
+.dark body.h2-with-underline-double .bn-editor [data-content-type="heading"][data-level="2"] {
+  border-bottom-color: #cbd5e1;
+}
+
+/* Forest green code — deep green palette. */
+body.code-block-forest-green .bn-editor pre {
+  background: #0c1f17 !important;
+  color: #bbf7d0 !important;
+  border: 1px solid #14532d;
+}
+body.code-block-forest-green .bn-editor pre code {
+  color: #86efac !important;
+}
+
+/* Top-right cell corner accent. */
+body.table-cell-corner-accent-tr .bn-editor table td,
+body.table-cell-corner-accent-tr .bn-editor table th {
+  position: relative;
+}
+body.table-cell-corner-accent-tr .bn-editor table td::after,
+body.table-cell-corner-accent-tr .bn-editor table th::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-top: 6px solid rgba(16, 185, 129, 0.4);
+  border-left: 6px solid transparent;
+}
+
+/* Glow border callout — soft outer glow. */
+body.callout-glow-border .bn-editor [data-content-type="callout"] {
+  box-shadow: 0 0 0 1px currentColor, 0 0 12px rgba(99, 102, 241, 0.35);
+}
+
+/* Subtle lines page background — faint horizontal ruling. */
+body.page-bg-subtle-lines .bn-editor {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 27px,
+    rgba(100, 116, 139, 0.12) 28px
+  ) !important;
+}
+.dark body.page-bg-subtle-lines .bn-editor {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 27px,
+    rgba(148, 163, 184, 0.12) 28px
+  ) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
