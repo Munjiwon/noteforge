@@ -1815,6 +1815,11 @@ export function PageStyleMenu({
                       { key: "callout-fmu-3", label: "callout fmu3" },
                       { key: "page-bg-fmu-4", label: "page-bg fmu4" },
                       { key: "heading-fmu-5", label: "heading fmu5" },
+                      { key: "code-block-fnj-1", label: "code-block fnj1" },
+                      { key: "table-fnj-2", label: "table fnj2" },
+                      { key: "callout-fnj-3", label: "callout fnj3" },
+                      { key: "page-bg-fnj-4", label: "page-bg fnj4" },
+                      { key: "heading-fnj-5", label: "heading fnj5" },
                     ] as const
                   ).map((t) => (
                     <button
