@@ -4970,6 +4970,58 @@ body.page-side-shadow-soft .bn-editor {
   box-shadow: 6px 0 18px -8px rgba(129, 140, 248, 0.35);
 }
 
+/* H6 with side marker — left bar before H6. */
+body.h6-with-side-marker .bn-editor [data-content-type="heading"][data-level="6"] {
+  border-left: 3px solid #6b7280;
+  padding-left: 0.4rem;
+}
+.dark body.h6-with-side-marker .bn-editor [data-content-type="heading"][data-level="6"] {
+  border-left-color: #9ca3af;
+}
+
+/* Blueprint grid — light cyan grid on white background. */
+body.code-block-blueprint-grid .bn-editor pre {
+  background-color: #ecfeff !important;
+  background-image:
+    linear-gradient(rgba(6, 182, 212, 0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(6, 182, 212, 0.18) 1px, transparent 1px) !important;
+  background-size: 16px 16px !important;
+  color: #155e75 !important;
+  border: 1px solid #a5f3fc;
+}
+
+/* Gray row dividers. */
+body.table-row-divider-color-gray .bn-editor table tr + tr > * {
+  border-top: 2px solid #9ca3af !important;
+}
+
+/* Flag side tab — small angled flag on the left of callouts. */
+body.callout-side-tab-flag .bn-editor [data-content-type="callout"] {
+  position: relative;
+  padding-left: 2.5rem !important;
+}
+body.callout-side-tab-flag .bn-editor [data-content-type="callout"]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 14px;
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: 14px solid currentColor;
+  opacity: 0.85;
+}
+
+/* Strong shadow — pronounced shadow around the editor. */
+body.page-side-shadow-strong .bn-editor {
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.25), 0 4px 8px -2px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+.dark body.page-side-shadow-strong .bn-editor {
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.6), 0 4px 8px -2px rgba(0, 0, 0, 0.4);
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
