@@ -1343,6 +1343,11 @@ export function PageStyleMenu({
                       { key: "table-dense-borders", label: "Dense border" },
                       { key: "callout-rounded-top", label: "Round top" },
                       { key: "page-bg-dots-diagonal", label: "Diag dots" },
+                      { key: "heading-overline", label: "Overline" },
+                      { key: "code-block-iceberg", label: "Iceberg" },
+                      { key: "table-cell-right-align", label: "Right align" },
+                      { key: "callout-frosted", label: "Frosted" },
+                      { key: "page-bg-grid-fade", label: "Grid fade" },
                     ] as const
                   ).map((t) => (
                     <button

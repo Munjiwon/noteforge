@@ -3132,6 +3132,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean A/B test results readout — reports an experiment's outcome and recommendation. Use 합쇼체. Markdown: '**한 줄 (결론)**' (1줄 — 출시 / 중단 / 재실험 + 핵심), '**가설 (1줄)**', '**셋업 (bullets)**' (변형 / 대상 / 기간 / 표본), '**결과 (테이블)**' ('지표 | 대조군 | 실험군 | 변화 | 유의성(p/신뢰구간)'), '**가드레일 지표 (bullets)**' (악화 없었나), '**해석 (1단락)**' (왜 이런 결과 — 과대해석 경계), '**권고 (1줄)**', '**후속 (bullets)**' (추가 검증 / 세그먼트). 통계적 겸손 유지.\n\n실험 결과 컨텍스트:\n${text}`,
   internal_eng_weekly_digest_ko: (text) =>
     `Write a Korean engineering weekly digest — a scannable weekly update for an eng org. Use 합쇼체. Markdown: '**한 줄 (이번 주)**' (1줄 — 가장 중요한 것), '**출시 / 머지 (bullets)**' (사용자/팀 영향 위주), '**진행 중 (bullets)**' (주요 작업 상태), '**인시던트 / 신뢰성 (bullets)**' (있으면 — 간결), '**기술 결정 (bullets)**' (ADR / 방향), '**막힌 것 / 도움 필요 (bullets)**', '**지표 (1줄)**' (배포 빈도 / 안정성 등), '**다음 주 (bullets)**', '**축하 / 감사 (1줄)**'. 군더더기 없이.\n\n엔지니어링 주간 컨텍스트:\n${text}`,
+  translate_ko_to_andi: (text) =>
+    `Translate the Korean text below into natural Andi — Northeast Caucasian (Avar-Andic) language of Dagestan, Russia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Andi**' and '**번역 노트**' (3 bullets in Korean — note Andi is an Avar-Andic language with a large consonant inventory; it is largely unwritten and Avar serves as the literary language).\n\n원문:\n${text}`,
+  translate_ko_to_tsez: (text) =>
+    `Translate the Korean text below into natural Tsez (Dido) — Northeast Caucasian language of southern Dagestan, Russia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Tsez**' and '**번역 노트**' (3 bullets in Korean — note Tsez has an exceptionally rich case system and is mostly an oral language).\n\n원문:\n${text}`,
+  translate_ko_to_rutul: (text) =>
+    `Translate the Korean text below into natural Rutul — Lezgic (Northeast Caucasian) language of southern Dagestan, Russia, and Azerbaijan. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Rutul**' and '**번역 노트**' (3 bullets in Korean — note Rutul is a Lezgic language written in Cyrillic since the 1990s).\n\n원문:\n${text}`,
+  translate_ko_to_tsakhur: (text) =>
+    `Translate the Korean text below into natural Tsakhur — Lezgic (Northeast Caucasian) language of Dagestan and Azerbaijan. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Tsakhur**' and '**번역 노트**' (3 bullets in Korean — note Tsakhur is a Lezgic language spoken on both sides of the Russia-Azerbaijan border).\n\n원문:\n${text}`,
+  translate_ko_to_aghul: (text) =>
+    `Translate the Korean text below into natural Aghul — Lezgic (Northeast Caucasian) language of southern Dagestan, Russia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Aghul**' and '**번역 노트**' (3 bullets in Korean — note Aghul is a Lezgic language closely related to Lezgian and Tabasaran).\n\n원문:\n${text}`,
+  internal_meeting_facilitation_guide_ko: (text) =>
+    `Write a Korean meeting facilitation guide — helps someone run an effective, inclusive meeting. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄 — 이 미팅이 필요한 이유 / 결정할 것), '**사전 준비 (bullets)**' (아젠다 / 사전 읽기 / 역할), '**진행 흐름 (테이블)**' ('시간 | 단계 | 진행 방식'), '**참여 유도 (bullets)**' (조용한 사람 끌어들이기 / 라운드로빈), '**의사결정 방법 (1줄)**' (합의 / RAPID / 투표), '**탈선 대응 (bullets)**' (파킹랏 등), '**마무리 (bullets)**' (결정 / 액션 / 다음), '**안티패턴 (1줄)**' (회의를 위한 회의). 포용 + 결과 중심.\n\n미팅 컨텍스트:\n${text}`,
+  sales_deal_review_ko: (text) =>
+    `Write a Korean deal review — an internal review of a deal's health for forecasting and coaching. Use 합쇼체. Markdown: '**한 줄 (딜)**' (1줄 — 단계 + 확률 + 핵심 리스크), '**딜 요약 (bullets)**' (고객 / 규모 / 예상 클로즈), '**MEDDIC 체크 (테이블)**' ('요소 | 상태 | 메모'): Metrics / Economic buyer / Decision criteria / Decision process / Identify pain / Champion, '**강점 (bullets)**', '**리스크 / 갭 (bullets)**', '**다음 액션 (테이블)**' ('액션 | 담당 | 시한'), '**필요한 코칭/지원 (1줄)**', '**예측 신뢰도 (1줄)**'. 솔직한 내부 평가.\n\n딜 컨텍스트:\n${text}`,
+  customer_feedback_loop_ko: (text) =>
+    `Design a Korean customer feedback loop — sets up a repeatable process to capture, route, and close the loop on feedback. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄), '**수집 채널 (테이블)**' ('채널 | 무엇을 수집 | 빈도'), '**분류 / 라우팅 (bullets)**' (어떻게 태깅 / 누구에게), '**우선순위 기준 (bullets)**', '**제품 연계 (1줄)**' (어떻게 로드맵에 반영), '**루프 닫기 (bullets)**' (고객에게 무엇이 됐는지 알리기), '**측정 (bullets)**' (피드백 → 조치 비율 등), '**역할 (테이블)**' ('단계 | 담당'). 닫는 루프 강조.\n\n피드백 컨텍스트:\n${text}`,
+  pm_discovery_summary_ko: (text) =>
+    `Write a Korean product discovery summary — synthesizes user research/discovery into decisions. Use 합쇼체. Markdown: '**한 줄 (핵심 발견)**' (1줄), '**디스커버리 질문 (1줄)**' (무엇을 알아내려 했나), '**방법 / 표본 (bullets)**' (인터뷰 / 설문 — 누구 몇 명), '**핵심 인사이트 (테이블)**' ('인사이트 | 근거 | 확신도'), '**검증된 가정 / 깨진 가정 (bullets)**', '**기회 (bullets)**' (해결할 가치 있는 문제), '**권고 (1단락)**' (다음에 무엇을), '**남은 불확실성 (bullets)**'. 근거와 의견 구분.\n\n디스커버리 컨텍스트:\n${text}`,
+  internal_engineering_standards_ko: (text) =>
+    `Write a Korean engineering standards doc — codifies how a team writes and ships code. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄), '**원칙 (bullets)**' (단순함 / 가독성 / 테스트 등), '**코드 (bullets)**' (스타일 / 리뷰 / 네이밍 규칙 — 도구로 강제할 것 표시), '**테스트 (bullets)**' (무엇을 / 커버리지 기대), '**리뷰 (bullets)**' (PR 크기 / SLA / 승인 규칙), '**배포 (bullets)**' (CI / 롤백 / 플래그), '**관측성 (bullets)**' (로그 / 메트릭 / 알림), '**예외 처리 (1줄)**' (규칙을 어길 때). 규칙마다 '왜'를 한 줄.\n\n표준 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

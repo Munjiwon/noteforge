@@ -6558,6 +6558,48 @@ body.page-bg-dots-diagonal .bn-editor {
   background-position: 0 0, 10px 10px !important;
 }
 
+/* Heading overline — a line above each heading instead of below. */
+body.heading-overline .bn-editor [data-content-type="heading"] {
+  border-top: 2px solid #6366f1 !important;
+  padding-top: 0.2em !important;
+}
+
+/* Code block Iceberg — Iceberg dark palette for code blocks. */
+body.code-block-iceberg .bn-editor pre {
+  background: #161821 !important;
+  border: 1px solid #242832 !important;
+}
+body.code-block-iceberg .bn-editor pre code {
+  color: #c6c8d1 !important;
+}
+
+/* Table cell right align — right-align all table cell content. */
+body.table-cell-right-align .bn-editor table td,
+body.table-cell-right-align .bn-editor table th {
+  text-align: right !important;
+}
+
+/* Callout frosted — a frosted translucent panel look on callouts. */
+body.callout-frosted .bn-editor [data-content-type="callout"] {
+  background: rgba(255, 255, 255, 0.35) !important;
+  backdrop-filter: blur(10px) saturate(140%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+}
+.dark body.callout-frosted .bn-editor [data-content-type="callout"] {
+  background: rgba(40, 40, 60, 0.4) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Page bg grid fade — a grid that fades out toward the bottom. */
+body.page-bg-grid-fade .bn-editor {
+  background-image:
+    linear-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99, 102, 241, 0.1) 1px, transparent 1px) !important;
+  background-size: 24px 24px !important;
+  -webkit-mask-image: linear-gradient(to bottom, black, transparent) !important;
+  mask-image: linear-gradient(to bottom, black, transparent) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
