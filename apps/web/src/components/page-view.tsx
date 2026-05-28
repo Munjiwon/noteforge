@@ -799,6 +799,11 @@ export function PageView({
       "table-header-gradient-warm",
       "callout-glow-purple",
       "page-bg-confetti",
+      "h3-with-dotted-underline",
+      "code-block-slate",
+      "table-header-gradient-cool",
+      "callout-glow-teal",
+      "page-bg-bubbles",
     ];
     try {
       for (const k of toggles) {

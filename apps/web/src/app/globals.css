@@ -5423,6 +5423,47 @@ body.page-bg-confetti .bn-editor {
   background-size: 60px 60px !important;
 }
 
+/* H3 with dotted underline. */
+body.h3-with-dotted-underline .bn-editor [data-content-type="heading"][data-level="3"] {
+  border-bottom: 2px dotted #06b6d4;
+  padding-bottom: 0.1em;
+}
+.dark body.h3-with-dotted-underline .bn-editor [data-content-type="heading"][data-level="3"] {
+  border-bottom-color: #22d3ee;
+}
+
+/* Slate code — neutral slate-gray palette. */
+body.code-block-slate .bn-editor pre {
+  background: #1e293b !important;
+  color: #e2e8f0 !important;
+  border: 1px solid #334155;
+}
+body.code-block-slate .bn-editor pre code {
+  color: #cbd5e1 !important;
+}
+
+/* Cool gradient header. */
+body.table-header-gradient-cool .bn-editor table th {
+  background: linear-gradient(135deg, #0ea5e9, #14b8a6) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+/* Teal glow callout. */
+body.callout-glow-teal .bn-editor [data-content-type="callout"] {
+  box-shadow: 0 0 4px #2dd4bf, 0 0 12px rgba(45, 212, 191, 0.5);
+  border: 1px solid #2dd4bf;
+}
+
+/* Bubbles page background — soft scattered circles. */
+body.page-bg-bubbles .bn-editor {
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.06) 12px, transparent 14px),
+    radial-gradient(circle at 75% 60%, rgba(236, 72, 153, 0.06) 18px, transparent 20px),
+    radial-gradient(circle at 50% 85%, rgba(34, 197, 94, 0.06) 10px, transparent 12px) !important;
+  background-size: 120px 120px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
