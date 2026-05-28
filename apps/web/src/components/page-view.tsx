@@ -699,6 +699,11 @@ export function PageView({
       "table-row-divider-double",
       "callout-stamp-overlay",
       "page-side-margin-icon-area",
+      "h1-with-corner-radius-blob",
+      "code-block-rainbow-stripes",
+      "table-header-vertical-orientation",
+      "callout-hand-pointer",
+      "page-side-clip-paper-corner",
     ];
     try {
       for (const k of toggles) {

@@ -1111,6 +1111,11 @@ export function PageStyleMenu({
                       { key: "table-row-divider-double", label: "Double rows" },
                       { key: "callout-stamp-overlay", label: "Stamp" },
                       { key: "page-side-margin-icon-area", label: "Icon area" },
+                      { key: "h1-with-corner-radius-blob", label: "H1 blob" },
+                      { key: "code-block-rainbow-stripes", label: "Rainbow V" },
+                      { key: "table-header-vertical-orientation", label: "V-head" },
+                      { key: "callout-hand-pointer", label: "👉 callout" },
+                      { key: "page-side-clip-paper-corner", label: "Clip+corner" },
                     ] as const
                   ).map((t) => (
                     <button

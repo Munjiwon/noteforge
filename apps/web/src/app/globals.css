@@ -4249,6 +4249,80 @@ body.page-side-margin-icon-area .bn-editor::before {
   pointer-events: none;
 }
 
+/* H1 with corner radius blob — H1 with rounded left blob bg. */
+body.h1-with-corner-radius-blob .bn-editor [data-content-type="heading"][data-level="1"] {
+  display: inline-block;
+  background: linear-gradient(95deg, #ddd6fe, transparent 70%);
+  padding: 0.2em 0.8em;
+  border-radius: 0 999px 999px 0;
+}
+.dark body.h1-with-corner-radius-blob .bn-editor [data-content-type="heading"][data-level="1"] {
+  background: linear-gradient(95deg, #4c1d95, transparent 70%);
+}
+
+/* Rainbow vertical stripes — multicolor vertical stripes in code blocks. */
+body.code-block-rainbow-stripes .bn-editor pre {
+  background: repeating-linear-gradient(
+    to right,
+    #fef2f2 0,
+    #fef2f2 8px,
+    #fef3c7 8px,
+    #fef3c7 16px,
+    #ecfccb 16px,
+    #ecfccb 24px,
+    #dbeafe 24px,
+    #dbeafe 32px,
+    #fae8ff 32px,
+    #fae8ff 40px
+  ) !important;
+  background-attachment: local !important;
+}
+
+/* Vertical header orientation — rotates header text 90°. */
+body.table-header-vertical-orientation .bn-editor table th {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  padding: 0.5em 0.3em !important;
+  vertical-align: bottom;
+}
+
+/* Hand pointer callout — 👉 emoji on the left. */
+body.callout-hand-pointer .bn-editor [data-content-type="callout"] {
+  position: relative;
+  padding-left: 2.5rem !important;
+}
+body.callout-hand-pointer .bn-editor [data-content-type="callout"]::before {
+  content: "👉";
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.3rem;
+}
+
+/* Clip + corner — both 🖇 clip on left and folded corner on top-right. */
+body.page-side-clip-paper-corner .bn-editor {
+  position: relative;
+}
+body.page-side-clip-paper-corner .bn-editor::before {
+  content: "🖇";
+  position: absolute;
+  top: 6px;
+  left: -28px;
+  font-size: 1.7rem;
+}
+body.page-side-clip-paper-corner .bn-editor::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-top: 22px solid rgba(0, 0, 0, 0.15);
+  border-left: 22px solid transparent;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
