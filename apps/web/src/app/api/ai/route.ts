@@ -3232,6 +3232,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean beta program plan — plans a structured beta to validate a feature before GA. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 무엇을 검증), '**가설 / 학습 목표 (bullets)**', '**참가자 (bullets)**' (누구 / 몇 명 / 선정 기준), '**범위 (bullets)**' (베타에 무엇이 / 무엇이 빠짐), '**일정 (테이블)**' ('단계 | 기간 | 활동'), '**성공 기준 (테이블)**' ('지표 | 목표'), '**피드백 수집 (bullets)**' (방법 / 빈도), '**리스크 (bullets)**', '**GA 진입 기준 (1줄)**'. 학습 중심 설계.\n\n베타 컨텍스트:\n${text}`,
   internal_alert_triage_guide_ko: (text) =>
     `Write a Korean alert triage guide — helps on-call quickly assess and act on an alert. Use 합쇼체. Markdown: '**한 줄 (알림)**' (1줄 — 무슨 알림 / 무엇을 뜻하나), '**즉시 확인 (numbered)**' (가장 먼저 볼 것 — 대시보드 / 로그 / 영향 범위), '**심각도 판단 (테이블)**' ('관찰 | 심각도 | 의미'), '**대응 (bullets)**' (심각도별 첫 액션), '**흔한 원인 (테이블)**' ('증상 | 가능 원인 | 확인 방법'), '**완화 (bullets)**' (임시 조치), '**에스컬레이션 (1줄)**' (언제 / 누구), '**오탐 처리 (1줄)**' (노이즈면). 빠른 판단 우선.\n\n알림 컨텍스트:\n${text}`,
+  translate_ko_to_toba_batak: (text) =>
+    `Translate the Korean text below into natural Toba Batak — Austronesian language of the Lake Toba region, North Sumatra, Indonesia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Batak Toba**' and '**번역 노트**' (3 bullets in Korean — note Toba Batak has its own traditional Batak script, now usually written in Latin).\n\n원문:\n${text}`,
+  translate_ko_to_nias: (text) =>
+    `Translate the Korean text below into natural Nias (Li Niha) — Austronesian language of Nias island off western Sumatra, Indonesia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Li Niha**' and '**번역 노트**' (3 bullets in Korean — note Nias is unusual among Austronesian languages for having only open syllables).\n\n원문:\n${text}`,
+  translate_ko_to_mentawai: (text) =>
+    `Translate the Korean text below into natural Mentawai — Austronesian language of the Mentawai Islands off western Sumatra, Indonesia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Mentawai**' and '**번역 노트**' (3 bullets in Korean — note Mentawai is spoken by the indigenous people of the Mentawai archipelago).\n\n원문:\n${text}`,
+  translate_ko_to_rejang: (text) =>
+    `Translate the Korean text below into natural Rejang — Austronesian language of the Bengkulu highlands, Sumatra, Indonesia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Rejang**' and '**번역 노트**' (3 bullets in Korean — note Rejang has its own traditional KaGaNga (Surat Ulu) script).\n\n원문:\n${text}`,
+  translate_ko_to_lampung: (text) =>
+    `Translate the Korean text below into natural Lampung — Austronesian language of Lampung province, southern Sumatra, Indonesia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Lampung**' and '**번역 노트**' (3 bullets in Korean — note Lampung has its own Lampung (Kaganga) script and two main dialects, Api and Nyo).\n\n원문:\n${text}`,
+  internal_dependency_map_ko: (text) =>
+    `Write a Korean dependency map — surfaces cross-team/system dependencies that could block delivery. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 무엇을 위한 의존성 맵), '**우리가 의존하는 것 (테이블)**' ('의존 대상 | 무엇이 필요 | 담당 팀 | 시한 | 상태/리스크'), '**우리에게 의존하는 것 (테이블)**' ('누가 | 무엇을 기다림 | 시한'), '**임계 경로 (1줄)**' (가장 빡빡한 체인), '**리스크 (bullets)**' (각 '의존성 — 지연 시 영향 — 완화'), '**조정 필요 (bullets)**' (누구와 무엇을 합의), '**다음 액션 (테이블)**'. 블로커 가시화 중심.\n\n의존성 컨텍스트:\n${text}`,
+  sales_enablement_one_pager_ko: (text) =>
+    `Write a Korean sales enablement one-pager — a single-page reference that helps reps sell a product/feature. Use 합쇼체. 1페이지, 스캔 가능. Markdown: '**한 줄 (무엇/누구)**' (1줄), '**고객 페인 (bullets)**' (이게 해결하는 것), '**핵심 가치 (bullets)**' (각 '가치 — 한 줄 증거'), '**대상 / 자격 질문 (bullets)**' (좋은 핏 판별), '**경쟁 차별점 (1줄)**', '**대표 반론 + 응답 (테이블)**', '**데모/말할 포인트 (bullets)**', '**다음 단계 (1줄)**'. 영업이 5분 안에 흡수 가능하게.\n\n인에이블먼트 컨텍스트:\n${text}`,
+  customer_renewal_checklist_ko: (text) =>
+    `Write a Korean renewal checklist — a step-by-step checklist to execute a clean renewal. Use 합쇼체. Markdown: '**한 줄 (갱신)**' (1줄 — 계정 / 갱신일 / ARR), '**D-90 (체크 bullets)**' (헬스 점검 / 챔피언 확인 / 가치 데이터 수집), '**D-60 (체크 bullets)**' (가치 리뷰 미팅 / 갱신 의향 확인), '**D-30 (체크 bullets)**' (제안 / 가격 / 계약 시작), '**D-7 (체크 bullets)**' (서명 / 승인 / 결제 확인), '**리스크 플래그 (bullets)**' (즉시 에스컬레이션 신호), '**갱신 후 (체크 bullets)**' (확인 / 다음 사이클 준비). 빠짐없이 실행.\n\n갱신 컨텍스트:\n${text}`,
+  pm_market_sizing_ko: (text) =>
+    `Write a Korean market sizing analysis — estimates TAM/SAM/SOM for an opportunity. Use 합쇼체. Markdown: '**한 줄 (기회 규모)**' (1줄 — 핵심 숫자 + 신뢰도), '**TAM (1단락)**' (전체 시장 — 계산 방식 + 가정), '**SAM (1단락)**' (우리가 도달 가능한 부분), '**SOM (1단락)**' (현실적 점유 — 단기), '**계산 (테이블)**' ('항목 | 값 | 출처/가정'), '**Top-down vs Bottom-up (1줄)**' (교차 검증), '**민감도 (bullets)**' (핵심 가정이 바뀌면), '**결론 (1줄)**' (추구할 가치가 있나). 가정을 투명하게.\n\n시장 컨텍스트:\n${text}`,
+  internal_escalation_policy_ko: (text) =>
+    `Write a Korean escalation policy — defines when and how to escalate issues. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄), '**언제 에스컬레이션 (bullets)**' (트리거 — 심각도 / 시간 / 영향 기준), '**경로 (테이블)**' ('심각도 | 누구에게 | 채널 | 응답 기대'), '**에스컬레이션 방법 (bullets)**' (무슨 정보를 담아 — 상황/영향/필요), '**역할 (bullets)**' (누가 결정 / 누가 소통), '**되돌리기 (1줄)**' (해결 후 디에스컬레이션), '**안티패턴 (1줄)**' (너무 늦게 / 정보 없이 에스컬레이션). 빠르고 비난 없이.\n\n에스컬레이션 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

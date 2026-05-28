@@ -1368,6 +1368,11 @@ export function PageStyleMenu({
                       { key: "table-row-hover-scale", label: "Hover lift" },
                       { key: "callout-left-icon-bar", label: "Icon bar" },
                       { key: "page-bg-confetti-dots", label: "Confetti dots" },
+                      { key: "heading-condensed", label: "Condensed" },
+                      { key: "code-block-tokyo-storm", label: "Tokyo Storm" },
+                      { key: "table-cell-vertical-center", label: "V-center" },
+                      { key: "callout-outline-only", label: "Outline only" },
+                      { key: "page-bg-diamonds", label: "Diamonds" },
                     ] as const
                   ).map((t) => (
                     <button

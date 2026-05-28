@@ -956,6 +956,11 @@ export function PageView({
       "table-row-hover-scale",
       "callout-left-icon-bar",
       "page-bg-confetti-dots",
+      "heading-condensed",
+      "code-block-tokyo-storm",
+      "table-cell-vertical-center",
+      "callout-outline-only",
+      "page-bg-diamonds",
     ];
     try {
       for (const k of toggles) {
