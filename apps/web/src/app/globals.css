@@ -7479,6 +7479,41 @@ body.page-bg-soft-lines-v .bn-editor {
   background-size: 28px 100% !important;
 }
 
+/* Heading gradient bar — a thick gradient bar to the left of headings. */
+body.heading-gradient-bar .bn-editor [data-content-type="heading"] {
+  border-left: 5px solid transparent !important;
+  border-image: linear-gradient(180deg, #6366f1, #ec4899) 1 !important;
+  padding-left: 0.5em !important;
+}
+
+/* Code block Melange — Melange dark palette for code blocks. */
+body.code-block-melange .bn-editor pre {
+  background: #292522 !important;
+  border: 1px solid #34302c !important;
+}
+body.code-block-melange .bn-editor pre code {
+  color: #ece1d7 !important;
+}
+
+/* Table teal zebra — teal-tinted zebra striping on rows. */
+body.table-zebra-teal .bn-editor table tr:nth-child(even) td {
+  background: rgba(20, 184, 166, 0.1) !important;
+}
+.dark body.table-zebra-teal .bn-editor table tr:nth-child(even) td {
+  background: rgba(20, 184, 166, 0.16) !important;
+}
+
+/* Callout double stripe — two stacked accent stripes on the left edge. */
+body.callout-double-stripe .bn-editor [data-content-type="callout"] {
+  border-left: 6px double #6366f1 !important;
+  padding-left: 0.8em !important;
+}
+
+/* Page bg top-left glow — a soft glow from the top-left corner. */
+body.page-bg-soft-glow-tl .bn-editor {
+  background-image: radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.14), transparent 45%) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

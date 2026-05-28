@@ -3572,6 +3572,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean problem statement — frames a problem sharply before any solutioning. Use 합쇼체. Markdown: '**한 줄 (문제)**' (1줄 — 한 문장으로 문제 정의), '**누가 (bullets)**' (영향받는 사람 / 세그먼트), '**현재 상황 (1단락)**' (지금 어떻게 / 왜 아픈가), '**증거 (bullets)**' (이게 진짜 문제라는 데이터), '**임팩트 (1줄)**' (안 풀면 / 풀면 — 가능하면 수치), '**제약 (bullets)**' (풀 때 지켜야 할 것), '**성공 기준 (bullets)**' (풀렸다는 것을 어떻게 아나), '**비범위 (1줄)**'. 솔루션 언급 금지 — 문제에 집중.\n\n문제 컨텍스트:\n${text}`,
   internal_handover_doc_ko: (text) =>
     `Write a Korean handover doc — hands off ownership of a project/area to someone else. Use 합쇼체. Markdown: '**한 줄 (인계)**' (1줄 — 무엇을 / 누구에게), '**개요 (1단락)**' (이 영역이 무엇 / 현재 상태), '**진행 중 작업 (테이블)**' ('작업 | 상태 | 다음 단계 | 마감'), '**핵심 컨텍스트 (bullets)**' (배경 / 결정 / 함정), '**연락처 (테이블)**' ('영역 | 누구 | 무엇 때문에'), '**접근 / 권한 (bullets)**' (필요한 것), '**리스크 / 주의 (bullets)**', '**리소스 링크 (bullets)**', '**첫 2주 추천 (1줄)**'. 인수자가 막힘 없이 이어가게.\n\n인계 컨텍스트:\n${text}`,
+  translate_ko_to_ainu: (text) =>
+    `Translate the Korean text below into natural Ainu (アイヌ・イタㇰ) — the indigenous language of Hokkaido, Japan. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Aynu itak**' (Latin transcription, optionally Katakana) and '**번역 노트**' (3 bullets in Korean — note Ainu is a critically endangered language isolate with a rich oral epic (yukar) tradition).\n\n원문:\n${text}`,
+  translate_ko_to_nivkh: (text) =>
+    `Translate the Korean text below into natural Nivkh (Gilyak) — a Paleosiberian language isolate of Sakhalin and the Amur estuary. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Nivkh**' and '**번역 노트**' (3 bullets in Korean — note Nivkh is a language isolate with an elaborate counting system; written in Cyrillic).\n\n원문:\n${text}`,
+  translate_ko_to_chukchi: (text) =>
+    `Translate the Korean text below into natural Chukchi (Ԓыгъоравэтԓьэн) — a Chukotko-Kamchatkan language of the Chukotka Peninsula, far northeastern Russia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Chukchi**' and '**번역 노트**' (3 bullets in Korean — note Chukchi is polysynthetic and historically had distinct men's and women's pronunciations; written in Cyrillic).\n\n원문:\n${text}`,
+  translate_ko_to_koryak: (text) =>
+    `Translate the Korean text below into natural Koryak — a Chukotko-Kamchatkan language of the Kamchatka region, Russia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Koryak**' and '**번역 노트**' (3 bullets in Korean — note Koryak is closely related to Chukchi, written in Cyrillic).\n\n원문:\n${text}`,
+  translate_ko_to_itelmen: (text) =>
+    `Translate the Korean text below into natural Itelmen (Kamchadal) — a Chukotko-Kamchatkan language of Kamchatka, Russia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Itelmen**' and '**번역 노트**' (3 bullets in Korean — note Itelmen is critically endangered with a notably large consonant inventory; written in Cyrillic).\n\n원문:\n${text}`,
+  internal_observability_plan_ko: (text) =>
+    `Write a Korean observability plan — plans the logs/metrics/traces needed to operate a service. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 무엇을 관측 / 어떤 질문에 답), '**핵심 질문 (bullets)**' (장애 시 답해야 할 것), '**메트릭 (테이블)**' ('메트릭 | 유형 | 알림 임계'): 골든 시그널(지연/트래픽/오류/포화), '**로그 (bullets)**' (무엇을 / 구조화 / 보존), '**트레이스 (1줄)**' (분산 추적 범위), '**대시보드 (bullets)**' (누구를 위한 무슨 뷰), '**알림 (bullets)**' (증상 기반 / 노이즈 방지), '**SLO 연계 (1줄)**'. 질문에서 출발.\n\n관측성 컨텍스트:\n${text}`,
+  sales_pipeline_hygiene_review_ko: (text) =>
+    `Write a Korean pipeline hygiene review — audits pipeline data quality and stuck deals. Use 합쇼체. Markdown: '**한 줄 (위생)**' (1줄 — 전반 건강 + 핵심 이슈), '**데이터 품질 (bullets)**' (오래된 단계 / 누락 필드 / 비현실 클로즈일), '**정체 딜 (테이블)**' ('딜 | 단계 | 정체 기간 | 액션(전진/다음분기/폐기)'), '**유령 파이프라인 (bullets)**' (실제 없는데 잡힌 것), '**단계 정의 점검 (1줄)**' (이탈/진입 기준 준수), '**정리 액션 (테이블)**' ('액션 | 담당 | 시한'), '**위생 규칙 (bullets)**' (앞으로). 정확한 예측 위한 청소.\n\n파이프라인 컨텍스트:\n${text}`,
+  customer_kickoff_summary_email_ko: (text) =>
+    `Draft a Korean kickoff summary email — sent after an onboarding kickoff to confirm alignment. Use 합쇼체 (따뜻 + 명확). Markdown: '**제목**' (1줄), '**본문**' (3-4 단락: 1) 킥오프 감사 + 핵심 1줄 요약, 2) 합의한 목표/성공 기준 재확인, 3) 다음 단계 + 일정 + 양측 액션, 4) 담당자 + 도움 제안), '**액션 아이템 (테이블)**' ('액션 | 담당(우리/고객) | 시한'), '**다음 마일스톤 (1줄)**'. 고객에게 바로 보낼 수 있게.\n\n킥오프 컨텍스트:\n${text}`,
+  pm_metrics_review_monthly_ko: (text) =>
+    `Write a Korean monthly product metrics review — reviews product health metrics month over month. Use 합쇼체. Markdown: '**한 줄 (총평)**' (1줄 — 건강 + 핵심 추세), '**핵심 지표 (테이블)**' ('지표 | 지난달 | 이번달 | 변화 | 비고'): 노스스타 / 활성 / 리텐션 / 채택 / 전환, '**잘 되는 것 (bullets)**', '**우려 (bullets)**' (각 '지표 — 가능 원인'), '**세그먼트/코호트 인사이트 (bullets)**', '**가설 (bullets)**' (다음에 검증할 것), '**액션 (테이블)**' ('액션 | 담당'), '**주의 (1줄)**' (지표 해석 함정). 데이터 → 가설 → 액션.\n\n지표 컨텍스트:\n${text}`,
+  internal_onboarding_plan_eng_ko: (text) =>
+    `Write a Korean engineer onboarding plan — a structured first-90-days plan specifically for a new engineer. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 90일 후 모습), '**1주차 (bullets)**' (환경 셋업 / 첫 커밋 / 사람 만나기), '**2-4주차 (bullets)**' (작은 작업 독립 완수 / 코드베이스 이해), '**2개월차 (bullets)**' (기능 단위 오너십), '**3개월차 (bullets)**' (온콜 합류 / 설계 참여), '**마일스톤 (테이블)**' ('시점 | 기대 | 멘토'), '**리소스 (bullets)**' (런북 / 아키텍처 / 용어집), '**조기 신호 (1줄)**'. 점진적 + 안전하게.\n\n신규 엔지니어 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

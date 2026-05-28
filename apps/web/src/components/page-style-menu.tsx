@@ -1453,6 +1453,11 @@ export function PageStyleMenu({
                       { key: "table-zebra-slate", label: "Slate zebra" },
                       { key: "callout-left-dot", label: "Left dot" },
                       { key: "page-bg-soft-lines-v", label: "V-lines" },
+                      { key: "heading-gradient-bar", label: "Gradient bar" },
+                      { key: "code-block-melange", label: "Melange" },
+                      { key: "table-zebra-teal", label: "Teal zebra" },
+                      { key: "callout-double-stripe", label: "Double stripe" },
+                      { key: "page-bg-soft-glow-tl", label: "TL glow" },
                     ] as const
                   ).map((t) => (
                     <button
