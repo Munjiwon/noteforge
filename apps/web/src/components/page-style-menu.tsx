@@ -1929,6 +1929,11 @@ export function PageStyleMenu({
                       { key: "callout-gaa-3", label: "callout gaa3" },
                       { key: "page-bg-gaa-4", label: "page-bg gaa4" },
                       { key: "heading-gaa-5", label: "heading gaa5" },
+                      { key: "code-block-gap-1", label: "code-block gap1" },
+                      { key: "table-gap-2", label: "table gap2" },
+                      { key: "callout-gap-3", label: "callout gap3" },
+                      { key: "page-bg-gap-4", label: "page-bg gap4" },
+                      { key: "heading-gap-5", label: "heading gap5" },
                     ] as const
                   ).map((t) => (
                     <button

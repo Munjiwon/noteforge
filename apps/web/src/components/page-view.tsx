@@ -1517,6 +1517,11 @@ export function PageView({
       "callout-gaa-3",
       "page-bg-gaa-4",
       "heading-gaa-5",
+      "code-block-gap-1",
+      "table-gap-2",
+      "callout-gap-3",
+      "page-bg-gap-4",
+      "heading-gap-5",
     ];
     try {
       for (const k of toggles) {
