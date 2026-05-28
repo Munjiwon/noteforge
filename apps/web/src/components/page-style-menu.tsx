@@ -1076,6 +1076,11 @@ export function PageStyleMenu({
                       { key: "table-numbered-cols", label: "Col #" },
                       { key: "callout-pulse-once", label: "Pulse once" },
                       { key: "page-side-rule-right", label: "Right rule" },
+                      { key: "h6-with-bullet-prefix", label: "H6 ◦" },
+                      { key: "code-block-dracula", label: "Dracula" },
+                      { key: "table-emphasized-row-first", label: "1st row big" },
+                      { key: "callout-arrow-marker-right", label: "Arrow right" },
+                      { key: "page-side-clip", label: "Side clip" },
                     ] as const
                   ).map((t) => (
                     <button

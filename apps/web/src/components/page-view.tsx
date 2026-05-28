@@ -664,6 +664,11 @@ export function PageView({
       "table-numbered-cols",
       "callout-pulse-once",
       "page-side-rule-right",
+      "h6-with-bullet-prefix",
+      "code-block-dracula",
+      "table-emphasized-row-first",
+      "callout-arrow-marker-right",
+      "page-side-clip",
     ];
     try {
       for (const k of toggles) {

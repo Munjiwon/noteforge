@@ -3835,6 +3835,66 @@ body.page-side-rule-right .bn-editor {
   border-right-color: #475569;
 }
 
+/* H6 with bullet prefix — prepends ◦ to H6 headings. */
+body.h6-with-bullet-prefix .bn-editor [data-content-type="heading"][data-level="6"] > *:first-child::before {
+  content: "◦ ";
+  color: #94a3b8;
+  margin-right: 0.15em;
+}
+.dark body.h6-with-bullet-prefix .bn-editor [data-content-type="heading"][data-level="6"] > *:first-child::before {
+  color: #cbd5e1;
+}
+
+/* Dracula theme — purple/pink Dracula palette for code. */
+body.code-block-dracula .bn-editor pre {
+  background: #282a36 !important;
+  color: #f8f8f2 !important;
+  border: 1px solid #44475a;
+}
+body.code-block-dracula .bn-editor pre code {
+  color: #f1fa8c !important;
+}
+
+/* Emphasized first row — first body row larger + bolder. */
+body.table-emphasized-row-first .bn-editor table tbody tr:first-child > * {
+  font-size: 1.08em;
+  font-weight: 600;
+  padding-top: 0.5em !important;
+  padding-bottom: 0.5em !important;
+}
+
+/* Arrow marker right — small ▶ arrow on the right edge of callouts. */
+body.callout-arrow-marker-right .bn-editor [data-content-type="callout"] {
+  position: relative;
+  padding-right: 2.5rem !important;
+}
+body.callout-arrow-marker-right .bn-editor [data-content-type="callout"]::after {
+  content: "▶";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: rgba(0, 0, 0, 0.4);
+}
+.dark body.callout-arrow-marker-right .bn-editor [data-content-type="callout"]::after {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Side clip — decorative paper clip emoji on the side of the editor. */
+body.page-side-clip .bn-editor {
+  position: relative;
+}
+body.page-side-clip .bn-editor::before {
+  content: "🖇";
+  position: absolute;
+  top: 8px;
+  left: -32px;
+  font-size: 2rem;
+  pointer-events: none;
+  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.2));
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
