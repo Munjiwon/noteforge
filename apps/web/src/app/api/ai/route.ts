@@ -1968,6 +1968,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Translate the Korean text below into natural Kannada (ಕನ್ನಡ). 격식 ('ನೀವು' 정중 / 'ನೀನು' 친근) 원문에 맞춤. Reply with two sections: '**ಅನುವಾದ**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
   team_meeting_async_format_ko: (text) =>
     `Convert a Korean recurring team meeting (주간 standup / 분기 리뷰) into an async written format — so the team can reclaim the synchronous time. Use 해요체. Markdown: '**기존 미팅**' (1줄 — 이름 / 빈도 / 시간 / 참석자 수), '**왜 async로 옮기나요**' (1단락 — 시간 / 시간대 / 깊은 작업 보호), '**Async 형식**' (bullets — 어디에 (Slack / Notion 페이지 / 폼) / 언제까지 작성 / 어떤 양식), '**템플릿 (복붙용)**' (코드 블록 — 각 사람이 매주 채울 양식 — '지난 주 ✓ / 이번 주 → / 막힘 ⚠ / 도움 🆘'), '**Sync는 언제 다시 필요한가요**' (bullets — 분기 1회 / 결정 필요 / 사람 변동), '**Trial 기간 + 측정**' (1줄 — '4주 trial, 그 후 retro로 결정').\n\n기존 미팅 컨텍스트:\n${text}`,
+  translate_ko_to_malayalam: (text) =>
+    `Translate the Korean text below into natural Malayalam (മലയാളം). 격식 ('നിങ്ങൾ' 정중 / 'നീ' 친근) 원문에 맞춤. Reply with two sections: '**വിവർത്തനം**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  customer_quarterly_strategic_review_ko: (text) =>
+    `Build a Korean customer Quarterly Strategic Review (QSR) doc — exec-level deep doc for the most strategic customers. CSM + 영업 lead + Exec sponsor. Use 합쇼체. Markdown: '**한 줄 상태**' (1줄 — 'X 단계, 전략적 우선순위 Y에 정렬'), '**고객 측 미션 / 전략 한 줄**' (1줄 — 그들이 본인 회사에서 추구하는 것), '**우리 가치 (지난 분기)**' (3 bullets — 데이터 + 영향), '**전략 정렬 — 어떻게 우리가 그들의 다음 분기 미션을 돕나**' (1단락), '**투자 제안**' (bullets — 추가 도입 모듈 / 확장 좌석 / 컨설팅), '**위험 / 우려 (솔직)**' (2 bullets), '**Exec ↔ Exec 결정 필요 사항**' (numbered), '**다음 분기 약속 (양쪽)**' (bullets — 우리가 할 것 / 그쪽이 할 것), '**다음 QSR 시점**' (1줄).\n\n고객 / 컨텍스트:\n${text}`,
+  translate_ko_to_gujarati: (text) =>
+    `Translate the Korean text below into natural Gujarati (ગુજરાતી). 격식 ('તમે' 정중 / 'તું' 친근) 원문에 맞춤. Reply with two sections: '**અનુવાદ**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  engineering_runbook_template_ko: (text) =>
+    `Build a Korean engineering runbook template — used during incidents. Use 해요체 (incident 중에 빠르게 읽기 좋게). 짧고 행동 위주. Markdown: '**상황 한 줄**' (1줄 — '이 runbook은 ~ 알람 / 증상이 났을 때 쓰세요'), '**즉시 확인 (1분 안)**' (numbered — 'X dashboard / Y 로그 / Z status'), '**일반적 원인 + 빠른 fix (테이블)**' ('원인 | 신호 | 빠른 mitigation | 영구 fix 링크'), '**Escalation 기준**' (1줄 — '~분 안 해결 안 되면 누구 ping'), '**Comms 템플릿**' (bullets — '내부 Slack 메시지 1줄 / 외부 status page 1줄 / 고객 메시지 1줄'), '**Postmortem 트리거**' (1줄 — '~ 이상 영향이면 PM 필수'), '**관련 자료**' (bullets — dashboard / 코드 / 관련 PRD).\n\n시스템 / 알람 컨텍스트:\n${text}`,
+  translate_ko_to_odia: (text) =>
+    `Translate the Korean text below into natural Odia (ଓଡ଼ିଆ). 격식 ('ଆପଣ' 정중 / 'ତୁମେ' 친근) 원문에 맞춤. Reply with two sections: '**ଅନୁବାଦ**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  marketing_pr_pitch_email_ko: (text) =>
+    `Draft a Korean PR pitch email — cold outbound to a journalist or 매체. Use 해요체. 짧 + 매체 / 기자 맞춤화. 'press release' 페이지 링크만 보내는 형식 X. Markdown: '**제목**' (1줄, 24자 이내 — 기자 / 매체에 맞춘 hook), '**본문**' (3 단락: 1) 1-2줄 — '안녕하세요 [기자명], [매체]의 [지난 기사] 잘 봤습니다. 그 주제와 연결되는 한 가지 제안드려도 될까요', 2) 한 가지 stat / 사실 / 발견 — 왜 지금 / 왜 그쪽 독자에게 흥미로운지 1단락, 3) 짧은 요청 — 15분 통화 또는 'X 데이터 보내드릴까요' + 일정 후보 2개), '**P.S.**' (1줄 — 본인 / 회사 1줄, embargo 가능 여부).\n\n매체 / 발표 컨텍스트:\n${text}`,
+  translate_ko_to_assamese: (text) =>
+    `Translate the Korean text below into natural Assamese (অসমীয়া). 격식 ('আপুনি' 정중 / 'তুমি' 친근 / 'তই' 매우 친근) 원문에 맞춤. Reply with two sections: '**অনুবাদ**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  customer_offboarding_email_ko: (text) =>
+    `Draft a Korean customer offboarding email — sent when a customer churns / cancels. Use 해요체. 따뜻 + 솔직 + 문 열어둠 + 데이터. Markdown: '**제목**' (1줄, 26자 이내 — '아쉽지만, [고객사] 계약 종료 안내'), '**본문**' (4 단락: 1) 함께한 시간 감사 + 1줄 — 우리에게 어떤 배움이었는지, 2) 종료 일정 안내 — 마지막 사용일 / 데이터 export 시한 / 결제 환불 (있다면) — 구체적, 3) 떠나는 이유에 대한 짧은 부탁 — '5분이라도 솔직히 알려주시면 우리가 더 잘 만들 수 있어요' — 부담 없이, 4) 문 열어둠 — '나중에 다시 필요하시면 X에게 연락 주세요, 데이터 6개월 보관'), '**P.S.**' (1줄 — 추천 가능한 다른 도구 솔직히, 우리에게 안 맞았다면).\n\n고객 / 종료 컨텍스트:\n${text}`,
+  translate_ko_to_nepali: (text) =>
+    `Translate the Korean text below into natural Nepali (नेपाली). 격식 ('तपाईं' 정중 / 'तिमी' 친근 / 'तँ' 매우 친근) 원문에 맞춤. Reply with two sections: '**अनुवाद**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  team_retro_continue_stop_start_ko: (text) =>
+    `Build a Korean team retro (회고) doc using 'Continue / Stop / Start' format — sprint 또는 분기 단위. Use 해요체. 안전한 공간 강조. Markdown: '**Retro 한 줄**' (스프린트 / 기간 / 참석자 수), '**Health check (1-5)**' (테이블 — '카테고리 | 평균 점수' — 모르겠지만 보통: 협업 / 명확성 / 속도 / 즐거움 / 임팩트), '**Continue (계속할 것)**' (bullets — 익명 인풋 + 그룹 정리, 각 1줄 + 사례), '**Stop (멈출 것)**' (bullets — 같은 형식), '**Start (시작할 것)**' (bullets — 같은 형식 + 누가 시도할지 1줄), '**투표로 결정한 Top 3 액션 (테이블)**' ('액션 | 담당 | 시한 | 어떻게 측정'), '**다음 retro에서 확인할 것**' (1줄), '**Facilitator 노트**' (1줄 — 다음 facilitator).\n\n팀 / 스프린트 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

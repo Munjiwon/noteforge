@@ -3536,6 +3536,61 @@ body.page-margin-notes-area .bn-editor {
   border-right-color: #334155;
 }
 
+/* H1 with bullet square — prepends ■ to H1 headings. */
+body.h1-with-bullet-square .bn-editor [data-content-type="heading"][data-level="1"] > *:first-child::before {
+  content: "■ ";
+  color: #1e293b;
+  margin-right: 0.25em;
+}
+.dark body.h1-with-bullet-square .bn-editor [data-content-type="heading"][data-level="1"] > *:first-child::before {
+  color: #cbd5e1;
+}
+
+/* Purple night code — deep purple theme for code blocks. */
+body.code-block-purple-night .bn-editor pre {
+  background: #1a0b2e !important;
+  color: #e9d5ff !important;
+  border: 1px solid #4c1d95;
+  text-shadow: 0 0 6px rgba(168, 85, 247, 0.25);
+}
+body.code-block-purple-night .bn-editor pre code {
+  color: #f3e8ff !important;
+}
+
+/* Borderless rounded table — remove all borders, add rounded outer shell. */
+body.table-borderless-rounded .bn-editor table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  overflow: hidden;
+  border-radius: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+body.table-borderless-rounded .bn-editor table td,
+body.table-borderless-rounded .bn-editor table th {
+  border: none !important;
+}
+
+/* Callout border-only — remove background, keep border + text color. */
+body.callout-no-bg .bn-editor [data-content-type="callout"] {
+  background: transparent !important;
+  border: 2px solid currentColor;
+}
+
+/* Graph paper background — light blue square grid for the entire page. */
+body.page-graph-paper-bg .bn-editor {
+  background-color: #fafafe !important;
+  background-image:
+    linear-gradient(rgba(59, 130, 246, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.08) 1px, transparent 1px) !important;
+  background-size: 16px 16px !important;
+}
+.dark body.page-graph-paper-bg .bn-editor {
+  background-color: #0f172a !important;
+  background-image:
+    linear-gradient(rgba(96, 165, 250, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(96, 165, 250, 0.08) 1px, transparent 1px) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

@@ -639,6 +639,11 @@ export function PageView({
       "table-row-numbered-roman",
       "callout-pin-decoration",
       "page-margin-notes-area",
+      "h1-with-bullet-square",
+      "code-block-purple-night",
+      "table-borderless-rounded",
+      "callout-no-bg",
+      "page-graph-paper-bg",
     ];
     try {
       for (const k of toggles) {

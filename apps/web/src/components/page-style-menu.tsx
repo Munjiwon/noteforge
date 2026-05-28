@@ -1051,6 +1051,11 @@ export function PageStyleMenu({
                       { key: "table-row-numbered-roman", label: "Row Roman #" },
                       { key: "callout-pin-decoration", label: "📍 callout" },
                       { key: "page-margin-notes-area", label: "Margin notes" },
+                      { key: "h1-with-bullet-square", label: "H1 ■ square" },
+                      { key: "code-block-purple-night", label: "Purple night" },
+                      { key: "table-borderless-rounded", label: "BL rounded" },
+                      { key: "callout-no-bg", label: "Border-only" },
+                      { key: "page-graph-paper-bg", label: "Graph paper" },
                     ] as const
                   ).map((t) => (
                     <button
