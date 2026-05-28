@@ -5464,6 +5464,48 @@ body.page-bg-bubbles .bn-editor {
   background-size: 120px 120px !important;
 }
 
+/* H4 with dotted underline. */
+body.h4-with-dotted-underline .bn-editor [data-content-type="heading"][data-level="4"] {
+  border-bottom: 2px dotted #8b5cf6;
+  padding-bottom: 0.08em;
+}
+
+/* Charcoal code — neutral dark charcoal. */
+body.code-block-charcoal .bn-editor pre {
+  background: #18181b !important;
+  color: #d4d4d8 !important;
+  border: 1px solid #3f3f46;
+}
+body.code-block-charcoal .bn-editor pre code {
+  color: #e4e4e7 !important;
+}
+
+/* Purple gradient header. */
+body.table-header-gradient-purple .bn-editor table th {
+  background: linear-gradient(135deg, #a855f7, #6366f1) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+/* Red glow callout. */
+body.callout-glow-red .bn-editor [data-content-type="callout"] {
+  box-shadow: 0 0 4px #f87171, 0 0 12px rgba(248, 113, 113, 0.5);
+  border: 1px solid #f87171;
+}
+
+/* Triangles page background — repeating triangle pattern. */
+body.page-bg-triangles .bn-editor {
+  background-image:
+    linear-gradient(60deg, rgba(99, 102, 241, 0.06) 25%, transparent 25%),
+    linear-gradient(-60deg, rgba(99, 102, 241, 0.06) 25%, transparent 25%) !important;
+  background-size: 24px 42px !important;
+}
+.dark body.page-bg-triangles .bn-editor {
+  background-image:
+    linear-gradient(60deg, rgba(129, 140, 248, 0.07) 25%, transparent 25%),
+    linear-gradient(-60deg, rgba(129, 140, 248, 0.07) 25%, transparent 25%) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

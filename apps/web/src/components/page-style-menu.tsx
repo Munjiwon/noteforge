@@ -1216,6 +1216,11 @@ export function PageStyleMenu({
                       { key: "table-header-gradient-cool", label: "Cool header" },
                       { key: "callout-glow-teal", label: "Teal glow" },
                       { key: "page-bg-bubbles", label: "Bubbles" },
+                      { key: "h4-with-dotted-underline", label: "H4 dot underline" },
+                      { key: "code-block-charcoal", label: "Charcoal" },
+                      { key: "table-header-gradient-purple", label: "Purple header" },
+                      { key: "callout-glow-red", label: "Red glow" },
+                      { key: "page-bg-triangles", label: "Triangles" },
                     ] as const
                   ).map((t) => (
                     <button
