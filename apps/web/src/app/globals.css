@@ -5191,6 +5191,61 @@ body.page-bg-graph-fine .bn-editor {
     linear-gradient(90deg, rgba(148, 163, 184, 0.1) 1px, transparent 1px) !important;
 }
 
+/* H4 with double underline. */
+body.h4-with-underline-double .bn-editor [data-content-type="heading"][data-level="4"] {
+  border-bottom: 2px double #64748b;
+  padding-bottom: 0.1em;
+}
+
+/* Ocean code — deep teal-blue palette. */
+body.code-block-ocean .bn-editor pre {
+  background: linear-gradient(135deg, #0c4a6e, #134e4a) !important;
+  color: #a5f3fc !important;
+  border: 1px solid #155e75;
+}
+body.code-block-ocean .bn-editor pre code {
+  color: #99f6e4 !important;
+}
+
+/* Three-tone zebra — three alternating row colors. */
+body.table-zebra-three-tone .bn-editor table tbody tr:nth-child(3n+1) {
+  background: rgba(239, 246, 255, 0.6);
+}
+body.table-zebra-three-tone .bn-editor table tbody tr:nth-child(3n+2) {
+  background: rgba(254, 249, 195, 0.5);
+}
+body.table-zebra-three-tone .bn-editor table tbody tr:nth-child(3n) {
+  background: rgba(236, 253, 245, 0.6);
+}
+.dark body.table-zebra-three-tone .bn-editor table tbody tr:nth-child(3n+1) {
+  background: rgba(30, 58, 138, 0.25);
+}
+.dark body.table-zebra-three-tone .bn-editor table tbody tr:nth-child(3n+2) {
+  background: rgba(133, 77, 14, 0.25);
+}
+.dark body.table-zebra-three-tone .bn-editor table tbody tr:nth-child(3n) {
+  background: rgba(6, 78, 59, 0.25);
+}
+
+/* Pink glow callout. */
+body.callout-glow-pink .bn-editor [data-content-type="callout"] {
+  box-shadow: 0 0 4px #f472b6, 0 0 12px rgba(244, 114, 182, 0.5);
+  border: 1px solid #f472b6;
+}
+
+/* Isometric page background — diagonal isometric grid. */
+body.page-bg-isometric .bn-editor {
+  background-image:
+    linear-gradient(30deg, rgba(100, 116, 139, 0.08) 1px, transparent 1px),
+    linear-gradient(-30deg, rgba(100, 116, 139, 0.08) 1px, transparent 1px) !important;
+  background-size: 20px 20px !important;
+}
+.dark body.page-bg-isometric .bn-editor {
+  background-image:
+    linear-gradient(30deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+    linear-gradient(-30deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

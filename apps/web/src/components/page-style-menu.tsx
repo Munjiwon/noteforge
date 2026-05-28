@@ -1186,6 +1186,11 @@ export function PageStyleMenu({
                       { key: "table-cell-corner-accent-br", label: "BR accent" },
                       { key: "callout-neon-glow", label: "Neon glow" },
                       { key: "page-bg-graph-fine", label: "Fine graph" },
+                      { key: "h4-with-underline-double", label: "H4 2x underline" },
+                      { key: "code-block-ocean", label: "Ocean code" },
+                      { key: "table-zebra-three-tone", label: "3-tone zebra" },
+                      { key: "callout-glow-pink", label: "Pink glow" },
+                      { key: "page-bg-isometric", label: "Isometric" },
                     ] as const
                   ).map((t) => (
                     <button
