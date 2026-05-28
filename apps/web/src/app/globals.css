@@ -6823,6 +6823,46 @@ body.page-bg-diamonds .bn-editor {
   background-size: 28px 28px !important;
 }
 
+/* Heading serif font — render all headings in a serif typeface. */
+body.heading-serif-font .bn-editor [data-content-type="heading"] {
+  font-family: Georgia, "Times New Roman", "Noto Serif", serif !important;
+}
+
+/* Code block Ayu Mirage — Ayu Mirage palette for code blocks. */
+body.code-block-ayu-mirage .bn-editor pre {
+  background: #1f2430 !important;
+  border: 1px solid #2a313f !important;
+}
+body.code-block-ayu-mirage .bn-editor pre code {
+  color: #cccac2 !important;
+}
+
+/* Table zebra amber — amber-tinted zebra striping on rows. */
+body.table-zebra-amber .bn-editor table tr:nth-child(even) td {
+  background: rgba(245, 158, 11, 0.1) !important;
+}
+.dark body.table-zebra-amber .bn-editor table tr:nth-child(even) td {
+  background: rgba(245, 158, 11, 0.16) !important;
+}
+
+/* Callout pulse border — a gently pulsing border to draw attention. */
+@keyframes nf-callout-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.5); }
+  50% { box-shadow: 0 0 0 4px rgba(99, 102, 241, 0); }
+}
+body.callout-pulse-border .bn-editor [data-content-type="callout"] {
+  border: 1.5px solid #6366f1 !important;
+  animation: nf-callout-pulse 2s ease-in-out infinite;
+}
+
+/* Page bg bold grid — a bolder, higher-contrast grid behind the editor. */
+body.page-bg-grid-bold .bn-editor {
+  background-image:
+    linear-gradient(rgba(99, 102, 241, 0.18) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(99, 102, 241, 0.18) 2px, transparent 2px) !important;
+  background-size: 32px 32px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

@@ -1373,6 +1373,11 @@ export function PageStyleMenu({
                       { key: "table-cell-vertical-center", label: "V-center" },
                       { key: "callout-outline-only", label: "Outline only" },
                       { key: "page-bg-diamonds", label: "Diamonds" },
+                      { key: "heading-serif-font", label: "Serif head" },
+                      { key: "code-block-ayu-mirage", label: "Ayu Mirage" },
+                      { key: "table-zebra-amber", label: "Amber zebra" },
+                      { key: "callout-pulse-border", label: "Pulse border" },
+                      { key: "page-bg-grid-bold", label: "Bold grid" },
                     ] as const
                   ).map((t) => (
                     <button

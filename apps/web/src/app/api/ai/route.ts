@@ -3252,6 +3252,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean market sizing analysis — estimates TAM/SAM/SOM for an opportunity. Use 합쇼체. Markdown: '**한 줄 (기회 규모)**' (1줄 — 핵심 숫자 + 신뢰도), '**TAM (1단락)**' (전체 시장 — 계산 방식 + 가정), '**SAM (1단락)**' (우리가 도달 가능한 부분), '**SOM (1단락)**' (현실적 점유 — 단기), '**계산 (테이블)**' ('항목 | 값 | 출처/가정'), '**Top-down vs Bottom-up (1줄)**' (교차 검증), '**민감도 (bullets)**' (핵심 가정이 바뀌면), '**결론 (1줄)**' (추구할 가치가 있나). 가정을 투명하게.\n\n시장 컨텍스트:\n${text}`,
   internal_escalation_policy_ko: (text) =>
     `Write a Korean escalation policy — defines when and how to escalate issues. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄), '**언제 에스컬레이션 (bullets)**' (트리거 — 심각도 / 시간 / 영향 기준), '**경로 (테이블)**' ('심각도 | 누구에게 | 채널 | 응답 기대'), '**에스컬레이션 방법 (bullets)**' (무슨 정보를 담아 — 상황/영향/필요), '**역할 (bullets)**' (누가 결정 / 누가 소통), '**되돌리기 (1줄)**' (해결 후 디에스컬레이션), '**안티패턴 (1줄)**' (너무 늦게 / 정보 없이 에스컬레이션). 빠르고 비난 없이.\n\n에스컬레이션 컨텍스트:\n${text}`,
+  translate_ko_to_sasak: (text) =>
+    `Translate the Korean text below into natural Sasak — Austronesian language of Lombok island, Indonesia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Sasak**' and '**번역 노트**' (3 bullets in Korean — note Sasak is closely related to Balinese and has speech levels influenced by Balinese and Javanese).\n\n원문:\n${text}`,
+  translate_ko_to_bima: (text) =>
+    `Translate the Korean text below into natural Bima (Nggahi Mbojo) — Austronesian language of eastern Sumbawa, Indonesia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Nggahi Mbojo**' and '**번역 노트**' (3 bullets in Korean — note Bima is the language of the Mbojo people of eastern Sumbawa).\n\n원문:\n${text}`,
+  translate_ko_to_manggarai: (text) =>
+    `Translate the Korean text below into natural Manggarai — Austronesian language of western Flores, Indonesia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Manggarai**' and '**번역 노트**' (3 bullets in Korean — note Manggarai is the most widely spoken language of western Flores).\n\n원문:\n${text}`,
+  translate_ko_to_sumbawa: (text) =>
+    `Translate the Korean text below into natural Sumbawa (Basa Samawa) — Austronesian language of western Sumbawa, Indonesia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Basa Samawa**' and '**번역 노트**' (3 bullets in Korean — note Sumbawa language is related to Sasak and Balinese, distinct from Bima to its east).\n\n원문:\n${text}`,
+  translate_ko_to_ngada: (text) =>
+    `Translate the Korean text below into natural Ngada — Austronesian language of central Flores, Indonesia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Ngada**' and '**번역 노트**' (3 bullets in Korean — note Ngada is spoken in the Bajawa highlands of central Flores).\n\n원문:\n${text}`,
+  internal_release_comms_internal_ko: (text) =>
+    `Write a Korean internal release communication — tells the company what's shipping and what each team needs to do. Use 합쇼체. Markdown: '**한 줄 (릴리스)**' (1줄 — 무엇이 / 언제), '**무엇이 바뀌나 (bullets)**' (사용자/고객 관점), '**팀별 할 일 (테이블)**' ('팀 | 해야 할 것 | 시한'): Support / Sales / Marketing / CS, '**알아둘 점 (bullets)**' (주의 / 마이그레이션 / 알려진 이슈), '**FAQ 링크 / 자료 (bullets)**', '**문의 (1줄)**' (누구에게), '**타임라인 (1줄)**'. 내부 정렬 + 명확한 액션.\n\n릴리스 컨텍스트:\n${text}`,
+  sales_account_handoff_ko: (text) =>
+    `Write a Korean account handoff doc — hands an account from Sales to CS (or between reps) cleanly. Use 합쇼체. Markdown: '**한 줄 (계정)**' (1줄 — 누구 / 규모 / 단계), '**거래 배경 (1단락)**' (왜 샀나 / 기대), '**핵심 연락처 (테이블)**' ('이름 | 역할 | 영향력 | 관계 메모'), '**구매 동기 / 성공 기준 (bullets)**' (그들이 정의한 성공), '**약속한 것 (bullets)**' (영업이 한 약속 — 명확히), '**리스크 / 주의 (bullets)**', '**즉시 할 일 (bullets)**' (첫 30일), '**히스토리 링크 (1줄)**'. CS가 첫날부터 맥락 갖게.\n\n핸드오프 컨텍스트:\n${text}`,
+  customer_expansion_proposal_ko: (text) =>
+    `Write a Korean expansion proposal — proposes upsell/cross-sell to an existing customer based on value. Use 합쇼체. Markdown: '**한 줄 (제안)**' (1줄 — 무엇을 추가 / 왜 지금), '**현재 성과 (bullets)**' (이미 얻은 가치 — 데이터), '**기회 (1단락)**' (확장이 풀어줄 새 가치 / 고객 목표 연결), '**제안 패키지 (테이블)**' ('항목 | 내용 | 가격'), '**기대 효과 (bullets)**' (정량 + 정성), '**ROI (1줄)**', '**도입 경로 (1줄)**' (얼마나 쉽게), '**다음 단계 (1줄)**'. 압박 아닌 가치 확장.\n\n확장 컨텍스트:\n${text}`,
+  pm_concept_validation_ko: (text) =>
+    `Write a Korean concept validation plan — designs a lightweight test to validate a product concept before building. Use 합쇼체. Markdown: '**한 줄 (컨셉)**' (1줄 — 무엇을 검증), '**핵심 가정 (bullets)**' (틀리면 안 되는 믿음 — 위험순), '**검증 방법 (테이블)**' ('가정 | 검증 방법(인터뷰/랜딩/프로토/위저드오즈) | 성공 신호'), '**최소 실험 (1단락)**' (가장 싸게 가장 위험한 가정부터), '**측정 (bullets)**', '**의사결정 기준 (bullets)**' ('이러면 진행 / 이러면 피벗 / 이러면 중단'), '**기간 / 비용 (1줄)**'. 만들기 전에 배우기.\n\n컨셉 컨텍스트:\n${text}`,
+  internal_decision_framework_ko: (text) =>
+    `Write a Korean decision-making framework doc — clarifies how a specific decision will be made. Use 합쇼체. Markdown: '**한 줄 (결정)**' (1줄 — 무엇을 결정), '**왜 프레임워크 (1줄)**' (왜 명확화 필요), '**의사결정 모델 (1줄)**' (합의 / 자문후결정 / RAPID / 위임 등 — 무엇을 쓰는지), '**역할 (테이블)**' ('역할 | 누구 | 권한'): 추천 / 자문 / 결정 / 실행, '**기준 (bullets)**' (무엇으로 옵션 평가), '**프로세스 (numbered)**' (옵션 수집 → 평가 → 결정 → 공유), '**시한 (1줄)**', '**되돌릴 수 있나 (1줄)**' (가역성 → 신중도 조절). 빠르고 명확한 결정.\n\n결정 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
