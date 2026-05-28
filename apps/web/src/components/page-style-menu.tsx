@@ -1236,6 +1236,11 @@ export function PageStyleMenu({
                       { key: "table-header-sticky-shadow", label: "Sticky shadow" },
                       { key: "callout-stripe-left", label: "Stripe left" },
                       { key: "page-bg-zigzag", label: "Zigzag bg" },
+                      { key: "h2-with-box-around", label: "H2 box" },
+                      { key: "code-block-teal-night", label: "Teal night" },
+                      { key: "table-header-uppercase-bold", label: "UPPER head" },
+                      { key: "callout-stripe-top", label: "Stripe top" },
+                      { key: "page-bg-scallop", label: "Scallop" },
                     ] as const
                   ).map((t) => (
                     <button

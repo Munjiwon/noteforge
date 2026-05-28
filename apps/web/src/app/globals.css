@@ -5661,6 +5661,68 @@ body.page-bg-zigzag .bn-editor {
   background-position: 0 0, 10px 0, 10px -10px, 0 10px !important;
 }
 
+/* H2 with box around. */
+body.h2-with-box-around .bn-editor [data-content-type="heading"][data-level="2"] {
+  border: 2px solid #14b8a6;
+  border-radius: 6px;
+  padding: 0.2em 0.5em;
+}
+.dark body.h2-with-box-around .bn-editor [data-content-type="heading"][data-level="2"] {
+  border-color: #2dd4bf;
+}
+
+/* Teal night code. */
+body.code-block-teal-night .bn-editor pre {
+  background: #042f2e !important;
+  color: #99f6e4 !important;
+  border: 1px solid #115e59;
+}
+body.code-block-teal-night .bn-editor pre code {
+  color: #5eead4 !important;
+}
+
+/* Uppercase bold header. */
+body.table-header-uppercase-bold .bn-editor table th {
+  text-transform: uppercase;
+  font-weight: 800 !important;
+  letter-spacing: 0.05em;
+  font-size: 0.85em;
+}
+
+/* Stripe top callout — striped pattern on the top edge. */
+body.callout-stripe-top .bn-editor [data-content-type="callout"] {
+  position: relative;
+  padding-top: 1.5rem !important;
+}
+body.callout-stripe-top .bn-editor [data-content-type="callout"]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0.8rem;
+  background: repeating-linear-gradient(
+    45deg,
+    currentColor 0,
+    currentColor 3px,
+    transparent 3px,
+    transparent 7px
+  );
+  opacity: 0.5;
+  border-radius: inherit inherit 0 0;
+}
+
+/* Scallop page background — repeating arc pattern. */
+body.page-bg-scallop .bn-editor {
+  background-image:
+    radial-gradient(circle at 10px 14px, transparent 8px, rgba(99, 102, 241, 0.06) 9px, transparent 10px) !important;
+  background-size: 20px 20px !important;
+}
+.dark body.page-bg-scallop .bn-editor {
+  background-image:
+    radial-gradient(circle at 10px 14px, transparent 8px, rgba(129, 140, 248, 0.07) 9px, transparent 10px) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
