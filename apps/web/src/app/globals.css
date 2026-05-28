@@ -7013,6 +7013,55 @@ body.page-bg-soft-noise2 .bn-editor {
   background-size: 5px 5px !important;
 }
 
+/* Heading letterpress — a subtle embossed letterpress effect on headings. */
+body.heading-letterpress .bn-editor [data-content-type="heading"] {
+  color: #4b5563 !important;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+}
+.dark body.heading-letterpress .bn-editor [data-content-type="heading"] {
+  color: #d1d5db !important;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Code block Panda — Panda Syntax palette for code blocks. */
+body.code-block-panda .bn-editor pre {
+  background: #292a2b !important;
+  border: 1px solid #34353a !important;
+}
+body.code-block-panda .bn-editor pre code {
+  color: #e6e6e6 !important;
+}
+
+/* Table header pill cells — render each header cell as a rounded pill. */
+body.table-header-pill-cells .bn-editor table th {
+  background: rgba(99, 102, 241, 0.12) !important;
+  border-radius: 999px !important;
+  padding: 0.3em 0.8em !important;
+}
+
+/* Callout corner accent — a small accent square in the callout's top-left. */
+body.callout-corner-accent .bn-editor [data-content-type="callout"] {
+  position: relative;
+}
+body.callout-corner-accent .bn-editor [data-content-type="callout"]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  background: #ec4899;
+  border-bottom-right-radius: 6px;
+}
+
+/* Page bg thin grid — a fine, low-contrast grid behind the editor. */
+body.page-bg-grid-thin .bn-editor {
+  background-image:
+    linear-gradient(rgba(99, 102, 241, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99, 102, 241, 0.06) 1px, transparent 1px) !important;
+  background-size: 14px 14px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

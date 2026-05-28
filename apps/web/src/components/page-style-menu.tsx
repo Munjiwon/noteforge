@@ -1398,6 +1398,11 @@ export function PageStyleMenu({
                       { key: "table-compact-font", label: "Small font" },
                       { key: "callout-icon-square", label: "Icon square" },
                       { key: "page-bg-soft-noise2", label: "Fine noise" },
+                      { key: "heading-letterpress", label: "Letterpress" },
+                      { key: "code-block-panda", label: "Panda" },
+                      { key: "table-header-pill-cells", label: "Pill cells" },
+                      { key: "callout-corner-accent", label: "Corner accent" },
+                      { key: "page-bg-grid-thin", label: "Thin grid" },
                     ] as const
                   ).map((t) => (
                     <button

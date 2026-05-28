@@ -3352,6 +3352,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Design a Korean product survey — designs a survey that yields actionable, unbiased data. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄 — 무슨 결정에 쓸 데이터), '**핵심 질문 (bullets)**' (답하고 싶은 것), '**설문 문항 (테이블)**' ('문항 | 유형(척도/단답/객관식) | 측정 의도'), '**편향 방지 (bullets)**' (유도 질문 / 이중 질문 / 순서 효과 피하기), '**길이 / 구성 (1줄)**' (응답 피로 고려), '**대상 / 표본 (1줄)**', '**분석 계획 (1줄)**' (어떻게 해석), '**주의 (1줄)**' (설문의 한계). 짧고 깨끗한 데이터 우선.\n\n설문 컨텍스트:\n${text}`,
   internal_eng_capacity_review_ko: (text) =>
     `Write a Korean engineering capacity review — reviews where engineering time actually went vs. plan. Use 합쇼체. Markdown: '**한 줄 (총평)**' (1줄 — 계획 대비 실제 + 핵심), '**시간 배분 (테이블)**' ('영역 | 계획% | 실제% | 차이'): 신규 / 유지보수 / 버그 / 인시던트 / 기술부채 / 회의, '**계획 이탈 (bullets)**' (왜 — 인시던트 / 범위확대 등), '**생산성 신호 (bullets)**', '**병목 / 시간 낭비 (bullets)**', '**다음 분기 조정 (테이블)**' ('조정 | 이유'), '**권고 (1줄)**'. 데이터 기반 + 비난 없이.\n\n캐파 데이터 컨텍스트:\n${text}`,
+  translate_ko_to_carolinian: (text) =>
+    `Translate the Korean text below into natural Carolinian (Refaluwasch) — Micronesian language of Saipan and the Northern Mariana Islands. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Refaluwasch**' and '**번역 노트**' (3 bullets in Korean — note Carolinian descends from Chuukic languages carried to the Marianas by migration).\n\n원문:\n${text}`,
+  translate_ko_to_satawalese: (text) =>
+    `Translate the Korean text below into natural Satawalese — Micronesian language of Satawal atoll, Yap state, Federated States of Micronesia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Satawalese**' and '**번역 노트**' (3 bullets in Korean — note Satawalese is a Chuukic language famous from the traditional navigator Mau Piailug).\n\n원문:\n${text}`,
+  translate_ko_to_ulithian: (text) =>
+    `Translate the Korean text below into natural Ulithian — Micronesian language of Ulithi atoll, Yap state, Federated States of Micronesia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Ulithian**' and '**번역 노트**' (3 bullets in Korean — note Ulithian is a Chuukic language of the western Caroline Islands).\n\n원문:\n${text}`,
+  translate_ko_to_woleaian: (text) =>
+    `Translate the Korean text below into natural Woleaian — Micronesian language of Woleai atoll, Yap state, Federated States of Micronesia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Woleaian**' and '**번역 노트**' (3 bullets in Korean — note Woleaian has its own syllabary-like script and is a Chuukic language).\n\n원문:\n${text}`,
+  translate_ko_to_puluwat: (text) =>
+    `Translate the Korean text below into natural Puluwat — Micronesian language of Puluwat atoll, Chuuk state, Federated States of Micronesia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Puluwat**' and '**번역 노트**' (3 bullets in Korean — note Puluwat is a Chuukic language renowned for its traditional star-path navigation).\n\n원문:\n${text}`,
+  internal_tech_lead_weekly_ko: (text) =>
+    `Write a Korean tech lead weekly update — a tech lead's weekly note to their team and stakeholders. Use 합쇼체. Markdown: '**한 줄 (이번 주)**' (1줄 — 가장 중요한 것), '**기술 진척 (bullets)**' (주요 작업 / 머지 / 결정), '**팀 상태 (1줄)**' (속도 / 분위기 / 블로커), '**리스크 / 기술 우려 (bullets)**', '**의사결정 / 방향 (bullets)**' (정한 것 / 정할 것), '**도움 필요 (bullets)**', '**다음 주 포커스 (bullets)**', '**팀 인정 (1줄)**'. 기술 + 사람 둘 다.\n\n주간 컨텍스트:\n${text}`,
+  sales_account_research_brief_ko: (text) =>
+    `Write a Korean account research brief — pre-call research on a prospect account. Use 합쇼체. Markdown: '**한 줄 (계정)**' (1줄 — 누구 / 왜 흥미로운), '**회사 개요 (bullets)**' (산업 / 규모 / 최근 뉴스), '**잠재 페인 / 트리거 (bullets)**' (우리가 도울 이벤트 — 채용 / 펀딩 / 출시), '**핵심 인물 (테이블)**' ('이름 | 역할 | 접근 단서'), '**기술 스택 / 현황 추정 (bullets)**', '**진입 가설 (1줄)**' (어떤 각도로), '**대화 포인트 (bullets)**', '**리서치 출처 (1줄)**'. 콜 전에 맥락 무장.\n\n계정 / 컨텍스트:\n${text}`,
+  customer_quarterly_planning_ko: (text) =>
+    `Write a Korean customer quarterly plan — a CSM's plan for an account for the coming quarter. Use 합쇼체. Markdown: '**한 줄 (분기 목표)**' (1줄), '**계정 상태 (bullets)**' (헬스 / ARR / 갱신 시점), '**고객 분기 목표 (bullets)**' (그들이 추구하는 것), '**우리 분기 목표 (테이블)**' ('목표 | 활동 | 성공 기준'): 채택 / 가치 / 확장 / 리스크, '**핵심 마일스톤 (bullets)**', '**리스크 / 의존성 (bullets)**', '**임원 터치포인트 (1줄)**', '**측정 (bullets)**'. 고객 목표 ↔ 우리 활동 정렬.\n\n계정 컨텍스트:\n${text}`,
+  pm_product_strategy_brief_ko: (text) =>
+    `Write a Korean product strategy brief — articulates a product's strategy concisely. Use 합쇼체. Markdown: '**한 줄 (전략)**' (1줄 — 어디서 이기려 하는가), '**비전 (1줄)**' (장기 지향점), '**타깃 / 문제 (1단락)**' (누구의 어떤 문제), '**차별화 (bullets)**' (왜 우리가 / 경쟁 대비), '**전략적 베팅 (테이블)**' ('베팅 | 근거 | 성공 신호'), '**의도적 비선택 (bullets)**' (안 할 것), '**핵심 가정 (bullets)**', '**성공 지표 (bullets)**' (노스스타 + 보조). 집중과 트레이드오프 명확히.\n\n전략 컨텍스트:\n${text}`,
+  internal_architecture_review_notes_ko: (text) =>
+    `Structure Korean architecture review notes — captures decisions and feedback from an architecture review. Use 합쇼체. Markdown: '**한 줄 (리뷰 대상)**' (1줄), '**제안 요지 (1단락)**', '**강점 (bullets)**', '**우려 / 질문 (테이블)**' ('영역 | 우려 | 심각도 | 제안'): 확장성 / 신뢰성 / 보안 / 운영 / 복잡도, '**대안 논의 (bullets)**', '**결정 사항 (bullets)**' (이 자리에서 정한 것), '**남은 액션 (테이블)**' ('액션 | 담당 | 시한'), '**승인 상태 (1줄)**'. 작업에 대한 피드백으로.\n\n아키텍처 리뷰 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
