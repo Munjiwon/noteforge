@@ -5723,6 +5723,71 @@ body.page-bg-scallop .bn-editor {
     radial-gradient(circle at 10px 14px, transparent 8px, rgba(129, 140, 248, 0.07) 9px, transparent 10px) !important;
 }
 
+/* H3 with box around. */
+body.h3-with-box-around .bn-editor [data-content-type="heading"][data-level="3"] {
+  border: 1.5px solid #a855f7;
+  border-radius: 6px;
+  padding: 0.15em 0.45em;
+}
+.dark body.h3-with-box-around .bn-editor [data-content-type="heading"][data-level="3"] {
+  border-color: #c084fc;
+}
+
+/* Graphite code — neutral graphite palette. */
+body.code-block-graphite .bn-editor pre {
+  background: #2b2b2b !important;
+  color: #cfcfcf !important;
+  border: 1px solid #444444;
+}
+body.code-block-graphite .bn-editor pre code {
+  color: #e0e0e0 !important;
+}
+
+/* Bottom accent header — colored bottom border on header cells. */
+body.table-header-bottom-accent .bn-editor table th {
+  border-bottom: 3px solid #6366f1 !important;
+}
+.dark body.table-header-bottom-accent .bn-editor table th {
+  border-bottom-color: #818cf8 !important;
+}
+
+/* Stripe right callout — striped pattern on the right edge. */
+body.callout-stripe-right .bn-editor [data-content-type="callout"] {
+  position: relative;
+  padding-right: 2.2rem !important;
+}
+body.callout-stripe-right .bn-editor [data-content-type="callout"]::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 1.2rem;
+  background: repeating-linear-gradient(
+    -45deg,
+    currentColor 0,
+    currentColor 3px,
+    transparent 3px,
+    transparent 7px
+  );
+  opacity: 0.5;
+}
+
+/* Grid + dots combo page background. */
+body.page-bg-grid-dots-combo .bn-editor {
+  background-image:
+    linear-gradient(rgba(100, 116, 139, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(100, 116, 139, 0.08) 1px, transparent 1px),
+    radial-gradient(circle, rgba(99, 102, 241, 0.15) 1.5px, transparent 2px) !important;
+  background-size: 24px 24px, 24px 24px, 24px 24px !important;
+}
+.dark body.page-bg-grid-dots-combo .bn-editor {
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+    radial-gradient(circle, rgba(129, 140, 248, 0.15) 1.5px, transparent 2px) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

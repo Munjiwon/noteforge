@@ -1241,6 +1241,11 @@ export function PageStyleMenu({
                       { key: "table-header-uppercase-bold", label: "UPPER head" },
                       { key: "callout-stripe-top", label: "Stripe top" },
                       { key: "page-bg-scallop", label: "Scallop" },
+                      { key: "h3-with-box-around", label: "H3 box" },
+                      { key: "code-block-graphite", label: "Graphite" },
+                      { key: "table-header-bottom-accent", label: "Bottom accent" },
+                      { key: "callout-stripe-right", label: "Stripe right" },
+                      { key: "page-bg-grid-dots-combo", label: "Grid+dots" },
                     ] as const
                   ).map((t) => (
                     <button
