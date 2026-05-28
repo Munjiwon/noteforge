@@ -1096,6 +1096,11 @@ export function PageStyleMenu({
                       { key: "table-row-divider-gradient", label: "Grad rows" },
                       { key: "callout-tag-marker", label: "🏷 callout" },
                       { key: "page-side-ribbon-blue", label: "Blue ribbon" },
+                      { key: "h4-with-page-mark", label: "H4 §" },
+                      { key: "code-block-tokyo-night", label: "Tokyo Night" },
+                      { key: "table-header-italic", label: "Italic head" },
+                      { key: "callout-bar-left-thick", label: "Thick L bar" },
+                      { key: "page-side-bookmark", label: "Bookmark" },
                     ] as const
                   ).map((t) => (
                     <button

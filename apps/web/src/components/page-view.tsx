@@ -684,6 +684,11 @@ export function PageView({
       "table-row-divider-gradient",
       "callout-tag-marker",
       "page-side-ribbon-blue",
+      "h4-with-page-mark",
+      "code-block-tokyo-night",
+      "table-header-italic",
+      "callout-bar-left-thick",
+      "page-side-bookmark",
     ];
     try {
       for (const k of toggles) {

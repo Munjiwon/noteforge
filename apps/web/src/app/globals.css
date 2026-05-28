@@ -4071,6 +4071,56 @@ body.page-side-ribbon-blue .bn-editor::before {
   clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
 }
 
+/* H4 with page mark — prepends § to H4 headings. */
+body.h4-with-page-mark .bn-editor [data-content-type="heading"][data-level="4"] > *:first-child::before {
+  content: "§ ";
+  color: #64748b;
+  margin-right: 0.2em;
+  font-weight: 400;
+}
+.dark body.h4-with-page-mark .bn-editor [data-content-type="heading"][data-level="4"] > *:first-child::before {
+  color: #94a3b8;
+}
+
+/* Tokyo Night theme — moody blue + purple code palette. */
+body.code-block-tokyo-night .bn-editor pre {
+  background: #1a1b26 !important;
+  color: #c0caf5 !important;
+  border: 1px solid #414868;
+}
+body.code-block-tokyo-night .bn-editor pre code {
+  color: #7aa2f7 !important;
+}
+
+/* Italic table headers — slanted header labels. */
+body.table-header-italic .bn-editor table th {
+  font-style: italic !important;
+  font-weight: 500 !important;
+}
+
+/* Thick left bar callout — 8px solid colored bar on the left edge. */
+body.callout-bar-left-thick .bn-editor [data-content-type="callout"] {
+  border-left: 8px solid currentColor !important;
+  padding-left: 1.5rem !important;
+}
+
+/* Bookmark decoration — small triangular bookmark hanging from the top of the editor. */
+body.page-side-bookmark .bn-editor {
+  position: relative;
+}
+body.page-side-bookmark .bn-editor::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  right: 36px;
+  width: 24px;
+  height: 60px;
+  background: #ef4444;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 70%, 0 100%);
+  pointer-events: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
