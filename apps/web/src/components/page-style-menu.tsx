@@ -1620,6 +1620,11 @@ export function PageStyleMenu({
                       { key: "callout-eqf-3", label: "callout eqf3" },
                       { key: "page-bg-eqf-4", label: "page-bg eqf4" },
                       { key: "heading-eqf-5", label: "heading eqf5" },
+                      { key: "code-block-equ-1", label: "code-block equ1" },
+                      { key: "table-equ-2", label: "table equ2" },
+                      { key: "callout-equ-3", label: "callout equ3" },
+                      { key: "page-bg-equ-4", label: "page-bg equ4" },
+                      { key: "heading-equ-5", label: "heading equ5" },
                     ] as const
                   ).map((t) => (
                     <button
