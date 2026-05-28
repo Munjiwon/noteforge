@@ -1041,6 +1041,11 @@ export function PageStyleMenu({
                       { key: "table-soft-divider", label: "Soft divider" },
                       { key: "callout-double-border", label: "2× border" },
                       { key: "page-tape-corner", label: "Washi tape" },
+                      { key: "h5-with-arrow-prefix", label: "H5 → arrow" },
+                      { key: "code-block-blueprint", label: "Blueprint" },
+                      { key: "table-cell-empty-mark", label: "Empty ✗" },
+                      { key: "callout-curved-tab", label: "Curved tab" },
+                      { key: "page-coffee-stain", label: "Coffee stain" },
                     ] as const
                   ).map((t) => (
                     <button

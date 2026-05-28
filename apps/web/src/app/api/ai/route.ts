@@ -1928,6 +1928,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Translate the Korean text below into natural Yoruba (Èdè Yorùbá). 격식 ('ẹ' 정중 / 'o' 친근) 원문에 맞춤. Reply with two sections: '**Ìtumọ̀**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
   engineering_team_charter_ko: (text) =>
     `Draft a Korean engineering team charter — pinned in the team's home channel, used for onboarding new engineers + alignment. Use 해요체. Markdown: '**팀 한 줄**' (1줄 — 우리 팀이 회사에서 어떤 책임을 갖는지), '**우리가 책임지는 영역 (System / Surface)**' (bullets — 서비스 / 코드베이스 / SLO), '**우리가 책임지지 않는 영역 (with 누구에게 위임)**' (bullets — 명확히), '**현재 미션 (이번 분기)**' (1단락 + 3 measurable bullets), '**일하는 방식**' (bullets — 미팅 / 코드리뷰 / on-call / Sprint), '**도구 / 다이어그램**' (bullets + placeholder for diagram link), '**우리 팀과 일하려면**' (1단락 — 다른 팀이 우리에게 부탁할 때 어떤 채널 / 양식 / SLA), '**팀원 + 역할**' (테이블 — '이름 | 직책 | 주력 영역 | 백업').\n\n팀 컨텍스트:\n${text}`,
+  translate_ko_to_igbo: (text) =>
+    `Translate the Korean text below into natural Igbo (Asụsụ Igbo). 격식 ('ụnụ' 정중 또는 복수 / 'ị' 친근) 원문에 맞춤. Reply with two sections: '**Ntụgharị Asụsụ**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  customer_first_30day_review_ko: (text) =>
+    `Build a Korean customer first 30-day review doc — CSM uses this to review whether a new customer is on track to value. Use 해요체. Markdown: '**고객 한 줄**' (회사 / 산업 / 계약일 / 시작일), '**계약 시 약속한 것**' (3 bullets — 계약 단계에서 우리가 약속한 결과), '**30일 안 약속**' (bullets — onboarding 단계에서의 약속), '**현재 (D+30) 실제**' (각 약속 옆에 'OK / 진행중 / 못 함' + 1줄 이유), '**Time to first value (TTFV)**' (1줄 — 며칠, 우리 평균 vs 이번), '**Adoption 신호**' (3 bullets — 로그인 / 핵심 기능 X회 / 팀원 N명), '**위험 / 기회**' (각 2 bullets), '**다음 30일 액션 (테이블)**' ('액션 | 누구 (우리/고객) | 시한'), '**Exec sponsor 노출 필요?**' (1줄 — Yes/No + 이유).\n\n고객 / 진행 데이터:\n${text}`,
+  translate_ko_to_hausa: (text) =>
+    `Translate the Korean text below into natural Hausa (Harshen Hausa). 격식 ('ku' 정중 또는 복수 / 'ka/ki' 친근 남/여) 원문에 맞춤. Reply with two sections: '**Fassara**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  executive_offsite_agenda_ko: (text) =>
+    `Draft a Korean executive offsite agenda — 2-day leadership team retreat (보통 분기마다). Use 합쇼체. 2일 동안 결정 / 정렬 / 휴식을 균형 있게. Markdown: '**Offsite 한 줄**' (1줄 — 시기 / 장소 / 핵심 목표 1개), '**참석자 (역할)**' (bullets), '**Pre-work (1주 전 보낼 것)**' (bullets — 사전 읽기 / 준비 답변), '**Day 1 (테이블)**' ('시간 | 세션 | 진행자 | 결과물'), '**Day 2 (테이블)**' (동일 형식), '**탐색 안 할 토픽 (parking lot)**' (bullets — 다음 offsite로), '**의사결정 방식**' (1줄 — 'CEO 최종 결정 / 합의 / 표결'), '**준비물**' (bullets — 화이트보드 / 슬랙 / 식사 / 휴식), '**Offsite 후 액션 시한**' (1줄 — 'Decision doc는 ~까지 / 사내 공유는 ~까지').\n\nOffsite 목적 / 컨텍스트:\n${text}`,
+  translate_ko_to_zulu: (text) =>
+    `Translate the Korean text below into natural Zulu (isiZulu). 격식 ('nina' 정중 또는 복수 / 'wena' 친근) 원문에 맞춤. Reply with two sections: '**Ukuhumusha**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  quarterly_engineering_planning_ko: (text) =>
+    `Build a Korean quarterly engineering planning doc — written by Eng Lead in the 마지막 2주 of 전 분기. Use 합쇼체. Markdown: '**한 줄 (이번 분기)**' (1줄 — '집중하는 것 + 안 하는 것'), '**회사 분기 OKR 인용**' (bullets — 회사 O와 그에 연결된 KR), '**Eng O + KRs**' (numbered — 측정 가능), '**프로젝트 (3-5개)**' (테이블 — '프로젝트 | 회사 KR 연결 | 담당팀 | 인원 | 완료 정의 | 위험'), '**Engineering health 투자 (20-30%)**' (bullets — 테크 부채 / migration / 인프라), '**On-call / 운영 부담 추정**' (1줄 — '주당 X명 / 위험 영역'), '**다른 팀 의존성 (테이블)**' ('우리가 의존 | 그쪽 commit?'), '**위험 (Top 3)**' (bullets — 위험 + 완화), '**확정 시한**' (1줄).\n\n분기 컨텍스트 / 인풋:\n${text}`,
+  translate_ko_to_xhosa: (text) =>
+    `Translate the Korean text below into natural Xhosa (isiXhosa). 격식 ('nina' 정중 또는 복수 / 'wena' 친근) 원문에 맞춤. Reply with two sections: '**Inguqulelo**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  customer_pmf_survey_ko: (text) =>
+    `Build a Korean PMF (Product-Market Fit) survey — Sean Ellis 방법론 기반, sent to active users. Use 해요체. Markdown: '**제목 (이메일)**' (1줄, 22자 이내 — '[제품명], 짧은 5분 질문'), '**본문 (이메일)**' (2 단락 — 시간 부탁 + 보상 + 익명 안내), '**설문 질문 (numbered)**' (1) '[제품] 을 더 이상 못 쓰게 되면 어떤 기분일까요?' — 매우 실망 / 약간 실망 / 실망 안 함 / 이미 안 씀, 2) '어떤 종류의 사람에게 [제품]이 가장 도움이 될까요?' (open), 3) '[제품]이 주는 핵심 가치는 무엇인가요?' (open), 4) '어떻게 개선할 수 있을까요?' (open), 5) NPS — 0-10 + 이유, 6) 직책 / 회사 크기 / 산업 (분석용)), '**해석 가이드 (내부)**' (1단락 — '매우 실망 X% 가 40% 넘으면 PMF 신호').\n\n제품 / 분석 컨텍스트:\n${text}`,
+  translate_ko_to_pashto: (text) =>
+    `Translate the Korean text below into natural Pashto (پښتو). RTL 흐름. 격식 ('تاسو' 정중 / 'ته' 친근) 원문에 맞춤. Reply with two sections: '**ژباړه**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  pricing_proposal_internal_ko: (text) =>
+    `Draft a Korean internal pricing proposal doc — proposed by Product/Finance to leadership before announcing a price change. Use 합쇼체. Markdown: '**제안 한 줄**' (1줄 — '현재 X → 제안 Y, 이유 Z'), '**현재 가격 + 시장 비교 (테이블)**' ('SKU | 현재 | 우리 변화 | 경쟁사 A | 경쟁사 B'), '**왜 변경하나요 (Why now)**' (3 bullets — 시장 / 가치 / cost), '**예상 영향 — 매출**' (1단락 + 시나리오 3개 — Optimistic / Base / Pessimistic), '**예상 영향 — 고객 churn**' (1단락 — 가격 변경 후 N% 이탈 추정 + 그랜드파더링 계획), '**기존 고객 처리**' (bullets — 신규만 / X개월 grandfather / 강제 이전), '**커뮤니케이션 plan**' (bullets — 누구에게 / 언제 / 채널), '**롤백 plan**' (1줄), '**의사결정 필요한 것 (Yes/No 질문 3개)**' (numbered).\n\n가격 / 분석 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

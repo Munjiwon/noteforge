@@ -3401,6 +3401,69 @@ body.page-tape-corner .bn-editor::after {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
 
+/* H5 with arrow prefix — prepends → to H5 headings. */
+body.h5-with-arrow-prefix .bn-editor [data-content-type="heading"][data-level="5"] > *:first-child::before {
+  content: "→ ";
+  color: #0891b2;
+  margin-right: 0.2em;
+}
+.dark body.h5-with-arrow-prefix .bn-editor [data-content-type="heading"][data-level="5"] > *:first-child::before {
+  color: #22d3ee;
+}
+
+/* Blueprint code — light blue grid background with white text feel. */
+body.code-block-blueprint .bn-editor pre {
+  background-color: #1e40af !important;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px) !important;
+  background-size: 12px 12px !important;
+  color: #dbeafe !important;
+}
+body.code-block-blueprint .bn-editor pre code {
+  color: #e0f2fe !important;
+}
+
+/* Empty cell mark — show ✗ in empty table cells. */
+body.table-cell-empty-mark .bn-editor table td:empty::after {
+  content: "✗";
+  color: #cbd5e1;
+  font-size: 0.85em;
+}
+
+/* Curved tab callout — adds a curved tab indicator on the left side. */
+body.callout-curved-tab .bn-editor [data-content-type="callout"] {
+  position: relative;
+  padding-left: 2rem !important;
+}
+body.callout-curved-tab .bn-editor [data-content-type="callout"]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 60%;
+  background: #f59e0b;
+  border-radius: 0 8px 8px 0;
+}
+
+/* Coffee stain — playful radial gradient stain in the page corner. */
+body.page-coffee-stain .bn-editor {
+  position: relative;
+}
+body.page-coffee-stain .bn-editor::before {
+  content: "";
+  position: absolute;
+  bottom: 24px;
+  right: 32px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, rgba(120, 70, 30, 0.18), rgba(120, 70, 30, 0.05) 70%, transparent 80%);
+  pointer-events: none;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
