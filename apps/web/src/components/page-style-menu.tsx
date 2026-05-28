@@ -1181,6 +1181,11 @@ export function PageStyleMenu({
                       { key: "table-cell-corner-accent-tr", label: "TR accent" },
                       { key: "callout-glow-border", label: "Glow border" },
                       { key: "page-bg-subtle-lines", label: "Subtle lines" },
+                      { key: "h3-with-underline-double", label: "H3 2x underline" },
+                      { key: "code-block-sunset", label: "Sunset code" },
+                      { key: "table-cell-corner-accent-br", label: "BR accent" },
+                      { key: "callout-neon-glow", label: "Neon glow" },
+                      { key: "page-bg-graph-fine", label: "Fine graph" },
                     ] as const
                   ).map((t) => (
                     <button

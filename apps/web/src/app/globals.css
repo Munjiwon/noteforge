@@ -5136,6 +5136,61 @@ body.page-bg-subtle-lines .bn-editor {
   ) !important;
 }
 
+/* H3 with double underline. */
+body.h3-with-underline-double .bn-editor [data-content-type="heading"][data-level="3"] {
+  border-bottom: 2px double #475569;
+  padding-bottom: 0.1em;
+}
+.dark body.h3-with-underline-double .bn-editor [data-content-type="heading"][data-level="3"] {
+  border-bottom-color: #94a3b8;
+}
+
+/* Sunset code — warm orange-to-pink gradient. */
+body.code-block-sunset .bn-editor pre {
+  background: linear-gradient(135deg, #7c2d12, #831843) !important;
+  color: #fed7aa !important;
+  border: 1px solid #9a3412;
+}
+body.code-block-sunset .bn-editor pre code {
+  color: #fecaca !important;
+}
+
+/* Bottom-right cell corner accent. */
+body.table-cell-corner-accent-br .bn-editor table td,
+body.table-cell-corner-accent-br .bn-editor table th {
+  position: relative;
+}
+body.table-cell-corner-accent-br .bn-editor table td::after,
+body.table-cell-corner-accent-br .bn-editor table th::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-bottom: 6px solid rgba(236, 72, 153, 0.4);
+  border-left: 6px solid transparent;
+}
+
+/* Neon glow callout — bright neon outline. */
+body.callout-neon-glow .bn-editor [data-content-type="callout"] {
+  box-shadow: 0 0 4px #22d3ee, 0 0 12px rgba(34, 211, 238, 0.5);
+  border: 1px solid #22d3ee;
+}
+
+/* Fine graph page background — very fine grid. */
+body.page-bg-graph-fine .bn-editor {
+  background-image:
+    linear-gradient(rgba(100, 116, 139, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(100, 116, 139, 0.1) 1px, transparent 1px) !important;
+  background-size: 8px 8px !important;
+}
+.dark body.page-bg-graph-fine .bn-editor {
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.1) 1px, transparent 1px) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

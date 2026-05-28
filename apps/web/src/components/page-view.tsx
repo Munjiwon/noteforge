@@ -769,6 +769,11 @@ export function PageView({
       "table-cell-corner-accent-tr",
       "callout-glow-border",
       "page-bg-subtle-lines",
+      "h3-with-underline-double",
+      "code-block-sunset",
+      "table-cell-corner-accent-br",
+      "callout-neon-glow",
+      "page-bg-graph-fine",
     ];
     try {
       for (const k of toggles) {
