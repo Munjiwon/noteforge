@@ -1021,6 +1021,11 @@ export function PageStyleMenu({
                       { key: "page-grid-square", label: "Grid square" },
                       { key: "h1-with-final-marker", label: "H1 🏁" },
                       { key: "page-completion-stamp", label: "DONE stamp" },
+                      { key: "h1-with-arrow-prefix", label: "H1 ▶ arrow" },
+                      { key: "code-block-line-divider", label: "Code line div" },
+                      { key: "table-rounded-cells", label: "Rounded cells" },
+                      { key: "callout-elevated-shadow", label: "Callout lift" },
+                      { key: "page-corner-stitch", label: "Corner stitch" },
                     ] as const
                   ).map((t) => (
                     <button

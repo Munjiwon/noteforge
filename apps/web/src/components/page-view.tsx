@@ -609,6 +609,11 @@ export function PageView({
       "page-grid-square",
       "h1-with-final-marker",
       "page-completion-stamp",
+      "h1-with-arrow-prefix",
+      "code-block-line-divider",
+      "table-rounded-cells",
+      "callout-elevated-shadow",
+      "page-corner-stitch",
     ];
     try {
       for (const k of toggles) {

@@ -3168,6 +3168,62 @@ body.page-completion-stamp .bn-editor::after {
   opacity: 0.22;
 }
 
+/* H1 with arrow prefix — prepends ▶ to H1 headings. */
+body.h1-with-arrow-prefix .bn-editor [data-content-type="heading"][data-level="1"] > *:first-child::before {
+  content: "▶ ";
+  color: #2563eb;
+  margin-right: 0.15em;
+}
+.dark body.h1-with-arrow-prefix .bn-editor [data-content-type="heading"][data-level="1"] > *:first-child::before {
+  color: #60a5fa;
+}
+
+/* Code block line divider — faint horizontal divider between code lines. */
+body.code-block-line-divider .bn-editor pre code > * {
+  border-bottom: 1px dotted rgba(120, 120, 120, 0.18);
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+.dark body.code-block-line-divider .bn-editor pre code > * {
+  border-bottom-color: rgba(200, 200, 200, 0.14);
+}
+
+/* Table rounded cells — each cell gets rounded corners. */
+body.table-rounded-cells .bn-editor table td,
+body.table-rounded-cells .bn-editor table th {
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+
+/* Callout elevated shadow — strong elevated shadow on callouts. */
+body.callout-elevated-shadow .bn-editor [data-content-type="callout"] {
+  box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.18), 0 2px 4px -2px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+.dark body.callout-elevated-shadow .bn-editor [data-content-type="callout"] {
+  box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* Page corner stitch — stitched dashed border decoration in top-left of editor. */
+body.page-corner-stitch .bn-editor {
+  position: relative;
+}
+body.page-corner-stitch .bn-editor::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 60px;
+  height: 60px;
+  border-top: 2px dashed #94a3b8;
+  border-left: 2px dashed #94a3b8;
+  border-top-left-radius: 6px;
+  pointer-events: none;
+}
+.dark body.page-corner-stitch .bn-editor::before {
+  border-color: #64748b;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

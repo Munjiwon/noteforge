@@ -1848,6 +1848,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Draft a Korean internal celebration email for a major milestone — sent to the whole team. Use 해요체. 따뜻하고 진심 어린 톤 — 가식 / 인플레이션된 칭찬 금지. Markdown: '**제목**' (1줄, 28자 이내 — '[마일스톤] 달성! 다 함께 축하해요' 류), '**본문**' (4 단락: 1) 한 줄 — '오늘 우리는 [마일스톤]을 달성했습니다', 2) 이게 왜 중요한지 1단락 — 회사 / 사용자 / 우리에게 어떤 의미, 3) 호명 + 구체적 기여 — 가짜 이름 만들지 말기, 입력에 있는 이름만, 각 '@이름 — 무엇을 한 1줄', 4) 다음 — '다음 마일스톤은 ... / 오늘은 잠시 멈춰서 자축'), '**감사**' (1줄 — 모두에게).\n\n마일스톤 + 기여자:\n${text}`,
   milestone_complete_announcement_ko: (text) =>
     `Write a Korean public announcement for a completed major milestone (e.g., 1000번째 출시 / 1M ARR / 신제품 GA). Use 합쇼체. 솔직 + 작은 자축 + 다음 약속. Markdown: '**제목**' (1줄, 30자 이내 — '[회사명], [마일스톤] 달성 — YYYY-MM-DD'), '**본문**' (4 단락: 1) 한 줄로 무엇을 / 언제 / 누구 덕분에, 2) 우리가 어떻게 여기까지 왔는지 — 짧은 history 1단락, 3) 이 마일스톤이 사용자 / 시장에 어떤 의미, 4) 다음 약속 1줄 — '다음 마일스톤은 [무엇] 이고, 그 길에 함께해주세요'), '**감사 (1줄)**' (사용자 / 팀 / 투자자 / 커뮤니티 — 진심으로). 이모지는 제목에 1개 이내.\n\n마일스톤 컨텍스트:\n${text}`,
+  translate_ko_to_albanian: (text) =>
+    `Translate the Korean text below into natural Albanian (Shqip). 격식 ('Ju' 정중 / 'ti' 친근) 원문에 맞춤. Reply with two sections: '**Përkthimi**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  competitor_battle_card_ko: (text) =>
+    `Build a Korean sales battle card for the competitor described below — used by sales reps in live calls. Use 합쇼체. 1 page, sales-rep 시야 우선. Markdown: '**경쟁사 한 줄**' (이름 / 본사 / 자금 단계 / ICP 1줄), '**그들의 강점 (3 bullets)**' (객관적, 빈말 금지), '**그들의 약점 / 우리가 이기는 지점 (3 bullets)**' (구체적 사례 + 데이터 + 고객 인용), '**자주 듣는 비교 질문 + 우리 답변**' (3-5쌍, 각 'Q: ... / A: ...' 30초 답변), '**가격 비교**' (1줄 — 'X달러 vs 우리 Y달러, ... 차이'), '**그들이 우리를 공격할 때**' (2 bullets — 그들이 자주 하는 말 + 우리 반박 1줄), '**고객 인용 (사용 가능 1개)**' (1단락 — 이전 경쟁사 → 우리 전환 사례).\n\n경쟁사 / 컨텍스트:\n${text}`,
+  translate_ko_to_macedonian: (text) =>
+    `Translate the Korean text below into natural Macedonian (Македонски). Cyrillic script. 격식 ('Вие' 정중 / 'ти' 친근) 원문에 맞춤. Reply with two sections: '**Превод**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  incident_postmortem_blameless_ko: (text) =>
+    `Write a Korean blameless incident postmortem from the incident notes below. Use 합쇼체. 누구의 잘못이 아니라 '시스템이 어떻게 이런 행동을 허용했는가' 관점 유지. Markdown: '**사건 한 줄**' (1줄 — 무엇이 / 언제 / 누가 영향), '**영향 (Impact)**' (3 bullets — 사용자 수 / 다운타임 / 매출 / 평판), '**타임라인 (테이블)**' ('시간(KST) | 이벤트 | 행위자(역할만)'), '**근본 원인 (Root Cause)**' (1단락 — 기술적 + 조직적, 책임자 이름 금지), '**왜 이렇게 됐나 — 5 Whys**' (numbered), '**잘 된 것**' (2-3 bullets — 빠른 감지 / 좋은 의사결정), '**잘 안 된 것**' (2-3 bullets — 시스템 관점), '**액션 아이템 (테이블)**' ('액션 | 담당팀 | 시한 | 우선순위'), '**얻은 교훈 (Lessons)**' (3 bullets — 일반화).\n\n사건 노트:\n${text}`,
+  translate_ko_to_estonian: (text) =>
+    `Translate the Korean text below into natural Estonian (eesti keel). 격식 ('Teie' 정중 / 'sina' 친근) 원문에 맞춤. Reply with two sections: '**Tõlge**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  meeting_decision_log_ko: (text) =>
+    `Build a Korean meeting decision log entry — one row per decision, for archival/searchability. Use 합쇼체. Markdown: '**Decision ID + 한 줄**' (1줄 — 'DEC-NNNN: ...'), '**날짜 / 미팅**' (1줄), '**참석자 (역할)**' (bullets — 이름 + 역할), '**배경 (Why now)**' (2-3줄 — 왜 이 결정이 지금 필요), '**고려된 옵션 (테이블)**' ('옵션 | Pros | Cons | 영향'), '**선택된 옵션 + 이유**' (1단락 — 무엇을 / 왜), '**반대 의견 / 우려**' (bullets — 누가 / 무엇 / 어떻게 mitigate), '**Reversible?**' (1줄 — Yes/No + 되돌리는 비용), '**액션 (담당 / 시한)**' (bullets), '**Revisit 시점**' (1줄 — '이 결정은 X 시점에 재검토').\n\n미팅 노트:\n${text}`,
+  translate_ko_to_latvian: (text) =>
+    `Translate the Korean text below into natural Latvian (latviešu valoda). 격식 ('Jūs' 정중 / 'tu' 친근) 원문에 맞춤. Reply with two sections: '**Tulkojums**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  okr_q3_alignment_doc_ko: (text) =>
+    `Build a Korean cross-team OKR alignment doc — circulated 2 weeks before the quarter starts. Use 합쇼체. 팀끼리 OKR 의존성 / 충돌 / 빈틈을 발견하기 위함. Markdown: '**분기 / 회사 한 줄**' (1줄 — 'Q[X] YYYY, 회사가 집중하는 1줄'), '**회사 OKR (상기)**' (bullets — Objective + KRs), '**팀별 KR 매핑 (테이블)**' ('팀 | KR이 회사 어떤 O에 연결 | 이 KR을 위해 다른 팀에 필요한 것 | 다른 팀에 줄 수 있는 것'), '**의존성 그래프 (텍스트)**' (5-7줄 — 'A팀 KR2는 B팀이 X를 ~까지 끝내야 가능'), '**충돌 / 빈틈**' (bullets — 같은 자원 경쟁 / 누구도 안 보는 영역), '**해결 미팅 (제안)**' (bullets — 누가 / 언제 / 무엇 결정), '**최종 확정 시한**' (1줄).\n\n팀 OKR 초안 모음:\n${text}`,
+  translate_ko_to_lithuanian: (text) =>
+    `Translate the Korean text below into natural Lithuanian (lietuvių kalba). 격식 ('Jūs' 정중 / 'tu' 친근) 원문에 맞춤. Reply with two sections: '**Vertimas**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  customer_kickoff_email_ko: (text) =>
+    `Draft a Korean customer kickoff email — sent within 24 hours of contract signing to formally start the onboarding. Use 해요체. 따뜻 + 명확. Markdown: '**제목**' (1줄, 26자 이내 — '환영합니다! [고객사] 킥오프 안내' 류), '**본문**' (5 단락: 1) 계약 환영 + 우리 모두 신난다는 1줄, 2) 누가 / 무슨 역할 — CSM / 솔루션 엔지니어 / Exec sponsor, 각 이름 + 이메일 + 본인 1줄, 3) 첫 30일 로드맵 — 1주차 / 2주차 / 3-4주차 단계별, 각 1줄, 4) 당장 필요한 것 (고객 쪽) — 'X 까지 ~ 보내주시면 좋아요' bullets, 5) 첫 미팅 일정 후보 3개 + 무엇 다룰지 1줄), '**참고 자료**' (bullets — 도움 문서 / 슬랙 채널 / 상태 페이지 placeholder).\n\n고객 / 계약 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
