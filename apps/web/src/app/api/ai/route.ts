@@ -3432,6 +3432,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean quarterly roadmap review — reviews roadmap progress and adjusts for the next quarter. Use 합쇼체. Markdown: '**한 줄 (총평)**' (1줄), '**계획 대비 출시 (테이블)**' ('계획 항목 | 상태 | 비고'), '**이동/취소된 것 (bullets)**' (왜 — 우선순위 변화), '**배운 것 (bullets)**' (가정 검증 결과), '**다음 분기 조정 (테이블)**' ('테마 | 변화 | 이유'), '**Now/Next/Later 업데이트 (bullets)**', '**리스크 / 의존성 (bullets)**', '**이해관계자 메시지 (1줄)**'. 방향과 근거 중심.\n\n로드맵 컨텍스트:\n${text}`,
   internal_incident_severity_guide_ko: (text) =>
     `Write a Korean incident severity guide — defines severity levels so responders classify incidents consistently. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄), '**심각도 정의 (테이블)**' ('레벨(SEV1-4) | 정의 | 예시 | 대응 기대 | 누가 관여'), '**판단 기준 (bullets)**' (영향 범위 / 데이터 / 매출 / 평판), '**에스컬레이션 매핑 (1줄)**' (레벨 → 누구), '**커뮤니케이션 요구 (테이블)**' ('레벨 | 내부 | 외부 | 빈도'), '**상향/하향 조정 (1줄)**' (진행 중 재분류), '**예시 시나리오 (bullets)**'. 일관성 + 빠른 판단.\n\n심각도 컨텍스트:\n${text}`,
+  translate_ko_to_makonde: (text) =>
+    `Translate the Korean text below into natural Makonde — a Bantu language of the Mozambique-Tanzania border plateau. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Makonde**' and '**번역 노트**' (3 bullets in Korean — note Makonde people are known for their sculpture; the language is written in Latin script).\n\n원문:\n${text}`,
+  translate_ko_to_chiyao: (text) =>
+    `Translate the Korean text below into natural Yao (Chiyao) — a Bantu language of Malawi, Mozambique and Tanzania. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Chiyao**' and '**번역 노트**' (3 bullets in Korean — note this Yao is the African Bantu language, unrelated to the Yao of Southeast Asia).\n\n원문:\n${text}`,
+  translate_ko_to_makhuwa: (text) =>
+    `Translate the Korean text below into natural Makhuwa (Emakhuwa) — the most widely spoken Bantu language of northern Mozambique. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Emakhuwa**' and '**번역 노트**' (3 bullets in Korean — note Makhuwa is the largest indigenous language of Mozambique).\n\n원문:\n${text}`,
+  translate_ko_to_tumbuka: (text) =>
+    `Translate the Korean text below into natural Tumbuka (Chitumbuka) — a Bantu language of northern Malawi and eastern Zambia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Chitumbuka**' and '**번역 노트**' (3 bullets in Korean — note Tumbuka is a major language of northern Malawi, written in Latin script).\n\n원문:\n${text}`,
+  translate_ko_to_nyakyusa: (text) =>
+    `Translate the Korean text below into natural Nyakyusa — a Bantu language of the Mbeya region, southwestern Tanzania, and northern Malawi. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Nyakyusa**' and '**번역 노트**' (3 bullets in Korean — note Nyakyusa is spoken around the northern tip of Lake Malawi).\n\n원문:\n${text}`,
+  internal_api_design_review_ko: (text) =>
+    `Write a Korean API design review — reviews a proposed API for usability, consistency and longevity. Use 합쇼체. Markdown: '**한 줄 (API)**' (1줄 — 무엇을 노출), '**리소스 / 엔드포인트 (테이블)**' ('메서드 | 경로 | 목적'), '**일관성 점검 (bullets)**' (네이밍 / 페이지네이션 / 에러 형식 / 버저닝), '**사용성 (bullets)**' (직관성 / 흔한 케이스 쉬운가), '**호환성 / 진화 (bullets)**' (깨지는 변경 / 확장 여지), '**보안 / 권한 (bullets)**', '**우려 + 제안 (테이블)**' ('이슈 | 심각도 | 제안'), '**판정 (1줄)**'. 장기적 일관성 강조.\n\nAPI 컨텍스트:\n${text}`,
+  sales_weekly_forecast_ko: (text) =>
+    `Write a Korean weekly sales forecast — a rep/manager's weekly forecast update. Use 합쇼체. Markdown: '**한 줄 (예측)**' (1줄 — commit / best case / 목표 대비), '**카테고리 (테이블)**' ('카테고리 | 금액 | 딜 수'): Commit / Best Case / Pipeline, '**이번 주 변화 (bullets)**' (들어온 것 / 슬립된 것 / 닫힌 것), '**리스크 딜 (bullets)**' (각 '딜 — 리스크 — 액션'), '**커버리지 (1줄)**' (파이프라인 배수), '**필요 지원 (bullets)**', '**이번 주 우선순위 (bullets)**'. 정확 + 액션 중심.\n\n예측 컨텍스트:\n${text}`,
+  customer_success_metrics_review_ko: (text) =>
+    `Write a Korean customer success metrics review — reviews CS portfolio health metrics. Use 합쇼체. Markdown: '**한 줄 (총평)**' (1줄 — 포트폴리오 건강 + 핵심), '**핵심 지표 (테이블)**' ('지표 | 현재 | 추세 | 목표'): NRR / GRR / 헬스 분포 / 채택률 / NPS, '**잘 되는 것 (bullets)**', '**우려 (bullets)**' (각 '지표 — 원인 — 액션'), '**세그먼트 차이 (bullets)**', '**리스크 계정 (1줄)**' (집중 필요), '**개선 액션 (테이블)**' ('액션 | 담당 | 시한'), '**한 줄 전망 (1줄)**'. 데이터 → 액션.\n\nCS 지표 컨텍스트:\n${text}`,
+  pm_feature_request_triage_ko: (text) =>
+    `Write a Korean feature request triage — sorts incoming feature requests into a decision. Use 합쇼체. Markdown: '**한 줄 (총평)**' (1줄 — 이번 배치 핵심 패턴), '**요청 분류 (테이블)**' ('요청 | 빈도 | 요청자 유형 | 근본 니즈(JTBD) | 판정'): 수용 / 백로그 / 보류 / 거절, '**테마 (bullets)**' (요청 뒤 공통 니즈), '**빠른 승리 (bullets)**' (저비용 고가치), '**전략 부합 안 함 (bullets)**' (거절 + 이유), '**요청자 회신 가이드 (1줄)**' (루프 닫기), '**다음 액션 (테이블)**'. 요청이 아닌 니즈에 집중.\n\n요청 목록:\n${text}`,
+  internal_allhands_notes_ko: (text) =>
+    `Structure Korean all-hands meeting notes — captures key points and decisions from a company/team all-hands. Use 합쇼체. Markdown: '**한 줄 (올핸즈)**' (1줄 — 핵심 메시지), '**주요 업데이트 (bullets)**' (회사/팀 — 주제별), '**성과 / 인정 (bullets)**', '**전략 / 우선순위 (bullets)**' (강조된 방향), '**Q&A 하이라이트 (테이블)**' ('질문 | 답변 핵심'), '**액션 / 변화 (bullets)**' (모두에게 영향), '**팔로업 (bullets)**' (추가 정보 약속), '**한 줄 정리 (1줄)**'. 못 들은 사람도 따라잡게.\n\n올핸즈 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

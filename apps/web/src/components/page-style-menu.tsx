@@ -1418,6 +1418,11 @@ export function PageStyleMenu({
                       { key: "table-cell-top-align", label: "Top align" },
                       { key: "callout-no-padding", label: "Tight" },
                       { key: "page-bg-blobs", label: "Blobs" },
+                      { key: "heading-wavy-underline", label: "Wavy line" },
+                      { key: "code-block-flexoki", label: "Flexoki" },
+                      { key: "table-cell-nowrap", label: "No wrap" },
+                      { key: "callout-side-accent-gradient", label: "Side gradient" },
+                      { key: "page-bg-corner-glow", label: "Corner glow" },
                     ] as const
                   ).map((t) => (
                     <button

@@ -1006,6 +1006,11 @@ export function PageView({
       "table-cell-top-align",
       "callout-no-padding",
       "page-bg-blobs",
+      "heading-wavy-underline",
+      "code-block-flexoki",
+      "table-cell-nowrap",
+      "callout-side-accent-gradient",
+      "page-bg-corner-glow",
     ];
     try {
       for (const k of toggles) {

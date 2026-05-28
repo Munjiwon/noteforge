@@ -7186,6 +7186,38 @@ body.page-bg-blobs .bn-editor {
   background-repeat: no-repeat !important;
 }
 
+/* Heading wavy underline — a wavy decorative underline beneath headings. */
+body.heading-wavy-underline .bn-editor [data-content-type="heading"] {
+  text-decoration: underline wavy #6366f1 !important;
+  text-underline-offset: 5px !important;
+}
+
+/* Code block Flexoki — Flexoki dark palette for code blocks. */
+body.code-block-flexoki .bn-editor pre {
+  background: #100f0f !important;
+  border: 1px solid #1c1b1a !important;
+}
+body.code-block-flexoki .bn-editor pre code {
+  color: #cecdc3 !important;
+}
+
+/* Table cell no wrap — prevent cell content from wrapping. */
+body.table-cell-nowrap .bn-editor table td,
+body.table-cell-nowrap .bn-editor table th {
+  white-space: nowrap !important;
+}
+
+/* Callout side accent gradient — a gradient bar on the callout's left edge. */
+body.callout-side-accent-gradient .bn-editor [data-content-type="callout"] {
+  border-left: 6px solid transparent !important;
+  border-image: linear-gradient(180deg, #6366f1, #ec4899) 1 !important;
+}
+
+/* Page bg corner glow — a soft glow emanating from the top-right corner. */
+body.page-bg-corner-glow .bn-editor {
+  background-image: radial-gradient(circle at 100% 0%, rgba(99, 102, 241, 0.14), transparent 45%) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
