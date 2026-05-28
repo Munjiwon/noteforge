@@ -1627,6 +1627,11 @@ export function PageView({
       "callout-gmt-3",
       "page-bg-gmt-4",
       "heading-gmt-5",
+      "code-block-gni-1",
+      "table-gni-2",
+      "callout-gni-3",
+      "page-bg-gni-4",
+      "heading-gni-5",
     ];
     try {
       for (const k of toggles) {

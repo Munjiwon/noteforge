@@ -2039,6 +2039,11 @@ export function PageStyleMenu({
                       { key: "callout-gmt-3", label: "callout gmt3" },
                       { key: "page-bg-gmt-4", label: "page-bg gmt4" },
                       { key: "heading-gmt-5", label: "heading gmt5" },
+                      { key: "code-block-gni-1", label: "code-block gni1" },
+                      { key: "table-gni-2", label: "table gni2" },
+                      { key: "callout-gni-3", label: "callout gni3" },
+                      { key: "page-bg-gni-4", label: "page-bg gni4" },
+                      { key: "heading-gni-5", label: "heading gni5" },
                     ] as const
                   ).map((t) => (
                     <button
