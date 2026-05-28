@@ -4492,6 +4492,66 @@ body.page-edge-gradient .bn-editor {
   background-repeat: no-repeat;
 }
 
+/* H5 corner-radius blob — light blue blob for H5. */
+body.h5-corner-radius-blob .bn-editor [data-content-type="heading"][data-level="5"] {
+  display: inline-block;
+  background: linear-gradient(95deg, #bfdbfe, transparent 70%);
+  padding: 0.12em 0.45em;
+  border-radius: 0 999px 999px 0;
+}
+.dark body.h5-corner-radius-blob .bn-editor [data-content-type="heading"][data-level="5"] {
+  background: linear-gradient(95deg, #1e3a8a, transparent 70%);
+}
+
+/* Cool fade code — gradient fade from cool blue to white. */
+body.code-block-cool-fade .bn-editor pre {
+  background: linear-gradient(135deg, #dbeafe, #ffffff 60%) !important;
+  color: #1e3a8a !important;
+  border: 1px solid #bfdbfe;
+}
+.dark body.code-block-cool-fade .bn-editor pre {
+  background: linear-gradient(135deg, #1e3a8a, #0f172a 60%) !important;
+  color: #dbeafe !important;
+}
+
+/* Colored row dividers (blue). */
+body.table-row-divider-color-blue .bn-editor table tr + tr > * {
+  border-top: 2px solid #3b82f6 !important;
+}
+
+/* Pill side tab — rounded pill tab on the left of callouts. */
+body.callout-side-tab-pill .bn-editor [data-content-type="callout"] {
+  position: relative;
+  padding-left: 2.5rem !important;
+}
+body.callout-side-tab-pill .bn-editor [data-content-type="callout"]::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 60%;
+  background: currentColor;
+  border-radius: 999px;
+  opacity: 0.7;
+}
+
+/* Corner tab — small corner triangle on top-left of editor. */
+body.page-side-tab-corner .bn-editor {
+  position: relative;
+}
+body.page-side-tab-corner .bn-editor::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-top: 32px solid #6366f1;
+  border-right: 32px solid transparent;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

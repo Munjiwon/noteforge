@@ -719,6 +719,11 @@ export function PageView({
       "table-row-hover-emphasize",
       "callout-side-tab-large",
       "page-edge-gradient",
+      "h5-corner-radius-blob",
+      "code-block-cool-fade",
+      "table-row-divider-color-blue",
+      "callout-side-tab-pill",
+      "page-side-tab-corner",
     ];
     try {
       for (const k of toggles) {
