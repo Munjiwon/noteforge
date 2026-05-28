@@ -6863,6 +6863,49 @@ body.page-bg-grid-bold .bn-editor {
   background-size: 32px 32px !important;
 }
 
+/* Heading hard shadow — a crisp offset hard shadow on heading text. */
+body.heading-shadow-offset .bn-editor [data-content-type="heading"] {
+  text-shadow: 3px 3px 0 rgba(99, 102, 241, 0.3) !important;
+}
+
+/* Code block VSCode dark — VS Code Dark+ palette for code blocks. */
+body.code-block-vscode-dark .bn-editor pre {
+  background: #1e1e1e !important;
+  border: 1px solid #2d2d2d !important;
+}
+body.code-block-vscode-dark .bn-editor pre code {
+  color: #d4d4d4 !important;
+}
+
+/* Table rounded header — round the top corners of the header row. */
+body.table-rounded-header .bn-editor table th:first-child {
+  border-top-left-radius: 10px !important;
+}
+body.table-rounded-header .bn-editor table th:last-child {
+  border-top-right-radius: 10px !important;
+}
+body.table-rounded-header .bn-editor table th {
+  background: #eef2ff !important;
+}
+.dark body.table-rounded-header .bn-editor table th {
+  background: #312e81 !important;
+}
+
+/* Callout left tab label — a vertical tab strip on the callout's left. */
+body.callout-left-tab-label .bn-editor [data-content-type="callout"] {
+  border-left: 10px solid #6366f1 !important;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+}
+
+/* Page bg carbon — a dark carbon-fiber weave texture behind the editor. */
+body.page-bg-carbon .bn-editor {
+  background-image:
+    linear-gradient(27deg, rgba(99, 102, 241, 0.08) 5px, transparent 5px),
+    linear-gradient(207deg, rgba(99, 102, 241, 0.08) 5px, transparent 5px) !important;
+  background-size: 10px 10px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

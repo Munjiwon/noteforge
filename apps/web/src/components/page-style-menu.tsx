@@ -1378,6 +1378,11 @@ export function PageStyleMenu({
                       { key: "table-zebra-amber", label: "Amber zebra" },
                       { key: "callout-pulse-border", label: "Pulse border" },
                       { key: "page-bg-grid-bold", label: "Bold grid" },
+                      { key: "heading-shadow-offset", label: "Hard shadow" },
+                      { key: "code-block-vscode-dark", label: "VSCode dark" },
+                      { key: "table-rounded-header", label: "Round header" },
+                      { key: "callout-left-tab-label", label: "Tab label" },
+                      { key: "page-bg-carbon", label: "Carbon" },
                     ] as const
                   ).map((t) => (
                     <button
