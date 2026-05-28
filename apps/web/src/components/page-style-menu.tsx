@@ -1056,6 +1056,11 @@ export function PageStyleMenu({
                       { key: "table-borderless-rounded", label: "BL rounded" },
                       { key: "callout-no-bg", label: "Border-only" },
                       { key: "page-graph-paper-bg", label: "Graph paper" },
+                      { key: "h2-with-block-prefix", label: "H2 ▌ block" },
+                      { key: "code-block-amber-terminal", label: "Amber term" },
+                      { key: "table-header-pill", label: "Pill header" },
+                      { key: "callout-cut-corner", label: "Cut corner" },
+                      { key: "page-side-folder-tab", label: "Folder tab" },
                     ] as const
                   ).map((t) => (
                     <button

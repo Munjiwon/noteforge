@@ -1988,6 +1988,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Translate the Korean text below into natural Nepali (नेपाली). 격식 ('तपाईं' 정중 / 'तिमी' 친근 / 'तँ' 매우 친근) 원문에 맞춤. Reply with two sections: '**अनुवाद**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
   team_retro_continue_stop_start_ko: (text) =>
     `Build a Korean team retro (회고) doc using 'Continue / Stop / Start' format — sprint 또는 분기 단위. Use 해요체. 안전한 공간 강조. Markdown: '**Retro 한 줄**' (스프린트 / 기간 / 참석자 수), '**Health check (1-5)**' (테이블 — '카테고리 | 평균 점수' — 모르겠지만 보통: 협업 / 명확성 / 속도 / 즐거움 / 임팩트), '**Continue (계속할 것)**' (bullets — 익명 인풋 + 그룹 정리, 각 1줄 + 사례), '**Stop (멈출 것)**' (bullets — 같은 형식), '**Start (시작할 것)**' (bullets — 같은 형식 + 누가 시도할지 1줄), '**투표로 결정한 Top 3 액션 (테이블)**' ('액션 | 담당 | 시한 | 어떻게 측정'), '**다음 retro에서 확인할 것**' (1줄), '**Facilitator 노트**' (1줄 — 다음 facilitator).\n\n팀 / 스프린트 컨텍스트:\n${text}`,
+  translate_ko_to_kashmiri: (text) =>
+    `Translate the Korean text below into natural Kashmiri (कॉशुर / کٲشُر). Devanagari 또는 Perso-Arabic script — 입력 컨텍스트로 추론, default Perso-Arabic. 격식 ('تۆہِہ' 정중 / 'ژہ' 친근) 원문에 맞춤. Reply with two sections: '**ترجمہٕ**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  engineering_arch_review_doc_ko: (text) =>
+    `Build a Korean engineering architecture review doc — for any project that introduces a new service / new data store / major migration. Use 합쇼체. Reviewed by Eng Lead + Staff Eng. Markdown: '**한 줄 (Tagline)**' (1줄 — 무엇을 / 왜), '**문제 정의**' (1단락 — 비즈니스 + 기술), '**제안 아키텍처 (1단락 + 다이어그램 placeholder)**' (서비스 / 데이터 / 흐름), '**고려한 대안 (3가지)**' (각 'h3 + Pros + Cons + 왜 안 골랐는지'), '**선택 이유**' (1단락), '**Non-functional 요구**' (테이블 — 'SLO | 처리량 | 데이터 무결성 | 보안 | 비용'), '**위험 (Top 5)**' (테이블 — '위험 | 가능성 | 영향 | 완화 액션'), '**롤아웃 plan**' (numbered — 단계별 + flag), '**Open questions (review에서 답 받을 것)**' (bullets), '**리뷰어 / 일정**' (1줄).\n\n프로젝트 컨텍스트:\n${text}`,
+  translate_ko_to_dari: (text) =>
+    `Translate the Korean text below into natural Dari (Afghan Persian — دری). RTL 흐름. 격식 ('شما' 정중 / 'تو' 친근) 원문에 맞춤. 표현은 Afghan Dari 사용 (Iranian Persian과 약간 다름). Reply with two sections: '**ترجمه**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  customer_renewal_negotiation_email_ko: (text) =>
+    `Draft a Korean customer renewal negotiation email — sent when a customer has pushed back on price for renewal. Use 해요체. 진심 + 데이터 + 작은 양보. Markdown: '**제목**' (1줄, 28자 이내 — '[고객사] 갱신 — 다음 단계 제안'), '**본문**' (4 단락: 1) 1줄 — 그쪽 우려 인정 + 가치 1줄 재확인, 2) 우리가 본 그쪽의 사용 / 가치 — 구체 데이터 + 1-2개 가장 큰 성과 (data로 reframe), 3) 3가지 옵션 제안 — A: 현재 가격 + X 추가 가치 / B: 약간 가격 양보 + Y 약속 / C: 다년 계약 + Z%, 4) 결정 마감일 + 누가 결정하는지 + 우리가 도울 것), '**P.S.**' (1줄 — '편하게 30분 통화로도 가능, 시간 후보 X').\n\n계약 / 협상 컨텍스트:\n${text}`,
+  translate_ko_to_swiss_german: (text) =>
+    `Translate the Korean text below into natural Swiss German (Schweizerdeutsch). 격식 ('Sie' 정중 / 'du' 친근) 원문에 맞춤. Standard Hochdeutsch 아닌 실제 Swiss German 표현 / 어휘 사용. Reply with two sections: '**Übersetzig**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  sales_cold_call_script_ko: (text) =>
+    `Draft a Korean sales cold call script — 60초 안에 끝낼 수 있어야 함. Use 해요체. 자연스러운 대화, 'sales pitch' 톤 피하기. Markdown: '**Opening (10초)**' (1줄 — 본인 + 회사 + 1줄 — '~ 때문에 전화드렸어요'), '**Permission (5초)**' (1줄 — '2분만 시간 괜찮으세요?' — 거절 받을 준비), '**Pain hook (20초)**' (2-3줄 — 비슷한 회사가 겪는 1가지 페인 + 우리가 들은 이유), '**Curiosity question (15초)**' (1-2줄 — open question — '그쪽도 비슷한 경험 있으세요?'), '**Next step (10초)**' (1줄 — 15분 데모 미팅 제안 + 일정 후보 2개 — soft close), '**거절 처리 (3가지)**' (테이블 — '거절 종류 | 우리 응답 1줄'), '**음성메일 남기는 경우 (15초)**' (1단락 — 다시 걸기 시점 약속).\n\n타겟 / 우리 제품 컨텍스트:\n${text}`,
+  translate_ko_to_pidgin_english: (text) =>
+    `Translate the Korean text below into natural Nigerian Pidgin English (Naija). 격식은 거의 없음, 친근 / 직설 톤이 표준. Reply with two sections: '**Pidgin**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  culture_doc_principles_ko: (text) =>
+    `Draft a Korean company culture doc — '우리는 어떤 회사인가' 한 페이지 문서, 외부 공개용 또는 신입 1주차 읽는 자료. Use 해요체. 빈말 / 'family' 같은 표현 금지. 실제 의사결정 / 행동에 영향을 주는 5-6개 신념. Markdown: '**우리 회사 1줄 (미션 또는 정체성)**' (1줄), '**우리가 진심으로 믿는 것 (5-6개 — 각 h3 + 1줄 + 우리가 실제로 한 행동 1개 + 우리가 안 하는 행동 1개)**', '**여기서 일하는 게 좋은 사람**' (3 bullets — 구체적 — 빈말 X), '**여기서 일하는 게 안 좋을 수 있는 사람**' (2-3 bullets — 솔직 — fit), '**우리가 항상 이렇게 살까요? (1단락)**' (솔직 — 'no, 이런 때 우리도 깨졌다 + 우리가 어떻게 복원했나').\n\n회사 컨텍스트 / 신념:\n${text}`,
+  translate_ko_to_papiamento: (text) =>
+    `Translate the Korean text below into natural Papiamento (spoken in Aruba, Curaçao, Bonaire). 격식 ('bo' 친근 표준 / 더 정중하게는 회사명 / 호칭 사용) 원문에 맞춤. Reply with two sections: '**Tradukshon**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  customer_check_in_30_day_email_ko: (text) =>
+    `Draft a Korean customer 30-day check-in email — sent by CSM to a new customer at D+30. Use 해요체. 따뜻 + 데이터 + 행동 제안. Markdown: '**제목**' (1줄, 24자 이내 — '한 달 어떠세요? 30일 후 안부'), '**본문**' (4 단락: 1) 1줄 — 30일 함께해 줘서 감사 + 본인 안부, 2) 우리가 본 그쪽 사용 — 구체 데이터 — '로그인 N회 / 핵심 기능 X 사용 / 팀원 Y명 참여', 3) 비슷한 단계 고객이 보통 이 시기에 하는 것 — '대부분 다음 30일에 Z를 시도해요' — 부담 없이 1-2개 제안, 4) 짧은 부탁 — '5분 통화 가능? 잘 된 / 막힌 것 듣고 싶어요' + 일정 후보 2개), '**P.S.**' (1줄 — 도움 문서 / 슬랙 채널 placeholder).\n\n고객 / 사용 데이터:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
