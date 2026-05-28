@@ -2748,6 +2748,10 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Translate the Korean text below into natural Sambal — Austronesian language of Zambales province, central Luzon, Philippines. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Patarus**' and '**번역 노트**' (3 bullets in Korean — note Sambal is a Sambalic language of western Luzon).\n\n원문:\n${text}`,
   customer_annual_review_letter_ko: (text) =>
     `Draft a Korean annual customer review letter — sent by Exec sponsor / CEO at the customer's annual mark, reflecting on the year + looking ahead. Use 합쇼체. 진심 + 데이터 + 비전. Markdown: '**제목**' (1줄, 28자 이내 — '[고객사], 함께한 1년 — 회고와 다음'), '**본문**' (4 단락: 1) 1-2줄 — 1년 함께해 줘서 감사 + 1줄 가장 의미 있는 순간, 2) 1년 회고 1단락 — 함께 달성한 것 + 구체적 데이터 + 1줄 인용, 3) 우리가 배운 것 + 더 잘할 것 — 솔직 1단락, 4) 다음 1년 비전 + commit — '우리는 다음 1년 X / Y / Z 도와드리겠습니다'), '**Exec 서명**' (CEO / VP — 손 글씨 톤 + 직접 연락처).\n\n고객 / 1년 컨텍스트:\n${text}`,
+  c_series_completion_announcement_ko: (text) =>
+    `Write a Korean internal announcement celebrating the completion of a large multi-phase build initiative. Use 해요체. 따뜻 + 진심 + 가식 없이. Markdown: '**제목**' (1줄, 28자 이내 — '[이니셔티브] 전체 완료 — 다 함께 축하해요'), '**본문**' (4 단락: 1) 한 줄 — '오늘 우리는 [이니셔티브]를 끝까지 완성했습니다', 2) 이게 왜 의미 있는지 1단락 — 규모 / 끈기 / 팀에게 어떤 의미, 3) 호명 + 구체적 기여 — 입력에 있는 이름만, 각 '@이름 — 무엇을 한 1줄', 4) 다음 — '잠시 멈춰 자축하고, 다음 챕터로'), '**감사 (1줄)**' (모두에게).\n\n이니셔티브 + 기여자:\n${text}`,
+  full_milestone_celebration_ko: (text) =>
+    `Write a Korean reflective milestone celebration note for completing a major long-running effort — the kind shared at an all-hands or in a team channel. Use 해요체. 진정성 + 회고 + 겸손. Markdown: '**한 줄 (마일스톤)**' (1줄 — 무엇을 완성했는지), '**여정 회고 (1단락)**' (3-4줄 — 시작은 어땠고, 어떤 어려움을 지나, 어떻게 여기까지), '**우리가 배운 것 (3 bullets)**' (구체적 — 기술 / 협업 / 끈기), '**기여한 사람들 (1단락)**' (입력에 있는 이름만 호명), '**다음 (1줄)**' (이 마일스톤이 연 다음 가능성), '**감사 (1줄)**' (진심으로). 이모지는 절제해서 사용.\n\n마일스톤 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

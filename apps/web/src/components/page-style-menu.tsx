@@ -1246,6 +1246,8 @@ export function PageStyleMenu({
                       { key: "table-header-bottom-accent", label: "Bottom accent" },
                       { key: "callout-stripe-right", label: "Stripe right" },
                       { key: "page-bg-grid-dots-combo", label: "Grid+dots" },
+                      { key: "h1-with-c-series-marker", label: "H1 🎊" },
+                      { key: "page-c-series-complete-stamp", label: "C-SERIES stamp" },
                     ] as const
                   ).map((t) => (
                     <button

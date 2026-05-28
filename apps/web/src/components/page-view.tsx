@@ -834,6 +834,8 @@ export function PageView({
       "table-header-bottom-accent",
       "callout-stripe-right",
       "page-bg-grid-dots-combo",
+      "h1-with-c-series-marker",
+      "page-c-series-complete-stamp",
     ];
     try {
       for (const k of toggles) {

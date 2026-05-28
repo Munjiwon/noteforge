@@ -5788,6 +5788,38 @@ body.page-bg-grid-dots-combo .bn-editor {
     radial-gradient(circle, rgba(129, 140, 248, 0.15) 1.5px, transparent 2px) !important;
 }
 
+/* H1 with C-series marker — prepends 🎊 to H1 (C-series capstone). */
+body.h1-with-c-series-marker .bn-editor [data-content-type="heading"][data-level="1"] > *:first-child::before {
+  content: "🎊 ";
+  margin-right: 0.2em;
+}
+
+/* C-series complete stamp — large rotated "C-SERIES" watermark in the editor corner. */
+body.page-c-series-complete-stamp .bn-editor {
+  position: relative;
+}
+body.page-c-series-complete-stamp .bn-editor::after {
+  content: "C-SERIES";
+  position: absolute;
+  bottom: 14%;
+  right: 4%;
+  font-size: 3.4rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  color: #7c3aed;
+  opacity: 0.14;
+  transform: rotate(-10deg);
+  border: 6px solid #7c3aed;
+  padding: 0.2em 0.5em;
+  border-radius: 10px;
+  pointer-events: none;
+}
+.dark body.page-c-series-complete-stamp .bn-editor::after {
+  color: #a78bfa;
+  border-color: #a78bfa;
+  opacity: 0.2;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
