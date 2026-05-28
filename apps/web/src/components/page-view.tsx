@@ -704,6 +704,11 @@ export function PageView({
       "table-header-vertical-orientation",
       "callout-hand-pointer",
       "page-side-clip-paper-corner",
+      "h2-with-corner-radius-blob",
+      "code-block-checkered",
+      "table-row-divider-zigzag",
+      "callout-pin-overlay",
+      "page-side-double-margin",
     ];
     try {
       for (const k of toggles) {

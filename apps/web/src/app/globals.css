@@ -4323,6 +4323,73 @@ body.page-side-clip-paper-corner .bn-editor::after {
   border-left: 22px solid transparent;
 }
 
+/* H2 corner-radius blob — gradient blob for H2. */
+body.h2-with-corner-radius-blob .bn-editor [data-content-type="heading"][data-level="2"] {
+  display: inline-block;
+  background: linear-gradient(95deg, #fef9c3, transparent 70%);
+  padding: 0.18em 0.7em;
+  border-radius: 0 999px 999px 0;
+}
+.dark body.h2-with-corner-radius-blob .bn-editor [data-content-type="heading"][data-level="2"] {
+  background: linear-gradient(95deg, #713f12, transparent 70%);
+}
+
+/* Checkered pattern code background. */
+body.code-block-checkered .bn-editor pre {
+  background-image:
+    linear-gradient(45deg, #f1f5f9 25%, transparent 25%),
+    linear-gradient(-45deg, #f1f5f9 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #f1f5f9 75%),
+    linear-gradient(-45deg, transparent 75%, #f1f5f9 75%) !important;
+  background-size: 16px 16px !important;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0 !important;
+  background-color: #fafafa !important;
+}
+.dark body.code-block-checkered .bn-editor pre {
+  background-image:
+    linear-gradient(45deg, #1e293b 25%, transparent 25%),
+    linear-gradient(-45deg, #1e293b 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #1e293b 75%),
+    linear-gradient(-45deg, transparent 75%, #1e293b 75%) !important;
+  background-color: #0f172a !important;
+}
+
+/* Zigzag row dividers — approximated via background image between rows. */
+body.table-row-divider-zigzag .bn-editor table tr + tr > * {
+  border-top: none !important;
+  background-image: linear-gradient(135deg, #94a3b8 25%, transparent 25%),
+    linear-gradient(225deg, #94a3b8 25%, transparent 25%);
+  background-size: 8px 4px;
+  background-repeat: repeat-x;
+  background-position: top;
+}
+
+/* Pin overlay callout — 📌 emoji floating in the upper-left, slightly outside. */
+body.callout-pin-overlay .bn-editor [data-content-type="callout"] {
+  position: relative;
+}
+body.callout-pin-overlay .bn-editor [data-content-type="callout"]::before {
+  content: "📌";
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  font-size: 1.5rem;
+  filter: drop-shadow(2px 3px 4px rgba(0, 0, 0, 0.3));
+  transform: rotate(-18deg);
+}
+
+/* Double margin — wider editor margins on both sides. */
+body.page-side-double-margin .bn-editor {
+  padding-left: 4rem !important;
+  padding-right: 4rem !important;
+  border-left: 1px dotted #cbd5e1;
+  border-right: 1px dotted #cbd5e1;
+}
+.dark body.page-side-double-margin .bn-editor {
+  border-left-color: #475569;
+  border-right-color: #475569;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

@@ -1116,6 +1116,11 @@ export function PageStyleMenu({
                       { key: "table-header-vertical-orientation", label: "V-head" },
                       { key: "callout-hand-pointer", label: "👉 callout" },
                       { key: "page-side-clip-paper-corner", label: "Clip+corner" },
+                      { key: "h2-with-corner-radius-blob", label: "H2 blob" },
+                      { key: "code-block-checkered", label: "Checkered" },
+                      { key: "table-row-divider-zigzag", label: "Zigzag rows" },
+                      { key: "callout-pin-overlay", label: "📌 overlay" },
+                      { key: "page-side-double-margin", label: "2x margin" },
                     ] as const
                   ).map((t) => (
                     <button
