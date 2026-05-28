@@ -2119,6 +2119,11 @@ export function PageStyleMenu({
                       { key: "callout-gvz-3", label: "callout gvz3" },
                       { key: "page-bg-gvz-4", label: "page-bg gvz4" },
                       { key: "heading-gvz-5", label: "heading gvz5" },
+                      { key: "code-block-gwo-1", label: "code-block gwo1" },
+                      { key: "table-gwo-2", label: "table gwo2" },
+                      { key: "callout-gwo-3", label: "callout gwo3" },
+                      { key: "page-bg-gwo-4", label: "page-bg gwo4" },
+                      { key: "heading-gwo-5", label: "heading gwo5" },
                     ] as const
                   ).map((t) => (
                     <button
