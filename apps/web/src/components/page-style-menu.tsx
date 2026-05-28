@@ -1999,6 +1999,11 @@ export function PageStyleMenu({
                       { key: "callout-gid-3", label: "callout gid3" },
                       { key: "page-bg-gid-4", label: "page-bg gid4" },
                       { key: "heading-gid-5", label: "heading gid5" },
+                      { key: "code-block-gis-1", label: "code-block gis1" },
+                      { key: "table-gis-2", label: "table gis2" },
+                      { key: "callout-gis-3", label: "callout gis3" },
+                      { key: "page-bg-gis-4", label: "page-bg gis4" },
+                      { key: "heading-gis-5", label: "heading gis5" },
                     ] as const
                   ).map((t) => (
                     <button

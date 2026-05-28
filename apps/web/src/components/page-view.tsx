@@ -1587,6 +1587,11 @@ export function PageView({
       "callout-gid-3",
       "page-bg-gid-4",
       "heading-gid-5",
+      "code-block-gis-1",
+      "table-gis-2",
+      "callout-gis-3",
+      "page-bg-gis-4",
+      "heading-gis-5",
     ];
     try {
       for (const k of toggles) {
