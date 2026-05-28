@@ -4876,6 +4876,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean FAQ 문서. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 주제 소개, 질문-답변 쌍(빈도 높은 순), 추가 문의처 구성으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
   doc_fit_d5: (text) =>
     `Write a Korean 보도자료. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 헤드라인, 리드 문단, 본문(세부/인용), 회사 소개(boilerplate), 문의처 구성으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  translate_fji_l1: (text) =>
+    `Translate the following Korean text into Oromo (Cushitic, Ethiopia). Use authentic, natural Oromo as a fluent speaker would write it. Provide the Oromo translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_fji_l2: (text) =>
+    `Translate the following Korean text into Shona (Bantu, Zimbabwe). Use authentic, natural Shona as a fluent speaker would write it. Provide the Shona translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_fji_l3: (text) =>
+    `Translate the following Korean text into Sesotho (Bantu, Lesotho). Use authentic, natural Sesotho as a fluent speaker would write it. Provide the Sesotho translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_fji_l4: (text) =>
+    `Translate the following Korean text into Tswana (Bantu, Botswana). Use authentic, natural Tswana as a fluent speaker would write it. Provide the Tswana translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_fji_l5: (text) =>
+    `Translate the following Korean text into Kikuyu (Bantu, Kenya). Use authentic, natural Kikuyu as a fluent speaker would write it. Provide the Kikuyu translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  doc_fji_d1: (text) =>
+    `Write a Korean 기능 스펙 문서. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 개요, 사용자 스토리, 수용 기준(AC), 엣지 케이스, 추적 지표 섹션으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  doc_fji_d2: (text) =>
+    `Write a Korean 해지/종료 안내문. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 변경 요약, 사유, 적용 일정, 사용자 영향, 대체 안내 구성으로 (정중하게). 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  doc_fji_d3: (text) =>
+    `Write a Korean 가격 제안서. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 제공 범위, 가격 옵션(표), 포함/불포함, 결제 조건, 유효기간 섹션으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  doc_fji_d4: (text) =>
+    `Write a Korean 백로그 개요. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 제목, 요약(TL;DR), 본문 구조(소제목 3-5개), 마무리, CTA 구성으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  doc_fji_d5: (text) =>
+    `Write a Korean 고객 설문 설계. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 목적, 대상, 질문 문항(객관식/주관식 혼합), 참여 안내 구성으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

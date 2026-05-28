@@ -1780,6 +1780,11 @@ export function PageStyleMenu({
                       { key: "callout-fit-3", label: "callout fit3" },
                       { key: "page-bg-fit-4", label: "page-bg fit4" },
                       { key: "heading-fit-5", label: "heading fit5" },
+                      { key: "code-block-fji-1", label: "code-block fji1" },
+                      { key: "table-fji-2", label: "table fji2" },
+                      { key: "callout-fji-3", label: "callout fji3" },
+                      { key: "page-bg-fji-4", label: "page-bg fji4" },
+                      { key: "heading-fji-5", label: "heading fji5" },
                     ] as const
                   ).map((t) => (
                     <button
