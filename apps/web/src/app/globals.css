@@ -4441,6 +4441,57 @@ body.page-side-double-rule .bn-editor {
   box-shadow: -8px 0 0 -6px #64748b;
 }
 
+/* H4 corner-radius blob — pink blob for H4. */
+body.h4-corner-radius-blob .bn-editor [data-content-type="heading"][data-level="4"] {
+  display: inline-block;
+  background: linear-gradient(95deg, #fbcfe8, transparent 70%);
+  padding: 0.14em 0.5em;
+  border-radius: 0 999px 999px 0;
+}
+.dark body.h4-corner-radius-blob .bn-editor [data-content-type="heading"][data-level="4"] {
+  background: linear-gradient(95deg, #831843, transparent 70%);
+}
+
+/* Loose line spacing in code — 1.8 line-height inside code blocks. */
+body.code-block-line-spacing-loose .bn-editor pre,
+body.code-block-line-spacing-loose .bn-editor pre code {
+  line-height: 1.8 !important;
+}
+
+/* Row hover emphasize — scale + shadow on row hover. */
+body.table-row-hover-emphasize .bn-editor table tbody tr {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+body.table-row-hover-emphasize .bn-editor table tbody tr:hover {
+  transform: scale(1.005);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+}
+
+/* Large side tab — wider colored tab on the left side of callouts. */
+body.callout-side-tab-large .bn-editor [data-content-type="callout"] {
+  position: relative;
+  padding-left: 3rem !important;
+}
+body.callout-side-tab-large .bn-editor [data-content-type="callout"]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2rem;
+  background: currentColor;
+  opacity: 0.18;
+  border-radius: inherit;
+}
+
+/* Edge gradient — soft gradient along the left edge of the editor. */
+body.page-edge-gradient .bn-editor {
+  background-image: linear-gradient(to right, rgba(59, 130, 246, 0.08), transparent 80px) !important;
+  background-repeat: no-repeat;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

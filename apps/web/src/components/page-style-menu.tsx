@@ -1126,6 +1126,11 @@ export function PageStyleMenu({
                       { key: "table-data-cell-mono", label: "Mono data" },
                       { key: "callout-cross-pattern-bg", label: "Cross bg" },
                       { key: "page-side-double-rule", label: "2x side rule" },
+                      { key: "h4-corner-radius-blob", label: "H4 blob" },
+                      { key: "code-block-line-spacing-loose", label: "Loose code" },
+                      { key: "table-row-hover-emphasize", label: "Hover emphasize" },
+                      { key: "callout-side-tab-large", label: "Large tab" },
+                      { key: "page-edge-gradient", label: "Edge grad" },
                     ] as const
                   ).map((t) => (
                     <button

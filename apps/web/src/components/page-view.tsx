@@ -714,6 +714,11 @@ export function PageView({
       "table-data-cell-mono",
       "callout-cross-pattern-bg",
       "page-side-double-rule",
+      "h4-corner-radius-blob",
+      "code-block-line-spacing-loose",
+      "table-row-hover-emphasize",
+      "callout-side-tab-large",
+      "page-edge-gradient",
     ];
     try {
       for (const k of toggles) {
