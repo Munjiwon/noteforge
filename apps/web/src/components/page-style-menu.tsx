@@ -1278,6 +1278,11 @@ export function PageStyleMenu({
                       { key: "table-rounded-corners", label: "Rounded table" },
                       { key: "callout-dashed-border", label: "Dashed border" },
                       { key: "page-bg-chevron-pattern", label: "Chevron" },
+                      { key: "heading-italic-all", label: "Italic head" },
+                      { key: "code-block-ayu-dark", label: "Ayu dark" },
+                      { key: "table-header-sticky", label: "Sticky head" },
+                      { key: "callout-pill-shape", label: "Pill shape" },
+                      { key: "page-bg-stars", label: "Stars" },
                     ] as const
                   ).map((t) => (
                     <button

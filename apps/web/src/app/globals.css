@@ -6053,6 +6053,47 @@ body.page-bg-chevron-pattern .bn-editor {
   background-size: 24px 24px !important;
 }
 
+/* Heading italic all — italicize all heading levels. */
+body.heading-italic-all .bn-editor [data-content-type="heading"] {
+  font-style: italic !important;
+}
+
+/* Code block Ayu dark — Ayu Dark palette for code blocks. */
+body.code-block-ayu-dark .bn-editor pre {
+  background: #0a0e14 !important;
+  border: 1px solid #1c212b !important;
+}
+body.code-block-ayu-dark .bn-editor pre code {
+  color: #b3b1ad !important;
+}
+
+/* Table header sticky — keep the header row visible while scrolling. */
+body.table-header-sticky .bn-editor table th {
+  position: sticky !important;
+  top: 0 !important;
+  background: #f4f4f5 !important;
+  z-index: 1 !important;
+}
+.dark body.table-header-sticky .bn-editor table th {
+  background: #27272a !important;
+}
+
+/* Callout pill shape — fully rounded pill-shaped callouts. */
+body.callout-pill-shape .bn-editor [data-content-type="callout"] {
+  border-radius: 999px !important;
+  padding-left: 1.4em !important;
+  padding-right: 1.4em !important;
+}
+
+/* Page bg stars — a sparse star/twinkle pattern behind the editor. */
+body.page-bg-stars .bn-editor {
+  background-image:
+    radial-gradient(circle, rgba(99, 102, 241, 0.18) 1px, transparent 2px),
+    radial-gradient(circle, rgba(236, 72, 153, 0.15) 1px, transparent 2px) !important;
+  background-size: 50px 50px, 80px 80px !important;
+  background-position: 0 0, 25px 25px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

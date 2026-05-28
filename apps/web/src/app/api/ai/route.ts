@@ -2872,6 +2872,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write Korean external release notes — customer-facing notes announcing what shipped. Use 해요체 (친근 + 명확). Markdown: '**한 줄 (이번 릴리스)**' (1줄 — 가장 큰 변화), '**새로운 기능 (bullets)**' (각 '**기능명** — 무엇을 / 사용자에게 어떤 이점' — 기능 위주, 내부 용어 금지), '**개선 (bullets)**', '**버그 수정 (bullets)**' (간결하게), '**알아두면 좋은 점 (1-2 bullets)**' (마이그레이션/주의), '**피드백 (1줄)**' (어디로). 친근하지만 과장 없이.\n\n릴리스 컨텍스트:\n${text}`,
   internal_meeting_notes_ko: (text) =>
     `Structure Korean meeting notes — turns raw meeting discussion into clean, actionable notes. Use 합쇼체. Markdown: '**한 줄 (회의)**' (1줄 — 목적 + 결론), '**참석자 (1줄)**', '**논의 요약 (bullets)**' (주제별 핵심), '**결정 사항 (bullets)**' (명확히 — '~하기로 함'), '**액션 아이템 (테이블)**' ('액션 | 담당 | 시한'), '**미해결 / 다음 논의 (bullets)**', '**다음 회의 (1줄)**' (있으면). 사실 중심, 누가 무슨 의견인지 필요한 경우만.\n\n회의 원문:\n${text}`,
+  translate_ko_to_dinka: (text) =>
+    `Translate the Korean text below into natural Dinka (Thuɔŋjäŋ) — Nilotic language of South Sudan. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Thuɔŋjäŋ**' and '**번역 노트**' (3 bullets in Korean — note Dinka is the most widely spoken language of South Sudan, a Western Nilotic language).\n\n원문:\n${text}`,
+  translate_ko_to_kanuri: (text) =>
+    `Translate the Korean text below into natural Kanuri — Nilo-Saharan language of northeastern Nigeria, Niger and Chad. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Kanuri**' and '**번역 노트**' (3 bullets in Korean — note Kanuri is the language of the historic Kanem-Bornu empire around Lake Chad).\n\n원문:\n${text}`,
+  translate_ko_to_zarma: (text) =>
+    `Translate the Korean text below into natural Zarma (Zarmaciine) — Songhay language of southwestern Niger. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Zarmaciine**' and '**번역 노트**' (3 bullets in Korean — note Zarma is the most widely spoken language of Niger after Hausa).\n\n원문:\n${text}`,
+  translate_ko_to_maasai: (text) =>
+    `Translate the Korean text below into natural Maa (Maasai) — Nilotic language of southern Kenya and northern Tanzania. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Maa**' and '**번역 노트**' (3 bullets in Korean — note Maa is an Eastern Nilotic language of the pastoralist Maasai people).\n\n원문:\n${text}`,
+  translate_ko_to_turkana: (text) =>
+    `Translate the Korean text below into natural Turkana (Ŋaturkana) — Nilotic language of northwestern Kenya. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Ŋaturkana**' and '**번역 노트**' (3 bullets in Korean — note Turkana is an Eastern Nilotic language closely related to Maa).\n\n원문:\n${text}`,
+  internal_tech_spike_summary_ko: (text) =>
+    `Write a Korean technical spike summary — reports the findings of a time-boxed investigation (spike). Use 합쇼체. Markdown: '**한 줄 (결론)**' (1줄 — 무엇을 알아냈고 권고는), '**스파이크 질문 (1줄)**' (무엇을 검증하려 했나), '**조사한 것 (bullets)**' (시도/실험), '**발견 (bullets)**' (사실 + 근거), '**옵션 비교 (테이블)**' ('옵션 | 장점 | 단점 | 리스크'), '**권고 (1단락)**' (무엇을 / 왜), '**남은 불확실성 (bullets)**', '**다음 단계 (1줄)**'. 사실과 의견을 구분.\n\n스파이크 컨텍스트:\n${text}`,
+  sales_cold_outreach_sequence_ko: (text) =>
+    `Write a Korean cold outreach email sequence — a 3-email sequence for prospecting a new account. Use 합쇼체 (정중 + 간결, 스팸 같지 않게). Markdown: '**시퀀스 목표 (1줄)**', '**이메일 1 — 첫 접촉**' ('제목:' 1줄 + 본문 4-5줄: 개인화 1줄 + 가치 가설 + 가벼운 CTA), '**이메일 2 — 팔로업 (3일 후)**' (다른 각도 + 사회적 증거 1줄), '**이메일 3 — 브레이크업 (5일 후)**' (짧게, 마지막, 부담 없이), '**팁 (2 bullets)**' (개인화 / 타이밍). 각 이메일 80단어 이내.\n\n프로스펙트 / 컨텍스트:\n${text}`,
+  customer_renewal_followup_email_ko: (text) =>
+    `Draft a Korean renewal follow-up email — sent after a renewal conversation to keep momentum. Use 합쇼체 (따뜻 + 명확). Markdown: '**제목**' (1줄), '**본문**' (3-4 단락: 1) 대화 감사 + 핵심 1줄 요약, 2) 합의/논의한 가치 다시 짚기 + 데이터 1줄, 3) 다음 단계 명확히 — 무엇을 / 언제까지 / 누가, 4) 가벼운 마무리 + 도움 제안), '**첨부/링크 제안 (1줄)**' (있으면). 압박 없이 신뢰 톤.\n\n갱신 대화 컨텍스트:\n${text}`,
+  pm_prioritization_rice_ko: (text) =>
+    `Produce a Korean RICE prioritization analysis — scores and ranks initiatives by Reach, Impact, Confidence, Effort. Use 합쇼체. Markdown: '**한 줄 (추천)**' (1줄 — 무엇을 먼저), '**RICE 점수 (테이블)**' ('항목 | Reach | Impact | Confidence(%) | Effort(인월) | RICE 점수'), '**점수 산정 노트 (bullets)**' (각 항목 가정 근거), '**우선순위 결과 (numbered)**' (점수 순 + 1줄 코멘트), '**주의 (bullets)**' (점수의 한계 / 전략적 예외), '**다음 액션 (1줄)**'. RICE = (Reach×Impact×Confidence)/Effort.\n\n이니셔티브 목록:\n${text}`,
+  internal_onboarding_buddy_guide_ko: (text) =>
+    `Write a Korean onboarding buddy guide — helps a buddy support a new hire's first weeks. Use 해요체 (친근 + 실용). Markdown: '**한 줄 (역할)**' (1줄 — 버디로서 무엇을), '**첫날 (bullets)**' (환영 / 소개 / 점심), '**첫 주 (bullets)**' (체크인 / 셋업 / 문화), '**첫 30일 (bullets)**' (점진적 깊이), '**정기 체크인 질문 (bullets)**' ('이번 주 막힌 거 있어요?' 류), '**소개해줄 사람 (bullets)**', '**하지 말 것 (1-2 bullets)**' (압도 금지 등), '**에스컬레이션 (1줄)**' (걱정되면 누구에게).\n\n온보딩 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
