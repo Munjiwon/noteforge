@@ -7514,6 +7514,51 @@ body.page-bg-soft-glow-tl .bn-editor {
   background-image: radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.14), transparent 45%) !important;
 }
 
+/* Heading square marker — prepend a "■ " marker to all headings. */
+body.heading-marker-square .bn-editor [data-content-type="heading"] > *:first-child::before {
+  content: "\25A0 ";
+  color: #6366f1;
+  margin-right: 0.25em;
+}
+
+/* Code block Modus — Modus Vivendi high-contrast palette for code blocks. */
+body.code-block-modus .bn-editor pre {
+  background: #000000 !important;
+  border: 1px solid #1e1e1e !important;
+}
+body.code-block-modus .bn-editor pre code {
+  color: #ffffff !important;
+}
+
+/* Table indigo zebra — indigo-tinted zebra striping on rows. */
+body.table-zebra-indigo .bn-editor table tr:nth-child(even) td {
+  background: rgba(79, 70, 229, 0.1) !important;
+}
+.dark body.table-zebra-indigo .bn-editor table tr:nth-child(even) td {
+  background: rgba(129, 140, 248, 0.16) !important;
+}
+
+/* Callout top tab — a small tab protruding from the callout's top edge. */
+body.callout-top-tab .bn-editor [data-content-type="callout"] {
+  position: relative;
+  margin-top: 12px !important;
+}
+body.callout-top-tab .bn-editor [data-content-type="callout"]::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 16px;
+  width: 36px;
+  height: 8px;
+  background: #6366f1;
+  border-radius: 4px 4px 0 0;
+}
+
+/* Page bg bottom-right glow — a soft glow from the bottom-right corner. */
+body.page-bg-soft-glow-br .bn-editor {
+  background-image: radial-gradient(circle at 100% 100%, rgba(236, 72, 153, 0.12), transparent 45%) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

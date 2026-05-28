@@ -1046,6 +1046,11 @@ export function PageView({
       "table-zebra-teal",
       "callout-double-stripe",
       "page-bg-soft-glow-tl",
+      "heading-marker-square",
+      "code-block-modus",
+      "table-zebra-indigo",
+      "callout-top-tab",
+      "page-bg-soft-glow-br",
     ];
     try {
       for (const k of toggles) {

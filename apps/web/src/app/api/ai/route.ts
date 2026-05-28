@@ -3592,6 +3592,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean monthly product metrics review — reviews product health metrics month over month. Use 합쇼체. Markdown: '**한 줄 (총평)**' (1줄 — 건강 + 핵심 추세), '**핵심 지표 (테이블)**' ('지표 | 지난달 | 이번달 | 변화 | 비고'): 노스스타 / 활성 / 리텐션 / 채택 / 전환, '**잘 되는 것 (bullets)**', '**우려 (bullets)**' (각 '지표 — 가능 원인'), '**세그먼트/코호트 인사이트 (bullets)**', '**가설 (bullets)**' (다음에 검증할 것), '**액션 (테이블)**' ('액션 | 담당'), '**주의 (1줄)**' (지표 해석 함정). 데이터 → 가설 → 액션.\n\n지표 컨텍스트:\n${text}`,
   internal_onboarding_plan_eng_ko: (text) =>
     `Write a Korean engineer onboarding plan — a structured first-90-days plan specifically for a new engineer. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 90일 후 모습), '**1주차 (bullets)**' (환경 셋업 / 첫 커밋 / 사람 만나기), '**2-4주차 (bullets)**' (작은 작업 독립 완수 / 코드베이스 이해), '**2개월차 (bullets)**' (기능 단위 오너십), '**3개월차 (bullets)**' (온콜 합류 / 설계 참여), '**마일스톤 (테이블)**' ('시점 | 기대 | 멘토'), '**리소스 (bullets)**' (런북 / 아키텍처 / 용어집), '**조기 신호 (1줄)**'. 점진적 + 안전하게.\n\n신규 엔지니어 컨텍스트:\n${text}`,
+  translate_ko_to_aleut: (text) =>
+    `Translate the Korean text below into natural Aleut (Unangam Tunuu) — an Eskimo-Aleut language of the Aleutian Islands, Alaska and Russia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Unangam Tunuu**' and '**번역 노트**' (3 bullets in Korean — note Aleut is the sole surviving branch of the Aleut side of Eskimo-Aleut, written in Latin script).\n\n원문:\n${text}`,
+  translate_ko_to_yupik: (text) =>
+    `Translate the Korean text below into natural Central Alaskan Yup'ik — an Eskimo-Aleut language of southwestern Alaska. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Yup'ik**' and '**번역 노트**' (3 bullets in Korean — note Central Yup'ik is one of the most-spoken Native languages of Alaska, highly polysynthetic).\n\n원문:\n${text}`,
+  translate_ko_to_inupiaq: (text) =>
+    `Translate the Korean text below into natural Iñupiaq — an Inuit (Eskimo-Aleut) language of northern Alaska. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Iñupiaq**' and '**번역 노트**' (3 bullets in Korean — note Iñupiaq is part of the Inuit dialect continuum stretching across the Arctic, written in Latin script).\n\n원문:\n${text}`,
+  translate_ko_to_alutiiq: (text) =>
+    `Translate the Korean text below into natural Alutiiq (Sugpiaq) — an Eskimo-Aleut (Yupik) language of south-central coastal Alaska. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Sugt'stun**' and '**번역 노트**' (3 bullets in Korean — note Alutiiq is a Yupik language of the Kodiak and Alaska Peninsula coast).\n\n원문:\n${text}`,
+  translate_ko_to_tlingit: (text) =>
+    `Translate the Korean text below into natural Tlingit (Lingít) — a Na-Dene language of southeastern Alaska and northwestern Canada. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Lingít**' and '**번역 노트**' (3 bullets in Korean — note Tlingit is a tonal Na-Dene language with one of the largest consonant inventories in the Americas).\n\n원문:\n${text}`,
+  internal_eng_health_review_ko: (text) =>
+    `Write a Korean engineering health review — a holistic review of an eng team's technical and delivery health. Use 합쇼체. Markdown: '**한 줄 (건강)**' (1줄 — 종합 + 핵심), '**전달 (bullets)**' (속도 / 예측성 / 품질), '**시스템 건강 (테이블)**' ('영역 | 상태 | 추세'): 신뢰성 / 성능 / 기술부채 / 보안, '**개발자 경험 (bullets)**' (빌드 / 배포 / toil / 사기), '**리스크 (bullets)**' (단일 의존 / 부채 누적), '**잘 되는 것 (bullets)**', '**개선 우선순위 (테이블)**' ('항목 | 영향 | 담당'), '**다음 검토 (1줄)**'. 균형 잡힌 진단.\n\n엔지니어링 건강 컨텍스트:\n${text}`,
+  sales_competitive_intel_update_ko: (text) =>
+    `Write a Korean competitive intelligence update — a periodic update on competitor moves for the field. Use 합쇼체. Markdown: '**한 줄 (핵심)**' (1줄 — 이번 기간 가장 중요한 경쟁 동향), '**경쟁사별 동향 (테이블)**' ('경쟁사 | 변화(제품/가격/포지셔닝) | 우리 영향 | 대응'), '**새 위협 (bullets)**', '**새 기회 (bullets)**' (그들의 약점/실수), '**필드 가이드 업데이트 (bullets)**' (배틀카드 변경점), '**우리가 강조할 메시지 (1줄)**', '**출처 (1줄)**' (신뢰도 표기). 추측은 표시, 행동 가능하게.\n\n경쟁 인텔 컨텍스트:\n${text}`,
+  customer_executive_sponsor_update_ko: (text) =>
+    `Draft a Korean executive sponsor update — a periodic update to an account's executive sponsor. Use 합쇼체 (간결 + 가치 + 격조). Markdown: '**제목**' (1줄), '**본문**' (3 단락: 1) 인사 + 지난 기간 핵심 성과 1-2줄(데이터), 2) 진행 / 다음 마일스톤 + 그들 비즈니스에 주는 의미, 3) 후원 요청 또는 전략 제안 1개 — 명확히), '**한눈 성과 (bullets)**' (2-3개 지표), '**다음 접점 (1줄)**'. 임원 시간 존중, 150단어 내외.\n\n스폰서 업데이트 컨텍스트:\n${text}`,
+  pm_product_health_review_ko: (text) =>
+    `Write a Korean product health review — a holistic review of a product's overall health. Use 합쇼체. Markdown: '**한 줄 (건강)**' (1줄 — 종합 + 핵심 신호), '**핵심 지표 (테이블)**' ('지표 | 현재 | 추세 | 목표'): 노스스타 / 리텐션 / 활성 / NPS / 매출, '**사용자 신호 (bullets)**' (피드백 / 지원 / 이탈), '**제품 영역별 상태 (bullets)**' (어디가 건강/병약), '**리스크 (bullets)**', '**기회 (bullets)**', '**우선 액션 (테이블)**' ('액션 | 근거 | 담당'), '**다음 검토 (1줄)**'. 지표 + 정성 신호 종합.\n\n제품 건강 컨텍스트:\n${text}`,
+  internal_eng_hiring_plan_ko: (text) =>
+    `Write a Korean engineering hiring plan — plans hiring for an eng team over a period. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 몇 명 / 어떤 역할 / 언제까지), '**필요 분석 (bullets)**' (왜 — 캐파갭 / 스킬갭 / 성장), '**역할 (테이블)**' ('역할 | 레벨 | 핵심 스킬 | 우선순위 | 목표 시점'), '**소싱 전략 (bullets)**' (채널 / 추천 / 다양성), '**인터뷰 프로세스 (1줄)**' (루프 / 기준), '**온보딩 준비 (bullets)**', '**리스크 (bullets)**' (시장 / 예산 / 시간), '**측정 (1줄)**' (퍼널 / 시간). 현실적 + 품질 우선.\n\n채용 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

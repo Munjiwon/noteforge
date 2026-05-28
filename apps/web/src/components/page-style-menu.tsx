@@ -1458,6 +1458,11 @@ export function PageStyleMenu({
                       { key: "table-zebra-teal", label: "Teal zebra" },
                       { key: "callout-double-stripe", label: "Double stripe" },
                       { key: "page-bg-soft-glow-tl", label: "TL glow" },
+                      { key: "heading-marker-square", label: "■ marker" },
+                      { key: "code-block-modus", label: "Modus" },
+                      { key: "table-zebra-indigo", label: "Indigo zebra" },
+                      { key: "callout-top-tab", label: "Top tab" },
+                      { key: "page-bg-soft-glow-br", label: "BR glow" },
                     ] as const
                   ).map((t) => (
                     <button
