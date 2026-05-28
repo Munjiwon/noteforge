@@ -1196,6 +1196,11 @@ export function PageStyleMenu({
                       { key: "table-zebra-blue-tone", label: "Blue zebra" },
                       { key: "callout-glow-green", label: "Green glow" },
                       { key: "page-bg-hexagon", label: "Hexagon" },
+                      { key: "h6-with-underline-double", label: "H6 2x underline" },
+                      { key: "code-block-rose", label: "Rose code" },
+                      { key: "table-zebra-green-tone", label: "Green zebra" },
+                      { key: "callout-glow-orange", label: "Orange glow" },
+                      { key: "page-bg-diagonal-lines", label: "Diagonal" },
                     ] as const
                   ).map((t) => (
                     <button

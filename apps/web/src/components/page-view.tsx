@@ -784,6 +784,11 @@ export function PageView({
       "table-zebra-blue-tone",
       "callout-glow-green",
       "page-bg-hexagon",
+      "h6-with-underline-double",
+      "code-block-rose",
+      "table-zebra-green-tone",
+      "callout-glow-orange",
+      "page-bg-diagonal-lines",
     ];
     try {
       for (const k of toggles) {
