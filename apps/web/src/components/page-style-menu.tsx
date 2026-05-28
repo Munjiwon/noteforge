@@ -2004,6 +2004,11 @@ export function PageStyleMenu({
                       { key: "callout-gis-3", label: "callout gis3" },
                       { key: "page-bg-gis-4", label: "page-bg gis4" },
                       { key: "heading-gis-5", label: "heading gis5" },
+                      { key: "code-block-gjh-1", label: "code-block gjh1" },
+                      { key: "table-gjh-2", label: "table gjh2" },
+                      { key: "callout-gjh-3", label: "callout gjh3" },
+                      { key: "page-bg-gjh-4", label: "page-bg gjh4" },
+                      { key: "heading-gjh-5", label: "heading gjh5" },
                     ] as const
                   ).map((t) => (
                     <button
