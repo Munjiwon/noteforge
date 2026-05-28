@@ -1071,6 +1071,11 @@ export function PageStyleMenu({
                       { key: "table-first-row-highlight", label: "1st row hl" },
                       { key: "callout-quote-mark-large", label: "Quote mark" },
                       { key: "page-side-page-numbers", label: "Side pg #" },
+                      { key: "h5-with-diamond-prefix", label: "H5 ◇" },
+                      { key: "code-block-solarized-light", label: "Solarized" },
+                      { key: "table-numbered-cols", label: "Col #" },
+                      { key: "callout-pulse-once", label: "Pulse once" },
+                      { key: "page-side-rule-right", label: "Right rule" },
                     ] as const
                   ).map((t) => (
                     <button

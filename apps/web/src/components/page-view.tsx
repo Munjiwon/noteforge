@@ -659,6 +659,11 @@ export function PageView({
       "table-first-row-highlight",
       "callout-quote-mark-large",
       "page-side-page-numbers",
+      "h5-with-diamond-prefix",
+      "code-block-solarized-light",
+      "table-numbered-cols",
+      "callout-pulse-once",
+      "page-side-rule-right",
     ];
     try {
       for (const k of toggles) {

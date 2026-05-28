@@ -3783,6 +3783,58 @@ body.page-side-page-numbers .bn-editor > .bn-block-group > .bn-block-outer::afte
   font-variant-numeric: tabular-nums;
 }
 
+/* H5 with diamond prefix — prepends ◇ to H5 headings. */
+body.h5-with-diamond-prefix .bn-editor [data-content-type="heading"][data-level="5"] > *:first-child::before {
+  content: "◇ ";
+  color: #c026d3;
+  margin-right: 0.2em;
+}
+.dark body.h5-with-diamond-prefix .bn-editor [data-content-type="heading"][data-level="5"] > *:first-child::before {
+  color: #e879f9;
+}
+
+/* Solarized light — classic Solarized cream palette for code. */
+body.code-block-solarized-light .bn-editor pre {
+  background: #fdf6e3 !important;
+  color: #586e75 !important;
+  border: 1px solid #eee8d5;
+}
+body.code-block-solarized-light .bn-editor pre code {
+  color: #073642 !important;
+}
+
+/* Numbered columns — add 1./2./3. counters in header row. */
+body.table-numbered-cols .bn-editor table thead tr {
+  counter-reset: tcol;
+}
+body.table-numbered-cols .bn-editor table thead th {
+  counter-increment: tcol;
+}
+body.table-numbered-cols .bn-editor table thead th::before {
+  content: counter(tcol) ". ";
+  color: #94a3b8;
+  margin-right: 0.3em;
+}
+
+/* Pulse once — subtle attention pulse animation on callouts. */
+@keyframes calloutPulseOnce {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+  50% { transform: scale(1.01); box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.18); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+}
+body.callout-pulse-once .bn-editor [data-content-type="callout"] {
+  animation: calloutPulseOnce 1.6s ease 1;
+}
+
+/* Side rule right — vertical rule on the right edge of the editor. */
+body.page-side-rule-right .bn-editor {
+  border-right: 3px double #94a3b8;
+  padding-right: 1.5rem !important;
+}
+.dark body.page-side-rule-right .bn-editor {
+  border-right-color: #475569;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

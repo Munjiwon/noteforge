@@ -2048,6 +2048,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Translate the Korean text below into natural Austrian German (österreichisches Deutsch). 격식 ('Sie' 정중 / 'du' 친근) 원문에 맞춤. Use Austrian vocabulary where natural (e.g., 'Jänner' for January, 'Erdäpfel' for potatoes, 'Sackerl' for bag). Reply with two sections: '**Übersetzung**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
   weekly_team_health_pulse_ko: (text) =>
     `Build a Korean weekly team health pulse — short async form sent every Friday to team members. Use 해요체. 익명 옵션 강조. Markdown: '**제목 (이메일 / 폼)**' (1줄 — '주간 health pulse — 30초만'), '**왜 보내요 (1줄)**' (1줄 — '매니저가 빨리 도울 수 있게'), '**질문 (5개, 각 1-5 척도)**' (numbered: 1) 이번 주 명확성 (내가 해야 할 게 명확했나) 1-5, 2) 협업 (도움 요청에 응답 받았나) 1-5, 3) 진척 (의미 있는 진전을 느꼈나) 1-5, 4) 에너지 (이번 주 끝에 에너지가 남았나) 1-5, 5) 답하고 싶은 1가지 (open)), '**보내는 방법**' (1줄 — 'Slack 폼 / Google Form 익명 / Notion'), '**매니저가 어떻게 쓰나요 (1단락)**' (3-4줄 — 보이는 패턴에 대응 / 개인 1:1 시 사용 / 절대 평가에 안 씀).\n\n팀 / 컨텍스트:\n${text}`,
+  translate_ko_to_andean_spanish: (text) =>
+    `Translate the Korean text below into natural Andean Spanish (español andino — Bolivia / Peru / Ecuador 산악 지역). 격식 ('usted' 정중 / 'tú' 친근) 원문에 맞춤. Quechua / Aymara 영향 어휘 자연스럽게 사용 가능. Reply with two sections: '**Traducción**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  customer_qr_code_handout_ko: (text) =>
+    `Build a Korean customer-facing QR code handout — printable 1 페이지 for events / trade shows. Use 해요체. 짧 + 행동 위주. Markdown: '**메인 메시지 (큰 글씨)**' (1줄, 12자 이내 — 'QR을 찍으세요 — [핵심 가치]'), '**서브 메시지 (1줄)**' (1줄 — 무엇이 일어날지), '**3가지 베네핏 (bullets)**' (각 1줄 — 시간 / 비용 / 결과), '**QR 코드 + landing URL (placeholder)**' (1줄), '**CTA**' (1줄 — 'X분 안 / 무료 / 회원가입 불요'), '**소속 표시**' (1줄 — 회사 / 부스 번호 / 담당).\n\n이벤트 / 제품 컨텍스트:\n${text}`,
+  translate_ko_to_caribbean_spanish: (text) =>
+    `Translate the Korean text below into natural Caribbean Spanish (español caribeño — Cuba / DR / PR / Venezuela coast). 격식 ('usted' 정중 / 'tú' 친근) 원문에 맞춤. 빠른 / 친근한 톤이 표준, 'h' / 's' 발음 약함 (글에는 표시 X). Reply with two sections: '**Traducción**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  exec_team_huddle_agenda_ko: (text) =>
+    `Build a Korean exec team huddle (weekly 30-min stand-up) agenda. Use 합쇼체. 짧 + 결정 위주, 단순 업데이트는 사전 share. Markdown: '**Huddle 한 줄**' (1줄 — '이번 주 핵심 결정 / 우려 1줄'), '**Pre-read (이미 share 된 것)**' (bullets — Slack 링크 placeholder), '**Agenda (30분 — 테이블)**' ('시간 | 항목 | 진행자 | 결정 또는 토론'), '**결정 필요 사항 (3개 max — numbered)**' (각 '결정 1줄 / 옵션 1-2 / 우리 추천'), '**위험 / 안 좋은 신호 (Top 3)**' (bullets — 누가 / 무엇 / 우리 대응), '**좋은 신호 (Top 2)**' (bullets), '**Skip / 다음 주로 미루는 것**' (bullets), '**Owner / 시한**' (테이블 — 'huddle 후 액션 | 담당 | 시한').\n\n이번 주 컨텍스트:\n${text}`,
+  translate_ko_to_chilean_spanish: (text) =>
+    `Translate the Korean text below into natural Chilean Spanish (español chileno). 격식 ('usted' 정중 / 'tú' 친근) 원문에 맞춤. Chilean expressions 자연스럽게 ('po' 어말 / 'cachai' 친근). Reply with two sections: '**Traducción**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  customer_loyalty_offer_email_ko: (text) =>
+    `Draft a Korean customer loyalty offer email — sent to long-time customers (보통 12+ months) with a thank-you + exclusive offer. Use 해요체. 진심 + 명확한 가치. Markdown: '**제목**' (1줄, 26자 이내 — '[고객명]님, 1년 함께해 주셔서 감사해요'), '**본문**' (4 단락: 1) 1-2줄 — 함께한 X개월 감사 + 본인이 직접 본 한 가지 그쪽 성장, 2) 진심 1단락 — 왜 그쪽 같은 분이 우리에게 중요한지, 3) Exclusive offer 명확히 — 무엇 / 얼마 / 언제까지 / 어떻게 (긴급한 톤 X, 'X일 안에' 같은 fake 시간 X), 4) 짧은 부탁 — '5분 통화로 어떻게 더 잘 도울 수 있을지 듣고 싶어요' — 옵션), '**P.S.**' (1줄 — 추천하면 양쪽에 추가 보상 안내).\n\n고객 / 관계 컨텍스트:\n${text}`,
+  translate_ko_to_peruvian_spanish: (text) =>
+    `Translate the Korean text below into natural Peruvian Spanish (español peruano). 격식 ('usted' 정중 / 'tú' 친근) 원문에 맞춤. Lima 표준 또는 Quechua 영향 표현 가능. Reply with two sections: '**Traducción**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  internal_skip_level_invite_ko: (text) =>
+    `Draft a Korean skip-level 1:1 meeting invite — sent by skip-level manager (매니저의 매니저) to an IC. Use 해요체. 따뜻 + 안전 + 명확. 'evaluation' 톤 절대 X. Markdown: '**제목**' (1줄, 22자 이내 — '[이름]님, 30분 커피챗 어떠세요?'), '**본문**' (3 단락: 1) 1-2줄 — 본인 소개 (이미 알 수도) + 정기적으로 우리 팀 모두와 1:1 하는 이유 — 듣는 것이 목적, 2) 우리가 다룰 수 있는 것 — 본인 일 / 잘 되는 것 / 막힘 / 매니저에게 말하기 어려운 것 — 자유롭게, 평가가 아님 강조, 3) 일정 후보 3개 + 시간대 / 방식 (커피 / 산책 / Zoom)), '**P.S.**' (1줄 — 'Topic 미리 안 주셔도 OK, 아무 부담 없이 와주세요').\n\n관계 / 컨텍스트:\n${text}`,
+  translate_ko_to_colombian_spanish: (text) =>
+    `Translate the Korean text below into natural Colombian Spanish (español colombiano). 격식 ('usted' 정중 — Colombian 정중 표준 사용 빈도 높음 / 'tú' 친근) 원문에 맞춤. Paisa / Bogotano expressions 자연스럽게. Reply with two sections: '**Traducción**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  customer_quarterly_winback_email_ko: (text) =>
+    `Draft a Korean quarterly customer winback email — sent to customers who churned 3+ months ago. Use 해요체. 자존심 / sales 톤 X, 호기심 + 가치. Markdown: '**제목**' (1줄, 26자 이내 — '오랜만이에요 — [회사명] 잠깐 안부'), '**본문**' (3 단락: 1) 1-2줄 — 떠난 지 X개월 + 마지막으로 봤을 때 함께한 성과 1줄 — 진심으로, 2) 그동안 우리가 한 1-2가지 — 그쪽이 떠난 이유와 관련 있는 변화 — '그때 ~ 때문에 떠나셨던 것 기억해요. 그 부분 X 이렇게 달라졌어요', 3) 부담 없는 다음 단계 — '20분 통화로 다시 한 번 보실 가치 있는지 같이 판단 / 새 시도 가능' — 강제 X), '**P.S.**' (1줄 — '만약 다른 도구로 잘 해결되셨다면 정말 다행이에요, 우리 계속 응원해요').\n\n고객 / 떠난 이유 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
