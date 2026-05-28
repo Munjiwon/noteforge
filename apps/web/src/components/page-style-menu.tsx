@@ -2084,6 +2084,11 @@ export function PageStyleMenu({
                       { key: "callout-gry-3", label: "callout gry3" },
                       { key: "page-bg-gry-4", label: "page-bg gry4" },
                       { key: "heading-gry-5", label: "heading gry5" },
+                      { key: "code-block-gsn-1", label: "code-block gsn1" },
+                      { key: "table-gsn-2", label: "table gsn2" },
+                      { key: "callout-gsn-3", label: "callout gsn3" },
+                      { key: "page-bg-gsn-4", label: "page-bg gsn4" },
+                      { key: "heading-gsn-5", label: "heading gsn5" },
                     ] as const
                   ).map((t) => (
                     <button
