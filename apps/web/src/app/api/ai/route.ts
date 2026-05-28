@@ -3676,6 +3676,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean interview scorecard / 평가표 template for evaluating a candidate after an interview. 공정하고 구조화된 톤. Markdown: '**지원자 / 포지션**' (1줄), '**평가 역량**' (입력의 직무 기준으로 4-6개 역량 — 각 역량별 정의 1줄 + 4점 척도 기준), '**인터뷰 노트**' (관찰 근거를 적는 빈 칸 안내), '**종합 점수 / 추천**' (Strong Hire / Hire / No Hire / Strong No Hire 중 택1 + 근거 1단락), '**후속 확인 사항**' (다음 라운드에서 검증할 점). 입력에 있는 직무/역량만.\n\n포지션 정보:\n${text}`,
   customer_success_qbr_ko: (text) =>
     `Write a Korean Quarterly Business Review (QBR) outline for a Customer Success Manager presenting to a key account. 신뢰감 + 가치 입증 톤. Markdown: '**분기 요약 (1줄)**', '**달성한 가치 / 성과**' (지표 + 비즈니스 임팩트 — 입력 데이터 기반), '**제품 활용 현황**' (사용량/도입 기능 bullets), '**오픈 이슈 / 리스크**' (해결 상태 포함), '**다음 분기 목표**' (체크박스), '**확장 / 갱신 제안 (1단락)**'. 입력에 있는 사실만, 수치 없으면 '데이터 확인 필요'로 표기.\n\n계정 정보:\n${text}`,
+  translate_eap_l1: (text) =>
+    `Translate the following Korean text into Friulian (Romance, NE Italy). Use authentic, natural Friulian as a fluent speaker would write it. Provide the Friulian translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_eap_l2: (text) =>
+    `Translate the following Korean text into Occitan (Romance, southern France). Use authentic, natural Occitan as a fluent speaker would write it. Provide the Occitan translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_eap_l3: (text) =>
+    `Translate the following Korean text into Breton (Celtic, Brittany). Use authentic, natural Breton as a fluent speaker would write it. Provide the Breton translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_eap_l4: (text) =>
+    `Translate the following Korean text into Cornish (Celtic, Cornwall). Use authentic, natural Cornish as a fluent speaker would write it. Provide the Cornish translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_eap_l5: (text) =>
+    `Translate the following Korean text into Manx (Celtic, Isle of Man). Use authentic, natural Manx as a fluent speaker would write it. Provide the Manx translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  doc_eap_d1: (text) =>
+    `Write a Korean 배포 노트. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 이번 배포 하이라이트, 새 기능, 개선 사항, 버그 수정, 알림 섹션으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  doc_eap_d2: (text) =>
+    `Write a Korean 채용 공고. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 포지션 소개, 주요 업무, 자격 요건, 우대 사항, 복리후생, 지원 방법 섹션으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  doc_eap_d3: (text) =>
+    `Write a Korean 영업 제안 메일. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 인사, 고객 과제 공감, 제안 가치, 다음 단계(CTA) 구성으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  doc_eap_d4: (text) =>
+    `Write a Korean 온보딩 가이드. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 환영 메시지, 첫주 할 일 체크리스트, 주요 도구, 도움을 받을 곳 섹션으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  doc_eap_d5: (text) =>
+    `Write a Korean 성과 평가 자기서술. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 핵심 성과, 기여도, 성장 영역, 다음 분기 목표 섹션으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

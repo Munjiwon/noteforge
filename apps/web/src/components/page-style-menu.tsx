@@ -1480,6 +1480,11 @@ export function PageStyleMenu({
                       { key: "callout-emerald-tint", label: "Emerald tint" },
                       { key: "page-bg-engraved-grid", label: "Engraved grid" },
                       { key: "heading-emerald-underline", label: "Emerald underline" },
+                      { key: "code-block-eap-1", label: "code-block eap1" },
+                      { key: "table-eap-2", label: "table eap2" },
+                      { key: "callout-eap-3", label: "callout eap3" },
+                      { key: "page-bg-eap-4", label: "page-bg eap4" },
+                      { key: "heading-eap-5", label: "heading eap5" },
                     ] as const
                   ).map((t) => (
                     <button

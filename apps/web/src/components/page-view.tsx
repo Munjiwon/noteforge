@@ -1068,6 +1068,11 @@ export function PageView({
       "callout-emerald-tint",
       "page-bg-engraved-grid",
       "heading-emerald-underline",
+      "code-block-eap-1",
+      "table-eap-2",
+      "callout-eap-3",
+      "page-bg-eap-4",
+      "heading-eap-5",
     ];
     try {
       for (const k of toggles) {
