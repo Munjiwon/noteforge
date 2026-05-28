@@ -3334,6 +3334,73 @@ body.page-edge-rule-left .bn-editor {
   border-left-color: #fbbf24;
 }
 
+/* H4 with square bullet — prepends ◾ to H4 headings. */
+body.h4-with-square-bullet .bn-editor [data-content-type="heading"][data-level="4"] > *:first-child::before {
+  content: "◾ ";
+  color: #475569;
+  margin-right: 0.2em;
+}
+.dark body.h4-with-square-bullet .bn-editor [data-content-type="heading"][data-level="4"] > *:first-child::before {
+  color: #94a3b8;
+}
+
+/* Code block typewriter feel — light cream bg + monospace + slight character spacing. */
+body.code-block-typewriter .bn-editor pre {
+  background: #fefce8 !important;
+  font-family: "Courier New", "Courier", monospace !important;
+  letter-spacing: 0.04em;
+  border: 1px solid #fde68a;
+}
+.dark body.code-block-typewriter .bn-editor pre {
+  background: #2a2914 !important;
+  border-color: #4a4220;
+}
+
+/* Table soft divider — replace cell borders with subtle horizontal dividers only. */
+body.table-soft-divider .bn-editor table td,
+body.table-soft-divider .bn-editor table th {
+  border: none !important;
+  border-bottom: 1px solid rgba(120, 120, 120, 0.18) !important;
+}
+.dark body.table-soft-divider .bn-editor table td,
+.dark body.table-soft-divider .bn-editor table th {
+  border-bottom-color: rgba(200, 200, 200, 0.14) !important;
+}
+
+/* Callout double border — outer border + inset secondary line for a more formal look. */
+body.callout-double-border .bn-editor [data-content-type="callout"] {
+  border: 3px double #6366f1;
+  outline: 1px solid #c7d2fe;
+  outline-offset: 2px;
+}
+.dark body.callout-double-border .bn-editor [data-content-type="callout"] {
+  border-color: #818cf8;
+  outline-color: #3730a3;
+}
+
+/* Washi tape corner — decorative top-right tape strip on editor. */
+body.page-tape-corner .bn-editor {
+  position: relative;
+}
+body.page-tape-corner .bn-editor::after {
+  content: "";
+  position: absolute;
+  top: -8px;
+  right: 30px;
+  width: 80px;
+  height: 24px;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(244, 114, 182, 0.7),
+    rgba(244, 114, 182, 0.7) 4px,
+    rgba(251, 207, 232, 0.7) 4px,
+    rgba(251, 207, 232, 0.7) 8px
+  );
+  transform: rotate(6deg);
+  pointer-events: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

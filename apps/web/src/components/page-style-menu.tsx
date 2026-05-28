@@ -1036,6 +1036,11 @@ export function PageStyleMenu({
                       { key: "table-header-emoji-prefix", label: "📌 header" },
                       { key: "callout-corner-fold-decoration", label: "Callout fold" },
                       { key: "page-edge-rule-left", label: "Edge rule" },
+                      { key: "h4-with-square-bullet", label: "H4 ◾" },
+                      { key: "code-block-typewriter", label: "Typewriter" },
+                      { key: "table-soft-divider", label: "Soft divider" },
+                      { key: "callout-double-border", label: "2× border" },
+                      { key: "page-tape-corner", label: "Washi tape" },
                     ] as const
                   ).map((t) => (
                     <button

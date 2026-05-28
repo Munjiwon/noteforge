@@ -1908,6 +1908,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Translate the Korean text below into natural Irish (Gaeilge). 격식 ('sibh' 정중 / 'tú' 친근) 원문에 맞춤. Reply with two sections: '**Aistriúchán**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
   quarterly_growth_review_email_ko: (text) =>
     `Draft a Korean quarterly growth review email — sent by Head of Growth to leadership team. Use 합쇼체. Markdown: '**제목**' (1줄, 28자 이내 — 'Q[X] Growth Review — 한 줄 요약'), '**본문**' (5 단락: 1) 한 줄 결론 + 신호등 (Green/Yellow/Red), 2) 핵심 메트릭 (4-5개 — 각 'X: A → B, 목표 C, 결론'), 3) 잘 된 실험 / 채널 — 2-3개, 무엇을 / 왜 작동 / 어떻게 확장, 4) 안 된 실험 / 채널 — 2-3개, 무엇을 / 왜 안 됨 / 멈출지 계속할지, 5) 다음 분기 베팅 3가지 + 필요한 자원), '**부록**' (bullets — 메트릭 dashboard / 실험 결과 raw).\n\n분기 데이터:\n${text}`,
+  translate_ko_to_scottish_gaelic: (text) =>
+    `Translate the Korean text below into natural Scottish Gaelic (Gàidhlig). 격식 ('sibh' 정중 / 'thu' 친근) 원문에 맞춤. Reply with two sections: '**Eadar-theangachadh**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  pm_weekly_writeup_to_eng_ko: (text) =>
+    `Draft a Korean weekly writeup from PM to the engineering team — posted in #eng-product Slack on Friday. Use 해요체. 짧고 친근, 디테일 가득. Markdown: '**이번 주 한 줄**' (1줄 — 'X 출시 / Y 결정 / Z 막힘'), '**출시 / 머지된 것**' (3 bullets — 무엇 / 누가 / 영향), '**우리가 결정한 것 + 왜**' (2 bullets), '**막힌 것 / 도움 필요한 것**' (2 bullets — 구체적 — '@사람 X 까지 ~ 가능?'), '**다음 주 우선순위 (상위 3개)**' (numbered), '**사용자 / 데이터에서 배운 것**' (1-2 bullets — '이번 주 사용자가 ~ 했어요'), '**감사**' (1줄 — 도움 준 사람 호명).\n\n이번 주 컨텍스트:\n${text}`,
+  translate_ko_to_catalan: (text) =>
+    `Translate the Korean text below into natural Catalan (català). 격식 ('vostè' 매우 정중 / 'vós' 정중 / 'tu' 친근) 원문에 맞춤. Reply with two sections: '**Traducció**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  incident_communications_press_ko: (text) =>
+    `Draft a Korean press / external statement about an ongoing or just-resolved incident — for journalists / 비즈니스 매체. Use 합쇼체. 사실 + 인정 + 사용자 보호 + 다음 단계. 변명 / 'we cannot disclose' 회피 금지. Markdown: '**제목**' (1줄, 32자 이내 — '[회사명] 사고 / 보안 사건 안내 — YYYY-MM-DD'), '**본문**' (4 단락: 1) 1-2줄 — 무엇이 / 언제 / 누가 영향 (정확히 / 추정 X), 2) 우리가 무엇을 했는지 — 감지 시각 / 대응 / 복구 — 시간순, 3) 사용자에게 미치는 영향 + 우리가 사용자를 위해 한 행동 — 비밀번호 강제 reset / 알림 / 보상, 4) 우리가 알게 된 / 알아내야 할 것 + 다음 update 시점 + 연락처), '**프레스 문의**' (1줄 — 이름 + 이메일).\n\n사건 + 사실 컨텍스트:\n${text}`,
+  translate_ko_to_basque: (text) =>
+    `Translate the Korean text below into natural Basque (euskara). 격식 ('zu' 정중 / 'hi' 친근 — 거의 안 씀) 원문에 맞춤. Reply with two sections: '**Itzulpena**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  customer_health_review_call_ko: (text) =>
+    `Build a Korean customer health review call prep doc — for CSM doing a monthly check-in with mid-market customer. Use 해요체. Markdown: '**고객 한 줄**' (회사 / 산업 / 우리와 X개월, 계약 금액), '**Health Score**' (1줄 — 신호등 + 한 줄 근거), '**사용 트렌드 (3 bullets)**' (DAU/WAU/MAU / 적극 사용 기능 / 30일 미사용 기능), '**티켓 트렌드**' (1줄 — 지난 30일 N건, 주제 패턴 1줄), '**리스크 신호**' (3 bullets — adoption 정체 / 챔피언 이직 / 사용량 감소), '**기회 신호**' (2 bullets — 새 use case / 추가 좌석 가능성), '**미팅 어젠다 (30분)**' (numbered — '안부 5분 / health 리뷰 10분 / 이슈 토론 10분 / 다음 30일 5분'), '**미팅에서 묻고 싶은 3가지**' (questions), '**미팅 후 follow-up 초안**' (1단락).\n\n고객 / 사용 데이터:\n${text}`,
+  translate_ko_to_galician: (text) =>
+    `Translate the Korean text below into natural Galician (galego). 격식 ('vostede' 정중 / 'ti' 친근) 원문에 맞춤. Reply with two sections: '**Tradución**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  marketing_brief_template_ko: (text) =>
+    `Build a Korean marketing brief template — filled out by PM / 마케팅 매니저 before a campaign kickoff. Use 합쇼체. Markdown: '**캠페인 한 줄**' (1줄 — 무엇을 / 누구에게 / 언제까지), '**목표 (정량)**' (bullets — '리드 X개 / 가입 Y / 매출 Z'), '**타겟 페르소나**' (2-3 bullets — 직책 / 회사 크기 / 페인), '**메시지 (1단락)**' (3-4줄 — 우리가 그들에게 하고 싶은 한 마디), '**핵심 가치 제안 (3 bullets)**' (왜 우리 / 왜 지금 / 우리만 가능한 것), '**채널 + 자산**' (테이블 — '채널 | 자산 종류 | 담당 | 시한'), '**예산**' (1줄), '**측정 방법**' (bullets — 어떤 메트릭 / 어디서 / 누가 report), '**위험 / 의존성**' (2 bullets), '**Kill criteria**' (1줄 — 'X 기준 못 넘기면 중단').\n\n캠페인 컨텍스트:\n${text}`,
+  translate_ko_to_yoruba: (text) =>
+    `Translate the Korean text below into natural Yoruba (Èdè Yorùbá). 격식 ('ẹ' 정중 / 'o' 친근) 원문에 맞춤. Reply with two sections: '**Ìtumọ̀**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  engineering_team_charter_ko: (text) =>
+    `Draft a Korean engineering team charter — pinned in the team's home channel, used for onboarding new engineers + alignment. Use 해요체. Markdown: '**팀 한 줄**' (1줄 — 우리 팀이 회사에서 어떤 책임을 갖는지), '**우리가 책임지는 영역 (System / Surface)**' (bullets — 서비스 / 코드베이스 / SLO), '**우리가 책임지지 않는 영역 (with 누구에게 위임)**' (bullets — 명확히), '**현재 미션 (이번 분기)**' (1단락 + 3 measurable bullets), '**일하는 방식**' (bullets — 미팅 / 코드리뷰 / on-call / Sprint), '**도구 / 다이어그램**' (bullets + placeholder for diagram link), '**우리 팀과 일하려면**' (1단락 — 다른 팀이 우리에게 부탁할 때 어떤 채널 / 양식 / SLA), '**팀원 + 역할**' (테이블 — '이름 | 직책 | 주력 영역 | 백업').\n\n팀 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
