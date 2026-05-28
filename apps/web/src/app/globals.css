@@ -5553,6 +5553,49 @@ body.page-bg-plus-pattern .bn-editor {
     linear-gradient(90deg, rgba(148, 163, 184, 0.1) 2px, transparent 2px) !important;
 }
 
+/* H6 with dotted underline. */
+body.h6-with-dotted-underline .bn-editor [data-content-type="heading"][data-level="6"] {
+  border-bottom: 2px dotted #94a3b8;
+  padding-bottom: 0.05em;
+}
+
+/* Indigo code — rich indigo palette. */
+body.code-block-indigo .bn-editor pre {
+  background: #1e1b4b !important;
+  color: #c7d2fe !important;
+  border: 1px solid #3730a3;
+}
+body.code-block-indigo .bn-editor pre code {
+  color: #a5b4fc !important;
+}
+
+/* Cross hover — highlight the hovered cell's whole row visually (via row hover). */
+body.table-cell-hover-row-col .bn-editor table tbody tr:hover {
+  background: rgba(99, 102, 241, 0.08) !important;
+}
+body.table-cell-hover-row-col .bn-editor table td:hover {
+  background: rgba(99, 102, 241, 0.18) !important;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
+}
+
+/* Cyan glow callout. */
+body.callout-glow-cyan .bn-editor [data-content-type="callout"] {
+  box-shadow: 0 0 4px #22d3ee, 0 0 12px rgba(34, 211, 238, 0.5);
+  border: 1px solid #22d3ee;
+}
+
+/* Cross-hatch page background — diagonal cross-hatching. */
+body.page-bg-cross-hatch .bn-editor {
+  background-image:
+    repeating-linear-gradient(45deg, rgba(100, 116, 139, 0.06) 0, rgba(100, 116, 139, 0.06) 1px, transparent 1px, transparent 9px),
+    repeating-linear-gradient(-45deg, rgba(100, 116, 139, 0.06) 0, rgba(100, 116, 139, 0.06) 1px, transparent 1px, transparent 9px) !important;
+}
+.dark body.page-bg-cross-hatch .bn-editor {
+  background-image:
+    repeating-linear-gradient(45deg, rgba(148, 163, 184, 0.06) 0, rgba(148, 163, 184, 0.06) 1px, transparent 1px, transparent 9px),
+    repeating-linear-gradient(-45deg, rgba(148, 163, 184, 0.06) 0, rgba(148, 163, 184, 0.06) 1px, transparent 1px, transparent 9px) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

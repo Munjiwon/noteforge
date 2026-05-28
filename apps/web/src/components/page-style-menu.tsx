@@ -1226,6 +1226,11 @@ export function PageStyleMenu({
                       { key: "table-cell-hover-highlight", label: "Cell hover" },
                       { key: "callout-glow-amber", label: "Amber glow" },
                       { key: "page-bg-plus-pattern", label: "Plus pattern" },
+                      { key: "h6-with-dotted-underline", label: "H6 dot underline" },
+                      { key: "code-block-indigo", label: "Indigo code" },
+                      { key: "table-cell-hover-row-col", label: "Cross hover" },
+                      { key: "callout-glow-cyan", label: "Cyan glow" },
+                      { key: "page-bg-cross-hatch", label: "Cross-hatch" },
                     ] as const
                   ).map((t) => (
                     <button

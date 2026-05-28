@@ -814,6 +814,11 @@ export function PageView({
       "table-cell-hover-highlight",
       "callout-glow-amber",
       "page-bg-plus-pattern",
+      "h6-with-dotted-underline",
+      "code-block-indigo",
+      "table-cell-hover-row-col",
+      "callout-glow-cyan",
+      "page-bg-cross-hatch",
     ];
     try {
       for (const k of toggles) {
