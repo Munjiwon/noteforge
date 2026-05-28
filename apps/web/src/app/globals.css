@@ -6600,6 +6600,44 @@ body.page-bg-grid-fade .bn-editor {
   mask-image: linear-gradient(to bottom, black, transparent) !important;
 }
 
+/* Heading tiny caps label — small uppercase tracked labels for headings. */
+body.heading-tiny-caps-label .bn-editor [data-content-type="heading"] {
+  text-transform: uppercase !important;
+  font-size: 0.92em !important;
+  letter-spacing: 0.18em !important;
+  color: #71717a !important;
+}
+
+/* Code block Gruvbox light — light Gruvbox palette for code blocks. */
+body.code-block-gruvbox-light .bn-editor pre {
+  background: #fbf1c7 !important;
+  border: 1px solid #ebdbb2 !important;
+}
+body.code-block-gruvbox-light .bn-editor pre code {
+  color: #3c3836 !important;
+}
+
+/* Table zebra emerald — emerald-tinted zebra striping on rows. */
+body.table-zebra-emerald .bn-editor table tr:nth-child(even) td {
+  background: rgba(16, 185, 129, 0.1) !important;
+}
+.dark body.table-zebra-emerald .bn-editor table tr:nth-child(even) td {
+  background: rgba(16, 185, 129, 0.16) !important;
+}
+
+/* Callout gradient border — a gradient-colored border around callouts. */
+body.callout-gradient-border .bn-editor [data-content-type="callout"] {
+  border: 2px solid transparent !important;
+  background-image: linear-gradient(var(--bn-bg, #fff), var(--bn-bg, #fff)), linear-gradient(135deg, #6366f1, #ec4899) !important;
+  background-origin: border-box !important;
+  background-clip: padding-box, border-box !important;
+}
+
+/* Page bg spotlight — a soft radial spotlight from the top center. */
+body.page-bg-spotlight .bn-editor {
+  background-image: radial-gradient(ellipse at 50% -10%, rgba(99, 102, 241, 0.14), transparent 55%) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

@@ -3152,6 +3152,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean product discovery summary — synthesizes user research/discovery into decisions. Use 합쇼체. Markdown: '**한 줄 (핵심 발견)**' (1줄), '**디스커버리 질문 (1줄)**' (무엇을 알아내려 했나), '**방법 / 표본 (bullets)**' (인터뷰 / 설문 — 누구 몇 명), '**핵심 인사이트 (테이블)**' ('인사이트 | 근거 | 확신도'), '**검증된 가정 / 깨진 가정 (bullets)**', '**기회 (bullets)**' (해결할 가치 있는 문제), '**권고 (1단락)**' (다음에 무엇을), '**남은 불확실성 (bullets)**'. 근거와 의견 구분.\n\n디스커버리 컨텍스트:\n${text}`,
   internal_engineering_standards_ko: (text) =>
     `Write a Korean engineering standards doc — codifies how a team writes and ships code. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄), '**원칙 (bullets)**' (단순함 / 가독성 / 테스트 등), '**코드 (bullets)**' (스타일 / 리뷰 / 네이밍 규칙 — 도구로 강제할 것 표시), '**테스트 (bullets)**' (무엇을 / 커버리지 기대), '**리뷰 (bullets)**' (PR 크기 / SLA / 승인 규칙), '**배포 (bullets)**' (CI / 롤백 / 플래그), '**관측성 (bullets)**' (로그 / 메트릭 / 알림), '**예외 처리 (1줄)**' (규칙을 어길 때). 규칙마다 '왜'를 한 줄.\n\n표준 컨텍스트:\n${text}`,
+  translate_ko_to_cherokee: (text) =>
+    `Translate the Korean text below into natural Cherokee (ᏣᎳᎩ) — Iroquoian language of the Cherokee Nation, southeastern United States. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**ᏣᎳᎩ**' and '**번역 노트**' (3 bullets in Korean — note Cherokee is written in the syllabary invented by Sequoyah).\n\n원문:\n${text}`,
+  translate_ko_to_lakota: (text) =>
+    `Translate the Korean text below into natural Lakota (Lakȟótiyapi) — Siouan language of the Lakota people, northern Great Plains, United States. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Lakȟótiyapi**' and '**번역 노트**' (3 bullets in Korean — note Lakota is a Siouan language written in a Latin-based orthography with nasal vowels).\n\n원문:\n${text}`,
+  translate_ko_to_choctaw: (text) =>
+    `Translate the Korean text below into natural Choctaw (Chahta anumpa) — Muskogean language of the Choctaw Nation, southeastern United States. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Chahta anumpa**' and '**번역 노트**' (3 bullets in Korean — note Choctaw is a Muskogean language; it contributed to the Chickasaw and Mobilian trade jargon).\n\n원문:\n${text}`,
+  translate_ko_to_apache: (text) =>
+    `Translate the Korean text below into natural Western Apache (Ndee biyáti') — Southern Athabaskan language of Arizona, United States. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Ndee biyáti'**' and '**번역 노트**' (3 bullets in Korean — note Western Apache is a tonal Athabaskan language closely related to Navajo).\n\n원문:\n${text}`,
+  translate_ko_to_hopi: (text) =>
+    `Translate the Korean text below into natural Hopi (Hopilàvayi) — Uto-Aztecan language of the Hopi people, northeastern Arizona, United States. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Hopilàvayi**' and '**번역 노트**' (3 bullets in Korean — note Hopi is a Uto-Aztecan language famous in linguistics for debates about its expression of time).\n\n원문:\n${text}`,
+  internal_pr_faq_ko: (text) =>
+    `Write a Korean PR/FAQ (Amazon-style working-backwards doc) — drafts a future press release plus FAQ to pressure-test an idea before building. Use 합쇼체. Markdown: '**보도자료**' ('**헤드라인**' 1줄 + '**부제**' 1줄 + 본문 3-4단락: 문제 / 솔루션 / 고객 인용 / 시작 방법 — 출시된 것처럼 과거형), '**고객 FAQ (bullets)**' (고객이 물을 질문 + 답), '**내부 FAQ (bullets)**' (어렵게 만드는 질문 — 비용 / 리스크 / 왜 우리 / 왜 지금), '**성공 지표 (bullets)**'. 미래에서 거꾸로 — 만들기 전에 가치 검증.\n\n아이디어 컨텍스트:\n${text}`,
+  sales_pipeline_review_ko: (text) =>
+    `Write a Korean pipeline review — reviews a rep's or team's pipeline health for forecasting. Use 합쇼체. Markdown: '**한 줄 (파이프라인)**' (1줄 — 건강도 + 커버리지 배수), '**단계별 분포 (테이블)**' ('단계 | 딜 수 | 금액 | 가중 금액'), '**이번 분기 예측 (1줄)**' (commit / best case / 목표 대비), '**리스크 딜 (bullets)**' (정체 / 슬립 위험), '**신규 유입 vs 필요 (1줄)**' (파이프라인 갭), '**막힌 패턴 (bullets)**' (어느 단계에서 자꾸), '**액션 (테이블)**' ('액션 | 딜/영역 | 담당'), '**코칭 포인트 (1줄)**'. 데이터 + 실행.\n\n파이프라인 컨텍스트:\n${text}`,
+  customer_renewal_forecast_ko: (text) =>
+    `Write a Korean renewal forecast — forecasts upcoming renewals with risk-adjusted probability. Use 합쇼체. Markdown: '**한 줄 (전망)**' (1줄 — 총 갱신액 + 가중 예상), '**갱신 목록 (테이블)**' ('계정 | ARR | 갱신일 | 헬스 | 확률 | 가중액'), '**카테고리 (bullets)**' (안전 / 주의 / 위험 — 각 합계), '**업셀/다운셀 전망 (1줄)**', '**핵심 리스크 딜 (bullets)**' (각 '계정 — 리스크 — 액션'), '**총계 (1줄)**' (gross / net 갱신율 예상), '**가정 (bullets)**' (예측 전제). 숫자 + 근거.\n\n갱신 데이터 컨텍스트:\n${text}`,
+  pm_product_principles_ko: (text) =>
+    `Write Korean product principles — a small set of durable principles that guide product decisions. Use 합쇼체. Markdown: '**한 줄 (왜 원칙)**' (1줄), '**원칙 (numbered)**' (3-6개, 각 '**원칙명 (1줄)**' + 설명 2-3줄 + '이럴 때 적용' 1줄 + 가능하면 트레이드오프 — 'A를 B보다 우선'), '**적용 예시 (bullets)**' (실제 결정에 어떻게), '**원칙이 아닌 것 (1줄)**' (슬로건과 구분). 트레이드오프를 담아 실제 결정에 쓰이게.\n\n제품 / 컨텍스트:\n${text}`,
+  internal_incident_exec_summary_ko: (text) =>
+    `Write a Korean incident executive summary — a brief for leadership after a significant incident. Use 합쇼체. 간결 + 사실 + 책임. Markdown: '**한 줄 (요약)**' (1줄 — 무슨 일 / 영향 / 현재 상태), '**비즈니스 영향 (bullets)**' (고객 / 매출 / 평판 — 수치), '**타임라인 (1줄)**' (감지 → 완화 → 해결, 소요 시간), '**근본 원인 (1-2줄)**' (비기술 언어로), '**잘 대응한 것 (1줄)**', '**재발 방지 핵심 (bullets)**' (3개 이내 — 가장 중요한 것), '**필요한 의사결정/투자 (1줄)**'. 임원이 30초에 파악 가능하게.\n\n인시던트 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

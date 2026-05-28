@@ -1348,6 +1348,11 @@ export function PageStyleMenu({
                       { key: "table-cell-right-align", label: "Right align" },
                       { key: "callout-frosted", label: "Frosted" },
                       { key: "page-bg-grid-fade", label: "Grid fade" },
+                      { key: "heading-tiny-caps-label", label: "Label caps" },
+                      { key: "code-block-gruvbox-light", label: "Gruvbox lt" },
+                      { key: "table-zebra-emerald", label: "Emerald zebra" },
+                      { key: "callout-gradient-border", label: "Gradient bdr" },
+                      { key: "page-bg-spotlight", label: "Spotlight" },
                     ] as const
                   ).map((t) => (
                     <button
