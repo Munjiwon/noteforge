@@ -1948,6 +1948,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Translate the Korean text below into natural Pashto (پښتو). RTL 흐름. 격식 ('تاسو' 정중 / 'ته' 친근) 원문에 맞춤. Reply with two sections: '**ژباړه**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
   pricing_proposal_internal_ko: (text) =>
     `Draft a Korean internal pricing proposal doc — proposed by Product/Finance to leadership before announcing a price change. Use 합쇼체. Markdown: '**제안 한 줄**' (1줄 — '현재 X → 제안 Y, 이유 Z'), '**현재 가격 + 시장 비교 (테이블)**' ('SKU | 현재 | 우리 변화 | 경쟁사 A | 경쟁사 B'), '**왜 변경하나요 (Why now)**' (3 bullets — 시장 / 가치 / cost), '**예상 영향 — 매출**' (1단락 + 시나리오 3개 — Optimistic / Base / Pessimistic), '**예상 영향 — 고객 churn**' (1단락 — 가격 변경 후 N% 이탈 추정 + 그랜드파더링 계획), '**기존 고객 처리**' (bullets — 신규만 / X개월 grandfather / 강제 이전), '**커뮤니케이션 plan**' (bullets — 누구에게 / 언제 / 채널), '**롤백 plan**' (1줄), '**의사결정 필요한 것 (Yes/No 질문 3개)**' (numbered).\n\n가격 / 분석 컨텍스트:\n${text}`,
+  translate_ko_to_sinhala: (text) =>
+    `Translate the Korean text below into natural Sinhala (සිංහල). 격식 ('ඔබ' 정중 / 'ඔයා' 친근) 원문에 맞춤. Reply with two sections: '**පරිවර්තනය**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  customer_voice_synthesis_ko: (text) =>
+    `Synthesize a Korean Voice-of-Customer (VoC) report from raw customer interview / 지원 티켓 / NPS comment 데이터 below. Use 합쇼체. 객관적 — 데이터에 없는 결론 만들지 말기. Markdown: '**한 줄 요약**' (1줄 — '가장 큰 한 가지 시그널'), '**테마별 정리 (테이블)**' ('테마 | 빈도 (n=) | 강도 | 대표 인용 1줄 | 우리가 할 수 있는 것'), '**가장 자주 들린 페인 (Top 5)**' (numbered — 각 1줄 + 인용 1-2개), '**가장 자주 들린 칭찬 (Top 3)**' (numbered — 강화할 것), '**모순되는 신호**' (2 bullets — 그룹 A는 X를 원하고 B는 반대), '**우리가 다음 할 액션 (제안)**' (bullets — 어떤 팀 / 어떤 결정에 영향), '**데이터의 한계**' (1단락 — 샘플 편향 / 응답률).\n\nVoC raw 데이터:\n${text}`,
+  translate_ko_to_punjabi: (text) =>
+    `Translate the Korean text below into natural Punjabi (ਪੰਜਾਬੀ — Gurmukhi script). 격식 ('ਤੁਸੀਂ' 정중 / 'ਤੂੰ' 친근) 원문에 맞춤. Reply with two sections: '**ਅਨੁਵਾਦ**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  engineering_oncall_handoff_doc_ko: (text) =>
+    `Build a Korean engineering on-call handoff doc — written by outgoing on-call engineer at the end of their shift / week. Use 해요체. 짧고 실용. Markdown: '**핸드오프 한 줄**' (1줄 — '이번 주 X건, 미해결 Y건, 주목할 1가지'), '**열린 incident**' (bullets — 'INC-NNNN: 1줄 + 현재 상태 + 다음 액션 + 누구 대기'), '**핫스팟 (자주 알람 울린 영역)**' (3 bullets — 서비스 / 알람 / 패턴 — 다음 oncall 주목), '**조용한 시간 측정 (Quiet hours)**' (1줄 — 우리 SLO 관점), '**진행 중 mitigation**' (bullets — 임시 fix가 살아 있는 곳, 영구 fix 시한), '**이번 주 새로 알게 된 것**' (2 bullets — runbook 업데이트 위치), '**다음 oncall에게**' (1단락 — 친근하게).\n\n주간 oncall 노트:\n${text}`,
+  translate_ko_to_marathi: (text) =>
+    `Translate the Korean text below into natural Marathi (मराठी). 격식 ('आपण' 정중 / 'तुम्ही' 정중 표준 / 'तू' 친근) 원문에 맞춤. Reply with two sections: '**अनुवाद**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  marketing_campaign_postmortem_ko: (text) =>
+    `Build a Korean marketing campaign postmortem — written 2 weeks after campaign end. Use 합쇼체. 솔직 + 데이터 기반. Markdown: '**캠페인 한 줄**' (1줄 — 이름 / 기간 / 총 비용), '**목표 vs 실적 (테이블)**' ('메트릭 | 목표 | 실적 | 달성률'), '**ROI 한 줄**' (1줄 — '비용 X 대비 매출 Y, ROAS Z'), '**잘 된 것 (3 bullets)**' (구체적 — 어떤 채널 / 어떤 메시지가 작동), '**안 된 것 (3 bullets)**' (구체적), '**예상 못한 발견**' (2 bullets — 뜻밖에 잘 된 것 / 뜻밖의 실패), '**다음에 다시 한다면**' (3 bullets — 무엇을 다르게), '**다음 캠페인에 가져가는 것**' (2 bullets — playbook 업데이트 사항).\n\n캠페인 결과:\n${text}`,
+  translate_ko_to_telugu: (text) =>
+    `Translate the Korean text below into natural Telugu (తెలుగు). 격식 ('మీరు' 정중 / 'నువ్వు' 친근) 원문에 맞춤. Reply with two sections: '**అనువాదం**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  sales_pipeline_review_internal_ko: (text) =>
+    `Build a Korean weekly sales pipeline review doc — sales rep + sales lead 1:1 사용. Use 해요체. Markdown: '**한 줄 (이번 주)**' (1줄 — '커밋 X, 베스트 케이스 Y, 클로즈 Z'), '**Top 5 active deal (테이블)**' ('계약사 | 금액 | 단계 | next step | 위험 신호 | 행동'), '**Stuck deal (>2주 같은 단계)**' (bullets — 계약사 / 왜 막힘 / 우리가 할 액션 / kill 여부), '**파이프라인 건강 (수치)**' (3 bullets — 새 lead / 코버리지 / 평균 cycle), '**필요한 도움**' (bullets — '@매니저 X 같이 가주실 수 있나요'), '**다음 주 우선순위 3개**' (numbered), '**개인적인 것 (선택)**' (1줄 — 잘 됨 / 막힘).\n\n파이프라인 데이터:\n${text}`,
+  translate_ko_to_kannada: (text) =>
+    `Translate the Korean text below into natural Kannada (ಕನ್ನಡ). 격식 ('ನೀವು' 정중 / 'ನೀನು' 친근) 원문에 맞춤. Reply with two sections: '**ಅನುವಾದ**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  team_meeting_async_format_ko: (text) =>
+    `Convert a Korean recurring team meeting (주간 standup / 분기 리뷰) into an async written format — so the team can reclaim the synchronous time. Use 해요체. Markdown: '**기존 미팅**' (1줄 — 이름 / 빈도 / 시간 / 참석자 수), '**왜 async로 옮기나요**' (1단락 — 시간 / 시간대 / 깊은 작업 보호), '**Async 형식**' (bullets — 어디에 (Slack / Notion 페이지 / 폼) / 언제까지 작성 / 어떤 양식), '**템플릿 (복붙용)**' (코드 블록 — 각 사람이 매주 채울 양식 — '지난 주 ✓ / 이번 주 → / 막힘 ⚠ / 도움 🆘'), '**Sync는 언제 다시 필요한가요**' (bullets — 분기 1회 / 결정 필요 / 사람 변동), '**Trial 기간 + 측정**' (1줄 — '4주 trial, 그 후 retro로 결정').\n\n기존 미팅 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

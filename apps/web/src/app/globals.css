@@ -3464,6 +3464,78 @@ body.page-coffee-stain .bn-editor::before {
   pointer-events: none;
 }
 
+/* H6 with tilde prefix — prepends ~ to H6 headings. */
+body.h6-with-tilde-prefix .bn-editor [data-content-type="heading"][data-level="6"] > *:first-child::before {
+  content: "~ ";
+  color: #71717a;
+  margin-right: 0.15em;
+  font-style: italic;
+}
+.dark body.h6-with-tilde-prefix .bn-editor [data-content-type="heading"][data-level="6"] > *:first-child::before {
+  color: #a1a1aa;
+}
+
+/* Paper code — light beige paper texture feel for code blocks. */
+body.code-block-paper-feel .bn-editor pre {
+  background-color: #faf6ef !important;
+  background-image:
+    repeating-linear-gradient(
+      transparent 0,
+      transparent 23px,
+      rgba(180, 150, 100, 0.12) 24px
+    ) !important;
+  color: #3f3a31 !important;
+  border: 1px solid #e7dcc6;
+}
+.dark body.code-block-paper-feel .bn-editor pre {
+  background-color: #2e2820 !important;
+  background-image:
+    repeating-linear-gradient(
+      transparent 0,
+      transparent 23px,
+      rgba(200, 180, 120, 0.1) 24px
+    ) !important;
+  color: #d6c9a8 !important;
+  border-color: #4a3f2c;
+}
+
+/* Roman numeral row numbers — use Roman numerals in counter. */
+body.table-row-numbered-roman .bn-editor table tbody {
+  counter-reset: row;
+}
+body.table-row-numbered-roman .bn-editor table tbody tr {
+  counter-increment: row;
+}
+body.table-row-numbered-roman .bn-editor table tbody tr > *:first-child::before {
+  content: counter(row, upper-roman) ". ";
+  color: #94a3b8;
+  font-variant-numeric: oldstyle-nums;
+  margin-right: 0.4em;
+}
+
+/* Pin decoration callout — pushpin icon in top-left of callout. */
+body.callout-pin-decoration .bn-editor [data-content-type="callout"] {
+  position: relative;
+  padding-top: 1.5rem !important;
+}
+body.callout-pin-decoration .bn-editor [data-content-type="callout"]::before {
+  content: "📍";
+  position: absolute;
+  top: -8px;
+  left: 12px;
+  font-size: 1.3rem;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+}
+
+/* Margin notes area — adds dashed area on right edge as a visual notes hint. */
+body.page-margin-notes-area .bn-editor {
+  border-right: 2px dashed #e2e8f0;
+  padding-right: 3rem !important;
+}
+.dark body.page-margin-notes-area .bn-editor {
+  border-right-color: #334155;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

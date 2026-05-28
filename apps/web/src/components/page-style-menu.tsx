@@ -1046,6 +1046,11 @@ export function PageStyleMenu({
                       { key: "table-cell-empty-mark", label: "Empty ✗" },
                       { key: "callout-curved-tab", label: "Curved tab" },
                       { key: "page-coffee-stain", label: "Coffee stain" },
+                      { key: "h6-with-tilde-prefix", label: "H6 ~ tilde" },
+                      { key: "code-block-paper-feel", label: "Paper code" },
+                      { key: "table-row-numbered-roman", label: "Row Roman #" },
+                      { key: "callout-pin-decoration", label: "📍 callout" },
+                      { key: "page-margin-notes-area", label: "Margin notes" },
                     ] as const
                   ).map((t) => (
                     <button

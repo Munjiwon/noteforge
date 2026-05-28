@@ -634,6 +634,11 @@ export function PageView({
       "table-cell-empty-mark",
       "callout-curved-tab",
       "page-coffee-stain",
+      "h6-with-tilde-prefix",
+      "code-block-paper-feel",
+      "table-row-numbered-roman",
+      "callout-pin-decoration",
+      "page-margin-notes-area",
     ];
     try {
       for (const k of toggles) {
