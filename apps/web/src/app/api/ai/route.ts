@@ -2912,6 +2912,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean A/B experiment design — defines a rigorous product experiment. Use 합쇼체. Markdown: '**한 줄 (실험)**' (1줄 — 무엇을 검증), '**가설 (1줄)**' ('만약 ~하면 ~할 것이다, 왜냐면 ~'), '**지표 (bullets)**' (primary 1개 + guardrail 2-3개), '**변형 (테이블)**' ('그룹 | 처리 | 비율'), '**대상 / 분할 (1줄)**', '**표본 크기 / 기간 (1줄)**' (MDE + 가정), '**분석 방법 (1줄)**', '**의사결정 규칙 (bullets)**' ('이기면 ~, 지면 ~, 무의미하면 ~'), '**리스크 (bullets)**'.\n\n실험 컨텍스트:\n${text}`,
   internal_oncall_handoff_ko: (text) =>
     `Write a Korean on-call handoff note — hands off context at the end of an on-call shift. Use 합쇼체. 간결 + 실행 가능. Markdown: '**한 줄 (교대)**' (1줄 — 전반 상태 🟢/🟡/🔴), '**진행 중 이슈 (테이블)**' ('이슈 | 심각도 | 현재 상태 | 다음 액션'), '**주의 깊게 볼 것 (bullets)**' (불안정 신호 / 재발 가능), '**최근 변경 (bullets)**' (배포 / 설정), '**침묵시킨 알림 (bullets)**' (있으면 — 왜 / 언제 풀지), '**유용한 링크 (bullets)**' (대시보드 / 런북), '**인계 확인 (1줄)**'.\n\n온콜 컨텍스트:\n${text}`,
+  translate_ko_to_herero: (text) =>
+    `Translate the Korean text below into natural Otjiherero (Herero) — Bantu language of Namibia and Botswana. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Otjiherero**' and '**번역 노트**' (3 bullets in Korean — note Otjiherero is spoken by the Herero people of Namibia).\n\n원문:\n${text}`,
+  translate_ko_to_nama: (text) =>
+    `Translate the Korean text below into natural Khoekhoe (Nama/Damara) — a Khoe language of Namibia with click consonants. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Khoekhoegowab**' and '**번역 노트**' (3 bullets in Korean — note Nama is a Khoisan-family language famous for its click consonants, written with special characters).\n\n원문:\n${text}`,
+  translate_ko_to_oshiwambo: (text) =>
+    `Translate the Korean text below into natural Oshiwambo (Ovambo) — Bantu language of northern Namibia and southern Angola. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Oshiwambo**' and '**번역 노트**' (3 bullets in Korean — note Oshiwambo is the most widely spoken first language in Namibia).\n\n원문:\n${text}`,
+  translate_ko_to_lozi: (text) =>
+    `Translate the Korean text below into natural Lozi (Silozi) — Bantu language of western Zambia and the Caprivi Strip. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Silozi**' and '**번역 노트**' (3 bullets in Korean — note Lozi is a Sotho-related language carried north by the Kololo migration).\n\n원문:\n${text}`,
+  translate_ko_to_tonga_zambia: (text) =>
+    `Translate the Korean text below into natural Tonga (Chitonga) — Bantu language of southern Zambia and Zimbabwe. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Chitonga**' and '**번역 노트**' (3 bullets in Korean — note this is Zambian/Zimbabwean Tonga, distinct from Malawian Tonga and Tongan).\n\n원문:\n${text}`,
+  internal_change_management_plan_ko: (text) =>
+    `Write a Korean change management plan — manages the people side of a significant change rollout. Use 합쇼체. Markdown: '**한 줄 (변화)**' (1줄 — 무엇이 / 누구에게 바뀌나), '**왜 (1단락)**' (변화의 이유 + 안 하면), '**영향받는 그룹 (테이블)**' ('그룹 | 무엇이 바뀜 | 우려 | 필요 지원'), '**커뮤니케이션 plan (테이블)**' ('대상 | 메시지 | 채널 | 시점'), '**교육 / 지원 (bullets)**', '**저항 대응 (bullets)**' (예상 반발 + 대응), '**성공 지표 (bullets)**' (채택률 등), '**타임라인 (1줄)**', '**롤백 / 컨틴전시 (1줄)**'.\n\n변화 컨텍스트:\n${text}`,
+  sales_renewal_risk_assessment_ko: (text) =>
+    `Write a Korean renewal risk assessment — evaluates the risk of an upcoming renewal and what to do. Use 합쇼체. Markdown: '**한 줄 (리스크)**' (1줄 — 높음/중간/낮음 + 갱신 확률%), '**계정 요약 (bullets)**' (ARR / 갱신일 / 기간), '**리스크 요인 (테이블)**' ('요인 | 신호 | 가중치'): 사용량 / 챔피언 / 가치 실현 / 지원 / 예산, '**긍정 신호 (bullets)**', '**핵심 우려 (1단락)**', '**완화 액션 (테이블)**' ('액션 | 담당 | 시한'), '**필요 자원 (bullets)**' (임원 후원 등), '**최악 시나리오 대비 (1줄)**'.\n\n갱신 컨텍스트:\n${text}`,
+  customer_training_plan_ko: (text) =>
+    `Write a Korean customer training plan — plans how to train a customer's team on the product. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 누가 무엇을 할 수 있게), '**대상 그룹 (테이블)**' ('그룹 | 역할 | 현재 수준 | 목표 수준'), '**커리큘럼 (테이블)**' ('세션 | 주제 | 형식 | 시간 | 대상'), '**전달 방식 (bullets)**' (라이브 / 녹화 / 문서 / 핸즈온), '**일정 (1줄)**', '**자료 / 준비물 (bullets)**', '**완료 / 숙련 측정 (bullets)**', '**지속 학습 (1줄)**' (이후 어떻게 유지).\n\n교육 컨텍스트:\n${text}`,
+  pm_north_star_metric_ko: (text) =>
+    `Write a Korean North Star metric definition — defines and justifies a product's single guiding metric. Use 합쇼체. Markdown: '**한 줄 (노스스타)**' (1줄 — 지표 한 문장), '**왜 이 지표 (1단락)**' (고객 가치 ↔ 비즈니스 연결), '**정의 (bullets)**' (정확한 계산식 + 포함/제외), '**입력 지표 (테이블)**' ('인풋 지표 | 노스스타에 미치는 영향 | 누가 영향'), '**현재 값 / 목표 (1줄)**', '**안티-게이밍 가드레일 (bullets)**' (이 지표만 좇으면 안 되는 이유 + 보호 지표), '**리뷰 주기 (1줄)**'.\n\n제품 / 컨텍스트:\n${text}`,
+  internal_quarterly_planning_ko: (text) =>
+    `Write a Korean quarterly planning doc — sets a team's priorities and goals for the quarter. Use 합쇼체. Markdown: '**한 줄 (분기 테마)**' (1줄), '**지난 분기 회고 (bullets)**' (달성 / 미달 / 교훈), '**이번 분기 목표 (테이블)**' ('목표 | 핵심 결과 | 담당'), '**우선순위 (numbered)**' (P0 / P1 / P2 + 근거), '**의도적으로 안 할 것 (bullets)**', '**리소스 / 캐파 (1줄)**', '**의존성 / 리스크 (bullets)**', '**측정 / 체크인 (1줄)**' (언제 점검). 집중과 트레이드오프 강조.\n\n분기 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

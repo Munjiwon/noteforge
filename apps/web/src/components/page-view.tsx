@@ -876,6 +876,11 @@ export function PageView({
       "table-no-borders",
       "callout-3d-raised",
       "page-bg-blueprint",
+      "heading-shadow-text",
+      "code-block-monokai-pro",
+      "table-striped-thick",
+      "callout-neon-outline",
+      "page-bg-honeycomb",
     ];
     try {
       for (const k of toggles) {

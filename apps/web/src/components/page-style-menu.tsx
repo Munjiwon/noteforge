@@ -1288,6 +1288,11 @@ export function PageStyleMenu({
                       { key: "table-no-borders", label: "Borderless" },
                       { key: "callout-3d-raised", label: "Raised" },
                       { key: "page-bg-blueprint", label: "Blueprint" },
+                      { key: "heading-shadow-text", label: "Text shadow" },
+                      { key: "code-block-monokai-pro", label: "Monokai Pro" },
+                      { key: "table-striped-thick", label: "Thick stripe" },
+                      { key: "callout-neon-outline", label: "Neon outline" },
+                      { key: "page-bg-honeycomb", label: "Honeycomb" },
                     ] as const
                   ).map((t) => (
                     <button

@@ -6130,6 +6130,42 @@ body.page-bg-blueprint .bn-editor {
   background-size: 22px 22px !important;
 }
 
+/* Heading shadow text — a soft drop shadow on all heading text. */
+body.heading-shadow-text .bn-editor [data-content-type="heading"] {
+  text-shadow: 1px 2px 3px rgba(0, 0, 0, 0.18) !important;
+}
+
+/* Code block Monokai Pro — Monokai Pro palette for code blocks. */
+body.code-block-monokai-pro .bn-editor pre {
+  background: #2d2a2e !important;
+  border: 1px solid #403e41 !important;
+}
+body.code-block-monokai-pro .bn-editor pre code {
+  color: #fcfcfa !important;
+}
+
+/* Table striped thick — bold zebra striping on table rows. */
+body.table-striped-thick .bn-editor table tr:nth-child(even) td {
+  background: rgba(99, 102, 241, 0.12) !important;
+}
+.dark body.table-striped-thick .bn-editor table tr:nth-child(even) td {
+  background: rgba(129, 140, 248, 0.18) !important;
+}
+
+/* Callout neon outline — a glowing neon outline around callouts. */
+body.callout-neon-outline .bn-editor [data-content-type="callout"] {
+  border: 1.5px solid #a855f7 !important;
+  box-shadow: 0 0 8px rgba(168, 85, 247, 0.6), inset 0 0 4px rgba(168, 85, 247, 0.3) !important;
+}
+
+/* Page bg honeycomb — a hexagonal honeycomb texture behind the editor. */
+body.page-bg-honeycomb .bn-editor {
+  background-image:
+    radial-gradient(circle farthest-side at 0% 50%, rgba(99, 102, 241, 0.08) 23.5%, transparent 0),
+    radial-gradient(circle farthest-side at 100% 50%, rgba(99, 102, 241, 0.08) 23.5%, transparent 0) !important;
+  background-size: 30px 52px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
