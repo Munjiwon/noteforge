@@ -1423,6 +1423,11 @@ export function PageStyleMenu({
                       { key: "table-cell-nowrap", label: "No wrap" },
                       { key: "callout-side-accent-gradient", label: "Side gradient" },
                       { key: "page-bg-corner-glow", label: "Corner glow" },
+                      { key: "heading-bg-stripe", label: "BG stripe" },
+                      { key: "code-block-vesper", label: "Vesper" },
+                      { key: "table-row-divider-bold", label: "Bold rows" },
+                      { key: "callout-icon-spin", label: "Spin icon" },
+                      { key: "page-bg-soft-rays", label: "Rays" },
                     ] as const
                   ).map((t) => (
                     <button

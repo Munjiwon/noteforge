@@ -3452,6 +3452,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean feature request triage — sorts incoming feature requests into a decision. Use 합쇼체. Markdown: '**한 줄 (총평)**' (1줄 — 이번 배치 핵심 패턴), '**요청 분류 (테이블)**' ('요청 | 빈도 | 요청자 유형 | 근본 니즈(JTBD) | 판정'): 수용 / 백로그 / 보류 / 거절, '**테마 (bullets)**' (요청 뒤 공통 니즈), '**빠른 승리 (bullets)**' (저비용 고가치), '**전략 부합 안 함 (bullets)**' (거절 + 이유), '**요청자 회신 가이드 (1줄)**' (루프 닫기), '**다음 액션 (테이블)**'. 요청이 아닌 니즈에 집중.\n\n요청 목록:\n${text}`,
   internal_allhands_notes_ko: (text) =>
     `Structure Korean all-hands meeting notes — captures key points and decisions from a company/team all-hands. Use 합쇼체. Markdown: '**한 줄 (올핸즈)**' (1줄 — 핵심 메시지), '**주요 업데이트 (bullets)**' (회사/팀 — 주제별), '**성과 / 인정 (bullets)**', '**전략 / 우선순위 (bullets)**' (강조된 방향), '**Q&A 하이라이트 (테이블)**' ('질문 | 답변 핵심'), '**액션 / 변화 (bullets)**' (모두에게 영향), '**팔로업 (bullets)**' (추가 정보 약속), '**한 줄 정리 (1줄)**'. 못 들은 사람도 따라잡게.\n\n올핸즈 컨텍스트:\n${text}`,
+  translate_ko_to_kituba: (text) =>
+    `Translate the Korean text below into natural Kituba (Kikongo ya leta) — a Kongo-based creole and lingua franca of the Republic of the Congo and DR Congo. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Kituba**' and '**번역 노트**' (3 bullets in Korean — note Kituba is a simplified Kongo-based contact language, a national language in both Congos).\n\n원문:\n${text}`,
+  translate_ko_to_fang: (text) =>
+    `Translate the Korean text below into natural Fang — a Bantu language of Equatorial Guinea, Gabon and southern Cameroon. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Fang**' and '**번역 노트**' (3 bullets in Korean — note Fang is a major language of Gabon and Equatorial Guinea, written in Latin script).\n\n원문:\n${text}`,
+  translate_ko_to_teke: (text) =>
+    `Translate the Korean text below into natural Teke (Kiteke) — a Bantu language cluster of the Republic of the Congo, DR Congo and Gabon. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Kiteke**' and '**번역 노트**' (3 bullets in Korean — note Teke is spoken on the Téké/Bateke plateau north of the Congo River).\n\n원문:\n${text}`,
+  translate_ko_to_punu: (text) =>
+    `Translate the Korean text below into natural Punu (Yipunu) — a Bantu language of southern Gabon and the Republic of the Congo. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Yipunu**' and '**번역 노트**' (3 bullets in Korean — note Punu people are known for their white-faced okuyi masks; the language is Bantu).\n\n원문:\n${text}`,
+  translate_ko_to_duala: (text) =>
+    `Translate the Korean text below into natural Duala — a Bantu language of the coastal Littoral region of Cameroon. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Duala**' and '**번역 노트**' (3 bullets in Korean — note Duala was an important early lingua franca and mission language of coastal Cameroon).\n\n원문:\n${text}`,
+  internal_load_testing_plan_ko: (text) =>
+    `Write a Korean load testing plan — plans a load/performance test for a system. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 무엇을 / 왜 검증), '**대상 / 범위 (bullets)**' (어떤 경로 / 컴포넌트), '**부하 시나리오 (테이블)**' ('시나리오 | 부하 패턴 | 동시성/RPS | 기간'): 평상 / 피크 / 스파이크 / 내구, '**성공 기준 (테이블)**' ('지표 | 목표'): p50/p95/p99 지연 / 오류율 / 처리량, '**환경 / 데이터 (bullets)**' (프로덕션 유사성), '**모니터링 (bullets)**', '**중단 기준 (1줄)**' (이러면 멈춤), '**분석 / 후속 (1줄)**'. 현실적 시나리오 강조.\n\n부하 테스트 컨텍스트:\n${text}`,
+  sales_intro_email_ko: (text) =>
+    `Draft a Korean sales intro email — a warm, relevant first-touch email to a prospect. Use 합쇼체 (정중 + 간결, 스팸 같지 않게). Markdown: '**제목**' (1줄, 호기심 + 관련성), '**본문**' (4-5줄: 1) 개인화 1줄 — 그들에 대한 진짜 관찰, 2) 가치 가설 1-2줄 — 우리가 어떻게 도울 수 있을지, 3) 사회적 증거 1줄(선택), 4) 가벼운 CTA — 짧은 대화 제안), '**대안 제목 2개 (bullets)**', '**팁 (1줄)**' (개인화/타이밍). 80단어 이내, 나에 대한 얘기 최소.\n\n프로스펙트 컨텍스트:\n${text}`,
+  customer_qbr_invite_email_ko: (text) =>
+    `Draft a Korean QBR invitation email — invites a customer to a quarterly business review. Use 합쇼체 (따뜻 + 가치 중심). Markdown: '**제목**' (1줄), '**본문**' (3-4 단락: 1) 인사 + QBR 제안 + 왜 가치 있는지 1줄, 2) 다룰 내용 미리보기 — 성과 회고 / 로드맵 / 다음 계획, 3) 일정 옵션 + 소요 시간 + 누가 참석하면 좋을지, 4) 준비 사항 / 기대), '**아젠다 미리보기 (bullets)**', '**다음 단계 (1줄)**'. 회의가 아닌 가치로 프레이밍.\n\nQBR 컨텍스트:\n${text}`,
+  pm_opportunity_solution_tree_ko: (text) =>
+    `Build a Korean opportunity solution tree — maps an outcome to opportunities to solutions (Teresa Torres style). Use 합쇼체. Markdown: '**목표 결과 (1줄)**' (측정 가능한 outcome), '**기회 (테이블)**' ('기회(고객 니즈/페인) | 근거 | 임팩트 추정'), '**기회별 솔루션 (bullets)**' (각 기회 아래 2-3개 솔루션 아이디어), '**우선 기회 (1줄)**' (먼저 공략할 것 + 이유), '**우선 솔루션 / 실험 (bullets)**' (가장 먼저 검증할 것), '**가정 / 리스크 (bullets)**', '**다음 액션 (1줄)**'. 솔루션이 아닌 기회에서 출발.\n\n결과 / 컨텍스트:\n${text}`,
+  internal_retro_facilitation_guide_ko: (text) =>
+    `Write a Korean retrospective facilitation guide — helps someone run an effective, psychologically-safe retro. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄), '**사전 준비 (bullets)**' (데이터 / 안전 분위기 / 형식 선택), '**진행 흐름 (테이블)**' ('단계 | 활동 | 시간'): 분위기 열기 → 데이터 모으기 → 인사이트 → 액션 → 마무리, '**포맷 옵션 (bullets)**' (Start/Stop/Continue / Mad-Sad-Glad / 4Ls 등), '**심리적 안전 (bullets)**' (비난 금지 / 모두 발언 / 프라임 디렉티브), '**액션 만들기 (bullets)**' (적게 + 구체 + 담당), '**안티패턴 (1줄)**' (불평만 / 액션 없음). 안전 + 행동.\n\n회고 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

@@ -7218,6 +7218,46 @@ body.page-bg-corner-glow .bn-editor {
   background-image: radial-gradient(circle at 100% 0%, rgba(99, 102, 241, 0.14), transparent 45%) !important;
 }
 
+/* Heading bg stripe — a full-width tinted stripe behind each heading. */
+body.heading-bg-stripe .bn-editor [data-content-type="heading"] {
+  background: rgba(99, 102, 241, 0.08) !important;
+  padding: 0.15em 0.4em !important;
+  border-radius: 4px !important;
+}
+
+/* Code block Vesper — Vesper minimal dark palette for code blocks. */
+body.code-block-vesper .bn-editor pre {
+  background: #101010 !important;
+  border: 1px solid #1c1c1c !important;
+}
+body.code-block-vesper .bn-editor pre code {
+  color: #ffffff !important;
+}
+
+/* Table bold row dividers — bold horizontal lines between rows only. */
+body.table-row-divider-bold .bn-editor table td,
+body.table-row-divider-bold .bn-editor table th {
+  border-left: none !important;
+  border-right: none !important;
+  border-top: none !important;
+  border-bottom: 2px solid #c7d2fe !important;
+}
+
+/* Callout spin icon — slowly rotate the callout's leading icon. */
+@keyframes nf-callout-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+body.callout-icon-spin .bn-editor [data-content-type="callout"] > *:first-child {
+  display: inline-block !important;
+  animation: nf-callout-spin 6s linear infinite;
+}
+
+/* Page bg soft rays — faint sunburst rays from the top center. */
+body.page-bg-soft-rays .bn-editor {
+  background-image: repeating-conic-gradient(from 0deg at 50% 0%, rgba(99, 102, 241, 0.05) 0deg, rgba(99, 102, 241, 0.05) 4deg, transparent 4deg, transparent 12deg) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

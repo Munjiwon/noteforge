@@ -1011,6 +1011,11 @@ export function PageView({
       "table-cell-nowrap",
       "callout-side-accent-gradient",
       "page-bg-corner-glow",
+      "heading-bg-stripe",
+      "code-block-vesper",
+      "table-row-divider-bold",
+      "callout-icon-spin",
+      "page-bg-soft-rays",
     ];
     try {
       for (const k of toggles) {
