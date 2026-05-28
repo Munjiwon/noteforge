@@ -1868,6 +1868,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Translate the Korean text below into natural Lithuanian (lietuvių kalba). 격식 ('Jūs' 정중 / 'tu' 친근) 원문에 맞춤. Reply with two sections: '**Vertimas**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
   customer_kickoff_email_ko: (text) =>
     `Draft a Korean customer kickoff email — sent within 24 hours of contract signing to formally start the onboarding. Use 해요체. 따뜻 + 명확. Markdown: '**제목**' (1줄, 26자 이내 — '환영합니다! [고객사] 킥오프 안내' 류), '**본문**' (5 단락: 1) 계약 환영 + 우리 모두 신난다는 1줄, 2) 누가 / 무슨 역할 — CSM / 솔루션 엔지니어 / Exec sponsor, 각 이름 + 이메일 + 본인 1줄, 3) 첫 30일 로드맵 — 1주차 / 2주차 / 3-4주차 단계별, 각 1줄, 4) 당장 필요한 것 (고객 쪽) — 'X 까지 ~ 보내주시면 좋아요' bullets, 5) 첫 미팅 일정 후보 3개 + 무엇 다룰지 1줄), '**참고 자료**' (bullets — 도움 문서 / 슬랙 채널 / 상태 페이지 placeholder).\n\n고객 / 계약 컨텍스트:\n${text}`,
+  translate_ko_to_slovenian: (text) =>
+    `Translate the Korean text below into natural Slovenian (slovenščina). 격식 ('Vi' 정중 / 'ti' 친근) 원문에 맞춤. Reply with two sections: '**Prevod**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  engineering_design_doc_short_ko: (text) =>
+    `Build a Korean short engineering design doc (1-2 page max) for the feature described below. Use 합쇼체. 큰 시스템 변경 X — 1주 안에 만들 수 있는 작은 기능용. Markdown: '**한 줄 (Tagline)**' (1줄 — 무엇을 / 누구를 위해), '**문제 (Why)**' (3-4줄), '**제안 (What)**' (3-5줄 + 작은 ASCII 다이어그램 또는 placeholder), '**API 변경**' (bullets — 추가 / 변경 / 삭제 endpoint 또는 함수), '**DB / 스토리지 변경**' (bullets — 새 테이블 / 컬럼 또는 'none'), '**대안 (1 단락)**' (왜 안 골랐는지 1-2줄), '**위험 / Open questions**' (bullets — 최대 3), '**롤아웃**' (1줄 — feature flag / 단계).\n\n기능 컨텍스트:\n${text}`,
+  translate_ko_to_slovak: (text) =>
+    `Translate the Korean text below into natural Slovak (slovenčina). 격식 ('Vy' 정중 / 'ty' 친근) 원문에 맞춤. Reply with two sections: '**Preklad**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  partnership_proposal_email_ko: (text) =>
+    `Draft a Korean partnership proposal email — cold outbound to a potential partner company. Use 해요체. 자기 자랑 톤 X, 'win-win' 시각 강조. Markdown: '**제목**' (1줄, 26자 이내 — '[우리회사] × [상대회사] 파트너십 제안'), '**본문**' (4 단락: 1) 1-2줄 — 본인 / 우리 회사 한 줄 + 왜 지금 연락, 2) 우리가 본 그쪽의 강점 + 우리 강점 — 합쳤을 때 시너지 1단락, 3) 구체 제안 옵션 2-3개 — 'A: 공동 기술 통합 / B: 공동 마케팅 / C: 리셀러' 등, 각 1줄 + 예상 효과, 4) 30분 짧은 탐색 미팅 제안 + 일정 후보 3개), '**P.S.**' (1줄 — '시간 없으시면 [짧은 자료 링크] 보고 결정해 주셔도 됩니다').\n\n상대 회사 / 우리 컨텍스트:\n${text}`,
+  translate_ko_to_croatian: (text) =>
+    `Translate the Korean text below into natural Croatian (hrvatski). 격식 ('Vi' 정중 / 'ti' 친근) 원문에 맞춤. Reply with two sections: '**Prijevod**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  engineering_hiring_loop_doc_ko: (text) =>
+    `Build a Korean engineering hiring loop doc — given to interviewers before a candidate's on-site. Use 합쇼체. Markdown: '**후보자 한 줄**' (이름 / 현재 회사 / 지원 포지션 / 레벨), '**왜 이 후보를 본 것**' (2-3줄 — 리쿠르터 / 본인 / 추천인 노트), '**평가 루프 (테이블)**' ('시간 | 인터뷰어 | 평가 영역 | 질문 종류'), '**각 인터뷰어 가이드**' (bullets — 영역별로 어떤 신호를 봐야 하는지, 어떻게 채점하는지 1줄), '**Calibration 노트**' (1단락 — 이 레벨에서 보통 받는 답변 + 이 후보가 다를 수 있는 지점), '**Debrief 미팅**' (1줄 — 시간 / 누가 참석 / 결정 시한), '**Reference 체크 메모**' (bullets — 누가 / 무엇을 물어볼지).\n\n후보 / 포지션:\n${text}`,
+  translate_ko_to_serbian_latin: (text) =>
+    `Translate the Korean text below into natural Serbian — Latin script (srpski, latinica). 격식 ('Vi' 정중 / 'ti' 친근) 원문에 맞춤. Reply with two sections: '**Prevod**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  customer_advocacy_program_intro_ko: (text) =>
+    `Write a Korean intro email + program description for launching a customer advocacy program (열성 고객 모임). Use 해요체. 'VIP 클럽' 같은 가벼움 X, 'co-builders' 무게 있는 톤. Markdown: '**제목**' (1줄, 28자 이내 — '[프로그램명] 첫 멤버로 모십니다'), '**왜 시작했는지 (1단락)**' (3-4줄 — 우리 사용자가 어떤 것을 깊이 아는지, 우리가 무엇을 함께 만들고 싶은지), '**프로그램이 주는 것 (bullets)**' (3-4개 — 사전 베타 / 직접 피드백 / 분기 미팅 / 사례 노출 — 빈말 X, 실제), '**프로그램이 요구하는 것 (bullets)**' (3개 — 분기 1회 미팅 / 베타 피드백 / 사례 공개 동의 — 명확히), '**참여 방법**' (1줄 — 'X 폼 / Y월 D일 마감').\n\n프로그램 컨텍스트:\n${text}`,
+  translate_ko_to_bosnian: (text) =>
+    `Translate the Korean text below into natural Bosnian (bosanski). 격식 ('Vi' 정중 / 'ti' 친근) 원문에 맞춤. Reply with two sections: '**Prijevod**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
+  product_principles_doc_ko: (text) =>
+    `Draft a Korean product principles doc — short, opinionated, posted in #product Slack as a pinned message. Use 해요체. 5-7개 원칙. 각 원칙은 '하지 마라' 측과 '해라' 측이 모두 있어야 진짜 원칙. Markdown: '**왜 원칙이 필요한가요 (1단락)**' (2-3줄), '**원칙 (각 원칙 — h3 + 1줄 + Do / Don't 2-3 bullets + 사례 1줄)**', '**원칙이 충돌할 때**' (1단락 — 우선순위 또는 'PM이 결정'), '**Revisit**' (1줄 — '6개월마다 재검토').\n\n제품 / 회사 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

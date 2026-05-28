@@ -1026,6 +1026,11 @@ export function PageStyleMenu({
                       { key: "table-rounded-cells", label: "Rounded cells" },
                       { key: "callout-elevated-shadow", label: "Callout lift" },
                       { key: "page-corner-stitch", label: "Corner stitch" },
+                      { key: "h2-with-bullet-dot", label: "H2 • dot" },
+                      { key: "code-block-pastel-bg", label: "Pastel code" },
+                      { key: "table-zebra-vertical", label: "V-zebra" },
+                      { key: "callout-rotate-tiny", label: "Tilt callout" },
+                      { key: "page-frame-border", label: "Frame border" },
                     ] as const
                   ).map((t) => (
                     <button

@@ -3224,6 +3224,53 @@ body.page-corner-stitch .bn-editor::before {
   border-color: #64748b;
 }
 
+/* H2 with bullet dot — prepends • to H2 headings. */
+body.h2-with-bullet-dot .bn-editor [data-content-type="heading"][data-level="2"] > *:first-child::before {
+  content: "• ";
+  color: #6b7280;
+  margin-right: 0.2em;
+}
+.dark body.h2-with-bullet-dot .bn-editor [data-content-type="heading"][data-level="2"] > *:first-child::before {
+  color: #9ca3af;
+}
+
+/* Pastel code background — soft pink/cream block backdrop. */
+body.code-block-pastel-bg .bn-editor pre {
+  background: #fdf2f8 !important;
+  border: 1px solid #fbcfe8;
+}
+.dark body.code-block-pastel-bg .bn-editor pre {
+  background: #3b1f2e !important;
+  border-color: #6b2c4a;
+}
+
+/* Vertical zebra — alternate columns rather than rows. */
+body.table-zebra-vertical .bn-editor table tr > *:nth-child(even) {
+  background: rgba(244, 244, 245, 0.6);
+}
+.dark body.table-zebra-vertical .bn-editor table tr > *:nth-child(even) {
+  background: rgba(63, 63, 70, 0.4);
+}
+
+/* Tilt callouts — slight rotation for a playful look. */
+body.callout-rotate-tiny .bn-editor [data-content-type="callout"] {
+  transform: rotate(-0.6deg);
+  transition: transform 0.2s ease;
+}
+body.callout-rotate-tiny .bn-editor [data-content-type="callout"]:hover {
+  transform: rotate(0deg);
+}
+
+/* Page frame border — solid border around the editor area. */
+body.page-frame-border .bn-editor {
+  border: 2px solid #d1d5db;
+  border-radius: 12px;
+  padding: 1.25rem !important;
+}
+.dark body.page-frame-border .bn-editor {
+  border-color: #374151;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
