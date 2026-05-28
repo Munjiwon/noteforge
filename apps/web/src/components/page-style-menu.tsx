@@ -1358,6 +1358,11 @@ export function PageStyleMenu({
                       { key: "table-borderless-zebra", label: "Bare zebra" },
                       { key: "callout-icon-top", label: "Icon top" },
                       { key: "page-bg-soft-vignette", label: "Vignette" },
+                      { key: "heading-side-number", label: "Side number" },
+                      { key: "code-block-base16", label: "Base16" },
+                      { key: "table-thick-header-line", label: "Header line" },
+                      { key: "callout-corner-ribbon", label: "Ribbon" },
+                      { key: "page-bg-subtle-checker", label: "Checker" },
                     ] as const
                   ).map((t) => (
                     <button
