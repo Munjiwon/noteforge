@@ -3172,6 +3172,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write Korean product principles — a small set of durable principles that guide product decisions. Use 합쇼체. Markdown: '**한 줄 (왜 원칙)**' (1줄), '**원칙 (numbered)**' (3-6개, 각 '**원칙명 (1줄)**' + 설명 2-3줄 + '이럴 때 적용' 1줄 + 가능하면 트레이드오프 — 'A를 B보다 우선'), '**적용 예시 (bullets)**' (실제 결정에 어떻게), '**원칙이 아닌 것 (1줄)**' (슬로건과 구분). 트레이드오프를 담아 실제 결정에 쓰이게.\n\n제품 / 컨텍스트:\n${text}`,
   internal_incident_exec_summary_ko: (text) =>
     `Write a Korean incident executive summary — a brief for leadership after a significant incident. Use 합쇼체. 간결 + 사실 + 책임. Markdown: '**한 줄 (요약)**' (1줄 — 무슨 일 / 영향 / 현재 상태), '**비즈니스 영향 (bullets)**' (고객 / 매출 / 평판 — 수치), '**타임라인 (1줄)**' (감지 → 완화 → 해결, 소요 시간), '**근본 원인 (1-2줄)**' (비기술 언어로), '**잘 대응한 것 (1줄)**', '**재발 방지 핵심 (bullets)**' (3개 이내 — 가장 중요한 것), '**필요한 의사결정/투자 (1줄)**'. 임원이 30초에 파악 가능하게.\n\n인시던트 컨텍스트:\n${text}`,
+  translate_ko_to_mixtec: (text) =>
+    `Translate the Korean text below into natural Mixtec (Tu'un Savi) — Oto-Manguean language of Oaxaca, Guerrero and Puebla, Mexico. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Tu'un Savi**' and '**번역 노트**' (3 bullets in Korean — note Mixtec is a tonal Oto-Manguean language with many regional varieties; pick a widely-understood standard).\n\n원문:\n${text}`,
+  translate_ko_to_zapotec: (text) =>
+    `Translate the Korean text below into natural Zapotec (Diidxazá) — Oto-Manguean language of Oaxaca, Mexico. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Diidxazá**' and '**번역 노트**' (3 bullets in Korean — note Zapotec is a tonal Oto-Manguean language; Isthmus Zapotec has a notable written literature).\n\n원문:\n${text}`,
+  translate_ko_to_otomi: (text) =>
+    `Translate the Korean text below into natural Otomi (Hñähñu) — Oto-Manguean language of central Mexico. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Hñähñu**' and '**번역 노트**' (3 bullets in Korean — note Otomi is a tonal language of the central Mexican highlands with a complex vowel system).\n\n원문:\n${text}`,
+  translate_ko_to_purepecha: (text) =>
+    `Translate the Korean text below into natural Purépecha (P'urhépecha) — a language isolate of Michoacán, Mexico. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**P'urhépecha**' and '**번역 노트**' (3 bullets in Korean — note Purépecha is a language isolate with no proven relatives, language of the former Tarascan state).\n\n원문:\n${text}`,
+  translate_ko_to_yucatec: (text) =>
+    `Translate the Korean text below into natural Yucatec Maya (Maaya t'aan) — Mayan language of the Yucatán Peninsula, Mexico, and Belize. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Maaya t'aan**' and '**번역 노트**' (3 bullets in Korean — note Yucatec Maya is a tonal Mayan language written in Latin script, with ejective consonants).\n\n원문:\n${text}`,
+  internal_design_doc_review_checklist_ko: (text) =>
+    `Write a Korean design doc review checklist — guides a reviewer to give high-quality feedback on a design doc. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄), '**문제 정의 (체크 bullets)**' (문제가 명확한가 / 왜 지금), '**목표 (체크 bullets)**' (측정 가능 / 비목표 명시), '**설계 (체크 bullets)**' (단순성 / 대안 검토 / 트레이드오프 명시), '**리스크 (체크 bullets)**' (실패 모드 / 보안 / 데이터), '**운영 (체크 bullets)**' (롤아웃 / 모니터링 / 롤백), '**리뷰 에티켓 (bullets)**' (질문으로 / 차단 vs 제안 구분), '**판정 (1줄)**' (승인 / 조건부 / 반려). 좋은 피드백 문화 강조.\n\n리뷰 컨텍스트:\n${text}`,
+  sales_renewal_playbook_ko: (text) =>
+    `Write a Korean renewal playbook — a repeatable process for managing renewals from early to close. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄), '**타임라인 (테이블)**' ('시점(갱신 D-X) | 활동 | 담당'): 보통 D-120/D-90/D-60/D-30/D-7, '**단계별 플레이 (bullets)**' (각 시점에 무엇을), '**리스크 신호 + 대응 (테이블)**', '**가치 재확인 (bullets)**' (데이터로), '**확장 기회 포착 (1줄)**', '**에스컬레이션 기준 (bullets)**', '**성공 지표 (bullets)**' (gross/net 갱신율). 조기 + 선제 강조.\n\n갱신 컨텍스트:\n${text}`,
+  customer_quarterly_value_recap_ko: (text) =>
+    `Write a Korean quarterly value recap — a short customer-facing recap of the value delivered this quarter. Use 합쇼체 (간결 + 데이터). Markdown: '**한 줄 (분기 가치)**' (1줄), '**핵심 성과 (bullets)**' (각 '지표 — 분기 변화 — 의미'), '**사용 하이라이트 (1줄)**', '**해결한 이슈 (1줄)**' (있으면), '**다음 분기 함께할 것 (bullets)**', '**한 줄 감사 (1줄)**'. 1분 안에 읽히게, 가치 입증 중심.\n\n분기 데이터 컨텍스트:\n${text}`,
+  pm_feature_acceptance_criteria_ko: (text) =>
+    `Write Korean acceptance criteria for a feature — defines exactly when a feature is 'done'. Use 합쇼체. Markdown: '**한 줄 (기능)**' (1줄), '**유저 스토리 (1줄)**' ('~로서 ~하고 싶다'), '**인수 기준 (Given/When/Then 형태 bullets)**' (각 시나리오: 주어진 상황 / 행동 / 기대 결과), '**엣지 케이스 (bullets)**' (빈 값 / 에러 / 권한 / 경계), '**비기능 기준 (bullets)**' (성능 / 접근성 / 보안), '**범위 밖 (bullets)**', '**완료 정의 (체크 bullets)**' (코드 / 테스트 / 문서 / 리뷰). 모호함 없이 검증 가능하게.\n\n기능 컨텍스트:\n${text}`,
+  internal_oncall_rotation_policy_ko: (text) =>
+    `Write a Korean on-call rotation policy — defines how on-call works for a team, fairly and sustainably. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄), '**범위 (bullets)**' (어떤 서비스 / 시간대), '**로테이션 (bullets)**' (주기 / 인원 / primary·secondary), '**대응 기대치 (테이블)**' ('심각도 | 응답 시간 | 에스컬레이션'), '**보상 / 보호 (bullets)**' (수당 / 휴식 / 다음날 배려), '**핸드오프 (1줄)**' (교대 시 무엇을), '**에스컬레이션 경로 (bullets)**', '**번아웃 방지 (bullets)**' (알림 노이즈 / 공정 분배). 지속가능성 강조.\n\n온콜 정책 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

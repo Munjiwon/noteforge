@@ -6638,6 +6638,58 @@ body.page-bg-spotlight .bn-editor {
   background-image: radial-gradient(ellipse at 50% -10%, rgba(99, 102, 241, 0.14), transparent 55%) !important;
 }
 
+/* Heading corner tab — a small colored tab at the heading's top-left. */
+body.heading-corner-tab .bn-editor [data-content-type="heading"] {
+  position: relative;
+  padding-left: 0.6em !important;
+}
+body.heading-corner-tab .bn-editor [data-content-type="heading"]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.1em;
+  width: 0.3em;
+  height: 0.9em;
+  background: #6366f1;
+  border-radius: 2px;
+}
+
+/* Code block Gotham — Gotham dark palette for code blocks. */
+body.code-block-gotham .bn-editor pre {
+  background: #0a0f14 !important;
+  border: 1px solid #11171d !important;
+}
+body.code-block-gotham .bn-editor pre code {
+  color: #98d1ce !important;
+}
+
+/* Table borderless zebra — zebra rows with no cell borders. */
+body.table-borderless-zebra .bn-editor table td,
+body.table-borderless-zebra .bn-editor table th {
+  border: none !important;
+}
+body.table-borderless-zebra .bn-editor table tr:nth-child(odd) td {
+  background: rgba(99, 102, 241, 0.06) !important;
+}
+
+/* Callout icon top — stack the callout icon above the text. */
+body.callout-icon-top .bn-editor [data-content-type="callout"] {
+  display: block !important;
+}
+body.callout-icon-top .bn-editor [data-content-type="callout"] > *:first-child {
+  display: block !important;
+  margin-bottom: 0.3em !important;
+  font-size: 1.4em !important;
+}
+
+/* Page bg soft vignette — darken the editor edges with a soft vignette. */
+body.page-bg-soft-vignette .bn-editor {
+  background-image: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.06) 100%) !important;
+}
+.dark body.page-bg-soft-vignette .bn-editor {
+  background-image: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.25) 100%) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

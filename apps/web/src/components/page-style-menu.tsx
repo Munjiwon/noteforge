@@ -1353,6 +1353,11 @@ export function PageStyleMenu({
                       { key: "table-zebra-emerald", label: "Emerald zebra" },
                       { key: "callout-gradient-border", label: "Gradient bdr" },
                       { key: "page-bg-spotlight", label: "Spotlight" },
+                      { key: "heading-corner-tab", label: "Corner tab" },
+                      { key: "code-block-gotham", label: "Gotham" },
+                      { key: "table-borderless-zebra", label: "Bare zebra" },
+                      { key: "callout-icon-top", label: "Icon top" },
+                      { key: "page-bg-soft-vignette", label: "Vignette" },
                     ] as const
                   ).map((t) => (
                     <button
