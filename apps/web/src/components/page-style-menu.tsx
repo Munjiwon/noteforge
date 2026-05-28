@@ -1820,6 +1820,11 @@ export function PageStyleMenu({
                       { key: "callout-fnj-3", label: "callout fnj3" },
                       { key: "page-bg-fnj-4", label: "page-bg fnj4" },
                       { key: "heading-fnj-5", label: "heading fnj5" },
+                      { key: "code-block-fny-1", label: "code-block fny1" },
+                      { key: "table-fny-2", label: "table fny2" },
+                      { key: "callout-fny-3", label: "callout fny3" },
+                      { key: "page-bg-fny-4", label: "page-bg fny4" },
+                      { key: "heading-fny-5", label: "heading fny5" },
                     ] as const
                   ).map((t) => (
                     <button
