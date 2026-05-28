@@ -2034,6 +2034,11 @@ export function PageStyleMenu({
                       { key: "callout-gme-3", label: "callout gme3" },
                       { key: "page-bg-gme-4", label: "page-bg gme4" },
                       { key: "heading-gme-5", label: "heading gme5" },
+                      { key: "code-block-gmt-1", label: "code-block gmt1" },
+                      { key: "table-gmt-2", label: "table gmt2" },
+                      { key: "callout-gmt-3", label: "callout gmt3" },
+                      { key: "page-bg-gmt-4", label: "page-bg gmt4" },
+                      { key: "heading-gmt-5", label: "heading gmt5" },
                     ] as const
                   ).map((t) => (
                     <button
