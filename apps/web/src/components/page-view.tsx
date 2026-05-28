@@ -1183,6 +1183,11 @@ export function PageView({
       "callout-eni-3",
       "page-bg-eni-4",
       "heading-eni-5",
+      "code-block-enx-1",
+      "table-enx-2",
+      "callout-enx-3",
+      "page-bg-enx-4",
+      "heading-enx-5",
     ];
     try {
       for (const k of toggles) {

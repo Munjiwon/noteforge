@@ -1595,6 +1595,11 @@ export function PageStyleMenu({
                       { key: "callout-eni-3", label: "callout eni3" },
                       { key: "page-bg-eni-4", label: "page-bg eni4" },
                       { key: "heading-eni-5", label: "heading eni5" },
+                      { key: "code-block-enx-1", label: "code-block enx1" },
+                      { key: "table-enx-2", label: "table enx2" },
+                      { key: "callout-enx-3", label: "callout enx3" },
+                      { key: "page-bg-enx-4", label: "page-bg enx4" },
+                      { key: "heading-enx-5", label: "heading enx5" },
                     ] as const
                   ).map((t) => (
                     <button
