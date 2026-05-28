@@ -1635,6 +1635,11 @@ export function PageStyleMenu({
                       { key: "callout-ery-3", label: "callout ery3" },
                       { key: "page-bg-ery-4", label: "page-bg ery4" },
                       { key: "heading-ery-5", label: "heading ery5" },
+                      { key: "code-block-esn-1", label: "code-block esn1" },
+                      { key: "table-esn-2", label: "table esn2" },
+                      { key: "callout-esn-3", label: "callout esn3" },
+                      { key: "page-bg-esn-4", label: "page-bg esn4" },
+                      { key: "heading-esn-5", label: "heading esn5" },
                     ] as const
                   ).map((t) => (
                     <button

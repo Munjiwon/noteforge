@@ -1223,6 +1223,11 @@ export function PageView({
       "callout-ery-3",
       "page-bg-ery-4",
       "heading-ery-5",
+      "code-block-esn-1",
+      "table-esn-2",
+      "callout-esn-3",
+      "page-bg-esn-4",
+      "heading-esn-5",
     ];
     try {
       for (const k of toggles) {
