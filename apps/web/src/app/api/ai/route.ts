@@ -2992,6 +2992,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Draft Korean product OKRs — turns a goal into a well-formed Objective with measurable Key Results. Use 합쇼체. Markdown: '**Objective (1줄)**' (영감 + 정성적 + 기한 있는), '**Key Results (테이블)**' ('KR | 측정 | 시작값 | 목표값 | 신뢰도'): 3-4개, 결과 중심(활동 아님), '**KR 품질 체크 (bullets)**' (각 KR이 측정가능/야심참/결과지향인지), '**이니셔티브 (bullets)**' (KR 달성 위한 활동 — KR과 구분), '**안티패턴 경고 (1줄)**' (활동을 KR로 착각하지 말 것). 좋은 OKR 원칙 반영.\n\n목표 컨텍스트:\n${text}`,
   internal_incident_comms_external_ko: (text) =>
     `Write Korean external incident communication — a customer-facing status message during/after an incident. Use 합쇼체 (침착 + 투명 + 책임). Markdown: '**상태 (1줄)**' (조사 중 / 완화됨 / 해결됨), '**무슨 일 (1단락)**' (고객이 겪는 것 — 기술 용어 최소), '**영향 (bullets)**' (누가 / 무엇이), '**현재 조치 (1줄)**', '**예상 복구 / 다음 업데이트 (1줄)**', '**고객 할 일 (1줄)**' (있으면), '**사과 + 약속 (1줄)**' (해결 후). 변명 없이, 추측 단정 금지.\n\n인시던트 컨텍스트:\n${text}`,
+  translate_ko_to_rotuman: (text) =>
+    `Translate the Korean text below into natural Rotuman (Fäeag Rotuạm) — Austronesian language of Rotuma island, Fiji. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Fäeag Rotuạm**' and '**번역 노트**' (3 bullets in Korean — note Rotuman is an Oceanic language with unusual metathesis, distinct from Fijian).\n\n원문:\n${text}`,
+  translate_ko_to_wallisian: (text) =>
+    `Translate the Korean text below into natural Wallisian (Faka'uvea) — Polynesian language of Wallis Island (ʻUvea). 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Faka'uvea**' and '**번역 노트**' (3 bullets in Korean — note Wallisian is a Polynesian language of the French territory of Wallis and Futuna).\n\n원문:\n${text}`,
+  translate_ko_to_futunan: (text) =>
+    `Translate the Korean text below into natural Futunan (Fakafutuna) — Polynesian language of Futuna Island. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Fakafutuna**' and '**번역 노트**' (3 bullets in Korean — note East Futunan is closely related to Wallisian and Samoan).\n\n원문:\n${text}`,
+  translate_ko_to_niuean: (text) =>
+    `Translate the Korean text below into natural Niuean (ko e vagahau Niuē) — Polynesian language of Niue. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Vagahau Niuē**' and '**번역 노트**' (3 bullets in Korean — note Niuean is most closely related to Tongan, part of the Tongic subgroup).\n\n원문:\n${text}`,
+  translate_ko_to_tokelauan: (text) =>
+    `Translate the Korean text below into natural Tokelauan (Gagana Tokelau) — Polynesian language of Tokelau. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Gagana Tokelau**' and '**번역 노트**' (3 bullets in Korean — note Tokelauan is closely related to Tuvaluan and Samoan).\n\n원문:\n${text}`,
+  internal_slo_definition_ko: (text) =>
+    `Write a Korean SLO/SLI definition doc — defines service level objectives and the indicators behind them. Use 합쇼체. Markdown: '**한 줄 (서비스)**' (1줄 — 무슨 서비스의 신뢰성), '**사용자 여정 (1줄)**' (어떤 경험을 보호), '**SLI (테이블)**' ('지표 | 정의(좋은 이벤트/전체) | 측정 위치'), '**SLO 목표 (테이블)**' ('SLI | 목표 | 측정 기간'), '**에러 버짓 (1줄)**' (계산 + 의미), '**버짓 소진 정책 (bullets)**' (소진 시 무엇을 멈추나), '**알림 (bullets)**' (번 레이트 기준), '**리뷰 주기 (1줄)**'. 현실적 목표 강조 (100% 금지).\n\nSLO 컨텍스트:\n${text}`,
+  sales_pricing_proposal_ko: (text) =>
+    `Write a Korean pricing proposal — presents pricing to a customer clearly and persuasively. Use 합쇼체. Markdown: '**한 줄 (제안)**' (1줄 — 어떤 패키지 / 핵심 가치), '**추천 플랜 (테이블)**' ('항목 | 내용 | 가격'), '**가치 정당화 (bullets)**' (가격 ↔ 효과 연결), '**옵션 비교 (테이블)**' ('플랜 | 포함 | 가격 | 추천 대상'), '**할인 / 조건 (bullets)**' (있으면 — 명확히), '**총 투자 + ROI (1줄)**', '**계약 조건 (bullets)**' (기간 / 갱신 / 결제), '**다음 단계 (1줄)**'. 가격을 가치로 프레이밍.\n\n가격 컨텍스트:\n${text}`,
+  customer_business_review_recap_ko: (text) =>
+    `Write a Korean business review recap — sent to a customer after a QBR/EBR to summarize and confirm next steps. Use 합쇼체 (감사 + 명확). Markdown: '**제목**' (1줄), '**본문 인트로 (1단락)**' (시간 내줘 감사 + 핵심 1줄), '**리뷰 요약 (bullets)**' (다룬 핵심), '**합의한 것 (bullets)**' (명확히), '**액션 아이템 (테이블)**' ('액션 | 담당(우리/고객) | 시한'), '**다음 마일스톤 (1줄)**', '**마무리 (1줄)**' (파트너십 톤). 고객에게 바로 보낼 수 있는 형태.\n\n리뷰 컨텍스트:\n${text}`,
+  pm_roadmap_narrative_ko: (text) =>
+    `Write a Korean roadmap narrative — tells the story behind a product roadmap (the why, not just the what). Use 합쇼체. Markdown: '**한 줄 (방향)**' (1줄 — 우리가 향하는 곳), '**왜 지금 (1단락)**' (시장 / 고객 / 전략 변화), '**테마 (테이블)**' ('테마 | 왜 중요 | 대표 이니셔티브 | 기간(Now/Next/Later)'), '**Now (bullets)**' (지금 하는 것 + 이유), '**Next (bullets)**', '**Later (bullets)**' (방향성만), '**안 하는 것 (bullets)**' (의도적 제외), '**성공 모습 (1줄)**'. 날짜 약속보다 방향과 근거 중심.\n\n로드맵 컨텍스트:\n${text}`,
+  internal_interview_loop_design_ko: (text) =>
+    `Design a Korean interview loop — designs a structured, fair hiring loop for a role. Use 합쇼체. Markdown: '**한 줄 (역할)**' (1줄), '**평가할 역량 (bullets)**' (이 역할 성공에 필요한 것), '**인터뷰 단계 (테이블)**' ('단계 | 평가 역량 | 형식 | 시간 | 인터뷰어'), '**역량×단계 커버리지 (1줄)**' (각 역량이 최소 1회 검증되는지), '**질문 가이드 (bullets)**' (단계별 핵심 질문 유형), '**평가 기준 (bullets)**' (스코어카드 연동), '**디브리프 (1줄)**' (어떻게 결정), '**후보 경험 (1-2 bullets)**' (배려 포인트). 편향 줄이는 구조 강조.\n\n역할 / 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

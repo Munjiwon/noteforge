@@ -1308,6 +1308,11 @@ export function PageStyleMenu({
                       { key: "table-row-numbers", label: "Row numbers" },
                       { key: "callout-glass-blur", label: "Glass blur" },
                       { key: "page-bg-gradient-radial", label: "Radial fade" },
+                      { key: "heading-left-border", label: "Head bar" },
+                      { key: "code-block-everforest", label: "Everforest" },
+                      { key: "table-header-2tone", label: "2-tone head" },
+                      { key: "callout-rounded-left", label: "Round left" },
+                      { key: "page-bg-topographic", label: "Topographic" },
                     ] as const
                   ).map((t) => (
                     <button

@@ -896,6 +896,11 @@ export function PageView({
       "table-row-numbers",
       "callout-glass-blur",
       "page-bg-gradient-radial",
+      "heading-left-border",
+      "code-block-everforest",
+      "table-header-2tone",
+      "callout-rounded-left",
+      "page-bg-topographic",
     ];
     try {
       for (const k of toggles) {
