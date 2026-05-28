@@ -1500,6 +1500,11 @@ export function PageStyleMenu({
                       { key: "callout-eci-3", label: "callout eci3" },
                       { key: "page-bg-eci-4", label: "page-bg eci4" },
                       { key: "heading-eci-5", label: "heading eci5" },
+                      { key: "code-block-ecx-1", label: "code-block ecx1" },
+                      { key: "table-ecx-2", label: "table ecx2" },
+                      { key: "callout-ecx-3", label: "callout ecx3" },
+                      { key: "page-bg-ecx-4", label: "page-bg ecx4" },
+                      { key: "heading-ecx-5", label: "heading ecx5" },
                     ] as const
                   ).map((t) => (
                     <button

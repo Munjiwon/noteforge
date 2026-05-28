@@ -1088,6 +1088,11 @@ export function PageView({
       "callout-eci-3",
       "page-bg-eci-4",
       "heading-eci-5",
+      "code-block-ecx-1",
+      "table-ecx-2",
+      "callout-ecx-3",
+      "page-bg-ecx-4",
+      "heading-ecx-5",
     ];
     try {
       for (const k of toggles) {
