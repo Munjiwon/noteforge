@@ -1984,6 +1984,11 @@ export function PageStyleMenu({
                       { key: "callout-ggk-3", label: "callout ggk3" },
                       { key: "page-bg-ggk-4", label: "page-bg ggk4" },
                       { key: "heading-ggk-5", label: "heading ggk5" },
+                      { key: "code-block-ggz-1", label: "code-block ggz1" },
+                      { key: "table-ggz-2", label: "table ggz2" },
+                      { key: "callout-ggz-3", label: "callout ggz3" },
+                      { key: "page-bg-ggz-4", label: "page-bg ggz4" },
+                      { key: "heading-ggz-5", label: "heading ggz5" },
                     ] as const
                   ).map((t) => (
                     <button

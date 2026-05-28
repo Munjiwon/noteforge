@@ -1572,6 +1572,11 @@ export function PageView({
       "callout-ggk-3",
       "page-bg-ggk-4",
       "heading-ggk-5",
+      "code-block-ggz-1",
+      "table-ggz-2",
+      "callout-ggz-3",
+      "page-bg-ggz-4",
+      "heading-ggz-5",
     ];
     try {
       for (const k of toggles) {
