@@ -3012,6 +3012,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean roadmap narrative — tells the story behind a product roadmap (the why, not just the what). Use 합쇼체. Markdown: '**한 줄 (방향)**' (1줄 — 우리가 향하는 곳), '**왜 지금 (1단락)**' (시장 / 고객 / 전략 변화), '**테마 (테이블)**' ('테마 | 왜 중요 | 대표 이니셔티브 | 기간(Now/Next/Later)'), '**Now (bullets)**' (지금 하는 것 + 이유), '**Next (bullets)**', '**Later (bullets)**' (방향성만), '**안 하는 것 (bullets)**' (의도적 제외), '**성공 모습 (1줄)**'. 날짜 약속보다 방향과 근거 중심.\n\n로드맵 컨텍스트:\n${text}`,
   internal_interview_loop_design_ko: (text) =>
     `Design a Korean interview loop — designs a structured, fair hiring loop for a role. Use 합쇼체. Markdown: '**한 줄 (역할)**' (1줄), '**평가할 역량 (bullets)**' (이 역할 성공에 필요한 것), '**인터뷰 단계 (테이블)**' ('단계 | 평가 역량 | 형식 | 시간 | 인터뷰어'), '**역량×단계 커버리지 (1줄)**' (각 역량이 최소 1회 검증되는지), '**질문 가이드 (bullets)**' (단계별 핵심 질문 유형), '**평가 기준 (bullets)**' (스코어카드 연동), '**디브리프 (1줄)**' (어떻게 결정), '**후보 경험 (1-2 bullets)**' (배려 포인트). 편향 줄이는 구조 강조.\n\n역할 / 컨텍스트:\n${text}`,
+  translate_ko_to_hmong: (text) =>
+    `Translate the Korean text below into natural Hmong (Hmoob, White Hmong) — Hmong-Mien language of southern China and Southeast Asia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Hmoob**' and '**번역 노트**' (3 bullets in Korean — note Hmong uses the RPA romanization where final consonants mark tone).\n\n원문:\n${text}`,
+  translate_ko_to_mien: (text) =>
+    `Translate the Korean text below into natural Iu Mien (Yao) — Hmong-Mien language of southern China, Laos, Thailand and Vietnam. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Iu Mien**' and '**번역 노트**' (3 bullets in Korean — note Iu Mien is the main language of the Yao people, traditionally written with Chinese characters).\n\n원문:\n${text}`,
+  translate_ko_to_shan: (text) =>
+    `Translate the Korean text below into natural Shan (Tai) — Tai-Kadai language of Shan State, Myanmar. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Shan**' and '**번역 노트**' (3 bullets in Korean — note Shan is a Southwestern Tai language written in its own Burmese-derived script).\n\n원문:\n${text}`,
+  translate_ko_to_karen: (text) =>
+    `Translate the Korean text below into natural S'gaw Karen — Karenic (Sino-Tibetan) language of Myanmar and Thailand. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Karen**' and '**번역 노트**' (3 bullets in Korean — note S'gaw Karen is written in a Burmese-based script and is the largest Karen variety).\n\n원문:\n${text}`,
+  translate_ko_to_mon: (text) =>
+    `Translate the Korean text below into natural Mon — Austroasiatic language of southern Myanmar and Thailand. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Mon**' and '**번역 노트**' (3 bullets in Korean — note Mon is a Mon-Khmer language with a long literary tradition that influenced the Burmese script).\n\n원문:\n${text}`,
+  internal_data_request_spec_ko: (text) =>
+    `Write a Korean data request spec — specifies a data/analytics request clearly enough for an analyst to deliver. Use 합쇼체. Markdown: '**한 줄 (요청)**' (1줄 — 무슨 질문에 답하려는지), '**비즈니스 맥락 (1단락)**' (왜 / 어떤 결정에 쓰나), '**핵심 질문 (bullets)**' (답하고 싶은 것 — 우선순위순), '**필요 지표 / 디멘션 (테이블)**' ('지표 | 정의 | 분할 기준'), '**기간 / 필터 (bullets)**', '**산출물 형태 (1줄)**' (대시보드 / 표 / 일회성), '**우선순위 / 기한 (1줄)**', '**유의 (bullets)**' (알려진 데이터 함정). 분석가가 되묻지 않게 구체적으로.\n\n데이터 요청 컨텍스트:\n${text}`,
+  sales_negotiation_prep_ko: (text) =>
+    `Write a Korean negotiation prep doc — prepares a rep for a deal negotiation. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 이상적 결과), '**우리 입장 (bullets)**' (목표 / 최소 수용선(walk-away) / 양보 가능), '**고객 입장 추정 (bullets)**' (그들의 니즈 / 제약 / 대안(BATNA)), '**협상 변수 (테이블)**' ('변수 | 우리에게 가치 | 그들에게 가치 | 양보 우선순위'), '**예상 요구 + 대응 (테이블)**', '**가치 재강조 포인트 (bullets)**', '**레드라인 (bullets)**' (절대 양보 불가), '**오프닝 / 클로징 멘트 (각 1줄)**'. 가격 양보보다 가치 교환 중심.\n\n협상 컨텍스트:\n${text}`,
+  customer_kickoff_agenda_ko: (text) =>
+    `Write a Korean customer kickoff meeting agenda — structures the first onboarding meeting with a new customer. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 이 킥오프로 무엇을 정렬), '**참석자 (bullets)**' (양측 누구 / 역할), '**아젠다 (테이블)**' ('시간 | 주제 | 진행 | 목표'): 소개 / 목표 합의 / 성공 기준 / 일정 / 역할 / 다음 단계, '**합의할 것 (bullets)**' (성공 정의 / 마일스톤), '**보여줄 것 (1줄)**', '**액션 아이템 양식 (1줄)**', '**다음 미팅 (1줄)**'. 첫인상 + 명확한 정렬 강조.\n\n킥오프 컨텍스트:\n${text}`,
+  pm_jobs_to_be_done_ko: (text) =>
+    `Write a Korean Jobs-to-be-Done (JTBD) analysis — frames what customers are really trying to accomplish. Use 합쇼체. Markdown: '**한 줄 (핵심 잡)**' (1줄 — '~할 때, ~하고 싶다, 그래서 ~'), '**잡 스토리 (bullets)**' (상황 + 동기 + 기대 결과 형태로), '**기능적 / 감정적 / 사회적 잡 (테이블)**' ('차원 | 고객이 원하는 것'), '**현재 해결책 + 불만 (bullets)**' (지금 어떻게 / 왜 부족), '**성공 기준 (bullets)**' (고객 관점의 '잘 됐다'), '**기회 (bullets)**' (덜 충족된 잡), '**시사점 (1줄)**'. 솔루션이 아닌 잡에 집중.\n\n고객 / 컨텍스트:\n${text}`,
+  internal_retro_action_review_ko: (text) =>
+    `Write a Korean retro action review — checks whether past retrospective action items actually got done and why. Use 합쇼체. Markdown: '**한 줄 (총평)**' (1줄 — 실행률 + 패턴), '**지난 액션 점검 (테이블)**' ('액션 | 담당 | 상태(완료/진행/미착수) | 결과/막힌 이유'), '**완료된 것의 효과 (bullets)**' (실제 개선됐나), '**반복되는 미완 패턴 (bullets)**' (왜 자꾸 안 되나), '**시스템 원인 (1단락)**' (개인 탓 아님 — 프로세스), '**개선 제안 (bullets)**' (액션이 실행되게 만드는 방법), '**이번 사이클 캐리오버 (bullets)**'. 책임 추궁 아닌 학습.\n\n액션 리뷰 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

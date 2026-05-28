@@ -901,6 +901,11 @@ export function PageView({
       "table-header-2tone",
       "callout-rounded-left",
       "page-bg-topographic",
+      "heading-double-underline",
+      "code-block-kanagawa",
+      "table-vertical-lines",
+      "callout-soft-tint",
+      "page-bg-droplets",
     ];
     try {
       for (const k of toggles) {

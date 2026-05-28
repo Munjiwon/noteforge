@@ -1313,6 +1313,11 @@ export function PageStyleMenu({
                       { key: "table-header-2tone", label: "2-tone head" },
                       { key: "callout-rounded-left", label: "Round left" },
                       { key: "page-bg-topographic", label: "Topographic" },
+                      { key: "heading-double-underline", label: "Dbl underline" },
+                      { key: "code-block-kanagawa", label: "Kanagawa" },
+                      { key: "table-vertical-lines", label: "V-lines only" },
+                      { key: "callout-soft-tint", label: "Soft tint" },
+                      { key: "page-bg-droplets", label: "Droplets" },
                     ] as const
                   ).map((t) => (
                     <button

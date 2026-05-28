@@ -6321,6 +6321,49 @@ body.page-bg-topographic .bn-editor {
   background-size: 90px 90px !important;
 }
 
+/* Heading double underline — a double underline beneath all headings. */
+body.heading-double-underline .bn-editor [data-content-type="heading"] {
+  border-bottom: 4px double #6366f1 !important;
+  padding-bottom: 0.15em !important;
+}
+
+/* Code block Kanagawa — Kanagawa wave palette for code blocks. */
+body.code-block-kanagawa .bn-editor pre {
+  background: #1f1f28 !important;
+  border: 1px solid #2a2a37 !important;
+}
+body.code-block-kanagawa .bn-editor pre code {
+  color: #dcd7ba !important;
+}
+
+/* Table vertical lines — show only vertical (column) borders. */
+body.table-vertical-lines .bn-editor table td,
+body.table-vertical-lines .bn-editor table th {
+  border-top: none !important;
+  border-bottom: none !important;
+  border-left: 1px solid #d4d4d8 !important;
+  border-right: 1px solid #d4d4d8 !important;
+}
+.dark body.table-vertical-lines .bn-editor table td,
+.dark body.table-vertical-lines .bn-editor table th {
+  border-left-color: #3f3f46 !important;
+  border-right-color: #3f3f46 !important;
+}
+
+/* Callout soft tint — a very soft background tint, no border. */
+body.callout-soft-tint .bn-editor [data-content-type="callout"] {
+  background: rgba(99, 102, 241, 0.07) !important;
+  border: none !important;
+}
+
+/* Page bg droplets — scattered translucent droplet circles behind the editor. */
+body.page-bg-droplets .bn-editor {
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(56, 189, 248, 0.1) 8px, transparent 9px),
+    radial-gradient(circle at 75% 65%, rgba(56, 189, 248, 0.08) 12px, transparent 13px) !important;
+  background-size: 120px 120px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
