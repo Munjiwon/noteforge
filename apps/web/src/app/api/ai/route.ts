@@ -3492,6 +3492,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean changelog entry — a crisp, user-facing changelog item for a release. Use 해요체 (명확 + 친근). Markdown: '**제목 (1줄)**' (무엇이 바뀌었는지 — 사용자 관점), '**카테고리 (1줄)**' (✨ 새기능 / ⚡ 개선 / 🐛 버그수정), '**설명 (2-3줄)**' (무엇을 / 사용자에게 어떤 이점 — 내부 용어 금지), '**사용 방법 (1줄)**' (어디서 / 어떻게 — 필요하면), '**참고 (1줄)**' (마이그레이션 / 주의 — 있으면). 짧고 가치 중심.\n\n변경 컨텍스트:\n${text}`,
   internal_code_review_guidelines_ko: (text) =>
     `Write Korean code review guidelines — sets norms for giving and receiving code reviews. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄), '**리뷰어 원칙 (bullets)**' (작업을 리뷰 / 질문으로 / 차단 vs 제안 명시 / 빨리), '**작성자 원칙 (bullets)**' (작은 PR / 맥락 제공 / 방어 금지), '**무엇을 볼까 (bullets)**' (정확성 / 가독성 / 테스트 / 보안 — 스타일은 도구에 위임), '**리뷰 SLA (1줄)**' (응답 시간), '**톤 (bullets)**' (예시 — 좋은 코멘트 vs 나쁜 코멘트), '**머지 기준 (1줄)**'. 빠르고 친절하게.\n\n코드 리뷰 컨텍스트:\n${text}`,
+  translate_ko_to_dagur: (text) =>
+    `Translate the Korean text below into natural Daur (Dagur) — a Mongolic language of Inner Mongolia and Heilongjiang, China. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Daur**' and '**번역 노트**' (3 bullets in Korean — note Daur is a Mongolic language with heavy Manchu and Chinese influence, usually written in a Latin or Pinyin-based system).\n\n원문:\n${text}`,
+  translate_ko_to_evenki: (text) =>
+    `Translate the Korean text below into natural Evenki — a Northern Tungusic language of Siberia and northern China. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Evenki**' and '**번역 노트**' (3 bullets in Korean — note Evenki is a Tungusic language of reindeer-herding peoples, written in Cyrillic in Russia).\n\n원문:\n${text}`,
+  translate_ko_to_even: (text) =>
+    `Translate the Korean text below into natural Even (Lamut) — a Northern Tungusic language of northeastern Siberia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Even**' and '**번역 노트**' (3 bullets in Korean — note Even is closely related to Evenki, written in Cyrillic).\n\n원문:\n${text}`,
+  translate_ko_to_nanai: (text) =>
+    `Translate the Korean text below into natural Nanai (Hezhen) — a Southern Tungusic language of the Amur River basin, Russia and China. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Nanai**' and '**번역 노트**' (3 bullets in Korean — note Nanai is a Tungusic language of the Amur, written in Cyrillic in Russia).\n\n원문:\n${text}`,
+  translate_ko_to_manchu: (text) =>
+    `Translate the Korean text below into natural Manchu (ᠮᠠᠨᠵᡠ) — a Tungusic language of northeastern China, language of the Qing dynasty court. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Manju**' (Manchu script with Möllendorff romanization where helpful) and '**번역 노트**' (3 bullets in Korean — note Manchu uses a vertical alphabet derived from Mongolian and is now critically endangered).\n\n원문:\n${text}`,
+  internal_release_train_plan_ko: (text) =>
+    `Write a Korean release train plan — sets up a regular, predictable release cadence (release train). Use 합쇼체. Markdown: '**한 줄 (릴리스 트레인)**' (1줄 — 주기 + 원칙), '**케이던스 (1줄)**' (얼마나 자주 — 주간/격주), '**고정 일정 (테이블)**' ('단계 | 시점(D-X) | 활동'): 코드프리즈 / 스테이징 / QA / 릴리스, '**탑승 규칙 (bullets)**' ('준비된 것만 탑승, 늦으면 다음 차'), '**예외 / 핫픽스 (1줄)**', '**역할 (테이블)**' ('역할 | 책임'), '**품질 게이트 (bullets)**', '**측정 (bullets)**' (예측성 / 빈도). 예측 가능성 강조.\n\n릴리스 트레인 컨텍스트:\n${text}`,
+  sales_competitive_displacement_ko: (text) =>
+    `Write a Korean competitive displacement plan — a plan to win a customer away from an incumbent competitor. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 누구를 대체 / 핵심 각도), '**현 솔루션 (bullets)**' (그들이 쓰는 것 + 불만), '**전환 장벽 (bullets)**' (왜 안 바꾸나 — 비용/리스크/관성), '**우리 우위 (테이블)**' ('영역 | 우리 | 그들'), '**전환 가치 (1줄)**' (바꿀 만한 이유), '**리스크 완화 (bullets)**' (마이그레이션/병행), '**증거 (1줄)**' (유사 전환 사례), '**전략 (numbered)**' (단계적 접근). 전환 비용 정면 돌파.\n\n경쟁 전환 컨텍스트:\n${text}`,
+  customer_quarterly_check_in_email_ko: (text) =>
+    `Draft a Korean quarterly check-in email — a light-touch quarterly email to a customer. Use 합쇼체 (따뜻 + 간결). Markdown: '**제목**' (1줄), '**본문**' (3 단락: 1) 안부 + 지난 분기 함께한 것 1줄, 2) 가치 신호 / 성과 1줄 + 도움 될 만한 팁이나 신규 기능 1개, 3) 가벼운 제안 — 짧은 통화 / QBR / 질문 받기), '**유용한 링크 (bullets)**' (1-2개), '**다음 단계 (1줄)**'. 영업 아닌 관계 톤, 100단어 내외.\n\n체크인 컨텍스트:\n${text}`,
+  pm_release_scope_decision_ko: (text) =>
+    `Write a Korean release scope decision doc — decides what makes the cut for a release under time pressure. Use 합쇼체. Markdown: '**한 줄 (결정)**' (1줄 — 무엇을 넣고 뺄지), '**제약 (1줄)**' (날짜 / 리소스 고정), '**후보 항목 (테이블)**' ('항목 | 가치 | 노력 | 리스크 | 판정(IN/OUT/STRETCH)'), '**반드시 포함 (bullets)**' (이유), '**제외 (bullets)**' (다음으로 — 이유), '**스트레치 (bullets)**' (시간 남으면), '**트레이드오프 (1단락)**' (무엇을 포기), '**커뮤니케이션 (1줄)**' (이해관계자에게). 날짜 사수 vs 범위 명확히.\n\n범위 결정 컨텍스트:\n${text}`,
+  internal_engineering_glossary_ko: (text) =>
+    `Write a Korean engineering glossary — defines team/domain-specific terms so everyone shares vocabulary. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄), '**용어 (테이블)**' ('용어 | 정의 | 예시/맥락 | 혼동 주의'), '**도메인 약어 (bullets)**' (자주 쓰는 약어 풀이), '**내부 코드네임 (bullets)**' (프로젝트/시스템 별칭 → 실제), '**쓰지 말 것 (bullets)**' (모호/중복 용어 + 대체어), '**유지 관리 (1줄)**' (누가 / 언제 갱신). 신규 입사자가 빨리 따라잡게.\n\n용어 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

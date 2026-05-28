@@ -7299,6 +7299,44 @@ body.page-bg-aurora .bn-editor {
     linear-gradient(0deg, rgba(236, 72, 153, 0.08), transparent 35%) !important;
 }
 
+/* Heading italic serif — italic serif styling for all headings. */
+body.heading-italic-serif .bn-editor [data-content-type="heading"] {
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-style: italic !important;
+}
+
+/* Code block Rosé Pine Dawn — the light Rosé Pine Dawn palette. */
+body.code-block-rose-pine-dawn .bn-editor pre {
+  background: #faf4ed !important;
+  border: 1px solid #f2e9e1 !important;
+}
+body.code-block-rose-pine-dawn .bn-editor pre code {
+  color: #575279 !important;
+}
+
+/* Table thick cell borders — heavy borders on all table cells. */
+body.table-cell-borders-thick .bn-editor table td,
+body.table-cell-borders-thick .bn-editor table th {
+  border: 2px solid #818cf8 !important;
+}
+
+/* Callout rounded bottom — round only the bottom corners of callouts. */
+body.callout-rounded-bottom .bn-editor [data-content-type="callout"] {
+  border-bottom-left-radius: 16px !important;
+  border-bottom-right-radius: 16px !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+/* Page bg big checker — a large-scale checkerboard behind the editor. */
+body.page-bg-soft-checker2 .bn-editor {
+  background-image:
+    linear-gradient(45deg, rgba(99, 102, 241, 0.05) 25%, transparent 25%, transparent 75%, rgba(99, 102, 241, 0.05) 75%),
+    linear-gradient(45deg, rgba(99, 102, 241, 0.05) 25%, transparent 25%, transparent 75%, rgba(99, 102, 241, 0.05) 75%) !important;
+  background-size: 56px 56px !important;
+  background-position: 0 0, 28px 28px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

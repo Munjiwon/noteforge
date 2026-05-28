@@ -1433,6 +1433,11 @@ export function PageStyleMenu({
                       { key: "table-striped-purple", label: "Purple zebra" },
                       { key: "callout-emoji-bounce", label: "Bounce icon" },
                       { key: "page-bg-aurora", label: "Aurora" },
+                      { key: "heading-italic-serif", label: "Italic serif" },
+                      { key: "code-block-rose-pine-dawn", label: "Rosé Dawn" },
+                      { key: "table-cell-borders-thick", label: "Thick cells" },
+                      { key: "callout-rounded-bottom", label: "Round bottom" },
+                      { key: "page-bg-soft-checker2", label: "Big checker" },
                     ] as const
                   ).map((t) => (
                     <button

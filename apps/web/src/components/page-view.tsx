@@ -1021,6 +1021,11 @@ export function PageView({
       "table-striped-purple",
       "callout-emoji-bounce",
       "page-bg-aurora",
+      "heading-italic-serif",
+      "code-block-rose-pine-dawn",
+      "table-cell-borders-thick",
+      "callout-rounded-bottom",
+      "page-bg-soft-checker2",
     ];
     try {
       for (const k of toggles) {
