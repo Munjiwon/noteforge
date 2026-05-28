@@ -1610,6 +1610,11 @@ export function PageStyleMenu({
                       { key: "callout-epb-3", label: "callout epb3" },
                       { key: "page-bg-epb-4", label: "page-bg epb4" },
                       { key: "heading-epb-5", label: "heading epb5" },
+                      { key: "code-block-epq-1", label: "code-block epq1" },
+                      { key: "table-epq-2", label: "table epq2" },
+                      { key: "callout-epq-3", label: "callout epq3" },
+                      { key: "page-bg-epq-4", label: "page-bg epq4" },
+                      { key: "heading-epq-5", label: "heading epq5" },
                     ] as const
                   ).map((t) => (
                     <button
