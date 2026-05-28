@@ -3552,6 +3552,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean Definition of Ready — the checklist a backlog item must meet before a team starts it. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄 — 왜 DoR이 필요한가), '**준비 기준 (체크 bullets)**' (사용자 가치 명확 / 인수 기준 / 디자인 / 의존성 확인 / 추정 / 테스트 가능), '**각 기준 설명 (테이블)**' ('기준 | 무엇을 의미 | 충족 예시'), '**예외 (1줄)**' (스파이크 등), '**책임 (1줄)**' (누가 준비 / 누가 확인), '**안티패턴 (1줄)**' (준비 안 된 채 시작). 명확하고 가벼운 게이트.\n\nDoR 컨텍스트:\n${text}`,
   internal_async_update_template_ko: (text) =>
     `Write a Korean async update template — a reusable template for written, async status updates. Use 합쇼체. Markdown: '**한 줄 (이번 업데이트)**' (1줄 — 🟢/🟡/🔴 + 핵심), '**진행 (bullets)**' (지난번 이후 한 것 — 결과 중심), '**다음 (bullets)**' (다음에 할 것), '**막힌 것 / 도움 필요 (bullets)**' (각 '무엇 — 누구에게 — 언제까지'), '**결정 / 변경 (bullets)**' (있으면), '**지표 / 링크 (1줄)**', '**작성 팁 (1줄)**' (스캔 가능 / 솔직 / 짧게). 동기 회의를 대체할 수 있게.\n\n업데이트 컨텍스트:\n${text}`,
+  translate_ko_to_shilluk: (text) =>
+    `Translate the Korean text below into natural Shilluk (Dhøg Cøllø) — a Luo (Western Nilotic) language of South Sudan. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Dhøg Cøllø**' and '**번역 노트**' (3 bullets in Korean — note Shilluk is a Western Nilotic language with a complex tonal and vowel system).\n\n원문:\n${text}`,
+  translate_ko_to_anuak: (text) =>
+    `Translate the Korean text below into natural Anuak (Dha-Anywaa) — a Luo (Western Nilotic) language of the Ethiopia-South Sudan border. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Dha-Anywaa**' and '**번역 노트**' (3 bullets in Korean — note Anuak is a Western Nilotic language of the Gambela/Upper Nile region).\n\n원문:\n${text}`,
+  translate_ko_to_bari: (text) =>
+    `Translate the Korean text below into natural Bari — an Eastern Nilotic language of South Sudan around Juba. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Bari**' and '**번역 노트**' (3 bullets in Korean — note Bari is an Eastern Nilotic language of the central South Sudan region).\n\n원문:\n${text}`,
+  translate_ko_to_lotuko: (text) =>
+    `Translate the Korean text below into natural Otuho (Lotuko) — an Eastern Nilotic language of South Sudan. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Otuho**' and '**번역 노트**' (3 bullets in Korean — note Otuho/Lotuko is an Eastern Nilotic language of the Eastern Equatoria region).\n\n원문:\n${text}`,
+  translate_ko_to_zande: (text) =>
+    `Translate the Korean text below into natural Zande (Pa-Zande) — a Ubangian (Niger-Congo) language of South Sudan, DR Congo and the Central African Republic. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Pa-Zande**' and '**번역 노트**' (3 bullets in Korean — note Zande is a Ubangian language of the Azande people, written in Latin script).\n\n원문:\n${text}`,
+  internal_tech_radar_entry_ko: (text) =>
+    `Write a Korean tech radar entry — assesses a technology/tool and places it on adopt/trial/assess/hold. Use 합쇼체. Markdown: '**한 줄 (판정)**' (1줄 — Adopt / Trial / Assess / Hold + 핵심 이유), '**기술 (1줄)**' (무엇 / 어디에 쓰는가), '**왜 보고 있나 (1단락)**' (어떤 문제를 풀어주나), '**강점 (bullets)**', '**우려 / 리스크 (bullets)**' (성숙도 / 운영 / 락인), '**우리 컨텍스트 적합성 (1단락)**', '**권고 (1줄)**' (어디서 어떻게 시작/피할지), '**재검토 시점 (1줄)**'. 근거 기반 판단.\n\n기술 컨텍스트:\n${text}`,
+  sales_deal_loss_notification_ko: (text) =>
+    `Write a Korean deal loss notification — an internal note announcing a lost deal with key learnings. Use 합쇼체. 짧고 솔직. Markdown: '**한 줄 (로스)**' (1줄 — 어느 딜 / 규모 / 핵심 이유), '**상황 요약 (bullets)**' (경쟁 / 단계 / 기간), '**왜 잃었나 (bullets)**' (솔직 — 가격 / 핏 / 타이밍 / 프로세스), '**우리가 배운 것 (bullets)**' (반복 가능한 교훈), '**프로세스 개선 제안 (1줄)**', '**재공략 가능성 (1줄)**' (언제 / 어떻게). 비난 없이 학습 중심.\n\n로스 컨텍스트:\n${text}`,
+  customer_relationship_review_ko: (text) =>
+    `Write a Korean customer relationship review — assesses the depth and health of relationships within an account. Use 합쇼체. Markdown: '**한 줄 (관계 건강)**' (1줄), '**관계 맵 요약 (테이블)**' ('인물 | 역할 | 관계 강도 | 마지막 접촉'), '**챔피언 상태 (bullets)**' (견고 / 흔들림 / 부재), '**커버리지 갭 (bullets)**' (관계 없는 핵심 인물), '**단일 의존 리스크 (1줄)**' (한 명에 의존?), '**최근 신호 (bullets)**' (관계 변화), '**강화 액션 (테이블)**' ('대상 | 액션 | 담당'), '**멀티스레딩 목표 (1줄)**'. 관계 다변화 강조.\n\n관계 컨텍스트:\n${text}`,
+  pm_problem_statement_ko: (text) =>
+    `Write a Korean problem statement — frames a problem sharply before any solutioning. Use 합쇼체. Markdown: '**한 줄 (문제)**' (1줄 — 한 문장으로 문제 정의), '**누가 (bullets)**' (영향받는 사람 / 세그먼트), '**현재 상황 (1단락)**' (지금 어떻게 / 왜 아픈가), '**증거 (bullets)**' (이게 진짜 문제라는 데이터), '**임팩트 (1줄)**' (안 풀면 / 풀면 — 가능하면 수치), '**제약 (bullets)**' (풀 때 지켜야 할 것), '**성공 기준 (bullets)**' (풀렸다는 것을 어떻게 아나), '**비범위 (1줄)**'. 솔루션 언급 금지 — 문제에 집중.\n\n문제 컨텍스트:\n${text}`,
+  internal_handover_doc_ko: (text) =>
+    `Write a Korean handover doc — hands off ownership of a project/area to someone else. Use 합쇼체. Markdown: '**한 줄 (인계)**' (1줄 — 무엇을 / 누구에게), '**개요 (1단락)**' (이 영역이 무엇 / 현재 상태), '**진행 중 작업 (테이블)**' ('작업 | 상태 | 다음 단계 | 마감'), '**핵심 컨텍스트 (bullets)**' (배경 / 결정 / 함정), '**연락처 (테이블)**' ('영역 | 누구 | 무엇 때문에'), '**접근 / 권한 (bullets)**' (필요한 것), '**리스크 / 주의 (bullets)**', '**리소스 링크 (bullets)**', '**첫 2주 추천 (1줄)**'. 인수자가 막힘 없이 이어가게.\n\n인계 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

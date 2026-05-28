@@ -1448,6 +1448,11 @@ export function PageStyleMenu({
                       { key: "table-zebra-rose", label: "Rose zebra" },
                       { key: "callout-badge-corner", label: "Badge" },
                       { key: "page-bg-soft-lines-h", label: "H-lines" },
+                      { key: "heading-side-bracket", label: "Side bracket" },
+                      { key: "code-block-everblush", label: "Everblush" },
+                      { key: "table-zebra-slate", label: "Slate zebra" },
+                      { key: "callout-left-dot", label: "Left dot" },
+                      { key: "page-bg-soft-lines-v", label: "V-lines" },
                     ] as const
                   ).map((t) => (
                     <button
