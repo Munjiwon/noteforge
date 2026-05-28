@@ -4390,6 +4390,57 @@ body.page-side-double-margin .bn-editor {
   border-right-color: #475569;
 }
 
+/* H3 corner-radius blob — soft mint blob for H3. */
+body.h3-with-corner-radius-blob .bn-editor [data-content-type="heading"][data-level="3"] {
+  display: inline-block;
+  background: linear-gradient(95deg, #a7f3d0, transparent 70%);
+  padding: 0.16em 0.6em;
+  border-radius: 0 999px 999px 0;
+}
+.dark body.h3-with-corner-radius-blob .bn-editor [data-content-type="heading"][data-level="3"] {
+  background: linear-gradient(95deg, #065f46, transparent 70%);
+}
+
+/* Strict grayscale code — entirely desaturated palette. */
+body.code-block-strict-grayscale .bn-editor pre {
+  background: #f3f4f6 !important;
+  color: #1f2937 !important;
+  filter: grayscale(1);
+  border: 1px solid #d1d5db;
+}
+body.code-block-strict-grayscale .bn-editor pre * {
+  color: inherit !important;
+}
+
+/* Monospace data cells — make every data cell mono. */
+body.table-data-cell-mono .bn-editor table tbody td {
+  font-family: "Menlo", "Consolas", "Monaco", monospace !important;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Cross pattern background — subtle crosses for callouts. */
+body.callout-cross-pattern-bg .bn-editor [data-content-type="callout"] {
+  background-image:
+    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.04) 0, rgba(0, 0, 0, 0.04) 2px, transparent 2px, transparent 10px),
+    repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.04) 0, rgba(0, 0, 0, 0.04) 2px, transparent 2px, transparent 10px) !important;
+}
+.dark body.callout-cross-pattern-bg .bn-editor [data-content-type="callout"] {
+  background-image:
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.06) 0, rgba(255, 255, 255, 0.06) 2px, transparent 2px, transparent 10px),
+    repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.06) 0, rgba(255, 255, 255, 0.06) 2px, transparent 2px, transparent 10px) !important;
+}
+
+/* Double side rule — two parallel lines on the left edge. */
+body.page-side-double-rule .bn-editor {
+  border-left: 1px solid #94a3b8;
+  box-shadow: -8px 0 0 -6px #94a3b8;
+  padding-left: 2rem !important;
+}
+.dark body.page-side-double-rule .bn-editor {
+  border-left-color: #64748b;
+  box-shadow: -8px 0 0 -6px #64748b;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

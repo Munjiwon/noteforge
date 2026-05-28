@@ -709,6 +709,11 @@ export function PageView({
       "table-row-divider-zigzag",
       "callout-pin-overlay",
       "page-side-double-margin",
+      "h3-with-corner-radius-blob",
+      "code-block-strict-grayscale",
+      "table-data-cell-mono",
+      "callout-cross-pattern-bg",
+      "page-side-double-rule",
     ];
     try {
       for (const k of toggles) {

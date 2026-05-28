@@ -1121,6 +1121,11 @@ export function PageStyleMenu({
                       { key: "table-row-divider-zigzag", label: "Zigzag rows" },
                       { key: "callout-pin-overlay", label: "📌 overlay" },
                       { key: "page-side-double-margin", label: "2x margin" },
+                      { key: "h3-with-corner-radius-blob", label: "H3 blob" },
+                      { key: "code-block-strict-grayscale", label: "Grayscale" },
+                      { key: "table-data-cell-mono", label: "Mono data" },
+                      { key: "callout-cross-pattern-bg", label: "Cross bg" },
+                      { key: "page-side-double-rule", label: "2x side rule" },
                     ] as const
                   ).map((t) => (
                     <button
