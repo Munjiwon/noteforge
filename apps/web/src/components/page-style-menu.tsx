@@ -1303,6 +1303,11 @@ export function PageStyleMenu({
                       { key: "table-cell-center", label: "Center cells" },
                       { key: "callout-top-border-accent", label: "Top accent" },
                       { key: "page-bg-noise", label: "Noise" },
+                      { key: "heading-uppercase-all", label: "UPPER head" },
+                      { key: "code-block-catppuccin", label: "Catppuccin" },
+                      { key: "table-row-numbers", label: "Row numbers" },
+                      { key: "callout-glass-blur", label: "Glass blur" },
+                      { key: "page-bg-gradient-radial", label: "Radial fade" },
                     ] as const
                   ).map((t) => (
                     <button

@@ -891,6 +891,11 @@ export function PageView({
       "table-cell-center",
       "callout-top-border-accent",
       "page-bg-noise",
+      "heading-uppercase-all",
+      "code-block-catppuccin",
+      "table-row-numbers",
+      "callout-glass-blur",
+      "page-bg-gradient-radial",
     ];
     try {
       for (const k of toggles) {

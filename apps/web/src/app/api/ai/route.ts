@@ -2972,6 +2972,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean feature flag rollout plan — plans a safe, staged rollout behind a feature flag. Use 합쇼체. Markdown: '**한 줄 (롤아웃)**' (1줄 — 무슨 기능 / 어떻게 단계적으로), '**플래그 정보 (bullets)**' (이름 / 기본값 / 소유), '**단계 (테이블)**' ('단계 | 대상(% 또는 그룹) | 기간 | 진입 기준'), '**모니터링 지표 (bullets)**' (성공 + 가드레일), '**자동 롤백 조건 (bullets)**', '**수동 점검 (bullets)**', '**완전 출시 기준 (1줄)**', '**플래그 정리 (1줄)**' (언제 제거). 안전 우선.\n\n기능 / 롤아웃 컨텍스트:\n${text}`,
   internal_doc_style_guide_ko: (text) =>
     `Write a Korean documentation style guide — sets writing conventions for a team's docs. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄), '**원칙 (bullets)**' (명확 / 간결 / 독자 우선), '**문체 (bullets)**' (존댓말 정책 / 능동태 / 시제), '**용어 (테이블)**' ('쓸 것 | 쓰지 말 것 | 이유'), '**서식 (bullets)**' (제목 / 목록 / 코드 / 링크 규칙), '**구조 템플릿 (bullets)**' (문서 기본 골격), '**예시 (before/after 1쌍)**', '**리뷰 체크리스트 (bullets)**'. 규칙은 예시와 함께.\n\n스타일 가이드 컨텍스트:\n${text}`,
+  translate_ko_to_kosraean: (text) =>
+    `Translate the Korean text below into natural Kosraean — Micronesian language of Kosrae state, Federated States of Micronesia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Kosraean**' and '**번역 노트**' (3 bullets in Korean — note Kosraean is an Oceanic language with a notably small consonant set).\n\n원문:\n${text}`,
+  translate_ko_to_pohnpeian: (text) =>
+    `Translate the Korean text below into natural Pohnpeian — Micronesian language of Pohnpei state, Federated States of Micronesia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Pohnpeian**' and '**번역 노트**' (3 bullets in Korean — note Pohnpeian has an elaborate honorific (royal) speech register).\n\n원문:\n${text}`,
+  translate_ko_to_yapese: (text) =>
+    `Translate the Korean text below into natural Yapese — Austronesian language of Yap, Federated States of Micronesia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Yapese**' and '**번역 노트**' (3 bullets in Korean — note Yap is famous for its large stone money (rai) and Yapese is its language).\n\n원문:\n${text}`,
+  translate_ko_to_gilbertese: (text) =>
+    `Translate the Korean text below into natural Gilbertese (Kiribati / taetae ni Kiribati) — Micronesian language of Kiribati. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Kiribati**' and '**번역 노트**' (3 bullets in Korean — note Gilbertese is the national language of Kiribati, with a 13-letter alphabet).\n\n원문:\n${text}`,
+  translate_ko_to_mortlockese: (text) =>
+    `Translate the Korean text below into natural Mortlockese — Micronesian language of the Mortlock Islands, Chuuk state, Federated States of Micronesia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Mortlockese**' and '**번역 노트**' (3 bullets in Korean — note Mortlockese is closely related to Chuukese, part of the Chuukic dialect continuum).\n\n원문:\n${text}`,
+  internal_team_charter_ko: (text) =>
+    `Write a Korean team charter — defines a team's mission, scope, and working norms. Use 합쇼체. Markdown: '**한 줄 (미션)**' (1줄 — 이 팀이 왜 존재), '**책임 영역 (bullets)**' (우리가 owns 하는 것), '**책임 아닌 것 (bullets)**' (경계 명확히), '**핵심 지표 (bullets)**' (팀 성공 측정), '**역할 (테이블)**' ('역할 | 책임 | 누구'), '**일하는 방식 (bullets)**' (회의 / 의사결정 / 소통 규범), '**의사결정 권한 (1줄)**' (무엇을 누가 결정), '**인터페이스 (bullets)**' (어느 팀과 어떻게 협업).\n\n팀 컨텍스트:\n${text}`,
+  sales_demo_script_ko: (text) =>
+    `Write a Korean product demo script — a structured, value-led demo flow for a sales call. Use 합쇼체. Markdown: '**한 줄 (데모 목표)**' (1줄 — 무엇을 보여 무엇을 느끼게), '**오프닝 (1단락)**' (고객 페인 재확인 + 어젠다), '**데모 흐름 (테이블)**' ('단계 | 보여줄 기능 | 연결할 고객 가치 | 멘트 핵심'), '**와우 모먼트 (1줄)**' (가장 임팩트 큰 순간), '**예상 질문 + 답 (테이블)**', '**피해야 할 것 (1-2 bullets)**' (기능 나열 등), '**클로징 (1단락)**' (요약 + 다음 단계 제안). 기능이 아닌 가치 중심.\n\n데모 컨텍스트:\n${text}`,
+  customer_success_story_ko: (text) =>
+    `Write a Korean customer success story — a short narrative of a customer's success for marketing/reference. Use 합쇼체. 스토리 + 데이터. Markdown: '**제목**' (1줄 — 결과 중심, 28자 이내), '**고객 소개 (1줄)**' (누구 / 무엇 하는 회사), '**도전 (1단락)**' (해결하려던 문제), '**해결 (1단락)**' (우리 제품을 어떻게 활용), '**결과 (bullets)**' (정량 성과 + 1줄 고객 인용), '**미래 (1줄)**' (앞으로의 계획), '**한 줄 요약 인용 (1줄)**' (헤드라인용 고객 멘트). 과장 없이 신뢰감 있게.\n\n고객 / 성과 컨텍스트:\n${text}`,
+  pm_okr_draft_ko: (text) =>
+    `Draft Korean product OKRs — turns a goal into a well-formed Objective with measurable Key Results. Use 합쇼체. Markdown: '**Objective (1줄)**' (영감 + 정성적 + 기한 있는), '**Key Results (테이블)**' ('KR | 측정 | 시작값 | 목표값 | 신뢰도'): 3-4개, 결과 중심(활동 아님), '**KR 품질 체크 (bullets)**' (각 KR이 측정가능/야심참/결과지향인지), '**이니셔티브 (bullets)**' (KR 달성 위한 활동 — KR과 구분), '**안티패턴 경고 (1줄)**' (활동을 KR로 착각하지 말 것). 좋은 OKR 원칙 반영.\n\n목표 컨텍스트:\n${text}`,
+  internal_incident_comms_external_ko: (text) =>
+    `Write Korean external incident communication — a customer-facing status message during/after an incident. Use 합쇼체 (침착 + 투명 + 책임). Markdown: '**상태 (1줄)**' (조사 중 / 완화됨 / 해결됨), '**무슨 일 (1단락)**' (고객이 겪는 것 — 기술 용어 최소), '**영향 (bullets)**' (누가 / 무엇이), '**현재 조치 (1줄)**', '**예상 복구 / 다음 업데이트 (1줄)**', '**고객 할 일 (1줄)**' (있으면), '**사과 + 약속 (1줄)**' (해결 후). 변명 없이, 추측 단정 금지.\n\n인시던트 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

@@ -6244,6 +6244,46 @@ body.page-bg-noise .bn-editor {
   background-position: 0 0, 3px 4px !important;
 }
 
+/* Heading uppercase all — uppercase all heading text. */
+body.heading-uppercase-all .bn-editor [data-content-type="heading"] {
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+}
+
+/* Code block Catppuccin — Catppuccin Mocha palette for code blocks. */
+body.code-block-catppuccin .bn-editor pre {
+  background: #1e1e2e !important;
+  border: 1px solid #313244 !important;
+}
+body.code-block-catppuccin .bn-editor pre code {
+  color: #cdd6f4 !important;
+}
+
+/* Table row numbers — prepend an auto-incrementing number to each row. */
+body.table-row-numbers .bn-editor table tbody {
+  counter-reset: rownum;
+}
+body.table-row-numbers .bn-editor table tbody tr > td:first-child::before {
+  counter-increment: rownum;
+  content: counter(rownum) ". ";
+  color: #a1a1aa;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Callout glass blur — frosted glass (backdrop blur) effect on callouts. */
+body.callout-glass-blur .bn-editor [data-content-type="callout"] {
+  backdrop-filter: blur(6px) !important;
+  background: rgba(255, 255, 255, 0.5) !important;
+}
+.dark body.callout-glass-blur .bn-editor [data-content-type="callout"] {
+  background: rgba(30, 30, 46, 0.5) !important;
+}
+
+/* Page bg radial gradient — a soft radial gradient fading from the center. */
+body.page-bg-gradient-radial .bn-editor {
+  background-image: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.1), transparent 60%) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
