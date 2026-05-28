@@ -1106,6 +1106,11 @@ export function PageStyleMenu({
                       { key: "table-row-divider-thin", label: "Thin rows" },
                       { key: "callout-bordered-curved", label: "Curved bdr" },
                       { key: "page-side-margin-paragraph", label: "Margin para" },
+                      { key: "h6-with-page-mark", label: "H6 §" },
+                      { key: "code-block-rosy-pink", label: "Rosy code" },
+                      { key: "table-row-divider-double", label: "Double rows" },
+                      { key: "callout-stamp-overlay", label: "Stamp" },
+                      { key: "page-side-margin-icon-area", label: "Icon area" },
                     ] as const
                   ).map((t) => (
                     <button

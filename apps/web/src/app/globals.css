@@ -4175,6 +4175,80 @@ body.page-side-margin-paragraph .bn-editor [data-content-type="paragraph"] {
   border-right-color: #334155;
 }
 
+/* H6 with page mark — prepends § to H6 headings. */
+body.h6-with-page-mark .bn-editor [data-content-type="heading"][data-level="6"] > *:first-child::before {
+  content: "§ ";
+  color: #cbd5e1;
+  margin-right: 0.15em;
+  font-weight: 400;
+}
+
+/* Rosy pink code background — soft warm pink. */
+body.code-block-rosy-pink .bn-editor pre {
+  background: #fff1f2 !important;
+  color: #881337 !important;
+  border: 1px solid #fecdd3;
+}
+body.code-block-rosy-pink .bn-editor pre code {
+  color: #9f1239 !important;
+}
+.dark body.code-block-rosy-pink .bn-editor pre {
+  background: #3f1a23 !important;
+  color: #fda4af !important;
+  border-color: #722c3f;
+}
+
+/* Double row divider — top/bottom double line between rows. */
+body.table-row-divider-double .bn-editor table tr + tr > * {
+  border-top: 3px double #6b7280 !important;
+}
+.dark body.table-row-divider-double .bn-editor table tr + tr > * {
+  border-top-color: #9ca3af !important;
+}
+
+/* Stamp overlay callout — diagonal "NEW" stamp overlay. */
+body.callout-stamp-overlay .bn-editor [data-content-type="callout"] {
+  position: relative;
+  overflow: hidden;
+}
+body.callout-stamp-overlay .bn-editor [data-content-type="callout"]::before {
+  content: "NEW";
+  position: absolute;
+  top: 8px;
+  right: -28px;
+  width: 100px;
+  text-align: center;
+  background: #ef4444;
+  color: #fff;
+  transform: rotate(28deg);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 2px 0;
+}
+
+/* Icon area — left margin space for handwritten icons / annotations. */
+body.page-side-margin-icon-area .bn-editor {
+  position: relative;
+  padding-left: 3rem !important;
+}
+body.page-side-margin-icon-area .bn-editor::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2.5rem;
+  height: 100%;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 38px,
+    rgba(229, 231, 235, 0.6) 39px,
+    rgba(229, 231, 235, 0.6) 40px
+  );
+  pointer-events: none;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
