@@ -1463,6 +1463,11 @@ export function PageStyleMenu({
                       { key: "table-zebra-indigo", label: "Indigo zebra" },
                       { key: "callout-top-tab", label: "Top tab" },
                       { key: "page-bg-soft-glow-br", label: "BR glow" },
+                      { key: "heading-marker-diamond", label: "◆ marker" },
+                      { key: "code-block-flexoki-light", label: "Flexoki lt" },
+                      { key: "table-zebra-cyan", label: "Cyan zebra" },
+                      { key: "callout-bottom-tab", label: "Bottom tab" },
+                      { key: "page-bg-soft-glow-bl", label: "BL glow" },
                     ] as const
                   ).map((t) => (
                     <button

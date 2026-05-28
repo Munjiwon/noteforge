@@ -7559,6 +7559,51 @@ body.page-bg-soft-glow-br .bn-editor {
   background-image: radial-gradient(circle at 100% 100%, rgba(236, 72, 153, 0.12), transparent 45%) !important;
 }
 
+/* Heading diamond marker — prepend a "◆ " marker to all headings. */
+body.heading-marker-diamond .bn-editor [data-content-type="heading"] > *:first-child::before {
+  content: "\25C6 ";
+  color: #ec4899;
+  margin-right: 0.25em;
+}
+
+/* Code block Flexoki light — light Flexoki palette for code blocks. */
+body.code-block-flexoki-light .bn-editor pre {
+  background: #fffcf0 !important;
+  border: 1px solid #f2f0e5 !important;
+}
+body.code-block-flexoki-light .bn-editor pre code {
+  color: #100f0f !important;
+}
+
+/* Table cyan zebra — cyan-tinted zebra striping on rows. */
+body.table-zebra-cyan .bn-editor table tr:nth-child(even) td {
+  background: rgba(6, 182, 212, 0.1) !important;
+}
+.dark body.table-zebra-cyan .bn-editor table tr:nth-child(even) td {
+  background: rgba(6, 182, 212, 0.16) !important;
+}
+
+/* Callout bottom tab — a small tab on the callout's bottom edge. */
+body.callout-bottom-tab .bn-editor [data-content-type="callout"] {
+  position: relative;
+  margin-bottom: 12px !important;
+}
+body.callout-bottom-tab .bn-editor [data-content-type="callout"]::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 16px;
+  width: 36px;
+  height: 8px;
+  background: #ec4899;
+  border-radius: 0 0 4px 4px;
+}
+
+/* Page bg bottom-left glow — a soft glow from the bottom-left corner. */
+body.page-bg-soft-glow-bl .bn-editor {
+  background-image: radial-gradient(circle at 0% 100%, rgba(16, 185, 129, 0.12), transparent 45%) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

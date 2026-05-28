@@ -3612,6 +3612,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean product health review — a holistic review of a product's overall health. Use 합쇼체. Markdown: '**한 줄 (건강)**' (1줄 — 종합 + 핵심 신호), '**핵심 지표 (테이블)**' ('지표 | 현재 | 추세 | 목표'): 노스스타 / 리텐션 / 활성 / NPS / 매출, '**사용자 신호 (bullets)**' (피드백 / 지원 / 이탈), '**제품 영역별 상태 (bullets)**' (어디가 건강/병약), '**리스크 (bullets)**', '**기회 (bullets)**', '**우선 액션 (테이블)**' ('액션 | 근거 | 담당'), '**다음 검토 (1줄)**'. 지표 + 정성 신호 종합.\n\n제품 건강 컨텍스트:\n${text}`,
   internal_eng_hiring_plan_ko: (text) =>
     `Write a Korean engineering hiring plan — plans hiring for an eng team over a period. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 몇 명 / 어떤 역할 / 언제까지), '**필요 분석 (bullets)**' (왜 — 캐파갭 / 스킬갭 / 성장), '**역할 (테이블)**' ('역할 | 레벨 | 핵심 스킬 | 우선순위 | 목표 시점'), '**소싱 전략 (bullets)**' (채널 / 추천 / 다양성), '**인터뷰 프로세스 (1줄)**' (루프 / 기준), '**온보딩 준비 (bullets)**', '**리스크 (bullets)**' (시장 / 예산 / 시간), '**측정 (1줄)**' (퍼널 / 시간). 현실적 + 품질 우선.\n\n채용 컨텍스트:\n${text}`,
+  translate_ko_to_haida: (text) =>
+    `Translate the Korean text below into natural Haida (X̱aat Kíl) — a language isolate of Haida Gwaii (British Columbia) and southeastern Alaska. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**X̱aat Kíl**' and '**번역 노트**' (3 bullets in Korean — note Haida is a critically endangered language isolate, written in Latin script with special characters).\n\n원문:\n${text}`,
+  translate_ko_to_tsimshian: (text) =>
+    `Translate the Korean text below into natural Tsimshian (Sm'algyax) — a language of coastal British Columbia and southeastern Alaska. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Sm'algyax**' and '**번역 노트**' (3 bullets in Korean — note Sm'algyax is a Tsimshianic language of the Pacific Northwest coast).\n\n원문:\n${text}`,
+  translate_ko_to_kwakwala: (text) =>
+    `Translate the Korean text below into natural Kwak'wala — a Wakashan language of northern Vancouver Island and the adjacent BC mainland. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Kwak'wala**' and '**번역 노트**' (3 bullets in Korean — note Kwak'wala is a Wakashan language of the Kwakwaka'wakw peoples).\n\n원문:\n${text}`,
+  translate_ko_to_salish: (text) =>
+    `Translate the Korean text below into natural Halkomelem (a Coast Salish language) of southwestern British Columbia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Hən̓q̓əmin̓əm̓**' and '**번역 노트**' (3 bullets in Korean — note this is a Coast Salish language; pick a widely-used Halkomelem standard).\n\n원문:\n${text}`,
+  translate_ko_to_nuuchahnulth: (text) =>
+    `Translate the Korean text below into natural Nuu-chah-nulth (Nuučaan̓uł) — a Wakashan language of western Vancouver Island, BC. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Nuučaan̓uł**' and '**번역 노트**' (3 bullets in Korean — note Nuu-chah-nulth is a Southern Wakashan language with a large consonant inventory).\n\n원문:\n${text}`,
+  internal_runbook_audit_ko: (text) =>
+    `Write a Korean runbook audit — reviews existing runbooks for accuracy, coverage and freshness. Use 합쇼체. Markdown: '**한 줄 (총평)**' (1줄 — 런북 건강 + 핵심 갭), '**런북 목록 (테이블)**' ('런북 | 마지막 업데이트 | 정확성 | 커버리지 | 판정'), '**누락된 런북 (bullets)**' (있어야 하는데 없는 시나리오), '**오래된/부정확 (bullets)**' (검증 실패), '**중복/통합 후보 (bullets)**', '**개선 액션 (테이블)**' ('액션 | 담당 | 시한'), '**유지 관리 규칙 (1줄)**' (검토 주기). 실제 사고 때 작동하게.\n\n런북 컨텍스트:\n${text}`,
+  sales_account_tiering_ko: (text) =>
+    `Write a Korean account tiering framework — segments accounts into tiers to allocate effort. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄), '**티어 기준 (테이블)**' ('티어 | 기준(ARR/성장/전략) | 서비스 수준 | 접촉 빈도'): A/B/C, '**티어별 플레이 (bullets)**' (각 티어에 무엇을 제공), '**리소스 배분 (1줄)**' (시간/사람), '**승급/강등 규칙 (bullets)**' (티어 이동 트리거), '**리스크 (1줄)**' (저티어 방치), '**적용 예시 (bullets)**'. 집중 + 형평 균형.\n\n계정 컨텍스트:\n${text}`,
+  customer_executive_review_prep_ko: (text) =>
+    `Write a Korean executive review prep doc — internal prep before an exec-level customer review (EBR). Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 이 리뷰에서 얻을 것), '**참석 임원 (bullets)**' ('이름 — 역할 — 관심사 / 알아둘 점'), '**보여줄 전략 가치 (bullets)**' (C레벨 언어), '**비즈니스 임팩트 데이터 (bullets)**', '**예상 임원 질문 + 답 (테이블)**', '**민감 이슈 (bullets)**' (지뢰 + 대응), '**원하는 결과 (1줄)**' (후원 / 확장 / 레퍼런스), '**역할 분담 (테이블)**'. 내부 솔직 버전.\n\n리뷰 컨텍스트:\n${text}`,
+  pm_user_segmentation_ko: (text) =>
+    `Write a Korean user segmentation analysis — defines meaningful user segments to inform product decisions. Use 합쇼체. Markdown: '**한 줄 (핵심)**' (1줄 — 가장 중요한 세그먼트 구분), '**세그먼트 기준 (1줄)**' (무엇으로 나누나 — 행동/니즈/가치), '**세그먼트 (테이블)**' ('세그먼트 | 정의 | 규모 | 핵심 니즈 | 가치/수익성'), '**세그먼트별 행동 차이 (bullets)**', '**우선 세그먼트 (1줄)**' (집중할 곳 + 이유), '**시사점 (bullets)**' (제품 / GTM), '**주의 (1줄)**' (과도한 세분화 경계). 행동 기반 우선.\n\n세그먼트 컨텍스트:\n${text}`,
+  internal_team_ritual_design_ko: (text) =>
+    `Write a Korean team ritual design doc — designs a recurring team ritual (standup, planning, retro, demo) intentionally. Use 합쇼체. Markdown: '**한 줄 (의식)**' (1줄 — 무슨 리추얼 / 목적), '**왜 (1줄)**' (이게 풀어야 할 문제), '**형식 (테이블)**' ('항목 | 설정'): 주기 / 길이 / 참석자 / 진행자, '**아젠다 (numbered)**', '**산출물 (bullets)**' (끝나고 무엇이 남나), '**잘 돌아가는 신호 (bullets)**', '**안티패턴 (bullets)**' (의미 없어지는 징후 + 대응), '**점검 (1줄)**' (언제 이 리추얼 자체를 재검토). 목적 없는 회의 방지.\n\n리추얼 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
