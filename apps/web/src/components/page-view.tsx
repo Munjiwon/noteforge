@@ -1318,6 +1318,11 @@ export function PageView({
       "callout-fcy-3",
       "page-bg-fcy-4",
       "heading-fcy-5",
+      "code-block-fdn-1",
+      "table-fdn-2",
+      "callout-fdn-3",
+      "page-bg-fdn-4",
+      "heading-fdn-5",
     ];
     try {
       for (const k of toggles) {
