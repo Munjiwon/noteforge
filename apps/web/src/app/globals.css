@@ -7062,6 +7062,55 @@ body.page-bg-grid-thin .bn-editor {
   background-size: 14px 14px !important;
 }
 
+/* Heading dotted underline — a dotted underline beneath all headings. */
+body.heading-dotted-underline .bn-editor [data-content-type="heading"] {
+  border-bottom: 2px dotted #6366f1 !important;
+  padding-bottom: 0.12em !important;
+}
+
+/* Code block Snazzy — Hyper Snazzy palette for code blocks. */
+body.code-block-snazzy .bn-editor pre {
+  background: #282a36 !important;
+  border: 1px solid #34353f !important;
+}
+body.code-block-snazzy .bn-editor pre code {
+  color: #eff0eb !important;
+}
+
+/* Table first column sticky — keep the first column visible on horizontal scroll. */
+body.table-first-col-sticky .bn-editor table tr > td:first-child,
+body.table-first-col-sticky .bn-editor table tr > th:first-child {
+  position: sticky !important;
+  left: 0 !important;
+  background: #f4f4f5 !important;
+  z-index: 1 !important;
+}
+.dark body.table-first-col-sticky .bn-editor table tr > td:first-child,
+.dark body.table-first-col-sticky .bn-editor table tr > th:first-child {
+  background: #27272a !important;
+}
+
+/* Callout uppercase text — render callout text in uppercase. */
+body.callout-text-uppercase .bn-editor [data-content-type="callout"] {
+  text-transform: uppercase !important;
+  letter-spacing: 0.03em !important;
+  font-size: 0.92em !important;
+}
+
+/* Page bg grain — a fine film-grain texture behind the editor. */
+body.page-bg-grain .bn-editor {
+  background-image:
+    radial-gradient(rgba(0, 0, 0, 0.05) 0.5px, transparent 0.5px),
+    radial-gradient(rgba(0, 0, 0, 0.04) 0.5px, transparent 0.5px) !important;
+  background-size: 3px 3px, 4px 4px !important;
+  background-position: 0 0, 1px 2px !important;
+}
+.dark body.page-bg-grain .bn-editor {
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.04) 0.5px, transparent 0.5px),
+    radial-gradient(rgba(255, 255, 255, 0.03) 0.5px, transparent 0.5px) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

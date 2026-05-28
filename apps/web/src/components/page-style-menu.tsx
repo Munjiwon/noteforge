@@ -1403,6 +1403,11 @@ export function PageStyleMenu({
                       { key: "table-header-pill-cells", label: "Pill cells" },
                       { key: "callout-corner-accent", label: "Corner accent" },
                       { key: "page-bg-grid-thin", label: "Thin grid" },
+                      { key: "heading-dotted-underline", label: "Dotted line" },
+                      { key: "code-block-snazzy", label: "Snazzy" },
+                      { key: "table-first-col-sticky", label: "Sticky col" },
+                      { key: "callout-text-uppercase", label: "UPPER text" },
+                      { key: "page-bg-grain", label: "Grain" },
                     ] as const
                   ).map((t) => (
                     <button

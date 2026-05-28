@@ -3372,6 +3372,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean product strategy brief — articulates a product's strategy concisely. Use 합쇼체. Markdown: '**한 줄 (전략)**' (1줄 — 어디서 이기려 하는가), '**비전 (1줄)**' (장기 지향점), '**타깃 / 문제 (1단락)**' (누구의 어떤 문제), '**차별화 (bullets)**' (왜 우리가 / 경쟁 대비), '**전략적 베팅 (테이블)**' ('베팅 | 근거 | 성공 신호'), '**의도적 비선택 (bullets)**' (안 할 것), '**핵심 가정 (bullets)**', '**성공 지표 (bullets)**' (노스스타 + 보조). 집중과 트레이드오프 명확히.\n\n전략 컨텍스트:\n${text}`,
   internal_architecture_review_notes_ko: (text) =>
     `Structure Korean architecture review notes — captures decisions and feedback from an architecture review. Use 합쇼체. Markdown: '**한 줄 (리뷰 대상)**' (1줄), '**제안 요지 (1단락)**', '**강점 (bullets)**', '**우려 / 질문 (테이블)**' ('영역 | 우려 | 심각도 | 제안'): 확장성 / 신뢰성 / 보안 / 운영 / 복잡도, '**대안 논의 (bullets)**', '**결정 사항 (bullets)**' (이 자리에서 정한 것), '**남은 액션 (테이블)**' ('액션 | 담당 | 시한'), '**승인 상태 (1줄)**'. 작업에 대한 피드백으로.\n\n아키텍처 리뷰 컨텍스트:\n${text}`,
+  translate_ko_to_acholi: (text) =>
+    `Translate the Korean text below into natural Acholi (Leb Acoli) — a Luo (Western Nilotic) language of northern Uganda and South Sudan. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Leb Acoli**' and '**번역 노트**' (3 bullets in Korean — note Acholi is a Southern Luo language written in Latin script).\n\n원문:\n${text}`,
+  translate_ko_to_lango: (text) =>
+    `Translate the Korean text below into natural Lango — a Luo (Western Nilotic) language of north-central Uganda. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Lango**' and '**번역 노트**' (3 bullets in Korean — note Lango is closely related to Acholi but has Ateso influence).\n\n원문:\n${text}`,
+  translate_ko_to_ateso: (text) =>
+    `Translate the Korean text below into natural Ateso (Teso) — an Eastern Nilotic language of eastern Uganda and western Kenya. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Ateso**' and '**번역 노트**' (3 bullets in Korean — note Ateso is an Eastern Nilotic language of the Teso people, unrelated to the surrounding Bantu languages).\n\n원문:\n${text}`,
+  translate_ko_to_karamojong: (text) =>
+    `Translate the Korean text below into natural Karamojong (Ŋakarimojoŋ) — an Eastern Nilotic language of northeastern Uganda. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Ŋakarimojoŋ**' and '**번역 노트**' (3 bullets in Korean — note Karamojong is closely related to Ateso and Turkana, spoken by pastoralist communities).\n\n원문:\n${text}`,
+  translate_ko_to_madi: (text) =>
+    `Translate the Korean text below into natural Ma'di — a Central Sudanic language of northwestern Uganda and South Sudan. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Ma'di**' and '**번역 노트**' (3 bullets in Korean — note Ma'di is a Central Sudanic (Nilo-Saharan) tonal language, distinct from neighbouring Nilotic languages).\n\n원문:\n${text}`,
+  internal_release_go_nogo_ko: (text) =>
+    `Write a Korean release go/no-go decision doc — drives a clear ship decision at the release gate. Use 합쇼체. Markdown: '**한 줄 (판정)**' (1줄 — GO / NO-GO / 조건부 + 핵심 이유), '**릴리스 (1줄)**' (무엇을 / 언제), '**Go/No-go 기준 (테이블)**' ('기준 | 상태 | 차단 여부 | 코멘트'): 품질 / 운영 준비 / 비즈니스 / 법무, '**미해결 차단 이슈 (bullets)**', '**수용 가능 리스크 (bullets)**' (알고도 넘어가는 것), '**롤백 준비 (1줄)**', '**참석자 / 승인자 (테이블)**' ('역할 | 누구 | 결정'), '**최종 결정 (1줄)**'. 명확한 단일 판정.\n\n릴리스 컨텍스트:\n${text}`,
+  sales_handoff_checklist_ko: (text) =>
+    `Write a Korean sales-to-CS handoff checklist — ensures nothing is dropped when handing an account to CS. Use 합쇼체. Markdown: '**한 줄 (계정)**' (1줄), '**필수 정보 (체크 bullets)**' (구매 동기 / 성공 기준 / 핵심 연락처 / 약속한 것), '**문서 / 자료 (체크 bullets)**' (계약 / 통화 기록 / 제안서 링크), '**소개 / 인계 (체크 bullets)**' (CS 소개 미팅 / 첫 연락), '**리스크 플래그 (체크 bullets)**' (알아둘 우려), '**첫 30일 액션 (bullets)**', '**핸드오프 미팅 (1줄)**' (Sales+CS 동기화), '**완료 확인 (1줄)**'. 빠짐없는 인계.\n\n핸드오프 컨텍스트:\n${text}`,
+  customer_journey_milestone_review_ko: (text) =>
+    `Write a Korean customer journey milestone review — reviews progress against key milestones in the customer lifecycle. Use 합쇼체. Markdown: '**한 줄 (단계)**' (1줄 — 지금 라이프사이클 어디 + 건강), '**마일스톤 진척 (테이블)**' ('마일스톤 | 목표 시점 | 상태 | 메모'): 온보딩 / 첫 가치 / 채택 / 확장 / 옹호, '**달성한 것 (bullets)**', '**지연 / 막힌 마일스톤 (bullets)**' (각 '원인 — 액션'), '**다음 마일스톤 (1줄)**' (목표 + 필요), '**리스크 (1줄)**', '**액션 (테이블)**' ('액션 | 담당 | 시한'). 여정 진척 가시화.\n\n여정 컨텍스트:\n${text}`,
+  pm_feature_tradeoff_analysis_ko: (text) =>
+    `Write a Korean feature tradeoff analysis — analyzes the tradeoffs between options for a feature decision. Use 합쇼체. Markdown: '**한 줄 (결정)**' (1줄 — 무엇을 정하나 + 추천), '**옵션 (테이블)**' ('옵션 | 장점 | 단점 | 노력 | 리스크'), '**평가 기준 (bullets)**' (무엇을 우선 — 사용자 가치 / 속도 / 유지보수), '**기준별 비교 (테이블)**' ('기준 | 옵션A | 옵션B | 옵션C'), '**트레이드오프 핵심 (1단락)**' (무엇을 얻고 무엇을 포기), '**추천 (1단락)**' (어느 옵션 + 왜), '**되돌릴 수 있나 (1줄)**' (가역성). 솔직한 트레이드오프 노출.\n\n결정 컨텍스트:\n${text}`,
+  internal_postmortem_learnings_digest_ko: (text) =>
+    `Write a Korean postmortem learnings digest — synthesizes themes across multiple postmortems for org-wide learning. Use 합쇼체. Markdown: '**한 줄 (기간/범위)**' (1줄 — 몇 건의 포스트모템 / 어느 기간), '**반복 패턴 (테이블)**' ('패턴 | 빈도 | 대표 사례'): 배포 / 의존성 / 모니터링 / 휴먼 / 용량, '**가장 비싼 원인 (bullets)**' (영향 큰 순), '**잘 작동한 대응 (bullets)**' (반복할 것), '**시스템적 개선 (bullets)**' (개별 fix 아닌 구조적), '**완료된 액션 효과 (1줄)**' (지난 액션이 효과 있었나), '**조직 권고 (bullets)**'. 개별 사고를 넘어 패턴 학습.\n\n포스트모템 모음 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
