@@ -1248,6 +1248,11 @@ export function PageStyleMenu({
                       { key: "page-bg-grid-dots-combo", label: "Grid+dots" },
                       { key: "h1-with-c-series-marker", label: "H1 🎊" },
                       { key: "page-c-series-complete-stamp", label: "C-SERIES stamp" },
+                      { key: "h2-with-double-arrow", label: "H2 »" },
+                      { key: "code-block-nord-theme", label: "Nord" },
+                      { key: "table-cell-roomy", label: "Roomy cells" },
+                      { key: "callout-corner-fold", label: "Corner fold" },
+                      { key: "page-bg-vertical-rule", label: "Vertical rule" },
                     ] as const
                   ).map((t) => (
                     <button

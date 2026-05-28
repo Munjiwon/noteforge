@@ -836,6 +836,11 @@ export function PageView({
       "page-bg-grid-dots-combo",
       "h1-with-c-series-marker",
       "page-c-series-complete-stamp",
+      "h2-with-double-arrow",
+      "code-block-nord-theme",
+      "table-cell-roomy",
+      "callout-corner-fold",
+      "page-bg-vertical-rule",
     ];
     try {
       for (const k of toggles) {

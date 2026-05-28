@@ -2752,6 +2752,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean internal announcement celebrating the completion of a large multi-phase build initiative. Use 해요체. 따뜻 + 진심 + 가식 없이. Markdown: '**제목**' (1줄, 28자 이내 — '[이니셔티브] 전체 완료 — 다 함께 축하해요'), '**본문**' (4 단락: 1) 한 줄 — '오늘 우리는 [이니셔티브]를 끝까지 완성했습니다', 2) 이게 왜 의미 있는지 1단락 — 규모 / 끈기 / 팀에게 어떤 의미, 3) 호명 + 구체적 기여 — 입력에 있는 이름만, 각 '@이름 — 무엇을 한 1줄', 4) 다음 — '잠시 멈춰 자축하고, 다음 챕터로'), '**감사 (1줄)**' (모두에게).\n\n이니셔티브 + 기여자:\n${text}`,
   full_milestone_celebration_ko: (text) =>
     `Write a Korean reflective milestone celebration note for completing a major long-running effort — the kind shared at an all-hands or in a team channel. Use 해요체. 진정성 + 회고 + 겸손. Markdown: '**한 줄 (마일스톤)**' (1줄 — 무엇을 완성했는지), '**여정 회고 (1단락)**' (3-4줄 — 시작은 어땠고, 어떤 어려움을 지나, 어떻게 여기까지), '**우리가 배운 것 (3 bullets)**' (구체적 — 기술 / 협업 / 끈기), '**기여한 사람들 (1단락)**' (입력에 있는 이름만 호명), '**다음 (1줄)**' (이 마일스톤이 연 다음 가능성), '**감사 (1줄)**' (진심으로). 이모지는 절제해서 사용.\n\n마일스톤 컨텍스트:\n${text}`,
+  translate_ko_to_shona: (text) =>
+    `Translate the Korean text below into natural Shona (chiShona) — Bantu language of Zimbabwe and parts of Mozambique. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**chiShona**' and '**번역 노트**' (3 bullets in Korean — note Shona uses a tonal system and has rich noun-class morphology).\n\n원문:\n${text}`,
+  translate_ko_to_sotho: (text) =>
+    `Translate the Korean text below into natural Sesotho (Southern Sotho) — Bantu language of Lesotho and South Africa. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Sesotho**' and '**번역 노트**' (3 bullets in Korean — note Sesotho is one of the official languages of both Lesotho and South Africa).\n\n원문:\n${text}`,
+  translate_ko_to_tswana: (text) =>
+    `Translate the Korean text below into natural Setswana (Tswana) — Bantu language of Botswana and South Africa. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Setswana**' and '**번역 노트**' (3 bullets in Korean — note Setswana is the national language of Botswana, written with spaces between morphemes).\n\n원문:\n${text}`,
+  translate_ko_to_tsonga: (text) =>
+    `Translate the Korean text below into natural Xitsonga (Tsonga) — Bantu language of southern Mozambique and northeastern South Africa. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Xitsonga**' and '**번역 노트**' (3 bullets in Korean — note Xitsonga is one of South Africa's eleven official languages).\n\n원문:\n${text}`,
+  translate_ko_to_venda: (text) =>
+    `Translate the Korean text below into natural Tshivenda (Venda) — Bantu language of Limpopo province, South Africa, and southern Zimbabwe. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Tshivenda**' and '**번역 노트**' (3 bullets in Korean — note Tshivenda is distinct from neighbouring Sotho-Tswana and Nguni languages).\n\n원문:\n${text}`,
+  customer_health_score_review_ko: (text) =>
+    `Produce a Korean customer health score review — a CSM's structured read on an account's health going into a check-in. Use 합쇼체. Markdown: '**한 줄 (헬스)**' (1줄 — '초록 / 노랑 / 빨강' + 핵심 이유), '**헬스 지표 (테이블)**' ('지표 | 현재 | 추세 | 코멘트'): 사용량 / 활성 사용자 / 핵심 기능 채택 / 지원 티켓 / NPS, '**잘 되는 것 (2 bullets)**', '**리스크 신호 (bullets)**' (각 '신호 — 왜 걱정 — 대응'), '**다음 액션 (테이블)**' ('액션 | 담당 | 시한'), '**갱신 전망 (1줄)**' (확률 + 근거).\n\n계정 / 데이터:\n${text}`,
+  internal_incident_retro_ko: (text) =>
+    `Write a Korean incident retrospective (포스트모템) — blameless, focused on system and process, not people. Use 합쇼체. Markdown: '**한 줄 요약**' (1줄 — 무슨 일이 / 영향), '**영향 (bullets)**' (누가 / 얼마나 / 얼마 동안), '**타임라인 (테이블)**' ('시각 | 사건 | 누가 인지'), '**근본 원인 (1단락)**' (5 Whys 식으로), '**잘 작동한 것 (2 bullets)**', '**아쉬웠던 것 (2 bullets)**', '**액션 아이템 (테이블)**' ('액션 | 유형(예방/탐지/완화) | 담당 | 시한'), '**재발 방지 한 줄**'. 비난 금지 — 시스템 관점.\n\n인시던트 컨텍스트:\n${text}`,
+  sales_discovery_call_notes_ko: (text) =>
+    `Structure Korean sales discovery call notes — turns a raw discovery call into a clean, actionable record. Use 합쇼체. Markdown: '**한 줄 (요약)**' (1줄 — 누구 / 무엇을 찾는지), '**참석자 (bullets)**' ('이름 — 역할 — 결정권 여부'), '**현재 상황 (1단락)**' (지금 어떻게 일하는지 + 페인), '**니즈 / 페인 (테이블)**' ('페인 | 영향 | 긴급도'), '**예산 / 권한 / 일정 (BANT, bullets)**', '**경쟁 / 대안 (1줄)**', '**다음 단계 (테이블)**' ('액션 | 담당 | 시한'), '**적합도 평가 (1줄)**' (좋음/보통/낮음 + 이유).\n\n콜 노트 / 원문:\n${text}`,
+  product_beta_feedback_summary_ko: (text) =>
+    `Summarize Korean product beta feedback — synthesizes scattered beta-tester feedback into themes a PM can act on. Use 합쇼체. Markdown: '**한 줄 (전반)**' (1줄 — 전반 반응 + 핵심 시그널), '**참여 (1줄)**' (몇 명 / 얼마나 활발), '**좋아한 것 (테이블)**' ('테마 | 빈도 | 대표 인용'), '**불만 / 막힌 점 (테이블)**' ('이슈 | 심각도 | 빈도 | 대표 인용'), '**기능 요청 (bullets)**' (빈도 순), '**의외의 인사이트 (1-2 bullets)**', '**우선순위 제안 (테이블)**' ('항목 | 영향 | 노력 | 추천'), '**GA 준비도 (1줄)**'.\n\n베타 피드백 원문:\n${text}`,
+  internal_hiring_scorecard_ko: (text) =>
+    `Produce a Korean interview hiring scorecard — a structured post-interview evaluation to reduce bias and force a clear recommendation. Use 합쇼체. Markdown: '**한 줄 (추천)**' (1줄 — 'Strong Yes / Yes / No / Strong No' + 핵심 이유), '**지원자 / 직무 (1줄)**', '**평가 항목 (테이블)**' ('역량 | 점수(1-4) | 근거(구체적 사례)'): 직무 역량 / 문제 해결 / 협업 / 커뮤니케이션 / 컬처 애드, '**강점 (2 bullets)**' (관찰 기반), '**우려 (bullets)**' (각 '우려 — 근거 — 확인 방법'), '**추가 검증 필요 (bullets)**', '**최종 추천 (1단락)**' (명확하게 — 애매하게 끝내지 말 것).\n\n인터뷰 노트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

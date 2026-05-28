@@ -5820,6 +5820,52 @@ body.page-c-series-complete-stamp .bn-editor::after {
   opacity: 0.2;
 }
 
+/* H2 with double arrow — prepends "» " to H2 headings. */
+body.h2-with-double-arrow .bn-editor [data-content-type="heading"][data-level="2"] > *:first-child::before {
+  content: "\00BB ";
+  color: #6366f1;
+  font-weight: 700;
+  margin-right: 0.15em;
+}
+
+/* Code block Nord theme — Nord palette background for code blocks. */
+body.code-block-nord-theme .bn-editor pre {
+  background: #2e3440 !important;
+  border: 1px solid #3b4252 !important;
+}
+body.code-block-nord-theme .bn-editor pre code {
+  color: #d8dee9 !important;
+}
+
+/* Table cell roomy — larger padding inside table cells. */
+body.table-cell-roomy .bn-editor table td,
+body.table-cell-roomy .bn-editor table th {
+  padding: 0.65em 0.9em !important;
+}
+
+/* Callout corner fold — folded top-right corner effect on callouts. */
+body.callout-corner-fold .bn-editor [data-content-type="callout"] {
+  position: relative;
+  overflow: hidden;
+}
+body.callout-corner-fold .bn-editor [data-content-type="callout"]::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-width: 0 14px 14px 0;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.12) transparent;
+}
+.dark body.callout-corner-fold .bn-editor [data-content-type="callout"]::after {
+  border-color: rgba(255, 255, 255, 0.16) transparent;
+}
+
+/* Page bg vertical rule — a vertical notebook margin line down the editor. */
+body.page-bg-vertical-rule .bn-editor {
+  background-image: linear-gradient(to right, transparent 2.4rem, rgba(244, 114, 182, 0.4) 2.4rem, rgba(244, 114, 182, 0.4) calc(2.4rem + 1.5px), transparent calc(2.4rem + 1.5px)) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
