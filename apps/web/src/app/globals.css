@@ -4841,6 +4841,81 @@ body.page-side-tab-mid-left .bn-editor::before {
   background: #f472b6;
 }
 
+/* H4 with side marker — left vertical bar before H4. */
+body.h4-with-side-marker .bn-editor [data-content-type="heading"][data-level="4"] {
+  border-left: 4px solid #8b5cf6;
+  padding-left: 0.5rem;
+}
+.dark body.h4-with-side-marker .bn-editor [data-content-type="heading"][data-level="4"] {
+  border-left-color: #a78bfa;
+}
+
+/* Cool banded code — alternating cool blue bands. */
+body.code-block-cool-banded .bn-editor pre {
+  background: repeating-linear-gradient(
+    to bottom,
+    #dbeafe 0,
+    #dbeafe 24px,
+    #eff6ff 24px,
+    #eff6ff 48px
+  ) !important;
+  color: #1e3a8a !important;
+  border: 1px solid #bfdbfe;
+}
+.dark body.code-block-cool-banded .bn-editor pre {
+  background: repeating-linear-gradient(
+    to bottom,
+    #1e3a8a 0,
+    #1e3a8a 24px,
+    #0f172a 24px,
+    #0f172a 48px
+  ) !important;
+  color: #dbeafe !important;
+}
+
+/* Pink row dividers. */
+body.table-row-divider-color-pink .bn-editor table tr + tr > * {
+  border-top: 2px solid #ec4899 !important;
+}
+
+/* Dot side tab — small filled dot on the left of callouts. */
+body.callout-side-tab-dot .bn-editor [data-content-type="callout"] {
+  position: relative;
+  padding-left: 2rem !important;
+}
+body.callout-side-tab-dot .bn-editor [data-content-type="callout"]::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  background: currentColor;
+  border-radius: 50%;
+  opacity: 0.85;
+}
+
+/* Mid-right tab — folder tab on the middle-right of the editor. */
+body.page-side-tab-mid-right .bn-editor {
+  position: relative;
+  margin-right: 24px;
+}
+body.page-side-tab-mid-right .bn-editor::after {
+  content: "";
+  position: absolute;
+  right: -24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 70px;
+  background: #0ea5e9;
+  border-radius: 0 6px 6px 0;
+}
+.dark body.page-side-tab-mid-right .bn-editor::after {
+  background: #38bdf8;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
