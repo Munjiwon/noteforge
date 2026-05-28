@@ -654,6 +654,11 @@ export function PageView({
       "table-cells-shadowed",
       "callout-leaf-marker",
       "page-tabbed-edge-top",
+      "h4-with-asterisk-prefix",
+      "code-block-monokai",
+      "table-first-row-highlight",
+      "callout-quote-mark-large",
+      "page-side-page-numbers",
     ];
     try {
       for (const k of toggles) {

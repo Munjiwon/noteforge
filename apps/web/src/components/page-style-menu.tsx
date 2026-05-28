@@ -1066,6 +1066,11 @@ export function PageStyleMenu({
                       { key: "table-cells-shadowed", label: "Cell shadow" },
                       { key: "callout-leaf-marker", label: "🍃 callout" },
                       { key: "page-tabbed-edge-top", label: "Top tab" },
+                      { key: "h4-with-asterisk-prefix", label: "H4 ✱" },
+                      { key: "code-block-monokai", label: "Monokai" },
+                      { key: "table-first-row-highlight", label: "1st row hl" },
+                      { key: "callout-quote-mark-large", label: "Quote mark" },
+                      { key: "page-side-page-numbers", label: "Side pg #" },
                     ] as const
                   ).map((t) => (
                     <button

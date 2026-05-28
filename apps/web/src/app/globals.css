@@ -3715,6 +3715,74 @@ body.page-tabbed-edge-top .bn-editor::before {
   background: #818cf8;
 }
 
+/* H4 with asterisk prefix — prepends ✱ to H4 headings. */
+body.h4-with-asterisk-prefix .bn-editor [data-content-type="heading"][data-level="4"] > *:first-child::before {
+  content: "✱ ";
+  color: #d97706;
+  margin-right: 0.2em;
+}
+.dark body.h4-with-asterisk-prefix .bn-editor [data-content-type="heading"][data-level="4"] > *:first-child::before {
+  color: #fbbf24;
+}
+
+/* Monokai theme — classic Sublime/Atom Monokai feel. */
+body.code-block-monokai .bn-editor pre {
+  background: #272822 !important;
+  color: #f8f8f2 !important;
+  border: 1px solid #3d3d35;
+}
+body.code-block-monokai .bn-editor pre code {
+  color: #f8f8f2 !important;
+}
+
+/* First row highlight — emphasize first data row to draw the eye. */
+body.table-first-row-highlight .bn-editor table tbody tr:first-child {
+  background: rgba(254, 240, 138, 0.45) !important;
+  font-weight: 600;
+}
+.dark body.table-first-row-highlight .bn-editor table tbody tr:first-child {
+  background: rgba(133, 77, 14, 0.3) !important;
+}
+
+/* Large quote mark — decorative " before callout content. */
+body.callout-quote-mark-large .bn-editor [data-content-type="callout"] {
+  position: relative;
+  padding-left: 3rem !important;
+}
+body.callout-quote-mark-large .bn-editor [data-content-type="callout"]::before {
+  content: "\201C";
+  position: absolute;
+  left: 6px;
+  top: -8px;
+  font-size: 3rem;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.22);
+  font-family: Georgia, serif;
+}
+.dark body.callout-quote-mark-large .bn-editor [data-content-type="callout"]::before {
+  color: rgba(255, 255, 255, 0.28);
+}
+
+/* Side page numbers — fake page numbers in the editor right margin. */
+body.page-side-page-numbers .bn-editor {
+  counter-reset: bnpage;
+  position: relative;
+  padding-right: 3.5rem !important;
+}
+body.page-side-page-numbers .bn-editor > .bn-block-group > .bn-block-outer {
+  counter-increment: bnpage;
+  position: relative;
+}
+body.page-side-page-numbers .bn-editor > .bn-block-group > .bn-block-outer::after {
+  content: "p." counter(bnpage);
+  position: absolute;
+  right: -2.5rem;
+  top: 0;
+  font-size: 0.7rem;
+  color: #9ca3af;
+  font-variant-numeric: tabular-nums;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
