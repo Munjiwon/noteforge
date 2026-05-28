@@ -5338,6 +5338,49 @@ body.page-bg-diagonal-lines .bn-editor {
   ) !important;
 }
 
+/* H1 with dotted underline. */
+body.h1-with-dotted-underline .bn-editor [data-content-type="heading"][data-level="1"] {
+  border-bottom: 3px dotted #6366f1;
+  padding-bottom: 0.15em;
+}
+.dark body.h1-with-dotted-underline .bn-editor [data-content-type="heading"][data-level="1"] {
+  border-bottom-color: #818cf8;
+}
+
+/* Aurora code — green-to-purple gradient. */
+body.code-block-aurora .bn-editor pre {
+  background: linear-gradient(135deg, #064e3b, #1e1b4b) !important;
+  color: #a7f3d0 !important;
+  border: 1px solid #065f46;
+}
+body.code-block-aurora .bn-editor pre code {
+  color: #c4b5fd !important;
+}
+
+/* Gradient header — table headers get a gradient background. */
+body.table-header-gradient .bn-editor table th {
+  background: linear-gradient(135deg, #6366f1, #a855f7) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+/* Blue glow callout. */
+body.callout-glow-blue .bn-editor [data-content-type="callout"] {
+  box-shadow: 0 0 4px #60a5fa, 0 0 12px rgba(96, 165, 250, 0.5);
+  border: 1px solid #60a5fa;
+}
+
+/* Wave page background — sinusoidal wave pattern via repeating radial gradient. */
+body.page-bg-wave .bn-editor {
+  background-image:
+    radial-gradient(ellipse 30px 8px at 0 0, transparent 48%, rgba(99, 102, 241, 0.08) 50%, transparent 52%);
+  background-size: 30px 16px !important;
+}
+.dark body.page-bg-wave .bn-editor {
+  background-image:
+    radial-gradient(ellipse 30px 8px at 0 0, transparent 48%, rgba(129, 140, 248, 0.1) 50%, transparent 52%);
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

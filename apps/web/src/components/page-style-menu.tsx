@@ -1201,6 +1201,11 @@ export function PageStyleMenu({
                       { key: "table-zebra-green-tone", label: "Green zebra" },
                       { key: "callout-glow-orange", label: "Orange glow" },
                       { key: "page-bg-diagonal-lines", label: "Diagonal" },
+                      { key: "h1-with-dotted-underline", label: "H1 dot underline" },
+                      { key: "code-block-aurora", label: "Aurora code" },
+                      { key: "table-header-gradient", label: "Grad header" },
+                      { key: "callout-glow-blue", label: "Blue glow" },
+                      { key: "page-bg-wave", label: "Wave bg" },
                     ] as const
                   ).map((t) => (
                     <button
