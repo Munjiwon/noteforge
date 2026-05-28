@@ -1550,6 +1550,11 @@ export function PageStyleMenu({
                       { key: "callout-eid-3", label: "callout eid3" },
                       { key: "page-bg-eid-4", label: "page-bg eid4" },
                       { key: "heading-eid-5", label: "heading eid5" },
+                      { key: "code-block-eis-1", label: "code-block eis1" },
+                      { key: "table-eis-2", label: "table eis2" },
+                      { key: "callout-eis-3", label: "callout eis3" },
+                      { key: "page-bg-eis-4", label: "page-bg eis4" },
+                      { key: "heading-eis-5", label: "heading eis5" },
                     ] as const
                   ).map((t) => (
                     <button
