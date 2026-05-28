@@ -6514,6 +6514,50 @@ body.page-bg-waves .bn-editor {
   background-size: 36px 18px !important;
 }
 
+/* Heading bracket wrap — wrap heading text in 「 」 brackets. */
+body.heading-bracket-wrap .bn-editor [data-content-type="heading"] > *:first-child::before {
+  content: "\300C";
+  color: #6366f1;
+}
+body.heading-bracket-wrap .bn-editor [data-content-type="heading"] > *:first-child::after {
+  content: "\300D";
+  color: #6366f1;
+}
+
+/* Code block Nord light — a light variant of the Nord palette. */
+body.code-block-nord-light .bn-editor pre {
+  background: #eceff4 !important;
+  border: 1px solid #d8dee9 !important;
+}
+body.code-block-nord-light .bn-editor pre code {
+  color: #2e3440 !important;
+}
+
+/* Table dense borders — thin borders on every cell for a grid look. */
+body.table-dense-borders .bn-editor table td,
+body.table-dense-borders .bn-editor table th {
+  border: 1px solid #d4d4d8 !important;
+}
+.dark body.table-dense-borders .bn-editor table td,
+.dark body.table-dense-borders .bn-editor table th {
+  border-color: #3f3f46 !important;
+}
+
+/* Callout rounded top — round only the top corners of callouts. */
+body.callout-rounded-top .bn-editor [data-content-type="callout"] {
+  border-top-left-radius: 16px !important;
+  border-top-right-radius: 16px !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+/* Page bg diagonal dots — a diagonally-offset dot grid behind the editor. */
+body.page-bg-dots-diagonal .bn-editor {
+  background-image: radial-gradient(rgba(99, 102, 241, 0.16) 1.5px, transparent 2px) !important;
+  background-size: 20px 20px !important;
+  background-position: 0 0, 10px 10px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

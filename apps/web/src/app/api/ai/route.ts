@@ -3112,6 +3112,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean competitive positioning statement — defines how a product is positioned against alternatives. Use 합쇼체. Markdown: '**한 줄 (포지셔닝)**' (1줄 — '~를 위한 ~로서, 우리는 ~이다, ~와 달리 ~'), '**타깃 (1줄)**' (누구를 위해), '**카테고리 (1줄)**' (어떤 시장으로 인식되길), '**핵심 차별점 (bullets)**' (각 '차별점 — 근거 — 왜 중요'), '**경쟁 프레임 (테이블)**' ('대안 | 그들의 포지션 | 우리 대비'), '**증거 (bullets)**' (포지셔닝 뒷받침), '**메시지 기둥 (bullets)**', '**피할 메시지 (1줄)**'. 차별화 + 신뢰성.\n\n포지셔닝 컨텍스트:\n${text}`,
   internal_quarterly_retro_ko: (text) =>
     `Facilitate a Korean quarterly retrospective — a higher-altitude retro reflecting on a whole quarter. Use 합쇼체. Markdown: '**한 줄 (분기 총평)**' (1줄), '**목표 대비 성과 (테이블)**' ('목표 | 결과 | 달성도 | 코멘트'), '**잘된 것 (bullets)**' (반복하고 싶은 패턴), '**아쉬운 것 (bullets)**' (시스템 관점), '**놀란 것 / 배운 것 (bullets)**', '**팀 / 협업 신호 (1단락)**' (사기 / 번아웃 / 성장), '**다음 분기 바꿀 것 (테이블)**' ('변화 | 이유 | 담당'), '**한 줄 다짐 (1줄)**'. 개인 비난 없이 패턴과 학습.\n\n분기 retro 컨텍스트:\n${text}`,
+  translate_ko_to_tuvan: (text) =>
+    `Translate the Korean text below into natural Tuvan (Tyva dyl) — Siberian Turkic language of the Tuva Republic, Russia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Тыва дыл**' and '**번역 노트**' (3 bullets in Korean — note Tuvan is written in Cyrillic and is famous for its throat singing (khoomei) tradition).\n\n원문:\n${text}`,
+  translate_ko_to_khakas: (text) =>
+    `Translate the Korean text below into natural Khakas — Siberian Turkic language of the Khakassia Republic, Russia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Хакас тілі**' and '**번역 노트**' (3 bullets in Korean — note Khakas is a South Siberian Turkic language written in Cyrillic).\n\n원문:\n${text}`,
+  translate_ko_to_altai: (text) =>
+    `Translate the Korean text below into natural Altai (Altai til) — Turkic language of the Altai Republic, Russia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Алтай тил**' and '**번역 노트**' (3 bullets in Korean — note Altai is a South Siberian Turkic language of the Altai mountains, written in Cyrillic).\n\n원문:\n${text}`,
+  translate_ko_to_shor: (text) =>
+    `Translate the Korean text below into natural Shor — endangered Turkic language of the Kemerovo region, southern Siberia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Шор тили**' and '**번역 노트**' (3 bullets in Korean — note Shor is a critically endangered South Siberian Turkic language written in Cyrillic).\n\n원문:\n${text}`,
+  translate_ko_to_dolgan: (text) =>
+    `Translate the Korean text below into natural Dolgan — Turkic language of the Taymyr Peninsula, far northern Siberia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Долган тыла**' and '**번역 노트**' (3 bullets in Korean — note Dolgan is closely related to Yakut/Sakha, spoken by reindeer-herding communities).\n\n원문:\n${text}`,
+  internal_backlog_grooming_notes_ko: (text) =>
+    `Structure Korean backlog grooming (refinement) notes — captures decisions from a backlog refinement session. Use 합쇼체. Markdown: '**한 줄 (세션)**' (1줄 — 무엇을 다뤘나), '**리파인된 항목 (테이블)**' ('항목 | 상태(ready/needs-info/split) | 추정 | 우선순위 | 코멘트'), '**분할한 항목 (bullets)**' (큰 것 → 작은 것), '**막힌 항목 (bullets)**' (각 '항목 — 필요한 정보 — 누가'), '**제외 / 백버너 (bullets)**', '**다음 스프린트 후보 (bullets)**', '**액션 (테이블)**' ('액션 | 담당 | 시한'). 결정과 근거 중심.\n\n그루밍 컨텍스트:\n${text}`,
+  sales_territory_plan_ko: (text) =>
+    `Write a Korean sales territory plan — a rep's plan to work a territory/book of business. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 영역 + 매출 목표), '**영역 개요 (bullets)**' (계정 수 / 세그먼트 / 잠재력), '**계정 세분화 (테이블)**' ('티어 | 계정 | 전략 | 우선순위'): A/B/C, '**파이프라인 갭 (1줄)**' (목표 vs 현재), '**핵심 액션 (bullets)**' (신규 / 확장 / 갱신별), '**시간 배분 (1줄)**' (티어별), '**필요 지원 (bullets)**', '**90일 마일스톤 (테이블)**' ('마일스톤 | 시한'). 우선순위 + 집중.\n\n영역 컨텍스트:\n${text}`,
+  customer_onboarding_status_ko: (text) =>
+    `Write a Korean onboarding status update — tracks where a new customer is in onboarding. Use 합쇼체. Markdown: '**한 줄 (상태)**' (1줄 — 🟢/🟡/🔴 + 일정 대비), '**온보딩 목표 (1줄)**', '**단계 진행 (테이블)**' ('단계 | 상태 | 담당 | 메모'): 킥오프 / 설정 / 데이터 / 교육 / 첫 가치 / 안착, '**완료한 것 (bullets)**', '**막힌 것 (bullets)**' (각 '블로커 — 필요 — 누가'), '**리스크 (1줄)**' (지연 / 이탈 신호), '**다음 마일스톤 (1줄)**' (Time-to-value 목표), '**액션 (테이블)**'. 첫 가치 도달 가속 중심.\n\n온보딩 컨텍스트:\n${text}`,
+  pm_ab_test_results_ko: (text) =>
+    `Write a Korean A/B test results readout — reports an experiment's outcome and recommendation. Use 합쇼체. Markdown: '**한 줄 (결론)**' (1줄 — 출시 / 중단 / 재실험 + 핵심), '**가설 (1줄)**', '**셋업 (bullets)**' (변형 / 대상 / 기간 / 표본), '**결과 (테이블)**' ('지표 | 대조군 | 실험군 | 변화 | 유의성(p/신뢰구간)'), '**가드레일 지표 (bullets)**' (악화 없었나), '**해석 (1단락)**' (왜 이런 결과 — 과대해석 경계), '**권고 (1줄)**', '**후속 (bullets)**' (추가 검증 / 세그먼트). 통계적 겸손 유지.\n\n실험 결과 컨텍스트:\n${text}`,
+  internal_eng_weekly_digest_ko: (text) =>
+    `Write a Korean engineering weekly digest — a scannable weekly update for an eng org. Use 합쇼체. Markdown: '**한 줄 (이번 주)**' (1줄 — 가장 중요한 것), '**출시 / 머지 (bullets)**' (사용자/팀 영향 위주), '**진행 중 (bullets)**' (주요 작업 상태), '**인시던트 / 신뢰성 (bullets)**' (있으면 — 간결), '**기술 결정 (bullets)**' (ADR / 방향), '**막힌 것 / 도움 필요 (bullets)**', '**지표 (1줄)**' (배포 빈도 / 안정성 등), '**다음 주 (bullets)**', '**축하 / 감사 (1줄)**'. 군더더기 없이.\n\n엔지니어링 주간 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

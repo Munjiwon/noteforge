@@ -1338,6 +1338,11 @@ export function PageStyleMenu({
                       { key: "table-first-row-accent", label: "Row accent" },
                       { key: "callout-icon-circle", label: "Icon circle" },
                       { key: "page-bg-waves", label: "Waves" },
+                      { key: "heading-bracket-wrap", label: "Bracketed" },
+                      { key: "code-block-nord-light", label: "Nord light" },
+                      { key: "table-dense-borders", label: "Dense border" },
+                      { key: "callout-rounded-top", label: "Round top" },
+                      { key: "page-bg-dots-diagonal", label: "Diag dots" },
                     ] as const
                   ).map((t) => (
                     <button
