@@ -1171,6 +1171,11 @@ export function PageStyleMenu({
                       { key: "table-row-divider-color-gray", label: "Gray rows" },
                       { key: "callout-side-tab-flag", label: "Flag tab" },
                       { key: "page-side-shadow-strong", label: "Strong shadow" },
+                      { key: "h1-with-underline-double", label: "H1 2x underline" },
+                      { key: "code-block-magenta-night", label: "Magenta night" },
+                      { key: "table-cell-corner-accent", label: "Corner accent" },
+                      { key: "callout-rounded-large-shadow", label: "Round shadow" },
+                      { key: "page-bg-subtle-dots", label: "Subtle dots" },
                     ] as const
                   ).map((t) => (
                     <button

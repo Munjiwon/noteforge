@@ -5022,6 +5022,61 @@ body.page-side-shadow-strong .bn-editor {
   box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.6), 0 4px 8px -2px rgba(0, 0, 0, 0.4);
 }
 
+/* H1 with double underline. */
+body.h1-with-underline-double .bn-editor [data-content-type="heading"][data-level="1"] {
+  border-bottom: 4px double #1e293b;
+  padding-bottom: 0.2em;
+}
+.dark body.h1-with-underline-double .bn-editor [data-content-type="heading"][data-level="1"] {
+  border-bottom-color: #cbd5e1;
+}
+
+/* Magenta night code — dark with magenta accents. */
+body.code-block-magenta-night .bn-editor pre {
+  background: #1a0a1f !important;
+  color: #f5d0fe !important;
+  border: 1px solid #701a75;
+  text-shadow: 0 0 6px rgba(217, 70, 239, 0.3);
+}
+body.code-block-magenta-night .bn-editor pre code {
+  color: #f0abfc !important;
+}
+
+/* Cell corner accent — small accent triangle in each cell corner. */
+body.table-cell-corner-accent .bn-editor table td,
+body.table-cell-corner-accent .bn-editor table th {
+  position: relative;
+}
+body.table-cell-corner-accent .bn-editor table td::before,
+body.table-cell-corner-accent .bn-editor table th::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-top: 6px solid rgba(99, 102, 241, 0.4);
+  border-right: 6px solid transparent;
+}
+
+/* Rounded large shadow callout. */
+body.callout-rounded-large-shadow .bn-editor [data-content-type="callout"] {
+  border-radius: 18px !important;
+  box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.22);
+}
+.dark body.callout-rounded-large-shadow .bn-editor [data-content-type="callout"] {
+  box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.55);
+}
+
+/* Subtle dots page background. */
+body.page-bg-subtle-dots .bn-editor {
+  background-image: radial-gradient(circle, rgba(100, 116, 139, 0.18) 1px, transparent 1px) !important;
+  background-size: 18px 18px !important;
+}
+.dark body.page-bg-subtle-dots .bn-editor {
+  background-image: radial-gradient(circle, rgba(148, 163, 184, 0.16) 1px, transparent 1px) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
