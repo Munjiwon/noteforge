@@ -1510,6 +1510,11 @@ export function PageStyleMenu({
                       { key: "callout-edm-3", label: "callout edm3" },
                       { key: "page-bg-edm-4", label: "page-bg edm4" },
                       { key: "heading-edm-5", label: "heading edm5" },
+                      { key: "code-block-eeb-1", label: "code-block eeb1" },
+                      { key: "table-eeb-2", label: "table eeb2" },
+                      { key: "callout-eeb-3", label: "callout eeb3" },
+                      { key: "page-bg-eeb-4", label: "page-bg eeb4" },
+                      { key: "heading-eeb-5", label: "heading eeb5" },
                     ] as const
                   ).map((t) => (
                     <button
