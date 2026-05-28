@@ -1263,6 +1263,11 @@ export function PageStyleMenu({
                       { key: "table-zebra-columns", label: "Zebra cols" },
                       { key: "callout-icon-large", label: "Big icon" },
                       { key: "page-bg-graph-paper", label: "Graph paper" },
+                      { key: "h5-with-dash", label: "H5 –" },
+                      { key: "code-block-gruvbox", label: "Gruvbox" },
+                      { key: "table-compact-rows", label: "Compact rows" },
+                      { key: "callout-shadow-inset", label: "Inset shadow" },
+                      { key: "page-bg-weave", label: "Weave" },
                     ] as const
                   ).map((t) => (
                     <button

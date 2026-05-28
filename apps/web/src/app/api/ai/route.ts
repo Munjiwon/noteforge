@@ -2812,6 +2812,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean PM feature spec — defines a single feature clearly enough to build. Use 합쇼체. Markdown: '**한 줄 (기능)**' (1줄 — 무엇을 / 누구를 위해), '**문제 (1단락)**' (왜 필요한지 + 근거), '**목표 / 성공 지표 (bullets)**', '**유저 스토리 (bullets)**' ('~로서 ~하고 싶다, 왜냐면 ~'), '**기능 요구사항 (numbered)**' (구체적 동작), '**비기능 요구사항 (bullets)**' (성능 / 권한 / 접근성), '**엣지 케이스 (bullets)**', '**범위 밖 (bullets)**', '**오픈 퀘스천 (bullets)**'.\n\n기능 컨텍스트:\n${text}`,
   internal_perf_review_self_ko: (text) =>
     `Write a Korean self-assessment for a performance review — an employee's reflective self-review. Use 합쇼체. 균형 (성과 + 성장 영역) + 근거 기반. Markdown: '**한 줄 (요약)**' (1줄 — 이 기간 나의 한 문장), '**핵심 성과 (bullets)**' (각 '무엇을 — 임팩트(가능하면 수치) — 내 역할'), '**잘한 점 (2 bullets)**', '**성장한 영역 (bullets)**' (작년 대비), '**아쉬운 점 / 배운 것 (bullets)**' (솔직하게), '**다음 기간 목표 (bullets)**', '**필요한 지원 (1줄)**'. 과장 없이, 구체적 사례 중심.\n\n자기평가 컨텍스트:\n${text}`,
+  translate_ko_to_twi: (text) =>
+    `Translate the Korean text below into natural Twi (Akan) — Kwa language of southern and central Ghana. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Twi**' and '**번역 노트**' (3 bullets in Korean — note Twi is a dialect cluster of Akan, the most widely spoken language in Ghana).\n\n원문:\n${text}`,
+  translate_ko_to_ewe: (text) =>
+    `Translate the Korean text below into natural Ewe (Eʋegbe) — Gbe language of southeastern Ghana and southern Togo. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Eʋegbe**' and '**번역 노트**' (3 bullets in Korean — note Ewe is a tonal Gbe language written with extended Latin letters).\n\n원문:\n${text}`,
+  translate_ko_to_ga: (text) =>
+    `Translate the Korean text below into natural Ga — Kwa language of the Greater Accra region, Ghana. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Ga**' and '**번역 노트**' (3 bullets in Korean — note Ga is the indigenous language of Accra, Ghana's capital).\n\n원문:\n${text}`,
+  translate_ko_to_fon: (text) =>
+    `Translate the Korean text below into natural Fon (Fongbe) — Gbe language of Benin. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Fɔngbe**' and '**번역 노트**' (3 bullets in Korean — note Fon is the most widely spoken language of Benin, a tonal Gbe language).\n\n원문:\n${text}`,
+  translate_ko_to_bambara: (text) =>
+    `Translate the Korean text below into natural Bambara (Bamanankan) — Mande language of Mali. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Bamanankan**' and '**번역 노트**' (3 bullets in Korean — note Bambara is the most widely spoken language of Mali and a major Mande lingua franca).\n\n원문:\n${text}`,
+  exec_business_case_ko: (text) =>
+    `Write a Korean executive business case — makes the case for an investment/initiative to leadership. Use 합쇼체. 간결 + 숫자 중심. Markdown: '**한 줄 (제안)**' (1줄 — 무엇에 투자 / 왜), '**문제 / 기회 (1단락)**', '**제안 (1단락)**' (무엇을 할지 구체적), '**기대 효과 (테이블)**' ('지표 | 현재 | 예상 | 시점'), '**투자 / 비용 (bullets)**' (사람 / 돈 / 시간), '**ROI / 회수 (1줄)**', '**대안 + 안 할 경우 (bullets)**', '**리스크 + 완화 (테이블)**' ('리스크 | 영향 | 완화'), '**요청 (1줄)**' (의사결정권자에게 정확히 무엇을).\n\n비즈니스 케이스 컨텍스트:\n${text}`,
+  internal_sprint_retro_ko: (text) =>
+    `Facilitate a Korean sprint retrospective summary — synthesizes a sprint retro into themes and actions. Use 합쇼체. Markdown: '**한 줄 (스프린트)**' (1줄 — 전반 분위기 + 핵심), '**잘된 것 (Keep) (bullets)**', '**아쉬운 것 (Problem) (bullets)**' (각 '문제 — 영향'), '**시도할 것 (Try) (bullets)**', '**액션 아이템 (테이블)**' ('액션 | 담당 | 시한'), '**지난 retro 액션 점검 (1줄)**' (완료/미완), '**팀 건강 신호 (1줄)**' (번아웃/속도/사기). 비난 없이 개선 중심.\n\n스프린트 retro 컨텍스트:\n${text}`,
+  customer_escalation_summary_ko: (text) =>
+    `Write a Korean customer escalation summary — a concise brief to align internal stakeholders on a customer escalation. Use 합쇼체. 침착 + 사실 중심. Markdown: '**한 줄 (에스컬레이션)**' (1줄 — 누가 / 무엇 / 심각도), '**상황 (1단락)**' (사실만 — 시간순), '**고객 영향 (bullets)**', '**고객이 원하는 것 (1줄)**', '**현재 상태 (1줄)**', '**우리 대응 (테이블)**' ('액션 | 담당 | 상태 | 시한'), '**리스크 (bullets)**' (이탈 / 평판 / 계약), '**필요한 의사결정 (1줄)**', '**다음 업데이트 시점 (1줄)**'.\n\n에스컬레이션 컨텍스트:\n${text}`,
+  pm_competitive_teardown_ko: (text) =>
+    `Write a Korean competitive product teardown — a PM's structured analysis of a competitor's product. Use 합쇼체. Markdown: '**한 줄 (경쟁사)**' (1줄 — 누구 / 핵심 위협 정도), '**개요 (bullets)**' (포지셔닝 / 타깃 / 가격), '**핵심 기능 비교 (테이블)**' ('기능 | 그들 | 우리 | 우위'), '**그들이 잘하는 것 (bullets)**', '**그들의 약점 (bullets)**', '**UX / 온보딩 관찰 (bullets)**', '**우리에게 주는 시사점 (bullets)**' (방어 / 추격 / 차별화), '**액션 제안 (테이블)**' ('제안 | 우선순위 | 담당'). 근거 기반, 추측은 표시.\n\n경쟁사 / 컨텍스트:\n${text}`,
+  internal_runbook_ko: (text) =>
+    `Write a Korean operations runbook — a step-by-step guide for handling a recurring operational task or incident. Use 합쇼체. 명확 + 실행 가능. Markdown: '**한 줄 (런북)**' (1줄 — 이 런북이 다루는 상황), '**언제 사용 (bullets)**' (트리거 조건), '**사전 조건 (bullets)**' (권한 / 접근 / 도구), '**절차 (numbered)**' (각 단계: 명령/행동 + 기대 결과 + 확인 방법), '**검증 (bullets)**' (완료 확인), '**롤백 (numbered)**' (잘못됐을 때), '**에스컬레이션 (1줄)**' (누구에게 / 언제), '**관련 링크 (bullets)**'.\n\n런북 대상 / 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

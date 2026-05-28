@@ -851,6 +851,11 @@ export function PageView({
       "table-zebra-columns",
       "callout-icon-large",
       "page-bg-graph-paper",
+      "h5-with-dash",
+      "code-block-gruvbox",
+      "table-compact-rows",
+      "callout-shadow-inset",
+      "page-bg-weave",
     ];
     try {
       for (const k of toggles) {
