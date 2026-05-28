@@ -1363,6 +1363,11 @@ export function PageStyleMenu({
                       { key: "table-thick-header-line", label: "Header line" },
                       { key: "callout-corner-ribbon", label: "Ribbon" },
                       { key: "page-bg-subtle-checker", label: "Checker" },
+                      { key: "heading-italic-h1-only", label: "Italic H1" },
+                      { key: "code-block-spacegray", label: "Space Gray" },
+                      { key: "table-row-hover-scale", label: "Hover lift" },
+                      { key: "callout-left-icon-bar", label: "Icon bar" },
+                      { key: "page-bg-confetti-dots", label: "Confetti dots" },
                     ] as const
                   ).map((t) => (
                     <button

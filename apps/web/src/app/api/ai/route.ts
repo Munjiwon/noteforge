@@ -3212,6 +3212,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Facilitate a Korean release retrospective — reviews how a product release went, end to end. Use 합쇼체. Markdown: '**한 줄 (릴리스)**' (1줄 — 전반 평가), '**목표 대비 (bullets)**' (계획 vs 실제 — 일정 / 범위 / 품질), '**잘된 것 (bullets)**', '**문제 (테이블)**' ('문제 | 영향 | 단계(계획/개발/QA/출시)'), '**고객 반응 (1줄)**', '**프로세스 교훈 (bullets)**' (반복 가능한), '**액션 아이템 (테이블)**' ('액션 | 담당 | 시한'), '**다음 릴리스에 바꿀 것 (1줄)**'. 시스템과 프로세스 관점.\n\n릴리스 retro 컨텍스트:\n${text}`,
   internal_team_ramp_plan_ko: (text) =>
     `Write a Korean new-hire ramp plan — a 30/60/90 day plan to get a new team member productive. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 90일 후 모습), '**30일 (bullets)**' (학습 — 사람 / 시스템 / 컨텍스트 + 작은 첫 기여), '**60일 (bullets)**' (기여 — 독립적으로 맡는 영역 확대), '**90일 (bullets)**' (주도 — 오너십 + 개선 제안), '**마일스톤 / 성공 기준 (테이블)**' ('시점 | 기대 | 측정'), '**지원 (bullets)**' (버디 / 멘토 / 체크인), '**리소스 (bullets)**', '**조기 경고 신호 (1줄)**'. 명확 + 점진적.\n\n신규 입사자 / 역할 컨텍스트:\n${text}`,
+  translate_ko_to_iban: (text) =>
+    `Translate the Korean text below into natural Iban — Austronesian language of Sarawak, Borneo (Malaysia). 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Jaku Iban**' and '**번역 노트**' (3 bullets in Korean — note Iban is the largest indigenous language of Sarawak, a Malayic language written in Latin script).\n\n원문:\n${text}`,
+  translate_ko_to_kadazan: (text) =>
+    `Translate the Korean text below into natural Kadazan — Dusunic (Austronesian) language of Sabah, Borneo (Malaysia). 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Kadazan**' and '**번역 노트**' (3 bullets in Korean — note Kadazan is closely related to Dusun, spoken around Penampang in Sabah).\n\n원문:\n${text}`,
+  translate_ko_to_dusun: (text) =>
+    `Translate the Korean text below into natural Dusun (Central Dusun) — Dusunic (Austronesian) language of Sabah, Borneo (Malaysia). 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Boros Dusun**' and '**번역 노트**' (3 bullets in Korean — note Dusun forms a dialect continuum with Kadazan, collectively called Kadazandusun).\n\n원문:\n${text}`,
+  translate_ko_to_murut: (text) =>
+    `Translate the Korean text below into natural Murut — Austronesian language group of interior Sabah and Sarawak, Borneo. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Murut**' and '**번역 노트**' (3 bullets in Korean — note Murut refers to a cluster of related languages of Borneo's interior highlands).\n\n원문:\n${text}`,
+  translate_ko_to_bidayuh: (text) =>
+    `Translate the Korean text below into natural Bidayuh — Land Dayak (Austronesian) language of Sarawak, Borneo (Malaysia). 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Bidayuh**' and '**번역 노트**' (3 bullets in Korean — note Bidayuh is a Land Dayak language cluster of southwestern Sarawak).\n\n원문:\n${text}`,
+  internal_eng_metrics_review_ko: (text) =>
+    `Write a Korean engineering metrics review — reviews delivery/quality metrics (e.g., DORA) for a team. Use 합쇼체. Markdown: '**한 줄 (총평)**' (1줄 — 건강도 + 핵심 추세), '**핵심 지표 (테이블)**' ('지표 | 현재 | 추세 | 벤치마크'): 배포 빈도 / 변경 리드타임 / 변경 실패율 / 복구 시간(MTTR), '**잘 되는 것 (bullets)**', '**악화 / 우려 (bullets)**' (각 '지표 — 가능한 원인'), '**병목 (1단락)**', '**개선 액션 (테이블)**' ('액션 | 기대 효과 | 담당'), '**주의 (1줄)**' (지표 게이밍 / 맥락 무시 경계). 지표는 대화의 시작점.\n\n지표 컨텍스트:\n${text}`,
+  sales_champion_enablement_ko: (text) =>
+    `Write a Korean champion enablement kit — equips an internal champion to sell on your behalf. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 챔피언이 내부에서 무엇을 할 수 있게), '**챔피언 프로필 (1줄)**' (누구 / 영향력), '**그들이 필요한 것 (bullets)**' (논거 / 자료 / 답변), '**핵심 메시지 (bullets)**' (챔피언이 전달할 1줄들), '**예상 내부 반론 + 대응 (테이블)**', '**제공 자료 (bullets)**' (ROI 시트 / 덱 / 데모), '**다음 단계 코칭 (1줄)**' (그들이 다음에 할 일), '**우리 지원 (1줄)**'. 챔피언을 영웅으로 만들기.\n\n챔피언 컨텍스트:\n${text}`,
+  customer_onboarding_retrospective_ko: (text) =>
+    `Facilitate a Korean onboarding retrospective — reviews how a customer's onboarding went to improve the next. Use 합쇼체. Markdown: '**한 줄 (총평)**' (1줄 — TTV 달성 여부 + 핵심), '**목표 대비 (bullets)**' (계획 일정/마일스톤 vs 실제), '**잘된 것 (bullets)**', '**막혔던 것 (테이블)**' ('지점 | 원인 | 영향'), '**고객 피드백 (bullets)**' (그들 언어로), '**Time-to-value (1줄)**' (얼마 걸렸나 / 목표 대비), '**프로세스 개선 (테이블)**' ('교훈 | 액션 | 담당'), '**플레이북 업데이트 (1줄)**'. 다음 고객을 위한 학습.\n\n온보딩 retro 컨텍스트:\n${text}`,
+  pm_beta_program_plan_ko: (text) =>
+    `Write a Korean beta program plan — plans a structured beta to validate a feature before GA. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 무엇을 검증), '**가설 / 학습 목표 (bullets)**', '**참가자 (bullets)**' (누구 / 몇 명 / 선정 기준), '**범위 (bullets)**' (베타에 무엇이 / 무엇이 빠짐), '**일정 (테이블)**' ('단계 | 기간 | 활동'), '**성공 기준 (테이블)**' ('지표 | 목표'), '**피드백 수집 (bullets)**' (방법 / 빈도), '**리스크 (bullets)**', '**GA 진입 기준 (1줄)**'. 학습 중심 설계.\n\n베타 컨텍스트:\n${text}`,
+  internal_alert_triage_guide_ko: (text) =>
+    `Write a Korean alert triage guide — helps on-call quickly assess and act on an alert. Use 합쇼체. Markdown: '**한 줄 (알림)**' (1줄 — 무슨 알림 / 무엇을 뜻하나), '**즉시 확인 (numbered)**' (가장 먼저 볼 것 — 대시보드 / 로그 / 영향 범위), '**심각도 판단 (테이블)**' ('관찰 | 심각도 | 의미'), '**대응 (bullets)**' (심각도별 첫 액션), '**흔한 원인 (테이블)**' ('증상 | 가능 원인 | 확인 방법'), '**완화 (bullets)**' (임시 조치), '**에스컬레이션 (1줄)**' (언제 / 누구), '**오탐 처리 (1줄)**' (노이즈면). 빠른 판단 우선.\n\n알림 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

@@ -6745,6 +6745,45 @@ body.page-bg-subtle-checker .bn-editor {
   background-position: 0 0, 14px 14px !important;
 }
 
+/* Heading italic H1 only — italicize only the H1 heading. */
+body.heading-italic-h1-only .bn-editor [data-content-type="heading"][data-level="1"] {
+  font-style: italic !important;
+}
+
+/* Code block Space Gray — Space Gray palette for code blocks. */
+body.code-block-spacegray .bn-editor pre {
+  background: #20242d !important;
+  border: 1px solid #2d323c !important;
+}
+body.code-block-spacegray .bn-editor pre code {
+  color: #b3b8c3 !important;
+}
+
+/* Table row hover lift — gently lift a row on hover with a shadow. */
+body.table-row-hover-scale .bn-editor table tr {
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+body.table-row-hover-scale .bn-editor table tr:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+/* Callout left icon bar — a colored bar plus padding for the leading icon. */
+body.callout-left-icon-bar .bn-editor [data-content-type="callout"] {
+  border-left: 8px solid #6366f1 !important;
+  padding-left: 0.8em !important;
+}
+
+/* Page bg confetti dots — multicolor confetti dot scatter behind the editor. */
+body.page-bg-confetti-dots .bn-editor {
+  background-image:
+    radial-gradient(circle, rgba(99, 102, 241, 0.18) 2px, transparent 3px),
+    radial-gradient(circle, rgba(236, 72, 153, 0.16) 2px, transparent 3px),
+    radial-gradient(circle, rgba(16, 185, 129, 0.16) 2px, transparent 3px) !important;
+  background-size: 60px 60px, 90px 90px, 75px 75px !important;
+  background-position: 0 0, 30px 20px, 50px 45px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
