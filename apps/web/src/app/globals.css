@@ -4916,6 +4916,60 @@ body.page-side-tab-mid-right .bn-editor::after {
   background: #38bdf8;
 }
 
+/* H5 with side marker — left bar before H5. */
+body.h5-with-side-marker .bn-editor [data-content-type="heading"][data-level="5"] {
+  border-left: 3px solid #ec4899;
+  padding-left: 0.45rem;
+}
+.dark body.h5-with-side-marker .bn-editor [data-content-type="heading"][data-level="5"] {
+  border-left-color: #f472b6;
+}
+
+/* Cyber grid code — dark with neon green grid. */
+body.code-block-cyber-grid .bn-editor pre {
+  background-color: #0a0e1a !important;
+  background-image:
+    linear-gradient(rgba(34, 197, 94, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 197, 94, 0.15) 1px, transparent 1px) !important;
+  background-size: 14px 14px !important;
+  color: #4ade80 !important;
+  border: 1px solid #166534;
+}
+body.code-block-cyber-grid .bn-editor pre code {
+  color: #bbf7d0 !important;
+}
+
+/* Teal row dividers. */
+body.table-row-divider-color-teal .bn-editor table tr + tr > * {
+  border-top: 2px solid #14b8a6 !important;
+}
+
+/* Grip dot tab — three vertical dots tab on the left of callouts (grip handle). */
+body.callout-side-tab-grip .bn-editor [data-content-type="callout"] {
+  position: relative;
+  padding-left: 2rem !important;
+}
+body.callout-side-tab-grip .bn-editor [data-content-type="callout"]::before {
+  content: "⋮";
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: currentColor;
+  opacity: 0.6;
+  font-size: 1.3rem;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+}
+
+/* Soft shadow side — soft glow on the right side of the editor. */
+body.page-side-shadow-soft .bn-editor {
+  box-shadow: 6px 0 18px -8px rgba(99, 102, 241, 0.25);
+}
+.dark body.page-side-shadow-soft .bn-editor {
+  box-shadow: 6px 0 18px -8px rgba(129, 140, 248, 0.35);
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
