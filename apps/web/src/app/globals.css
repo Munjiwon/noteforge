@@ -6400,6 +6400,41 @@ body.page-bg-plus-grid .bn-editor {
   background-position: center center !important;
 }
 
+/* Heading mono font — render all headings in a monospace font. */
+body.heading-mono-font .bn-editor [data-content-type="heading"] {
+  font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace !important;
+}
+
+/* Code block Zenburn — Zenburn low-contrast palette for code blocks. */
+body.code-block-zenburn .bn-editor pre {
+  background: #3f3f3f !important;
+  border: 1px solid #4f4f4f !important;
+}
+body.code-block-zenburn .bn-editor pre code {
+  color: #dcdccc !important;
+}
+
+/* Table header tracked — wide letter-spacing on header cells. */
+body.table-header-tracked .bn-editor table th {
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  font-size: 0.85em !important;
+}
+
+/* Callout striped bg — diagonal striped background inside callouts. */
+body.callout-bg-striped .bn-editor [data-content-type="callout"] {
+  background-image: repeating-linear-gradient(45deg, rgba(99, 102, 241, 0.08) 0, rgba(99, 102, 241, 0.08) 8px, transparent 8px, transparent 16px) !important;
+}
+
+/* Page bg maze — an interlocking maze-like line texture behind the editor. */
+body.page-bg-maze .bn-editor {
+  background-image:
+    linear-gradient(45deg, rgba(99, 102, 241, 0.08) 25%, transparent 25%, transparent 75%, rgba(99, 102, 241, 0.08) 75%),
+    linear-gradient(45deg, rgba(99, 102, 241, 0.08) 25%, transparent 25%, transparent 75%, rgba(99, 102, 241, 0.08) 75%) !important;
+  background-size: 30px 30px !important;
+  background-position: 0 0, 15px 15px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

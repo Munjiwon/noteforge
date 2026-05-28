@@ -1323,6 +1323,11 @@ export function PageStyleMenu({
                       { key: "table-alt-col-tint", label: "Alt col tint" },
                       { key: "callout-inset-border", label: "Inset border" },
                       { key: "page-bg-plus-grid", label: "Plus grid" },
+                      { key: "heading-mono-font", label: "Mono head" },
+                      { key: "code-block-zenburn", label: "Zenburn" },
+                      { key: "table-header-tracked", label: "Tracked head" },
+                      { key: "callout-bg-striped", label: "Striped bg" },
+                      { key: "page-bg-maze", label: "Maze" },
                     ] as const
                   ).map((t) => (
                     <button

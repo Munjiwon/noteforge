@@ -911,6 +911,11 @@ export function PageView({
       "table-alt-col-tint",
       "callout-inset-border",
       "page-bg-plus-grid",
+      "heading-mono-font",
+      "code-block-zenburn",
+      "table-header-tracked",
+      "callout-bg-striped",
+      "page-bg-maze",
     ];
     try {
       for (const k of toggles) {
