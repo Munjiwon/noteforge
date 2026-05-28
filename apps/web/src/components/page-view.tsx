@@ -1158,6 +1158,11 @@ export function PageView({
       "callout-ekl-3",
       "page-bg-ekl-4",
       "heading-ekl-5",
+      "code-block-ela-1",
+      "table-ela-2",
+      "callout-ela-3",
+      "page-bg-ela-4",
+      "heading-ela-5",
     ];
     try {
       for (const k of toggles) {

@@ -1570,6 +1570,11 @@ export function PageStyleMenu({
                       { key: "callout-ekl-3", label: "callout ekl3" },
                       { key: "page-bg-ekl-4", label: "page-bg ekl4" },
                       { key: "heading-ekl-5", label: "heading ekl5" },
+                      { key: "code-block-ela-1", label: "code-block ela1" },
+                      { key: "table-ela-2", label: "table ela2" },
+                      { key: "callout-ela-3", label: "callout ela3" },
+                      { key: "page-bg-ela-4", label: "page-bg ela4" },
+                      { key: "heading-ela-5", label: "heading ela5" },
                     ] as const
                   ).map((t) => (
                     <button
