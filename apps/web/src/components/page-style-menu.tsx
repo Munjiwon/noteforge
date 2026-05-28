@@ -1091,6 +1091,11 @@ export function PageStyleMenu({
                       { key: "table-row-divider-dashed", label: "Dashed rows" },
                       { key: "callout-corner-flag-yellow", label: "Yellow flag" },
                       { key: "page-side-perforated", label: "Perforated" },
+                      { key: "h3-with-page-mark", label: "H3 §" },
+                      { key: "code-block-cobalt", label: "Cobalt" },
+                      { key: "table-row-divider-gradient", label: "Grad rows" },
+                      { key: "callout-tag-marker", label: "🏷 callout" },
+                      { key: "page-side-ribbon-blue", label: "Blue ribbon" },
                     ] as const
                   ).map((t) => (
                     <button

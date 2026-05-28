@@ -4012,6 +4012,65 @@ body.page-side-perforated .bn-editor {
   background-position: 8px 12px;
 }
 
+/* H3 with page mark — prepends § to H3 headings. */
+body.h3-with-page-mark .bn-editor [data-content-type="heading"][data-level="3"] > *:first-child::before {
+  content: "§ ";
+  color: #475569;
+  margin-right: 0.2em;
+  font-weight: 400;
+}
+.dark body.h3-with-page-mark .bn-editor [data-content-type="heading"][data-level="3"] > *:first-child::before {
+  color: #94a3b8;
+}
+
+/* Cobalt theme — deep blue code palette. */
+body.code-block-cobalt .bn-editor pre {
+  background: #002240 !important;
+  color: #ffffff !important;
+  border: 1px solid #1f2f4a;
+}
+body.code-block-cobalt .bn-editor pre code {
+  color: #ffc600 !important;
+}
+
+/* Gradient row divider — smooth gradient line between rows. */
+body.table-row-divider-gradient .bn-editor table tr + tr > * {
+  border-top: none !important;
+  background-image: linear-gradient(to right, transparent, rgba(99, 102, 241, 0.5), transparent);
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+}
+
+/* Tag marker callout — 🏷 emoji on the top-left. */
+body.callout-tag-marker .bn-editor [data-content-type="callout"] {
+  position: relative;
+  padding-left: 2.5rem !important;
+}
+body.callout-tag-marker .bn-editor [data-content-type="callout"]::before {
+  content: "🏷";
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  font-size: 1.2rem;
+}
+
+/* Blue side ribbon — vertical blue ribbon decoration on the left edge. */
+body.page-side-ribbon-blue .bn-editor {
+  position: relative;
+  margin-left: 28px;
+}
+body.page-side-ribbon-blue .bn-editor::before {
+  content: "";
+  position: absolute;
+  left: -20px;
+  top: 8px;
+  width: 16px;
+  height: 50px;
+  background: linear-gradient(180deg, #1d4ed8, #2563eb 70%, transparent);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
