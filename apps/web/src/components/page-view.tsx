@@ -1512,6 +1512,11 @@ export function PageView({
       "table-fzm-2",
       "callout-fzm-3",
       "page-bg-fzm-4",
+      "code-block-gaa-1",
+      "table-gaa-2",
+      "callout-gaa-3",
+      "page-bg-gaa-4",
+      "heading-gaa-5",
     ];
     try {
       for (const k of toggles) {

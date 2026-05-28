@@ -1924,6 +1924,11 @@ export function PageStyleMenu({
                       { key: "table-fzm-2", label: "table fzm2" },
                       { key: "callout-fzm-3", label: "callout fzm3" },
                       { key: "page-bg-fzm-4", label: "page-bg fzm4" },
+                      { key: "code-block-gaa-1", label: "code-block gaa1" },
+                      { key: "table-gaa-2", label: "table gaa2" },
+                      { key: "callout-gaa-3", label: "callout gaa3" },
+                      { key: "page-bg-gaa-4", label: "page-bg gaa4" },
+                      { key: "heading-gaa-5", label: "heading gaa5" },
                     ] as const
                   ).map((t) => (
                     <button
