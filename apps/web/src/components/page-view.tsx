@@ -1328,6 +1328,11 @@ export function PageView({
       "callout-fec-3",
       "page-bg-fec-4",
       "heading-fec-5",
+      "code-block-fer-1",
+      "table-fer-2",
+      "callout-fer-3",
+      "page-bg-fer-4",
+      "heading-fer-5",
     ];
     try {
       for (const k of toggles) {
