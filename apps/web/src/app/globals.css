@@ -4695,6 +4695,78 @@ body.page-side-tab-top-right .bn-editor::before {
   background: #f59e0b;
 }
 
+/* H2 with side marker — left vertical bar before H2. */
+body.h2-with-side-marker .bn-editor [data-content-type="heading"][data-level="2"] {
+  border-left: 5px solid #f59e0b;
+  padding-left: 0.65rem;
+}
+.dark body.h2-with-side-marker .bn-editor [data-content-type="heading"][data-level="2"] {
+  border-left-color: #fbbf24;
+}
+
+/* Noise code background — fine noise texture. */
+body.code-block-noise-bg .bn-editor pre {
+  background-color: #f9fafb !important;
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(0, 0, 0, 0.02) 1px, transparent 2px),
+    radial-gradient(circle at 80% 50%, rgba(0, 0, 0, 0.03) 1px, transparent 2px),
+    radial-gradient(circle at 50% 80%, rgba(0, 0, 0, 0.02) 1px, transparent 2px);
+  background-size: 8px 8px, 13px 13px, 19px 19px !important;
+  border: 1px solid #e5e7eb;
+}
+.dark body.code-block-noise-bg .bn-editor pre {
+  background-color: #0f172a !important;
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.04) 1px, transparent 2px),
+    radial-gradient(circle at 80% 50%, rgba(255, 255, 255, 0.05) 1px, transparent 2px),
+    radial-gradient(circle at 50% 80%, rgba(255, 255, 255, 0.04) 1px, transparent 2px);
+}
+
+/* Purple row dividers. */
+body.table-row-divider-color-purple .bn-editor table tr + tr > * {
+  border-top: 2px solid #a855f7 !important;
+}
+
+/* Rounded side tab — pill rounded tab on the left. */
+body.callout-side-tab-rounded .bn-editor [data-content-type="callout"] {
+  position: relative;
+  padding-left: 2.5rem !important;
+}
+body.callout-side-tab-rounded .bn-editor [data-content-type="callout"]::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 12px;
+  bottom: 12px;
+  width: 8px;
+  background: currentColor;
+  border-radius: 12px;
+  opacity: 0.7;
+}
+
+/* Top-left tab — folder tab on the top-left of the editor. */
+body.page-side-tab-top-left .bn-editor {
+  position: relative;
+  margin-top: 22px;
+  border-top: 3px solid #2563eb;
+}
+body.page-side-tab-top-left .bn-editor::before {
+  content: "";
+  position: absolute;
+  top: -22px;
+  left: 24px;
+  width: 90px;
+  height: 22px;
+  background: #2563eb;
+  border-radius: 6px 6px 0 0;
+}
+.dark body.page-side-tab-top-left .bn-editor {
+  border-top-color: #60a5fa;
+}
+.dark body.page-side-tab-top-left .bn-editor::before {
+  background: #60a5fa;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
