@@ -7258,6 +7258,47 @@ body.page-bg-soft-rays .bn-editor {
   background-image: repeating-conic-gradient(from 0deg at 50% 0%, rgba(99, 102, 241, 0.05) 0deg, rgba(99, 102, 241, 0.05) 4deg, transparent 4deg, transparent 12deg) !important;
 }
 
+/* Heading margin note — shift headings into the left margin slightly. */
+body.heading-margin-note .bn-editor [data-content-type="heading"] {
+  margin-left: -0.8em !important;
+  color: #6366f1 !important;
+}
+
+/* Code block Aura — Aura dark palette for code blocks. */
+body.code-block-aura .bn-editor pre {
+  background: #15141b !important;
+  border: 1px solid #21202a !important;
+}
+body.code-block-aura .bn-editor pre code {
+  color: #edecee !important;
+}
+
+/* Table purple zebra — purple-tinted zebra striping on rows. */
+body.table-striped-purple .bn-editor table tr:nth-child(even) td {
+  background: rgba(168, 85, 247, 0.1) !important;
+}
+.dark body.table-striped-purple .bn-editor table tr:nth-child(even) td {
+  background: rgba(168, 85, 247, 0.18) !important;
+}
+
+/* Callout bounce icon — gently bounce the callout's leading icon. */
+@keyframes nf-callout-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+body.callout-emoji-bounce .bn-editor [data-content-type="callout"] > *:first-child {
+  display: inline-block !important;
+  animation: nf-callout-bounce 1.4s ease-in-out infinite;
+}
+
+/* Page bg aurora — a soft, drifting aurora gradient behind the editor. */
+body.page-bg-aurora .bn-editor {
+  background-image:
+    linear-gradient(115deg, rgba(99, 102, 241, 0.1), transparent 40%),
+    linear-gradient(245deg, rgba(16, 185, 129, 0.1), transparent 40%),
+    linear-gradient(0deg, rgba(236, 72, 153, 0.08), transparent 35%) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

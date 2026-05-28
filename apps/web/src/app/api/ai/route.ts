@@ -3472,6 +3472,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Build a Korean opportunity solution tree — maps an outcome to opportunities to solutions (Teresa Torres style). Use 합쇼체. Markdown: '**목표 결과 (1줄)**' (측정 가능한 outcome), '**기회 (테이블)**' ('기회(고객 니즈/페인) | 근거 | 임팩트 추정'), '**기회별 솔루션 (bullets)**' (각 기회 아래 2-3개 솔루션 아이디어), '**우선 기회 (1줄)**' (먼저 공략할 것 + 이유), '**우선 솔루션 / 실험 (bullets)**' (가장 먼저 검증할 것), '**가정 / 리스크 (bullets)**', '**다음 액션 (1줄)**'. 솔루션이 아닌 기회에서 출발.\n\n결과 / 컨텍스트:\n${text}`,
   internal_retro_facilitation_guide_ko: (text) =>
     `Write a Korean retrospective facilitation guide — helps someone run an effective, psychologically-safe retro. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄), '**사전 준비 (bullets)**' (데이터 / 안전 분위기 / 형식 선택), '**진행 흐름 (테이블)**' ('단계 | 활동 | 시간'): 분위기 열기 → 데이터 모으기 → 인사이트 → 액션 → 마무리, '**포맷 옵션 (bullets)**' (Start/Stop/Continue / Mad-Sad-Glad / 4Ls 등), '**심리적 안전 (bullets)**' (비난 금지 / 모두 발언 / 프라임 디렉티브), '**액션 만들기 (bullets)**' (적게 + 구체 + 담당), '**안티패턴 (1줄)**' (불평만 / 액션 없음). 안전 + 행동.\n\n회고 컨텍스트:\n${text}`,
+  translate_ko_to_lue: (text) =>
+    `Translate the Korean text below into natural Tai Lü (Tai Lue) — a Southwestern Tai language of Sipsongpanna (Xishuangbanna), Yunnan, and northern Laos/Thailand. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Tai Lü**' and '**번역 노트**' (3 bullets in Korean — note Tai Lü has its own New Tai Lue script).\n\n원문:\n${text}`,
+  translate_ko_to_tai_dam: (text) =>
+    `Translate the Korean text below into natural Tai Dam (Black Tai) — a Southwestern Tai language of northwestern Vietnam and Laos. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Tai Dam**' and '**번역 노트**' (3 bullets in Korean — note Tai Dam has its own Tai Viet script and is spoken by diaspora communities worldwide).\n\n원문:\n${text}`,
+  translate_ko_to_nung: (text) =>
+    `Translate the Korean text below into natural Nùng — a Central Tai language of northeastern Vietnam and Guangxi, China. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Nùng**' and '**번역 노트**' (3 bullets in Korean — note Nùng is closely related to Tày and Zhuang, written in a Latin-based orthography).\n\n원문:\n${text}`,
+  translate_ko_to_tay: (text) =>
+    `Translate the Korean text below into natural Tày — a Central Tai language of northern Vietnam. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Tày**' and '**번역 노트**' (3 bullets in Korean — note Tày is one of the largest minority languages of Vietnam, closely related to Nùng).\n\n원문:\n${text}`,
+  translate_ko_to_bouyei: (text) =>
+    `Translate the Korean text below into natural Bouyei (Buyi) — a Northern Tai language of Guizhou province, southern China. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Bouyei**' and '**번역 노트**' (3 bullets in Korean — note Bouyei is a Northern Tai language closely related to Zhuang, written in a Latin-based orthography).\n\n원문:\n${text}`,
+  internal_eng_quarterly_goals_ko: (text) =>
+    `Write Korean engineering quarterly goals — sets an eng team's technical goals for the quarter. Use 합쇼체. Markdown: '**한 줄 (분기 테마)**' (1줄), '**제품 지원 목표 (bullets)**' (제품 로드맵 받치는 것), '**기술 건강 목표 (테이블)**' ('목표 | 측정 | 현재 | 목표값'): 신뢰성 / 성능 / 기술부채 / 개발자경험, '**투자 배분 (1줄)**' (신규 vs 건강 vs 유지), '**의도적 비선택 (bullets)**', '**리스크 / 의존성 (bullets)**', '**측정 / 체크인 (1줄)**'. 제품 ↔ 기술 건강 균형.\n\n분기 컨텍스트:\n${text}`,
+  sales_deal_desk_review_ko: (text) =>
+    `Write a Korean deal desk review — reviews a non-standard deal for approval (pricing/terms exceptions). Use 합쇼체. Markdown: '**한 줄 (요청)**' (1줄 — 무슨 예외 / 승인 필요), '**딜 요약 (bullets)**' (고객 / 규모 / 전략 가치), '**요청 예외 (테이블)**' ('항목 | 표준 | 요청 | 사유'), '**재무 영향 (bullets)**' (할인율 / 마진 / 선례 리스크), '**전략적 정당화 (1단락)**' (왜 가치 있나), '**리스크 (bullets)**' (선례 / 형평성), '**대안 (1줄)**', '**권고 (1줄)**' (승인/조건부/반려 + 이유). 데이터 기반 판단.\n\n딜 컨텍스트:\n${text}`,
+  customer_executive_email_ko: (text) =>
+    `Draft a Korean executive-to-executive email — a concise, high-level email from our exec to the customer's exec. Use 합쇼체 (간결 + 격조 + 진심). Markdown: '**제목**' (1줄), '**본문**' (3 단락: 1) 따뜻한 인사 + 관계/맥락 1줄, 2) 핵심 메시지 — 가치 인정 / 전략 제안 / 요청 중 하나에 집중, 3) 명확한 다음 단계 + 직접 연락 의향), '**한 줄 (의도)**' (이 메일의 목적). 짧게 (150단어 이내), C레벨 톤 — 디테일은 팀에 위임.\n\n임원 메일 컨텍스트:\n${text}`,
+  pm_changelog_entry_ko: (text) =>
+    `Write a Korean changelog entry — a crisp, user-facing changelog item for a release. Use 해요체 (명확 + 친근). Markdown: '**제목 (1줄)**' (무엇이 바뀌었는지 — 사용자 관점), '**카테고리 (1줄)**' (✨ 새기능 / ⚡ 개선 / 🐛 버그수정), '**설명 (2-3줄)**' (무엇을 / 사용자에게 어떤 이점 — 내부 용어 금지), '**사용 방법 (1줄)**' (어디서 / 어떻게 — 필요하면), '**참고 (1줄)**' (마이그레이션 / 주의 — 있으면). 짧고 가치 중심.\n\n변경 컨텍스트:\n${text}`,
+  internal_code_review_guidelines_ko: (text) =>
+    `Write Korean code review guidelines — sets norms for giving and receiving code reviews. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄), '**리뷰어 원칙 (bullets)**' (작업을 리뷰 / 질문으로 / 차단 vs 제안 명시 / 빨리), '**작성자 원칙 (bullets)**' (작은 PR / 맥락 제공 / 방어 금지), '**무엇을 볼까 (bullets)**' (정확성 / 가독성 / 테스트 / 보안 — 스타일은 도구에 위임), '**리뷰 SLA (1줄)**' (응답 시간), '**톤 (bullets)**' (예시 — 좋은 코멘트 vs 나쁜 코멘트), '**머지 기준 (1줄)**'. 빠르고 친절하게.\n\n코드 리뷰 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

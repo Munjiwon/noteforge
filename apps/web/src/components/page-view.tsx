@@ -1016,6 +1016,11 @@ export function PageView({
       "table-row-divider-bold",
       "callout-icon-spin",
       "page-bg-soft-rays",
+      "heading-margin-note",
+      "code-block-aura",
+      "table-striped-purple",
+      "callout-emoji-bounce",
+      "page-bg-aurora",
     ];
     try {
       for (const k of toggles) {

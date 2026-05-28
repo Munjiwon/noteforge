@@ -1428,6 +1428,11 @@ export function PageStyleMenu({
                       { key: "table-row-divider-bold", label: "Bold rows" },
                       { key: "callout-icon-spin", label: "Spin icon" },
                       { key: "page-bg-soft-rays", label: "Rays" },
+                      { key: "heading-margin-note", label: "Margin note" },
+                      { key: "code-block-aura", label: "Aura" },
+                      { key: "table-striped-purple", label: "Purple zebra" },
+                      { key: "callout-emoji-bounce", label: "Bounce icon" },
+                      { key: "page-bg-aurora", label: "Aurora" },
                     ] as const
                   ).map((t) => (
                     <button
