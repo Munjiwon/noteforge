@@ -1705,6 +1705,11 @@ export function PageStyleMenu({
                       { key: "callout-faa-3", label: "callout faa3" },
                       { key: "page-bg-faa-4", label: "page-bg faa4" },
                       { key: "heading-faa-5", label: "heading faa5" },
+                      { key: "code-block-faq-1", label: "code-block faq1" },
+                      { key: "table-faq-2", label: "table faq2" },
+                      { key: "callout-faq-3", label: "callout faq3" },
+                      { key: "page-bg-faq-4", label: "page-bg faq4" },
+                      { key: "heading-faq-5", label: "heading faq5" },
                     ] as const
                   ).map((t) => (
                     <button

@@ -1293,6 +1293,11 @@ export function PageView({
       "callout-faa-3",
       "page-bg-faa-4",
       "heading-faa-5",
+      "code-block-faq-1",
+      "table-faq-2",
+      "callout-faq-3",
+      "page-bg-faq-4",
+      "heading-faq-5",
     ];
     try {
       for (const k of toggles) {
