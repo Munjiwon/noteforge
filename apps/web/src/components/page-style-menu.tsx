@@ -1268,6 +1268,11 @@ export function PageStyleMenu({
                       { key: "table-compact-rows", label: "Compact rows" },
                       { key: "callout-shadow-inset", label: "Inset shadow" },
                       { key: "page-bg-weave", label: "Weave" },
+                      { key: "h6-with-arrow", label: "H6 →" },
+                      { key: "code-block-tomorrow-night", label: "Tomorrow" },
+                      { key: "table-border-double", label: "Double border" },
+                      { key: "callout-gradient-bg", label: "Gradient bg" },
+                      { key: "page-bg-polka-large", label: "Big polka" },
                     ] as const
                   ).map((t) => (
                     <button

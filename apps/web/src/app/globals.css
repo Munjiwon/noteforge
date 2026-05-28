@@ -5980,6 +5980,41 @@ body.page-bg-weave .bn-editor {
     repeating-linear-gradient(-45deg, rgba(99, 102, 241, 0.05) 0, rgba(99, 102, 241, 0.05) 6px, transparent 6px, transparent 12px) !important;
 }
 
+/* H6 with arrow — prepends "→ " to H6 headings. */
+body.h6-with-arrow .bn-editor [data-content-type="heading"][data-level="6"] > *:first-child::before {
+  content: "\2192 ";
+  color: #f59e0b;
+  font-weight: 700;
+  margin-right: 0.15em;
+}
+
+/* Code block Tomorrow Night — Tomorrow Night palette for code blocks. */
+body.code-block-tomorrow-night .bn-editor pre {
+  background: #1d1f21 !important;
+  border: 1px solid #373b41 !important;
+}
+body.code-block-tomorrow-night .bn-editor pre code {
+  color: #c5c8c6 !important;
+}
+
+/* Table border double — render table cell borders as a double line. */
+body.table-border-double .bn-editor table td,
+body.table-border-double .bn-editor table th {
+  border-style: double !important;
+  border-width: 3px !important;
+}
+
+/* Callout gradient bg — a soft gradient fill behind callouts. */
+body.callout-gradient-bg .bn-editor [data-content-type="callout"] {
+  background-image: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1)) !important;
+}
+
+/* Page bg large polka — large polka-dot pattern behind the editor. */
+body.page-bg-polka-large .bn-editor {
+  background-image: radial-gradient(circle, rgba(99, 102, 241, 0.1) 5px, transparent 6px) !important;
+  background-size: 40px 40px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

@@ -856,6 +856,11 @@ export function PageView({
       "table-compact-rows",
       "callout-shadow-inset",
       "page-bg-weave",
+      "h6-with-arrow",
+      "code-block-tomorrow-night",
+      "table-border-double",
+      "callout-gradient-bg",
+      "page-bg-polka-large",
     ];
     try {
       for (const k of toggles) {

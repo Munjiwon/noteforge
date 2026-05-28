@@ -2832,6 +2832,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean competitive product teardown — a PM's structured analysis of a competitor's product. Use 합쇼체. Markdown: '**한 줄 (경쟁사)**' (1줄 — 누구 / 핵심 위협 정도), '**개요 (bullets)**' (포지셔닝 / 타깃 / 가격), '**핵심 기능 비교 (테이블)**' ('기능 | 그들 | 우리 | 우위'), '**그들이 잘하는 것 (bullets)**', '**그들의 약점 (bullets)**', '**UX / 온보딩 관찰 (bullets)**', '**우리에게 주는 시사점 (bullets)**' (방어 / 추격 / 차별화), '**액션 제안 (테이블)**' ('제안 | 우선순위 | 담당'). 근거 기반, 추측은 표시.\n\n경쟁사 / 컨텍스트:\n${text}`,
   internal_runbook_ko: (text) =>
     `Write a Korean operations runbook — a step-by-step guide for handling a recurring operational task or incident. Use 합쇼체. 명확 + 실행 가능. Markdown: '**한 줄 (런북)**' (1줄 — 이 런북이 다루는 상황), '**언제 사용 (bullets)**' (트리거 조건), '**사전 조건 (bullets)**' (권한 / 접근 / 도구), '**절차 (numbered)**' (각 단계: 명령/행동 + 기대 결과 + 확인 방법), '**검증 (bullets)**' (완료 확인), '**롤백 (numbered)**' (잘못됐을 때), '**에스컬레이션 (1줄)**' (누구에게 / 언제), '**관련 링크 (bullets)**'.\n\n런북 대상 / 컨텍스트:\n${text}`,
+  translate_ko_to_dyula: (text) =>
+    `Translate the Korean text below into natural Dyula (Jula) — Mande trade language of Côte d'Ivoire, Burkina Faso and Mali. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Julakan**' and '**번역 노트**' (3 bullets in Korean — note Dyula is a major West African trade lingua franca, closely related to Bambara).\n\n원문:\n${text}`,
+  translate_ko_to_mossi: (text) =>
+    `Translate the Korean text below into natural Mòoré (Mossi) — Gur language of Burkina Faso. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Mòoré**' and '**번역 노트**' (3 bullets in Korean — note Mòoré is the language of the Mossi people, the most widely spoken language of Burkina Faso).\n\n원문:\n${text}`,
+  translate_ko_to_susu: (text) =>
+    `Translate the Korean text below into natural Susu (Sosoxui) — Mande language of coastal Guinea. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Sosoxui**' and '**번역 노트**' (3 bullets in Korean — note Susu is a major trade language of coastal Guinea around Conakry).\n\n원문:\n${text}`,
+  translate_ko_to_krio: (text) =>
+    `Translate the Korean text below into natural Krio — English-based creole of Sierra Leone. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Krio**' and '**번역 노트**' (3 bullets in Korean — note Krio is the lingua franca of Sierra Leone, an English-lexified creole).\n\n원문:\n${text}`,
+  translate_ko_to_temne: (text) =>
+    `Translate the Korean text below into natural Temne (Themne) — Mel language of northwestern Sierra Leone. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Temne**' and '**번역 노트**' (3 bullets in Korean — note Temne is one of the two largest indigenous languages of Sierra Leone).\n\n원문:\n${text}`,
+  internal_decision_record_adr_ko: (text) =>
+    `Write a Korean Architecture Decision Record (ADR) — captures a single technical/architectural decision and its rationale. Use 합쇼체. Markdown: '**제목 (ADR-NNN)**' (1줄 — 결정 요지), '**상태 (1줄)**' (제안 / 승인 / 폐기 / 대체됨), '**맥락 (1단락)**' (어떤 상황/제약에서 이 결정이 필요했나), '**결정 (1단락)**' ('우리는 ~하기로 한다' — 명확히), '**고려한 대안 (테이블)**' ('대안 | 장점 | 단점 | 기각 이유'), '**결과 (bullets)**' (긍정 + 부정 + 따라오는 후속 작업), '**관련 결정 (1줄)**'. 중립적 + 사실 기반.\n\n결정 컨텍스트:\n${text}`,
+  sales_mutual_action_plan_ko: (text) =>
+    `Write a Korean Mutual Action Plan (MAP) — a shared buyer-seller plan to reach a deal close date. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 무엇을 / 언제까지), '**최종 목표 일자 (1줄)**', '**마일스톤 (테이블)**' ('단계 | 활동 | 우리 담당 | 고객 담당 | 시한 | 상태'), '**의사결정 기준 (bullets)**' (고객이 사려면 충족돼야 할 것), '**필요 리소스 (bullets)**', '**리스크 / 블로커 (bullets)**', '**다음 미팅 (1줄)**', '**공동 합의 (1줄)**' (양측이 동의한 다음 액션). 협업 톤 — 고객과 공유 가능하게.\n\n딜 컨텍스트:\n${text}`,
+  customer_value_realization_ko: (text) =>
+    `Write a Korean value realization summary — proves the value a customer has gotten, for a renewal or exec review. Use 합쇼체. 데이터 중심 + 고객 언어. Markdown: '**한 줄 (가치)**' (1줄 — 핵심 성과 한 문장), '**도입 목표 vs 실현 (테이블)**' ('목표 | 결과 | 달성도'), '**정량 효과 (bullets)**' (시간 절감 / 비용 / 매출 — 수치 + 출처), '**정성 효과 (bullets)**' (워크플로우 / 만족 / 인용), '**ROI 추정 (1줄)**', '**미실현 가치 (bullets)**' (아직 안 쓰는 기능 → 기회), '**다음 단계 (1줄)**'.\n\n가치 / 데이터 컨텍스트:\n${text}`,
+  pm_user_journey_map_ko: (text) =>
+    `Build a Korean user journey map — maps a user's end-to-end experience to find pain and opportunity. Use 합쇼체. Markdown: '**한 줄 (여정)**' (1줄 — 누구의 / 무슨 여정), '**페르소나 (1줄)**', '**단계별 여정 (테이블)**' ('단계 | 사용자 행동 | 생각/감정 | 페인 | 기회'), '**감정 곡선 (1줄)**' (어디서 최고/최저), '**핵심 페인 Top 3 (bullets)**', '**기회 Top 3 (bullets)**' (각 '기회 — 예상 임팩트'), '**다음 액션 (테이블)**' ('액션 | 담당 | 우선순위'). 추측은 가설로 표시.\n\n여정 컨텍스트:\n${text}`,
+  internal_capacity_planning_ko: (text) =>
+    `Write a Korean team capacity planning doc — plans whether the team can take on upcoming work. Use 합쇼체. Markdown: '**한 줄 (결론)**' (1줄 — 수용 가능 / 빠듯 / 불가 + 이유), '**가용 캐파 (테이블)**' ('인원 | 역할 | 가용%(휴가/온콜 반영) | 환산 인일'), '**예정 작업 (테이블)**' ('작업 | 추정 공수 | 우선순위 | 의존성'), '**캐파 vs 수요 (1줄)**' (총 가용 vs 총 필요), '**병목 (bullets)**', '**시나리오 (bullets)**' (다 하면 / 우선순위만 / 충원 시), '**권고 (1단락)**' (무엇을 빼거나 미루거나 충원할지).\n\n캐파 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
