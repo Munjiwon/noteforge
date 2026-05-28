@@ -4121,6 +4121,60 @@ body.page-side-bookmark .bn-editor::after {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
 }
 
+/* H5 with page mark — prepends § to H5 headings. */
+body.h5-with-page-mark .bn-editor [data-content-type="heading"][data-level="5"] > *:first-child::before {
+  content: "§ ";
+  color: #94a3b8;
+  margin-right: 0.2em;
+  font-weight: 400;
+}
+
+/* Light gray stripes — alternating row backgrounds in code block. */
+body.code-block-light-gray-stripes .bn-editor pre {
+  background: repeating-linear-gradient(
+    to bottom,
+    #fafafa,
+    #fafafa 22px,
+    #f3f4f6 22px,
+    #f3f4f6 44px
+  ) !important;
+  border: 1px solid #e5e7eb;
+}
+.dark body.code-block-light-gray-stripes .bn-editor pre {
+  background: repeating-linear-gradient(
+    to bottom,
+    #1f2937,
+    #1f2937 22px,
+    #111827 22px,
+    #111827 44px
+  ) !important;
+  border-color: #374151;
+}
+
+/* Thin row dividers — 1px between rows. */
+body.table-row-divider-thin .bn-editor table tr + tr > * {
+  border-top: 1px solid #e5e7eb !important;
+}
+.dark body.table-row-divider-thin .bn-editor table tr + tr > * {
+  border-top-color: #374151 !important;
+}
+
+/* Curved border callout — extra rounded corners. */
+body.callout-bordered-curved .bn-editor [data-content-type="callout"] {
+  border-radius: 20px !important;
+  border: 1.5px solid currentColor;
+}
+
+/* Margin paragraph — leaves space for handwritten margin notes alongside paragraphs. */
+body.page-side-margin-paragraph .bn-editor [data-content-type="paragraph"] {
+  margin-right: 4rem;
+  border-right: 1px dotted #e2e8f0;
+  padding-right: 1rem;
+}
+.dark body.page-side-margin-paragraph .bn-editor [data-content-type="paragraph"] {
+  border-right-color: #334155;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

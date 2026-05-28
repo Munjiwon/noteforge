@@ -1101,6 +1101,11 @@ export function PageStyleMenu({
                       { key: "table-header-italic", label: "Italic head" },
                       { key: "callout-bar-left-thick", label: "Thick L bar" },
                       { key: "page-side-bookmark", label: "Bookmark" },
+                      { key: "h5-with-page-mark", label: "H5 §" },
+                      { key: "code-block-light-gray-stripes", label: "Gray stripes" },
+                      { key: "table-row-divider-thin", label: "Thin rows" },
+                      { key: "callout-bordered-curved", label: "Curved bdr" },
+                      { key: "page-side-margin-paragraph", label: "Margin para" },
                     ] as const
                   ).map((t) => (
                     <button
