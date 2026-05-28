@@ -2014,6 +2014,11 @@ export function PageStyleMenu({
                       { key: "callout-gjw-3", label: "callout gjw3" },
                       { key: "page-bg-gjw-4", label: "page-bg gjw4" },
                       { key: "heading-gjw-5", label: "heading gjw5" },
+                      { key: "code-block-gkl-1", label: "code-block gkl1" },
+                      { key: "table-gkl-2", label: "table gkl2" },
+                      { key: "callout-gkl-3", label: "callout gkl3" },
+                      { key: "page-bg-gkl-4", label: "page-bg gkl4" },
+                      { key: "heading-gkl-5", label: "heading gkl5" },
                     ] as const
                   ).map((t) => (
                     <button
