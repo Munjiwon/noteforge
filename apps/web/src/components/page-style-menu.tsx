@@ -1443,6 +1443,11 @@ export function PageStyleMenu({
                       { key: "table-header-dark", label: "Dark header" },
                       { key: "callout-elevated-card", label: "Card" },
                       { key: "page-bg-soft-glow-center", label: "Center glow" },
+                      { key: "heading-caps-accent", label: "Caps accent" },
+                      { key: "code-block-night-fox", label: "Night Fox" },
+                      { key: "table-zebra-rose", label: "Rose zebra" },
+                      { key: "callout-badge-corner", label: "Badge" },
+                      { key: "page-bg-soft-lines-h", label: "H-lines" },
                     ] as const
                   ).map((t) => (
                     <button

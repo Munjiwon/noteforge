@@ -7378,6 +7378,58 @@ body.page-bg-soft-glow-center .bn-editor {
   background-image: radial-gradient(ellipse at 50% 50%, rgba(99, 102, 241, 0.1), transparent 60%) !important;
 }
 
+/* Heading caps accent — small uppercase headings in an accent color. */
+body.heading-caps-accent .bn-editor [data-content-type="heading"] {
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  color: #4f46e5 !important;
+  font-size: 0.95em !important;
+}
+
+/* Code block Night Fox — Nightfox palette for code blocks. */
+body.code-block-night-fox .bn-editor pre {
+  background: #192330 !important;
+  border: 1px solid #29394f !important;
+}
+body.code-block-night-fox .bn-editor pre code {
+  color: #cdcecf !important;
+}
+
+/* Table rose zebra — rose-tinted zebra striping on rows. */
+body.table-zebra-rose .bn-editor table tr:nth-child(even) td {
+  background: rgba(244, 63, 94, 0.09) !important;
+}
+.dark body.table-zebra-rose .bn-editor table tr:nth-child(even) td {
+  background: rgba(244, 63, 94, 0.16) !important;
+}
+
+/* Callout badge corner — a small numbered/colored badge in the corner. */
+body.callout-badge-corner .bn-editor [data-content-type="callout"] {
+  position: relative;
+}
+body.callout-badge-corner .bn-editor [data-content-type="callout"]::after {
+  content: "!";
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  background: #ec4899;
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.75em;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Page bg horizontal lines — faint ruled horizontal lines (notebook). */
+body.page-bg-soft-lines-h .bn-editor {
+  background-image: linear-gradient(rgba(99, 102, 241, 0.08) 1px, transparent 1px) !important;
+  background-size: 100% 28px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

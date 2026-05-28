@@ -3532,6 +3532,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write Korean feature sunset communications — messages to users about retiring a feature. Use 합쇼체 (투명 + 배려). Markdown: '**한 줄 (안내)**' (1줄 — 무엇이 / 언제 종료), '**사용자 공지 (1단락)**' (무엇이 바뀌나 + 왜 — 솔직하게), '**영향 (bullets)**' (사용자가 잃는 것), '**대안 / 마이그레이션 (bullets)**' (어떻게 옮겨가나 — 구체적), '**타임라인 (1줄)**' (주요 날짜), '**도움 (1줄)**' (질문 / 지원 경로), '**톤 (1줄)**' (사과보다 배려 + 명확). 신뢰 보호 우선.\n\n폐기 컨텍스트:\n${text}`,
   internal_engineering_principles_ko: (text) =>
     `Write Korean engineering principles — a small set of durable principles that guide how the team builds. Use 합쇼체. Markdown: '**한 줄 (왜 원칙)**' (1줄), '**원칙 (numbered)**' (4-6개, 각 '**원칙명 (1줄)**' + 설명 2줄 + '적용 예' 1줄 + 트레이드오프 — 'A를 B보다'), '**적용 (bullets)**' (실제 결정에 어떻게), '**원칙 아님 (1줄)**' (규칙/슬로건과 구분). 트레이드오프를 담아 실제 판단에 쓰이게.\n\n엔지니어링 컨텍스트:\n${text}`,
+  translate_ko_to_kpelle: (text) =>
+    `Translate the Korean text below into natural Kpelle — a Mande language of Liberia and Guinea. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Kpelle**' and '**번역 노트**' (3 bullets in Korean — note Kpelle is the most widely spoken indigenous language of Liberia, with its own syllabary).\n\n원문:\n${text}`,
+  translate_ko_to_loma: (text) =>
+    `Translate the Korean text below into natural Loma (Löömàgòòi) — a Mande language of Liberia and Guinea. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Loma**' and '**번역 노트**' (3 bullets in Korean — note Loma is a Southwestern Mande language that historically had its own indigenous script).\n\n원문:\n${text}`,
+  translate_ko_to_vai: (text) =>
+    `Translate the Korean text below into natural Vai — a Mande language of Liberia and Sierra Leone. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**ꕙꔤ (Vai)**' and '**번역 노트**' (3 bullets in Korean — note Vai is famous for the Vai syllabary, one of the few indigenous African scripts in active use).\n\n원문:\n${text}`,
+  translate_ko_to_gola: (text) =>
+    `Translate the Korean text below into natural Gola — a Mel (Atlantic-Congo) language of Liberia and Sierra Leone. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Gola**' and '**번역 노트**' (3 bullets in Korean — note Gola is a Mel language, not Mande, despite its location among Mande languages).\n\n원문:\n${text}`,
+  translate_ko_to_kissi: (text) =>
+    `Translate the Korean text below into natural Kissi — a Mel (Atlantic-Congo) language of Guinea, Sierra Leone and Liberia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Kissi**' and '**번역 노트**' (3 bullets in Korean — note Kissi is a Mel language of the border tri-point region, written in Latin script).\n\n원문:\n${text}`,
+  internal_service_catalog_entry_ko: (text) =>
+    `Write a Korean service catalog entry — documents one service so others know what it is and how to use it. Use 합쇼체. Markdown: '**한 줄 (서비스)**' (1줄 — 무엇을 하나), '**소유 (bullets)**' (팀 / 온콜 / 연락처), '**책임 / 비책임 (bullets)**', '**API / 인터페이스 (bullets)**' (어떻게 호출 / 문서 링크), '**의존성 (bullets)**' (이게 의존하는 / 이걸 의존하는), '**SLO (1줄)**' (가용성 / 지연 목표), '**런북 / 대시보드 (bullets)**' (링크), '**온보딩 (1줄)**' (쓰려면 무엇부터). 한눈에 파악되게.\n\n서비스 컨텍스트:\n${text}`,
+  sales_pipeline_generation_plan_ko: (text) =>
+    `Write a Korean pipeline generation plan — a plan to build enough new pipeline to hit targets. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 필요 파이프라인 + 기간), '**갭 분석 (1줄)**' (목표 vs 현재 + 필요 배수), '**소스별 계획 (테이블)**' ('소스 | 목표 기여 | 활동 | 담당'): 아웃바운드 / 마케팅 / 파트너 / 기존확장, '**핵심 활동 (bullets)**' (구체적 — 콜드콜 수 / 캠페인 등), '**전환 가정 (bullets)**' (퍼널 단계별 비율), '**리스크 (bullets)**', '**주간 리듬 (1줄)**' (추적 방법). 숫자 역산.\n\n파이프라인 컨텍스트:\n${text}`,
+  customer_health_improvement_plan_ko: (text) =>
+    `Write a Korean customer health improvement plan — a focused plan to move a yellow/red account back to green. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 현재 → 목표 헬스), '**현재 헬스 진단 (테이블)**' ('요인 | 현재 | 문제'), '**근본 원인 (1단락)**', '**개선 액션 (테이블)**' ('액션 | 목표 지표 | 담당 | 시한'): 채택 / 가치 / 관계 / 지원, '**필요 자원 (bullets)**' (교육 / 임원 / 제품), '**성공 신호 (bullets)**' (초록 됐다는 증거), '**체크인 (1줄)**', '**리스크 (1줄)**'. 측정 가능한 회복 경로.\n\n헬스 컨텍스트:\n${text}`,
+  pm_definition_of_ready_ko: (text) =>
+    `Write a Korean Definition of Ready — the checklist a backlog item must meet before a team starts it. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄 — 왜 DoR이 필요한가), '**준비 기준 (체크 bullets)**' (사용자 가치 명확 / 인수 기준 / 디자인 / 의존성 확인 / 추정 / 테스트 가능), '**각 기준 설명 (테이블)**' ('기준 | 무엇을 의미 | 충족 예시'), '**예외 (1줄)**' (스파이크 등), '**책임 (1줄)**' (누가 준비 / 누가 확인), '**안티패턴 (1줄)**' (준비 안 된 채 시작). 명확하고 가벼운 게이트.\n\nDoR 컨텍스트:\n${text}`,
+  internal_async_update_template_ko: (text) =>
+    `Write a Korean async update template — a reusable template for written, async status updates. Use 합쇼체. Markdown: '**한 줄 (이번 업데이트)**' (1줄 — 🟢/🟡/🔴 + 핵심), '**진행 (bullets)**' (지난번 이후 한 것 — 결과 중심), '**다음 (bullets)**' (다음에 할 것), '**막힌 것 / 도움 필요 (bullets)**' (각 '무엇 — 누구에게 — 언제까지'), '**결정 / 변경 (bullets)**' (있으면), '**지표 / 링크 (1줄)**', '**작성 팁 (1줄)**' (스캔 가능 / 솔직 / 짧게). 동기 회의를 대체할 수 있게.\n\n업데이트 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
