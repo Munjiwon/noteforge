@@ -7111,6 +7111,43 @@ body.page-bg-grain .bn-editor {
     radial-gradient(rgba(255, 255, 255, 0.03) 0.5px, transparent 0.5px) !important;
 }
 
+/* Heading two-color — first word accent-colored, rest default. */
+body.heading-double-color .bn-editor [data-content-type="heading"] {
+  color: #ec4899 !important;
+}
+body.heading-double-color .bn-editor [data-content-type="heading"][data-level="1"] {
+  color: #6366f1 !important;
+}
+
+/* Code block Bluloco — Bluloco dark palette for code blocks. */
+body.code-block-bluloco .bn-editor pre {
+  background: #282c34 !important;
+  border: 1px solid #21252b !important;
+}
+body.code-block-bluloco .bn-editor pre code {
+  color: #abb2bf !important;
+}
+
+/* Table monospace cells — render table cell content in a monospace font. */
+body.table-cell-monospace .bn-editor table td,
+body.table-cell-monospace .bn-editor table th {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace !important;
+  font-variant-numeric: tabular-nums !important;
+}
+
+/* Callout extra rounded — very large corner radius on callouts. */
+body.callout-rounded-2xl .bn-editor [data-content-type="callout"] {
+  border-radius: 24px !important;
+}
+
+/* Page bg mesh gradient — a soft multi-color mesh gradient behind the editor. */
+body.page-bg-mesh-gradient .bn-editor {
+  background-image:
+    radial-gradient(at 20% 20%, rgba(99, 102, 241, 0.1) 0, transparent 50%),
+    radial-gradient(at 80% 25%, rgba(236, 72, 153, 0.1) 0, transparent 50%),
+    radial-gradient(at 50% 80%, rgba(16, 185, 129, 0.1) 0, transparent 50%) !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;

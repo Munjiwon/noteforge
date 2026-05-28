@@ -3392,6 +3392,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean feature tradeoff analysis — analyzes the tradeoffs between options for a feature decision. Use 합쇼체. Markdown: '**한 줄 (결정)**' (1줄 — 무엇을 정하나 + 추천), '**옵션 (테이블)**' ('옵션 | 장점 | 단점 | 노력 | 리스크'), '**평가 기준 (bullets)**' (무엇을 우선 — 사용자 가치 / 속도 / 유지보수), '**기준별 비교 (테이블)**' ('기준 | 옵션A | 옵션B | 옵션C'), '**트레이드오프 핵심 (1단락)**' (무엇을 얻고 무엇을 포기), '**추천 (1단락)**' (어느 옵션 + 왜), '**되돌릴 수 있나 (1줄)**' (가역성). 솔직한 트레이드오프 노출.\n\n결정 컨텍스트:\n${text}`,
   internal_postmortem_learnings_digest_ko: (text) =>
     `Write a Korean postmortem learnings digest — synthesizes themes across multiple postmortems for org-wide learning. Use 합쇼체. Markdown: '**한 줄 (기간/범위)**' (1줄 — 몇 건의 포스트모템 / 어느 기간), '**반복 패턴 (테이블)**' ('패턴 | 빈도 | 대표 사례'): 배포 / 의존성 / 모니터링 / 휴먼 / 용량, '**가장 비싼 원인 (bullets)**' (영향 큰 순), '**잘 작동한 대응 (bullets)**' (반복할 것), '**시스템적 개선 (bullets)**' (개별 fix 아닌 구조적), '**완료된 액션 효과 (1줄)**' (지난 액션이 효과 있었나), '**조직 권고 (bullets)**'. 개별 사고를 넘어 패턴 학습.\n\n포스트모템 모음 컨텍스트:\n${text}`,
+  translate_ko_to_warlpiri: (text) =>
+    `Translate the Korean text below into natural Warlpiri — a Pama-Nyungan language of the Northern Territory, central Australia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Warlpiri**' and '**번역 노트**' (3 bullets in Korean — note Warlpiri is one of the best-documented Australian Aboriginal languages, with a notable auxiliary register).\n\n원문:\n${text}`,
+  translate_ko_to_pitjantjatjara: (text) =>
+    `Translate the Korean text below into natural Pitjantjatjara — a Western Desert (Pama-Nyungan) language of central Australia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Pitjantjatjara**' and '**번역 노트**' (3 bullets in Korean — note Pitjantjatjara is a Western Desert dialect written in Latin script with an underline diacritic for retroflex sounds).\n\n원문:\n${text}`,
+  translate_ko_to_yolngu: (text) =>
+    `Translate the Korean text below into natural Yolŋu Matha (Djambarrpuyngu) — a Pama-Nyungan language of Arnhem Land, northern Australia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Yolŋu Matha**' and '**번역 노트**' (3 bullets in Korean — note Yolŋu Matha is a cluster of clan varieties; Djambarrpuyngu is a widely-used lingua franca among them).\n\n원문:\n${text}`,
+  translate_ko_to_arrernte: (text) =>
+    `Translate the Korean text below into natural Arrernte — a Pama-Nyungan language of the Alice Springs region, central Australia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Arrernte**' and '**번역 노트**' (3 bullets in Korean — note Arrernte has a large consonant inventory and is written in Latin script).\n\n원문:\n${text}`,
+  translate_ko_to_tiwi: (text) =>
+    `Translate the Korean text below into natural Tiwi — a language isolate of the Tiwi Islands off northern Australia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Tiwi**' and '**번역 노트**' (3 bullets in Korean — note Tiwi is a non-Pama-Nyungan language isolate; traditional Tiwi is highly polysynthetic).\n\n원문:\n${text}`,
+  internal_oncall_summary_weekly_ko: (text) =>
+    `Write a Korean weekly on-call summary — a short weekly digest of on-call activity for the team. Use 합쇼체. Markdown: '**한 줄 (이번 주)**' (1줄 — 부담 정도 + 핵심 사건), '**페이지 통계 (1줄)**' (총 / 야간 / 오탐%), '**주요 사건 (테이블)**' ('사건 | 심각도 | 대응 | 후속'), '**반복 / 주의 신호 (bullets)**', '**알림 튜닝 (bullets)**' (조정/삭제한 것), '**열린 후속 액션 (bullets)**', '**다음 온콜에게 (1줄)**'. 간결 + toil 가시화.\n\n온콜 주간 컨텍스트:\n${text}`,
+  sales_upsell_pitch_ko: (text) =>
+    `Write a Korean upsell pitch — a concise pitch to upgrade an existing customer to a higher tier or add-on. Use 합쇼체. Markdown: '**한 줄 (제안)**' (1줄 — 무엇으로 업그레이드 / 왜 그들에게), '**현재 한계 (bullets)**' (지금 플랜에서 막히는 것 — 사용 데이터 근거), '**업그레이드 가치 (bullets)**' (각 '기능/한도 — 그들에게 의미'), '**ROI (1줄)**', '**가격 차이 (1줄)**' (투명하게), '**증거 / 유사 사례 (1줄)**', '**다음 단계 (1줄)**'. 한계 → 가치 → 자연스러운 업그레이드. 압박 금지.\n\n업셀 컨텍스트:\n${text}`,
+  customer_qbr_action_plan_ko: (text) =>
+    `Write a Korean QBR action plan — the agreed action plan coming out of a customer QBR. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 다음 분기 함께 추구할 것), '**합의 우선순위 (bullets)**' (QBR에서 정한 것), '**액션 아이템 (테이블)**' ('액션 | 담당(우리/고객) | 시한 | 성공 기준'), '**의존성 (bullets)**' (서로 필요한 것), '**리스크 (1줄)**', '**다음 체크인 (1줄)**', '**임원 후원 필요 (1줄)**' (있으면). 양측이 공유·실행 가능하게.\n\nQBR 컨텍스트:\n${text}`,
+  pm_impact_effort_matrix_ko: (text) =>
+    `Produce a Korean impact/effort prioritization matrix — sorts initiatives into a 2x2 of impact vs. effort. Use 합쇼체. Markdown: '**한 줄 (추천)**' (1줄 — 무엇부터), '**사분면 (bullets per quadrant)**': '**Quick Wins (고임팩트·저노력)**', '**Big Bets (고임팩트·고노력)**', '**Fill-ins (저임팩트·저노력)**', '**Time Sinks (저임팩트·고노력 — 피할 것)**', '**평가 근거 (테이블)**' ('항목 | 임팩트(상/중/하) | 노력(상/중/하) | 사분면'), '**권고 순서 (numbered)**', '**주의 (1줄)**' (추정의 불확실성). Quick Wins 먼저, Time Sinks 회피.\n\n이니셔티브 목록:\n${text}`,
+  internal_team_skills_matrix_ko: (text) =>
+    `Build a Korean team skills matrix — maps team members' skills to find gaps and growth paths. Use 합쇼체. Markdown: '**한 줄 (목적)**' (1줄), '**스킬 매트릭스 (테이블)**' ('스킬 | 멤버1 | 멤버2 | ... (수준 0-3)'), '**커버리지 분석 (bullets)**' (단일 의존(bus factor) / 공백 스킬), '**강점 영역 (bullets)**', '**리스크 (bullets)**' (한 명만 아는 핵심 영역), '**성장 매칭 (테이블)**' ('멤버 | 키우고 싶은 스킬 | 멘토/기회'), '**채용/교육 시사점 (bullets)**', '**다음 액션 (1줄)**'. 공백과 성장 둘 다.\n\n팀 / 스킬 컨텍스트:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

@@ -996,6 +996,11 @@ export function PageView({
       "table-first-col-sticky",
       "callout-text-uppercase",
       "page-bg-grain",
+      "heading-double-color",
+      "code-block-bluloco",
+      "table-cell-monospace",
+      "callout-rounded-2xl",
+      "page-bg-mesh-gradient",
     ];
     try {
       for (const k of toggles) {

@@ -1408,6 +1408,11 @@ export function PageStyleMenu({
                       { key: "table-first-col-sticky", label: "Sticky col" },
                       { key: "callout-text-uppercase", label: "UPPER text" },
                       { key: "page-bg-grain", label: "Grain" },
+                      { key: "heading-double-color", label: "Two-color" },
+                      { key: "code-block-bluloco", label: "Bluloco" },
+                      { key: "table-cell-monospace", label: "Mono cells" },
+                      { key: "callout-rounded-2xl", label: "Extra round" },
+                      { key: "page-bg-mesh-gradient", label: "Mesh" },
                     ] as const
                   ).map((t) => (
                     <button
