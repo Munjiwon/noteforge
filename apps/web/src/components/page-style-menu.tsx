@@ -1974,6 +1974,11 @@ export function PageStyleMenu({
                       { key: "callout-gff-3", label: "callout gff3" },
                       { key: "page-bg-gff-4", label: "page-bg gff4" },
                       { key: "heading-gff-5", label: "heading gff5" },
+                      { key: "code-block-gfu-1", label: "code-block gfu1" },
+                      { key: "table-gfu-2", label: "table gfu2" },
+                      { key: "callout-gfu-3", label: "callout gfu3" },
+                      { key: "page-bg-gfu-4", label: "page-bg gfu4" },
+                      { key: "heading-gfu-5", label: "heading gfu5" },
                     ] as const
                   ).map((t) => (
                     <button
