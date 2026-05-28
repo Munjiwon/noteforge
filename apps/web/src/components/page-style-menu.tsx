@@ -2019,6 +2019,11 @@ export function PageStyleMenu({
                       { key: "callout-gkl-3", label: "callout gkl3" },
                       { key: "page-bg-gkl-4", label: "page-bg gkl4" },
                       { key: "heading-gkl-5", label: "heading gkl5" },
+                      { key: "code-block-gla-1", label: "code-block gla1" },
+                      { key: "table-gla-2", label: "table gla2" },
+                      { key: "callout-gla-3", label: "callout gla3" },
+                      { key: "page-bg-gla-4", label: "page-bg gla4" },
+                      { key: "heading-gla-5", label: "heading gla5" },
                     ] as const
                   ).map((t) => (
                     <button
