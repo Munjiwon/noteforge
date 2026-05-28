@@ -1920,6 +1920,10 @@ export function PageStyleMenu({
                       { key: "callout-fyx-3", label: "callout fyx3" },
                       { key: "page-bg-fyx-4", label: "page-bg fyx4" },
                       { key: "heading-fyx-5", label: "heading fyx5" },
+                      { key: "code-block-fzm-1", label: "code-block fzm1" },
+                      { key: "table-fzm-2", label: "table fzm2" },
+                      { key: "callout-fzm-3", label: "callout fzm3" },
+                      { key: "page-bg-fzm-4", label: "page-bg fzm4" },
                     ] as const
                   ).map((t) => (
                     <button
