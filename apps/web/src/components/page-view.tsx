@@ -1133,6 +1133,11 @@ export function PageView({
       "callout-eho-3",
       "page-bg-eho-4",
       "heading-eho-5",
+      "code-block-eid-1",
+      "table-eid-2",
+      "callout-eid-3",
+      "page-bg-eid-4",
+      "heading-eid-5",
     ];
     try {
       for (const k of toggles) {
