@@ -2852,6 +2852,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Build a Korean user journey map — maps a user's end-to-end experience to find pain and opportunity. Use 합쇼체. Markdown: '**한 줄 (여정)**' (1줄 — 누구의 / 무슨 여정), '**페르소나 (1줄)**', '**단계별 여정 (테이블)**' ('단계 | 사용자 행동 | 생각/감정 | 페인 | 기회'), '**감정 곡선 (1줄)**' (어디서 최고/최저), '**핵심 페인 Top 3 (bullets)**', '**기회 Top 3 (bullets)**' (각 '기회 — 예상 임팩트'), '**다음 액션 (테이블)**' ('액션 | 담당 | 우선순위'). 추측은 가설로 표시.\n\n여정 컨텍스트:\n${text}`,
   internal_capacity_planning_ko: (text) =>
     `Write a Korean team capacity planning doc — plans whether the team can take on upcoming work. Use 합쇼체. Markdown: '**한 줄 (결론)**' (1줄 — 수용 가능 / 빠듯 / 불가 + 이유), '**가용 캐파 (테이블)**' ('인원 | 역할 | 가용%(휴가/온콜 반영) | 환산 인일'), '**예정 작업 (테이블)**' ('작업 | 추정 공수 | 우선순위 | 의존성'), '**캐파 vs 수요 (1줄)**' (총 가용 vs 총 필요), '**병목 (bullets)**', '**시나리오 (bullets)**' (다 하면 / 우선순위만 / 충원 시), '**권고 (1단락)**' (무엇을 빼거나 미루거나 충원할지).\n\n캐파 컨텍스트:\n${text}`,
+  translate_ko_to_tigre: (text) =>
+    `Translate the Korean text below into natural Tigre (Tigrayit) — Ethiopic Semitic language of the Eritrean lowlands. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Tigre**' and '**번역 노트**' (3 bullets in Korean — note Tigre is a North Ethiopic Semitic language, distinct from Tigrinya).\n\n원문:\n${text}`,
+  translate_ko_to_afar: (text) =>
+    `Translate the Korean text below into natural Afar (Qafar af) — Cushitic language of Djibouti, Eritrea and Ethiopia's Afar region. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Qafar af**' and '**번역 노트**' (3 bullets in Korean — note Afar is an East Cushitic language of the Afar Triangle).\n\n원문:\n${text}`,
+  translate_ko_to_saho: (text) =>
+    `Translate the Korean text below into natural Saho — Cushitic language of Eritrea and northern Ethiopia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Saho**' and '**번역 노트**' (3 bullets in Korean — note Saho is an East Cushitic language closely related to Afar).\n\n원문:\n${text}`,
+  translate_ko_to_beja: (text) =>
+    `Translate the Korean text below into natural Beja (Bidhaawyeet) — Cushitic language of eastern Sudan, Eritrea and Egypt. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Bidhaawyeet**' and '**번역 노트**' (3 bullets in Korean — note Beja is the northernmost Cushitic language, spoken along the Red Sea coast).\n\n원문:\n${text}`,
+  translate_ko_to_nuer: (text) =>
+    `Translate the Korean text below into natural Nuer (Thok Naath) — Nilotic language of South Sudan and western Ethiopia. 격식 (정중 표준) 원문에 맞춤. Reply with two sections: '**Thok Naath**' and '**번역 노트**' (3 bullets in Korean — note Nuer is a Western Nilotic language with a complex vowel system).\n\n원문:\n${text}`,
+  internal_weekly_status_ko: (text) =>
+    `Write a Korean weekly status update — a concise team/project status for stakeholders. Use 합쇼체. 짧고 스캔 가능하게. Markdown: '**한 줄 (상태)**' (1줄 — 🟢/🟡/🔴 + 핵심), '**이번 주 한 것 (bullets)**' (결과 중심), '**다음 주 할 것 (bullets)**', '**막힌 것 / 도움 필요 (bullets)**' (각 '무엇 — 누구에게 무엇을'), '**지표 (1줄)**' (핵심 숫자), '**리스크 (1줄)**' (있으면). 군더더기 없이.\n\n주간 컨텍스트:\n${text}`,
+  sales_proposal_exec_summary_ko: (text) =>
+    `Write a Korean proposal executive summary — the opening 1-page summary of a sales proposal. Use 합쇼체. 고객 언어 + 가치 중심. Markdown: '**한 줄 (제안)**' (1줄 — 고객에게 무엇을 / 어떤 가치), '**고객 상황 이해 (1단락)**' (그들의 목표/페인을 우리가 안다는 것), '**제안 솔루션 (1단락)**', '**기대 효과 (bullets)**' (정량 + 정성), '**왜 우리인가 (2 bullets)**', '**투자 개요 (1줄)**', '**다음 단계 (1줄)**'. 신뢰 + 간결.\n\n제안 컨텍스트:\n${text}`,
+  customer_success_plan_ko: (text) =>
+    `Write a Korean customer success plan — a forward-looking plan to ensure a customer achieves their goals. Use 합쇼체. Markdown: '**한 줄 (목표)**' (1줄 — 고객의 비즈니스 목표), '**성공 정의 (bullets)**' (고객이 '성공'이라 부를 구체적 상태), '**현재 vs 목표 (테이블)**' ('영역 | 현재 | 목표'), '**플레이북 (테이블)**' ('이니셔티브 | 목표 | 활동 | 담당 | 시한'), '**리스크 (bullets)**' (각 '리스크 — 완화'), '**거버넌스 (1줄)**' (정기 점검 주기), '**성공 지표 (bullets)**'.\n\n고객 성공 컨텍스트:\n${text}`,
+  pm_release_notes_external_ko: (text) =>
+    `Write Korean external release notes — customer-facing notes announcing what shipped. Use 해요체 (친근 + 명확). Markdown: '**한 줄 (이번 릴리스)**' (1줄 — 가장 큰 변화), '**새로운 기능 (bullets)**' (각 '**기능명** — 무엇을 / 사용자에게 어떤 이점' — 기능 위주, 내부 용어 금지), '**개선 (bullets)**', '**버그 수정 (bullets)**' (간결하게), '**알아두면 좋은 점 (1-2 bullets)**' (마이그레이션/주의), '**피드백 (1줄)**' (어디로). 친근하지만 과장 없이.\n\n릴리스 컨텍스트:\n${text}`,
+  internal_meeting_notes_ko: (text) =>
+    `Structure Korean meeting notes — turns raw meeting discussion into clean, actionable notes. Use 합쇼체. Markdown: '**한 줄 (회의)**' (1줄 — 목적 + 결론), '**참석자 (1줄)**', '**논의 요약 (bullets)**' (주제별 핵심), '**결정 사항 (bullets)**' (명확히 — '~하기로 함'), '**액션 아이템 (테이블)**' ('액션 | 담당 | 시한'), '**미해결 / 다음 논의 (bullets)**', '**다음 회의 (1줄)**' (있으면). 사실 중심, 누가 무슨 의견인지 필요한 경우만.\n\n회의 원문:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

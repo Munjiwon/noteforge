@@ -1273,6 +1273,11 @@ export function PageStyleMenu({
                       { key: "table-border-double", label: "Double border" },
                       { key: "callout-gradient-bg", label: "Gradient bg" },
                       { key: "page-bg-polka-large", label: "Big polka" },
+                      { key: "heading-all-letterspaced", label: "Tracked head" },
+                      { key: "code-block-palenight", label: "Palenight" },
+                      { key: "table-rounded-corners", label: "Rounded table" },
+                      { key: "callout-dashed-border", label: "Dashed border" },
+                      { key: "page-bg-chevron-pattern", label: "Chevron" },
                     ] as const
                   ).map((t) => (
                     <button

@@ -6015,6 +6015,44 @@ body.page-bg-polka-large .bn-editor {
   background-size: 40px 40px !important;
 }
 
+/* Heading all letterspaced — adds letter-spacing to all heading levels. */
+body.heading-all-letterspaced .bn-editor [data-content-type="heading"] {
+  letter-spacing: 0.06em !important;
+}
+
+/* Code block Palenight — Material Palenight palette for code blocks. */
+body.code-block-palenight .bn-editor pre {
+  background: #292d3e !important;
+  border: 1px solid #3a3f58 !important;
+}
+body.code-block-palenight .bn-editor pre code {
+  color: #a6accd !important;
+}
+
+/* Table rounded corners — round the outer corners of tables. */
+body.table-rounded-corners .bn-editor table {
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+/* Callout dashed border — render the callout outline as a dashed border. */
+body.callout-dashed-border .bn-editor [data-content-type="callout"] {
+  border: 2px dashed #6366f1 !important;
+}
+.dark body.callout-dashed-border .bn-editor [data-content-type="callout"] {
+  border-color: #818cf8 !important;
+}
+
+/* Page bg chevron pattern — a repeating chevron texture behind the editor. */
+body.page-bg-chevron-pattern .bn-editor {
+  background-image:
+    linear-gradient(135deg, rgba(99, 102, 241, 0.06) 25%, transparent 25%),
+    linear-gradient(225deg, rgba(99, 102, 241, 0.06) 25%, transparent 25%) !important;
+  background-size: 24px 24px !important;
+}
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
