@@ -1957,6 +1957,10 @@ export function PageView({
       "callout-hyx-3",
       "page-bg-hyx-4",
       "heading-hyx-5",
+      "code-block-hzm-1",
+      "table-hzm-2",
+      "callout-hzm-3",
+      "page-bg-hzm-4",
     ];
     try {
       for (const k of toggles) {
