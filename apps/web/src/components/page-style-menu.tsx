@@ -2508,6 +2508,11 @@ export function PageStyleMenu({
                       { key: "callout-ipc-3", label: "callout ipc3" },
                       { key: "page-bg-ipc-4", label: "page-bg ipc4" },
                       { key: "heading-ipc-5", label: "heading ipc5" },
+                      { key: "code-block-ipr-1", label: "code-block ipr1" },
+                      { key: "table-ipr-2", label: "table ipr2" },
+                      { key: "callout-ipr-3", label: "callout ipr3" },
+                      { key: "page-bg-ipr-4", label: "page-bg ipr4" },
+                      { key: "heading-ipr-5", label: "heading ipr5" },
                     ] as const
                   ).map((t) => (
                     <button
