@@ -2428,6 +2428,11 @@ export function PageStyleMenu({
                       { key: "callout-ifu-3", label: "callout ifu3" },
                       { key: "page-bg-ifu-4", label: "page-bg ifu4" },
                       { key: "heading-ifu-5", label: "heading ifu5" },
+                      { key: "code-block-igk-1", label: "code-block igk1" },
+                      { key: "table-igk-2", label: "table igk2" },
+                      { key: "callout-igk-3", label: "callout igk3" },
+                      { key: "page-bg-igk-4", label: "page-bg igk4" },
+                      { key: "heading-igk-5", label: "heading igk5" },
                     ] as const
                   ).map((t) => (
                     <button

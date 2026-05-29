@@ -2016,6 +2016,11 @@ export function PageView({
       "callout-ifu-3",
       "page-bg-ifu-4",
       "heading-ifu-5",
+      "code-block-igk-1",
+      "table-igk-2",
+      "callout-igk-3",
+      "page-bg-igk-4",
+      "heading-igk-5",
     ];
     try {
       for (const k of toggles) {
