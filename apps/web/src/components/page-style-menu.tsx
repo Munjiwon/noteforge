@@ -2563,6 +2563,11 @@ export function PageStyleMenu({
                       { key: "callout-ivl-3", label: "callout ivl3" },
                       { key: "page-bg-ivl-4", label: "page-bg ivl4" },
                       { key: "heading-ivl-5", label: "heading ivl5" },
+                      { key: "code-block-iwa-1", label: "code-block iwa1" },
+                      { key: "table-iwa-2", label: "table iwa2" },
+                      { key: "callout-iwa-3", label: "callout iwa3" },
+                      { key: "page-bg-iwa-4", label: "page-bg iwa4" },
+                      { key: "heading-iwa-5", label: "heading iwa5" },
                     ] as const
                   ).map((t) => (
                     <button
