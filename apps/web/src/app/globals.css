@@ -9992,6 +9992,23 @@ body.page-bg-gzl-4 .bn-editor { background: rgba(38,139,210,0.12); }
 /* heading-gzl-5 — heading accent. */
 body.heading-gzl-5 .bn-editor [data-content-type="heading"] { color: #88c0d0; }
 
+/* code-block-haa-1 — code block theme. */
+body.code-block-haa-1 .bn-editor pre { background: #1e1e2e !important; color: #cdd6f4 !important; border: 1px solid #313244; }
+body.code-block-haa-1 .bn-editor pre code { color: #cdd6f4 !important; }
+
+/* table-haa-2 — table accent + zebra. */
+body.table-haa-2 .bn-editor table td, body.table-haa-2 .bn-editor table th { border: 1px solid #61afef; }
+body.table-haa-2 .bn-editor table tr:nth-child(even) td { background: rgba(97,175,239,0.12); }
+
+/* callout-haa-3 — callout accent. */
+body.callout-haa-3 .bn-editor [data-content-type="callout"] { background: rgba(166,226,46,0.12); border-left: 3px solid #a6e22e; }
+
+/* page-bg-haa-4 — page background tint. */
+body.page-bg-haa-4 .bn-editor { background: rgba(38,139,210,0.12); }
+
+/* heading-haa-5 — heading accent. */
+body.heading-haa-5 .bn-editor [data-content-type="heading"] { color: #88c0d0; }
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
