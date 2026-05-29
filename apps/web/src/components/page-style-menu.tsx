@@ -2418,6 +2418,11 @@ export function PageStyleMenu({
                       { key: "callout-ieq-3", label: "callout ieq3" },
                       { key: "page-bg-ieq-4", label: "page-bg ieq4" },
                       { key: "heading-ieq-5", label: "heading ieq5" },
+                      { key: "code-block-iff-1", label: "code-block iff1" },
+                      { key: "table-iff-2", label: "table iff2" },
+                      { key: "callout-iff-3", label: "callout iff3" },
+                      { key: "page-bg-iff-4", label: "page-bg iff4" },
+                      { key: "heading-iff-5", label: "heading iff5" },
                     ] as const
                   ).map((t) => (
                     <button
