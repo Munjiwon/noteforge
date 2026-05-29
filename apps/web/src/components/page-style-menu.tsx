@@ -2503,6 +2503,11 @@ export function PageStyleMenu({
                       { key: "callout-ion-3", label: "callout ion3" },
                       { key: "page-bg-ion-4", label: "page-bg ion4" },
                       { key: "heading-ion-5", label: "heading ion5" },
+                      { key: "code-block-ipc-1", label: "code-block ipc1" },
+                      { key: "table-ipc-2", label: "table ipc2" },
+                      { key: "callout-ipc-3", label: "callout ipc3" },
+                      { key: "page-bg-ipc-4", label: "page-bg ipc4" },
+                      { key: "heading-ipc-5", label: "heading ipc5" },
                     ] as const
                   ).map((t) => (
                     <button
