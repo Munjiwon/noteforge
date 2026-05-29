@@ -2448,6 +2448,11 @@ export function PageStyleMenu({
                       { key: "callout-iid-3", label: "callout iid3" },
                       { key: "page-bg-iid-4", label: "page-bg iid4" },
                       { key: "heading-iid-5", label: "heading iid5" },
+                      { key: "code-block-iit-1", label: "code-block iit1" },
+                      { key: "table-iit-2", label: "table iit2" },
+                      { key: "callout-iit-3", label: "callout iit3" },
+                      { key: "page-bg-iit-4", label: "page-bg iit4" },
+                      { key: "heading-iit-5", label: "heading iit5" },
                     ] as const
                   ).map((t) => (
                     <button
