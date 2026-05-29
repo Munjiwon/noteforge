@@ -1976,6 +1976,11 @@ export function PageView({
       "callout-ibe-3",
       "page-bg-ibe-4",
       "heading-ibe-5",
+      "code-block-ibt-1",
+      "table-ibt-2",
+      "callout-ibt-3",
+      "page-bg-ibt-4",
+      "heading-ibt-5",
     ];
     try {
       for (const k of toggles) {
