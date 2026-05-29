@@ -2011,6 +2011,11 @@ export function PageView({
       "callout-iff-3",
       "page-bg-iff-4",
       "heading-iff-5",
+      "code-block-ifu-1",
+      "table-ifu-2",
+      "callout-ifu-3",
+      "page-bg-ifu-4",
+      "heading-ifu-5",
     ];
     try {
       for (const k of toggles) {
