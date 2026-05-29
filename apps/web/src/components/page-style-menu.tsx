@@ -2593,6 +2593,10 @@ export function PageStyleMenu({
                       { key: "callout-iyx-3", label: "callout iyx3" },
                       { key: "page-bg-iyx-4", label: "page-bg iyx4" },
                       { key: "heading-iyx-5", label: "heading iyx5" },
+                      { key: "code-block-izm-1", label: "code-block izm1" },
+                      { key: "table-izm-2", label: "table izm2" },
+                      { key: "callout-izm-3", label: "callout izm3" },
+                      { key: "page-bg-izm-4", label: "page-bg izm4" },
                     ] as const
                   ).map((t) => (
                     <button
