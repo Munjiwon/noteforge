@@ -2086,6 +2086,11 @@ export function PageView({
       "callout-iny-3",
       "page-bg-iny-4",
       "heading-iny-5",
+      "code-block-ion-1",
+      "table-ion-2",
+      "callout-ion-3",
+      "page-bg-ion-4",
+      "heading-ion-5",
     ];
     try {
       for (const k of toggles) {
