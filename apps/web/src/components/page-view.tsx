@@ -2101,6 +2101,11 @@ export function PageView({
       "callout-ipr-3",
       "page-bg-ipr-4",
       "heading-ipr-5",
+      "code-block-iqg-1",
+      "table-iqg-2",
+      "callout-iqg-3",
+      "page-bg-iqg-4",
+      "heading-iqg-5",
     ];
     try {
       for (const k of toggles) {

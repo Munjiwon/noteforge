@@ -2513,6 +2513,11 @@ export function PageStyleMenu({
                       { key: "callout-ipr-3", label: "callout ipr3" },
                       { key: "page-bg-ipr-4", label: "page-bg ipr4" },
                       { key: "heading-ipr-5", label: "heading ipr5" },
+                      { key: "code-block-iqg-1", label: "code-block iqg1" },
+                      { key: "table-iqg-2", label: "table iqg2" },
+                      { key: "callout-iqg-3", label: "callout iqg3" },
+                      { key: "page-bg-iqg-4", label: "page-bg iqg4" },
+                      { key: "heading-iqg-5", label: "heading iqg5" },
                     ] as const
                   ).map((t) => (
                     <button
