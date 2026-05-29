@@ -2443,6 +2443,11 @@ export function PageStyleMenu({
                       { key: "callout-iho-3", label: "callout iho3" },
                       { key: "page-bg-iho-4", label: "page-bg iho4" },
                       { key: "heading-iho-5", label: "heading iho5" },
+                      { key: "code-block-iid-1", label: "code-block iid1" },
+                      { key: "table-iid-2", label: "table iid2" },
+                      { key: "callout-iid-3", label: "callout iid3" },
+                      { key: "page-bg-iid-4", label: "page-bg iid4" },
+                      { key: "heading-iid-5", label: "heading iid5" },
                     ] as const
                   ).map((t) => (
                     <button
