@@ -1991,6 +1991,11 @@ export function PageView({
       "callout-icx-3",
       "page-bg-icx-4",
       "heading-icx-5",
+      "code-block-idm-1",
+      "table-idm-2",
+      "callout-idm-3",
+      "page-bg-idm-4",
+      "heading-idm-5",
     ];
     try {
       for (const k of toggles) {
