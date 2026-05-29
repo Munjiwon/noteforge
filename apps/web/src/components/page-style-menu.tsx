@@ -2573,6 +2573,11 @@ export function PageStyleMenu({
                       { key: "callout-iwp-3", label: "callout iwp3" },
                       { key: "page-bg-iwp-4", label: "page-bg iwp4" },
                       { key: "heading-iwp-5", label: "heading iwp5" },
+                      { key: "code-block-ixe-1", label: "code-block ixe1" },
+                      { key: "table-ixe-2", label: "table ixe2" },
+                      { key: "callout-ixe-3", label: "callout ixe3" },
+                      { key: "page-bg-ixe-4", label: "page-bg ixe4" },
+                      { key: "heading-ixe-5", label: "heading ixe5" },
                     ] as const
                   ).map((t) => (
                     <button
