@@ -1777,6 +1777,11 @@ export function PageView({
       "callout-heb-3",
       "page-bg-heb-4",
       "heading-heb-5",
+      "code-block-heq-1",
+      "table-heq-2",
+      "callout-heq-3",
+      "page-bg-heq-4",
+      "heading-heq-5",
     ];
     try {
       for (const k of toggles) {
