@@ -2373,6 +2373,11 @@ export function PageStyleMenu({
                       { key: "table-hzm-2", label: "table hzm2" },
                       { key: "callout-hzm-3", label: "callout hzm3" },
                       { key: "page-bg-hzm-4", label: "page-bg hzm4" },
+                      { key: "code-block-iaa-1", label: "code-block iaa1" },
+                      { key: "table-iaa-2", label: "table iaa2" },
+                      { key: "callout-iaa-3", label: "callout iaa3" },
+                      { key: "page-bg-iaa-4", label: "page-bg iaa4" },
+                      { key: "heading-iaa-5", label: "heading iaa5" },
                     ] as const
                   ).map((t) => (
                     <button

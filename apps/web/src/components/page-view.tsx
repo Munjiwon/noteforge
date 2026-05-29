@@ -1961,6 +1961,11 @@ export function PageView({
       "table-hzm-2",
       "callout-hzm-3",
       "page-bg-hzm-4",
+      "code-block-iaa-1",
+      "table-iaa-2",
+      "callout-iaa-3",
+      "page-bg-iaa-4",
+      "heading-iaa-5",
     ];
     try {
       for (const k of toggles) {
