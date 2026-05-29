@@ -2071,6 +2071,11 @@ export function PageView({
       "callout-imf-3",
       "page-bg-imf-4",
       "heading-imf-5",
+      "code-block-imu-1",
+      "table-imu-2",
+      "callout-imu-3",
+      "page-bg-imu-4",
+      "heading-imu-5",
     ];
     try {
       for (const k of toggles) {
