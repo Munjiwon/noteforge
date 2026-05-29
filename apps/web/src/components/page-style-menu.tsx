@@ -2493,6 +2493,11 @@ export function PageStyleMenu({
                       { key: "callout-inj-3", label: "callout inj3" },
                       { key: "page-bg-inj-4", label: "page-bg inj4" },
                       { key: "heading-inj-5", label: "heading inj5" },
+                      { key: "code-block-iny-1", label: "code-block iny1" },
+                      { key: "table-iny-2", label: "table iny2" },
+                      { key: "callout-iny-3", label: "callout iny3" },
+                      { key: "page-bg-iny-4", label: "page-bg iny4" },
+                      { key: "heading-iny-5", label: "heading iny5" },
                     ] as const
                   ).map((t) => (
                     <button
