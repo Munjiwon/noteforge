@@ -2021,6 +2021,11 @@ export function PageView({
       "callout-igk-3",
       "page-bg-igk-4",
       "heading-igk-5",
+      "code-block-igz-1",
+      "table-igz-2",
+      "callout-igz-3",
+      "page-bg-igz-4",
+      "heading-igz-5",
     ];
     try {
       for (const k of toggles) {
