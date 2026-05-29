@@ -2533,6 +2533,11 @@ export function PageStyleMenu({
                       { key: "callout-irz-3", label: "callout irz3" },
                       { key: "page-bg-irz-4", label: "page-bg irz4" },
                       { key: "heading-irz-5", label: "heading irz5" },
+                      { key: "code-block-iso-1", label: "code-block iso1" },
+                      { key: "table-iso-2", label: "table iso2" },
+                      { key: "callout-iso-3", label: "callout iso3" },
+                      { key: "page-bg-iso-4", label: "page-bg iso4" },
+                      { key: "heading-iso-5", label: "heading iso5" },
                     ] as const
                   ).map((t) => (
                     <button
