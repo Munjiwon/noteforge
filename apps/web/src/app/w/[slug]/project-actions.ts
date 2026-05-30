@@ -162,6 +162,14 @@ function buildSchemas(ids: { projects: string; tasks: string; sprints: string })
         targetPropId: "p_title",
         aggregate: "count",
       },
+      {
+        id: "p_sprintprogress",
+        name: "Progress",
+        type: "rollup",
+        relationPropId: "p_sprinttasks",
+        targetPropId: "p_status",
+        aggregate: "percent_complete",
+      },
     ],
     activeViewId: "v_all",
     views: [
