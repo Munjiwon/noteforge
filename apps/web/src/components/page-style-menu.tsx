@@ -2712,6 +2712,11 @@ export function PageStyleMenu({
                       { key: "callout-jmt-3", label: "callout jmt3" },
                       { key: "page-bg-jmt-4", label: "page-bg jmt4" },
                       { key: "heading-jmt-5", label: "heading jmt5" },
+                      { key: "code-block-jni-1", label: "code-block jni1" },
+                      { key: "table-jni-2", label: "table jni2" },
+                      { key: "callout-jni-3", label: "callout jni3" },
+                      { key: "page-bg-jni-4", label: "page-bg jni4" },
+                      { key: "heading-jni-5", label: "heading jni5" },
                     ] as const
                   ).map((t) => (
                     <button
