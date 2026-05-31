@@ -2215,6 +2215,11 @@ export function PageView({
       "callout-jcx-3",
       "page-bg-jcx-4",
       "heading-jcx-5",
+      "code-block-jdm-1",
+      "table-jdm-2",
+      "callout-jdm-3",
+      "page-bg-jdm-4",
+      "heading-jdm-5",
     ];
     try {
       for (const k of toggles) {
