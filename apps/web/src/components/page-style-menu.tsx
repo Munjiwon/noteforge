@@ -2617,6 +2617,11 @@ export function PageStyleMenu({
                       { key: "callout-jbt-3", label: "callout jbt3" },
                       { key: "page-bg-jbt-4", label: "page-bg jbt4" },
                       { key: "heading-jbt-5", label: "heading jbt5" },
+                      { key: "code-block-jci-1", label: "code-block jci1" },
+                      { key: "table-jci-2", label: "table jci2" },
+                      { key: "callout-jci-3", label: "callout jci3" },
+                      { key: "page-bg-jci-4", label: "page-bg jci4" },
+                      { key: "heading-jci-5", label: "heading jci5" },
                     ] as const
                   ).map((t) => (
                     <button
