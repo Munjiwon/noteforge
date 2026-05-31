@@ -2687,6 +2687,11 @@ export function PageStyleMenu({
                       { key: "callout-jjw-3", label: "callout jjw3" },
                       { key: "page-bg-jjw-4", label: "page-bg jjw4" },
                       { key: "heading-jjw-5", label: "heading jjw5" },
+                      { key: "code-block-jkl-1", label: "code-block jkl1" },
+                      { key: "table-jkl-2", label: "table jkl2" },
+                      { key: "callout-jkl-3", label: "callout jkl3" },
+                      { key: "page-bg-jkl-4", label: "page-bg jkl4" },
+                      { key: "heading-jkl-5", label: "heading jkl5" },
                     ] as const
                   ).map((t) => (
                     <button
