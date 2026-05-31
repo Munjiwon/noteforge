@@ -2717,6 +2717,11 @@ export function PageStyleMenu({
                       { key: "callout-jni-3", label: "callout jni3" },
                       { key: "page-bg-jni-4", label: "page-bg jni4" },
                       { key: "heading-jni-5", label: "heading jni5" },
+                      { key: "code-block-jnx-1", label: "code-block jnx1" },
+                      { key: "table-jnx-2", label: "table jnx2" },
+                      { key: "callout-jnx-3", label: "callout jnx3" },
+                      { key: "page-bg-jnx-4", label: "page-bg jnx4" },
+                      { key: "heading-jnx-5", label: "heading jnx5" },
                     ] as const
                   ).map((t) => (
                     <button
