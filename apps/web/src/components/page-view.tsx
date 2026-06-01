@@ -3095,6 +3095,11 @@ export function PageView({
       "callout-nap-3",
       "page-bg-nap-4",
       "heading-nap-5",
+      "code-block-nbe-1",
+      "table-nbe-2",
+      "callout-nbe-3",
+      "page-bg-nbe-4",
+      "heading-nbe-5",
     ];
     try {
       for (const k of toggles) {
