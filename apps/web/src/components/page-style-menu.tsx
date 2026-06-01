@@ -3437,6 +3437,11 @@ export function PageStyleMenu({
                       { key: "callout-msn-3", label: "callout msn3" },
                       { key: "page-bg-msn-4", label: "page-bg msn4" },
                       { key: "heading-msn-5", label: "heading msn5" },
+                      { key: "code-block-mtc-1", label: "code-block mtc1" },
+                      { key: "table-mtc-2", label: "table mtc2" },
+                      { key: "callout-mtc-3", label: "callout mtc3" },
+                      { key: "page-bg-mtc-4", label: "page-bg mtc4" },
+                      { key: "heading-mtc-5", label: "heading mtc5" },
                     ] as const
                   ).map((t) => (
                     <button
