@@ -3417,6 +3417,11 @@ export function PageStyleMenu({
                       { key: "callout-mqf-3", label: "callout mqf3" },
                       { key: "page-bg-mqf-4", label: "page-bg mqf4" },
                       { key: "heading-mqf-5", label: "heading mqf5" },
+                      { key: "code-block-mqu-1", label: "code-block mqu1" },
+                      { key: "table-mqu-2", label: "table mqu2" },
+                      { key: "callout-mqu-3", label: "callout mqu3" },
+                      { key: "page-bg-mqu-4", label: "page-bg mqu4" },
+                      { key: "heading-mqu-5", label: "heading mqu5" },
                     ] as const
                   ).map((t) => (
                     <button
