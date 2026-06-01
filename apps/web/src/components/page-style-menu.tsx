@@ -3982,6 +3982,11 @@ export function PageStyleMenu({
                       { key: "callout-pdm-3", label: "callout pdm3" },
                       { key: "page-bg-pdm-4", label: "page-bg pdm4" },
                       { key: "heading-pdm-5", label: "heading pdm5" },
+                      { key: "code-block-peb-1", label: "code-block peb1" },
+                      { key: "table-peb-2", label: "table peb2" },
+                      { key: "callout-peb-3", label: "callout peb3" },
+                      { key: "page-bg-peb-4", label: "page-bg peb4" },
+                      { key: "heading-peb-5", label: "heading peb5" },
                     ] as const
                   ).map((t) => (
                     <button
