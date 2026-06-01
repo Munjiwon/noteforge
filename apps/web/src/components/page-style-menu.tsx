@@ -3502,6 +3502,11 @@ export function PageStyleMenu({
                       { key: "callout-naa-3", label: "callout naa3" },
                       { key: "page-bg-naa-4", label: "page-bg naa4" },
                       { key: "heading-naa-5", label: "heading naa5" },
+                      { key: "code-block-nap-1", label: "code-block nap1" },
+                      { key: "table-nap-2", label: "table nap2" },
+                      { key: "callout-nap-3", label: "callout nap3" },
+                      { key: "page-bg-nap-4", label: "page-bg nap4" },
+                      { key: "heading-nap-5", label: "heading nap5" },
                     ] as const
                   ).map((t) => (
                     <button
