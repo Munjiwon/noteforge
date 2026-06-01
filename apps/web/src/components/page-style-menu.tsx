@@ -4027,6 +4027,11 @@ export function PageStyleMenu({
                       { key: "callout-pir-3", label: "callout pir3" },
                       { key: "page-bg-pir-4", label: "page-bg pir4" },
                       { key: "heading-pir-5", label: "heading pir5" },
+                      { key: "code-block-pjg-1", label: "code-block pjg1" },
+                      { key: "table-pjg-2", label: "table pjg2" },
+                      { key: "callout-pjg-3", label: "callout pjg3" },
+                      { key: "page-bg-pjg-4", label: "page-bg pjg4" },
+                      { key: "heading-pjg-5", label: "heading pjg5" },
                     ] as const
                   ).map((t) => (
                     <button
