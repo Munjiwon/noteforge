@@ -2490,6 +2490,11 @@ export function PageView({
       "callout-kir-3",
       "page-bg-kir-4",
       "heading-kir-5",
+      "code-block-kjg-1",
+      "table-kjg-2",
+      "callout-kjg-3",
+      "page-bg-kjg-4",
+      "heading-kjg-5",
     ];
     try {
       for (const k of toggles) {
