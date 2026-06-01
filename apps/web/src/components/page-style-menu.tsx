@@ -4112,6 +4112,11 @@ export function PageStyleMenu({
                       { key: "callout-psn-3", label: "callout psn3" },
                       { key: "page-bg-psn-4", label: "page-bg psn4" },
                       { key: "heading-psn-5", label: "heading psn5" },
+                      { key: "code-block-ptc-1", label: "code-block ptc1" },
+                      { key: "table-ptc-2", label: "table ptc2" },
+                      { key: "callout-ptc-3", label: "callout ptc3" },
+                      { key: "page-bg-ptc-4", label: "page-bg ptc4" },
+                      { key: "heading-ptc-5", label: "heading ptc5" },
                     ] as const
                   ).map((t) => (
                     <button
