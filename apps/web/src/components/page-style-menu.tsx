@@ -3412,6 +3412,11 @@ export function PageStyleMenu({
                       { key: "callout-mpq-3", label: "callout mpq3" },
                       { key: "page-bg-mpq-4", label: "page-bg mpq4" },
                       { key: "heading-mpq-5", label: "heading mpq5" },
+                      { key: "code-block-mqf-1", label: "code-block mqf1" },
+                      { key: "table-mqf-2", label: "table mqf2" },
+                      { key: "callout-mqf-3", label: "callout mqf3" },
+                      { key: "page-bg-mqf-4", label: "page-bg mqf4" },
+                      { key: "heading-mqf-5", label: "heading mqf5" },
                     ] as const
                   ).map((t) => (
                     <button
