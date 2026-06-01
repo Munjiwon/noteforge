@@ -2920,6 +2920,11 @@ export function PageView({
       "callout-mgj-3",
       "page-bg-mgj-4",
       "heading-mgj-5",
+      "code-block-mgy-1",
+      "table-mgy-2",
+      "callout-mgy-3",
+      "page-bg-mgy-4",
+      "heading-mgy-5",
     ];
     try {
       for (const k of toggles) {
