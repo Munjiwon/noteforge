@@ -3977,6 +3977,11 @@ export function PageStyleMenu({
                       { key: "callout-pcx-3", label: "callout pcx3" },
                       { key: "page-bg-pcx-4", label: "page-bg pcx4" },
                       { key: "heading-pcx-5", label: "heading pcx5" },
+                      { key: "code-block-pdm-1", label: "code-block pdm1" },
+                      { key: "table-pdm-2", label: "table pdm2" },
+                      { key: "callout-pdm-3", label: "callout pdm3" },
+                      { key: "page-bg-pdm-4", label: "page-bg pdm4" },
+                      { key: "heading-pdm-5", label: "heading pdm5" },
                     ] as const
                   ).map((t) => (
                     <button
