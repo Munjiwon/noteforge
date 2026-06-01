@@ -3522,6 +3522,11 @@ export function PageStyleMenu({
                       { key: "callout-nci-3", label: "callout nci3" },
                       { key: "page-bg-nci-4", label: "page-bg nci4" },
                       { key: "heading-nci-5", label: "heading nci5" },
+                      { key: "code-block-ncx-1", label: "code-block ncx1" },
+                      { key: "table-ncx-2", label: "table ncx2" },
+                      { key: "callout-ncx-3", label: "callout ncx3" },
+                      { key: "page-bg-ncx-4", label: "page-bg ncx4" },
+                      { key: "heading-ncx-5", label: "heading ncx5" },
                     ] as const
                   ).map((t) => (
                     <button
