@@ -3560,6 +3560,11 @@ export function PageView({
       "callout-pci-3",
       "page-bg-pci-4",
       "heading-pci-5",
+      "code-block-pcx-1",
+      "table-pcx-2",
+      "callout-pcx-3",
+      "page-bg-pcx-4",
+      "heading-pcx-5",
     ];
     try {
       for (const k of toggles) {

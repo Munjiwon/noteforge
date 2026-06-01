@@ -3972,6 +3972,11 @@ export function PageStyleMenu({
                       { key: "callout-pci-3", label: "callout pci3" },
                       { key: "page-bg-pci-4", label: "page-bg pci4" },
                       { key: "heading-pci-5", label: "heading pci5" },
+                      { key: "code-block-pcx-1", label: "code-block pcx1" },
+                      { key: "table-pcx-2", label: "table pcx2" },
+                      { key: "callout-pcx-3", label: "callout pcx3" },
+                      { key: "page-bg-pcx-4", label: "page-bg pcx4" },
+                      { key: "heading-pcx-5", label: "heading pcx5" },
                     ] as const
                   ).map((t) => (
                     <button
