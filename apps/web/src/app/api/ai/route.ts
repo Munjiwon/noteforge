@@ -12496,6 +12496,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean 제품 요구사항 문서(PRD). 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 문제 정의, 목표, 사용자 시나리오, 기능 요구, 비기능 요구, 성공 지표 섹션으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
   doc_nuv_d5: (text) =>
     `Write a Korean 고객 응대 스크립트. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 상황 요약, 공감 멘트, 해결 안내, 대안 제시, 마무리 인사 섹션으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  translate_nvk_l1: (text) =>
+    `Translate the following Korean text into Asturian (Romance, Asturias). Use authentic, natural Asturian as a fluent speaker would write it. Provide the Asturian translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_nvk_l2: (text) =>
+    `Translate the following Korean text into Aromanian (Eastern Romance, Balkans). Use authentic, natural Aromanian as a fluent speaker would write it. Provide the Aromanian translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_nvk_l3: (text) =>
+    `Translate the following Korean text into Ladino (Judeo-Spanish). Use authentic, natural Ladino as a fluent speaker would write it. Provide the Ladino translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_nvk_l4: (text) =>
+    `Translate the following Korean text into Tatar (Turkic, Volga). Use authentic, natural Tatar as a fluent speaker would write it. Provide the Tatar translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_nvk_l5: (text) =>
+    `Translate the following Korean text into Bashkir (Turkic, Urals). Use authentic, natural Bashkir as a fluent speaker would write it. Provide the Bashkir translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  doc_nvk_d1: (text) =>
+    `Write a Korean 배포 노트. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 이번 배포 하이라이트, 새 기능, 개선 사항, 버그 수정, 알림 섹션으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  doc_nvk_d2: (text) =>
+    `Write a Korean 채용 공고. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 포지션 소개, 주요 업무, 자격 요건, 우대 사항, 복리후생, 지원 방법 섹션으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  doc_nvk_d3: (text) =>
+    `Write a Korean 영업 제안 메일. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 인사, 고객 과제 공감, 제안 가치, 다음 단계(CTA) 구성으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  doc_nvk_d4: (text) =>
+    `Write a Korean 온보딩 가이드. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 환영 메시지, 첫주 할 일 체크리스트, 주요 도구, 도움을 받을 곳 섹션으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  doc_nvk_d5: (text) =>
+    `Write a Korean 성과 평가 자기서술. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 핵심 성과, 기여도, 성장 영역, 다음 분기 목표 섹션으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {

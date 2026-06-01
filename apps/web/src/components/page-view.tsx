@@ -3270,6 +3270,11 @@ export function PageView({
       "callout-nuv-3",
       "page-bg-nuv-4",
       "heading-nuv-5",
+      "code-block-nvk-1",
+      "table-nvk-2",
+      "callout-nvk-3",
+      "page-bg-nvk-4",
+      "heading-nvk-5",
     ];
     try {
       for (const k of toggles) {
