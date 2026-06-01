@@ -3912,6 +3912,11 @@ export function PageStyleMenu({
                       { key: "callout-ovk-3", label: "callout ovk3" },
                       { key: "page-bg-ovk-4", label: "page-bg ovk4" },
                       { key: "heading-ovk-5", label: "heading ovk5" },
+                      { key: "code-block-ovz-1", label: "code-block ovz1" },
+                      { key: "table-ovz-2", label: "table ovz2" },
+                      { key: "callout-ovz-3", label: "callout ovz3" },
+                      { key: "page-bg-ovz-4", label: "page-bg ovz4" },
+                      { key: "heading-ovz-5", label: "heading ovz5" },
                     ] as const
                   ).map((t) => (
                     <button
