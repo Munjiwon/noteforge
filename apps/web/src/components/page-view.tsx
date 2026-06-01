@@ -3235,6 +3235,11 @@ export function PageView({
       "callout-nqu-3",
       "page-bg-nqu-4",
       "heading-nqu-5",
+      "code-block-nrj-1",
+      "table-nrj-2",
+      "callout-nrj-3",
+      "page-bg-nrj-4",
+      "heading-nrj-5",
     ];
     try {
       for (const k of toggles) {
