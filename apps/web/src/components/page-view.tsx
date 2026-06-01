@@ -2410,6 +2410,11 @@ export function PageView({
       "callout-jzl-3",
       "page-bg-jzl-4",
       "heading-jzl-5",
+      "code-block-kaa-1",
+      "table-kaa-2",
+      "callout-kaa-3",
+      "page-bg-kaa-4",
+      "heading-kaa-5",
     ];
     try {
       for (const k of toggles) {
