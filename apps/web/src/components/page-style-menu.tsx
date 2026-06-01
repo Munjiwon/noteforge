@@ -3702,6 +3702,11 @@ export function PageStyleMenu({
                       { key: "callout-nxd-3", label: "callout nxd3" },
                       { key: "page-bg-nxd-4", label: "page-bg nxd4" },
                       { key: "heading-nxd-5", label: "heading nxd5" },
+                      { key: "code-block-nxs-1", label: "code-block nxs1" },
+                      { key: "table-nxs-2", label: "table nxs2" },
+                      { key: "callout-nxs-3", label: "callout nxs3" },
+                      { key: "page-bg-nxs-4", label: "page-bg nxs4" },
+                      { key: "heading-nxs-5", label: "heading nxs5" },
                     ] as const
                   ).map((t) => (
                     <button
