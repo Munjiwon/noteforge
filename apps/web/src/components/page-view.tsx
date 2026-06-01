@@ -3315,6 +3315,11 @@ export function PageView({
       "callout-oaa-3",
       "page-bg-oaa-4",
       "heading-oaa-5",
+      "code-block-oap-1",
+      "table-oap-2",
+      "callout-oap-3",
+      "page-bg-oap-4",
+      "heading-oap-5",
     ];
     try {
       for (const k of toggles) {

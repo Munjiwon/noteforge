@@ -3727,6 +3727,11 @@ export function PageStyleMenu({
                       { key: "callout-oaa-3", label: "callout oaa3" },
                       { key: "page-bg-oaa-4", label: "page-bg oaa4" },
                       { key: "heading-oaa-5", label: "heading oaa5" },
+                      { key: "code-block-oap-1", label: "code-block oap1" },
+                      { key: "table-oap-2", label: "table oap2" },
+                      { key: "callout-oap-3", label: "callout oap3" },
+                      { key: "page-bg-oap-4", label: "page-bg oap4" },
+                      { key: "heading-oap-5", label: "heading oap5" },
                     ] as const
                   ).map((t) => (
                     <button
