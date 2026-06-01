@@ -3155,6 +3155,11 @@ export function PageView({
       "callout-nhn-3",
       "page-bg-nhn-4",
       "heading-nhn-5",
+      "code-block-nic-1",
+      "table-nic-2",
+      "callout-nic-3",
+      "page-bg-nic-4",
+      "heading-nic-5",
     ];
     try {
       for (const k of toggles) {
