@@ -3930,6 +3930,11 @@ export function PageView({
       "callout-qtc-3",
       "page-bg-qtc-4",
       "heading-qtc-5",
+      "code-block-qtr-1",
+      "table-qtr-2",
+      "callout-qtr-3",
+      "page-bg-qtr-4",
+      "heading-qtr-5",
     ];
     try {
       for (const k of toggles) {
