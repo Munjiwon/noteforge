@@ -10256,6 +10256,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean 경쟁사 분석. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 비교 대상, 평가 축, 강점/약점 표, 시사점, 대응 전략 섹션으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
   doc_lic_d5: (text) =>
     `Write a Korean 에스컬레이션 메일. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 상황 요약, 영향도, 요청 사항, 기한, 필요 지원 구성으로 (차분하고 명확하게). 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  translate_lir_l1: (text) =>
+    `Translate the following Korean text into Bambara (Mande, Mali). Use authentic, natural Bambara as a fluent speaker would write it. Provide the Bambara translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_lir_l2: (text) =>
+    `Translate the following Korean text into Fula (Niger-Congo, Sahel). Use authentic, natural Fula as a fluent speaker would write it. Provide the Fula translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_lir_l3: (text) =>
+    `Translate the following Korean text into Tigrinya (Semitic, Eritrea/Ethiopia). Use authentic, natural Tigrinya as a fluent speaker would write it. Provide the Tigrinya translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_lir_l4: (text) =>
+    `Translate the following Korean text into Amharic (Semitic, Ethiopia). Use authentic, natural Amharic as a fluent speaker would write it. Provide the Amharic translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_lir_l5: (text) =>
+    `Translate the following Korean text into Somali (Cushitic, Horn of Africa). Use authentic, natural Somali as a fluent speaker would write it. Provide the Somali translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  doc_lir_d1: (text) =>
+    `Write a Korean 로드맵 개요. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 비전, 분기별 테마, 주요 마일스톤, 의존성, 리스크 섹션으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  doc_lir_d2: (text) =>
+    `Write a Korean 스프린트 회고. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 잘 된 점(Keep), 개선할 점(Problem), 시도할 점(Try) 구성으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  doc_lir_d3: (text) =>
+    `Write a Korean 의사결정 메모. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 결정 사항, 배경, 고려한 대안, 근거, 후속 조치 섹션으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  doc_lir_d4: (text) =>
+    `Write a Korean FAQ 문서. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 주제 소개, 질문-답변 쌍(빈도 높은 순), 추가 문의처 구성으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  doc_lir_d5: (text) =>
+    `Write a Korean 보도자료. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 헤드라인, 리드 문단, 본문(세부/인용), 회사 소개(boilerplate), 문의처 구성으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
