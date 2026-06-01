@@ -4512,6 +4512,11 @@ export function PageStyleMenu({
                       { key: "callout-rmv-3", label: "callout rmv3" },
                       { key: "page-bg-rmv-4", label: "page-bg rmv4" },
                       { key: "heading-rmv-5", label: "heading rmv5" },
+                      { key: "code-block-rnk-1", label: "code-block rnk1" },
+                      { key: "table-rnk-2", label: "table rnk2" },
+                      { key: "callout-rnk-3", label: "callout rnk3" },
+                      { key: "page-bg-rnk-4", label: "page-bg rnk4" },
+                      { key: "heading-rnk-5", label: "heading rnk5" },
                     ] as const
                   ).map((t) => (
                     <button
