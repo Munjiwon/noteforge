@@ -3040,6 +3040,11 @@ export function PageView({
       "callout-mug-3",
       "page-bg-mug-4",
       "heading-mug-5",
+      "code-block-muv-1",
+      "table-muv-2",
+      "callout-muv-3",
+      "page-bg-muv-4",
+      "heading-muv-5",
     ];
     try {
       for (const k of toggles) {
