@@ -3610,6 +3610,11 @@ export function PageView({
       "callout-pic-3",
       "page-bg-pic-4",
       "heading-pic-5",
+      "code-block-pir-1",
+      "table-pir-2",
+      "callout-pir-3",
+      "page-bg-pir-4",
+      "heading-pir-5",
     ];
     try {
       for (const k of toggles) {
