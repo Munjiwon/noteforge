@@ -2935,6 +2935,11 @@ export function PageView({
       "callout-mic-3",
       "page-bg-mic-4",
       "heading-mic-5",
+      "code-block-mir-1",
+      "table-mir-2",
+      "callout-mir-3",
+      "page-bg-mir-4",
+      "heading-mir-5",
     ];
     try {
       for (const k of toggles) {
