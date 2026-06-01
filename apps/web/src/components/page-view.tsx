@@ -3030,6 +3030,11 @@ export function PageView({
       "callout-mtc-3",
       "page-bg-mtc-4",
       "heading-mtc-5",
+      "code-block-mtr-1",
+      "table-mtr-2",
+      "callout-mtr-3",
+      "page-bg-mtr-4",
+      "heading-mtr-5",
     ];
     try {
       for (const k of toggles) {
