@@ -3352,6 +3352,11 @@ export function PageStyleMenu({
                       { key: "callout-mir-3", label: "callout mir3" },
                       { key: "page-bg-mir-4", label: "page-bg mir4" },
                       { key: "heading-mir-5", label: "heading mir5" },
+                      { key: "code-block-mjg-1", label: "code-block mjg1" },
+                      { key: "table-mjg-2", label: "table mjg2" },
+                      { key: "callout-mjg-3", label: "callout mjg3" },
+                      { key: "page-bg-mjg-4", label: "page-bg mjg4" },
+                      { key: "heading-mjg-5", label: "heading mjg5" },
                     ] as const
                   ).map((t) => (
                     <button
