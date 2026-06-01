@@ -3662,6 +3662,11 @@ export function PageStyleMenu({
                       { key: "callout-nsn-3", label: "callout nsn3" },
                       { key: "page-bg-nsn-4", label: "page-bg nsn4" },
                       { key: "heading-nsn-5", label: "heading nsn5" },
+                      { key: "code-block-ntc-1", label: "code-block ntc1" },
+                      { key: "table-ntc-2", label: "table ntc2" },
+                      { key: "callout-ntc-3", label: "callout ntc3" },
+                      { key: "page-bg-ntc-4", label: "page-bg ntc4" },
+                      { key: "heading-ntc-5", label: "heading ntc5" },
                     ] as const
                   ).map((t) => (
                     <button
