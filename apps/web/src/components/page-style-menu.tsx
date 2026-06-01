@@ -2982,6 +2982,11 @@ export function PageStyleMenu({
                       { key: "callout-kry-3", label: "callout kry3" },
                       { key: "page-bg-kry-4", label: "page-bg kry4" },
                       { key: "heading-kry-5", label: "heading kry5" },
+                      { key: "code-block-ksn-1", label: "code-block ksn1" },
+                      { key: "table-ksn-2", label: "table ksn2" },
+                      { key: "callout-ksn-3", label: "callout ksn3" },
+                      { key: "page-bg-ksn-4", label: "page-bg ksn4" },
+                      { key: "heading-ksn-5", label: "heading ksn5" },
                     ] as const
                   ).map((t) => (
                     <button
