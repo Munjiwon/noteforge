@@ -4040,6 +4040,11 @@ export function PageView({
       "callout-rfw-3",
       "page-bg-rfw-4",
       "heading-rfw-5",
+      "code-block-rgl-1",
+      "table-rgl-2",
+      "callout-rgl-3",
+      "page-bg-rgl-4",
+      "heading-rgl-5",
     ];
     try {
       for (const k of toggles) {
