@@ -2885,6 +2885,11 @@ export function PageView({
       "callout-mci-3",
       "page-bg-mci-4",
       "heading-mci-5",
+      "code-block-mcx-1",
+      "table-mcx-2",
+      "callout-mcx-3",
+      "page-bg-mcx-4",
+      "heading-mcx-5",
     ];
     try {
       for (const k of toggles) {
