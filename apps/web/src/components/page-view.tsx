@@ -2850,6 +2850,11 @@ export function PageView({
       "callout-lyh-3",
       "page-bg-lyh-4",
       "heading-lyh-5",
+      "code-block-lyw-1",
+      "table-lyw-2",
+      "callout-lyw-3",
+      "page-bg-lyw-4",
+      "heading-lyw-5",
     ];
     try {
       for (const k of toggles) {
