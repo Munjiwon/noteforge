@@ -2820,6 +2820,11 @@ export function PageView({
       "callout-luv-3",
       "page-bg-luv-4",
       "heading-luv-5",
+      "code-block-lvk-1",
+      "table-lvk-2",
+      "callout-lvk-3",
+      "page-bg-lvk-4",
+      "heading-lvk-5",
     ];
     try {
       for (const k of toggles) {
