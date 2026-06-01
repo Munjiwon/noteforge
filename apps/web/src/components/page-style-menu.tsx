@@ -2912,6 +2912,11 @@ export function PageStyleMenu({
                       { key: "callout-kjv-3", label: "callout kjv3" },
                       { key: "page-bg-kjv-4", label: "page-bg kjv4" },
                       { key: "heading-kjv-5", label: "heading kjv5" },
+                      { key: "code-block-kkl-1", label: "code-block kkl1" },
+                      { key: "table-kkl-2", label: "table kkl2" },
+                      { key: "callout-kkl-3", label: "callout kkl3" },
+                      { key: "page-bg-kkl-4", label: "page-bg kkl4" },
+                      { key: "heading-kkl-5", label: "heading kkl5" },
                     ] as const
                   ).map((t) => (
                     <button
