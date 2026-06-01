@@ -2565,6 +2565,11 @@ export function PageView({
       "callout-krj-3",
       "page-bg-krj-4",
       "heading-krj-5",
+      "code-block-kry-1",
+      "table-kry-2",
+      "callout-kry-3",
+      "page-bg-kry-4",
+      "heading-kry-5",
     ];
     try {
       for (const k of toggles) {
