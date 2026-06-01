@@ -3112,6 +3112,11 @@ export function PageStyleMenu({
                       { key: "callout-lgy-3", label: "callout lgy3" },
                       { key: "page-bg-lgy-4", label: "page-bg lgy4" },
                       { key: "heading-lgy-5", label: "heading lgy5" },
+                      { key: "code-block-lhn-1", label: "code-block lhn1" },
+                      { key: "table-lhn-2", label: "table lhn2" },
+                      { key: "callout-lhn-3", label: "callout lhn3" },
+                      { key: "page-bg-lhn-4", label: "page-bg lhn4" },
+                      { key: "heading-lhn-5", label: "heading lhn5" },
                     ] as const
                   ).map((t) => (
                     <button
