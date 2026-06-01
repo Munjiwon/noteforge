@@ -4282,6 +4282,11 @@ export function PageStyleMenu({
                       { key: "callout-qmd-3", label: "callout qmd3" },
                       { key: "page-bg-qmd-4", label: "page-bg qmd4" },
                       { key: "heading-qmd-5", label: "heading qmd5" },
+                      { key: "code-block-qms-1", label: "code-block qms1" },
+                      { key: "table-qms-2", label: "table qms2" },
+                      { key: "callout-qms-3", label: "callout qms3" },
+                      { key: "page-bg-qms-4", label: "page-bg qms4" },
+                      { key: "heading-qms-5", label: "heading qms5" },
                     ] as const
                   ).map((t) => (
                     <button
