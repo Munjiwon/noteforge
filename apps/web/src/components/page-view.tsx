@@ -2505,6 +2505,11 @@ export function PageView({
       "callout-kkl-3",
       "page-bg-kkl-4",
       "heading-kkl-5",
+      "code-block-kla-1",
+      "table-kla-2",
+      "callout-kla-3",
+      "page-bg-kla-4",
+      "heading-kla-5",
     ];
     try {
       for (const k of toggles) {
