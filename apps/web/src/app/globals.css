@@ -15596,6 +15596,23 @@ body.page-bg-oic-4 .bn-editor { background: rgba(196,167,231,0.12); }
 /* heading-oic-5 — heading accent. */
 body.heading-oic-5 .bn-editor [data-content-type="heading"] { color: #58a6ff; }
 
+/* code-block-oir-1 — code block theme. */
+body.code-block-oir-1 .bn-editor pre { background: #212733 !important; color: #d9d7ce !important; border: 1px solid #343d49; }
+body.code-block-oir-1 .bn-editor pre code { color: #d9d7ce !important; }
+
+/* table-oir-2 — table accent + zebra. */
+body.table-oir-2 .bn-editor table td, body.table-oir-2 .bn-editor table th { border: 1px solid #6699cc; }
+body.table-oir-2 .bn-editor table tr:nth-child(even) td { background: rgba(102,153,204,0.12); }
+
+/* callout-oir-3 — callout accent. */
+body.callout-oir-3 .bn-editor [data-content-type="callout"] { background: rgba(128,203,196,0.12); border-left: 3px solid #80cbc4; }
+
+/* page-bg-oir-4 — page background tint. */
+body.page-bg-oir-4 .bn-editor { background: rgba(226,158,240,0.12); }
+
+/* heading-oir-5 — heading accent. */
+body.heading-oir-5 .bn-editor [data-content-type="heading"] { color: #1da1f2; }
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
