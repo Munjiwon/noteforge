@@ -3160,6 +3160,11 @@ export function PageView({
       "callout-nic-3",
       "page-bg-nic-4",
       "heading-nic-5",
+      "code-block-nir-1",
+      "table-nir-2",
+      "callout-nir-3",
+      "page-bg-nir-4",
+      "heading-nir-5",
     ];
     try {
       for (const k of toggles) {

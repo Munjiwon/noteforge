@@ -3572,6 +3572,11 @@ export function PageStyleMenu({
                       { key: "callout-nic-3", label: "callout nic3" },
                       { key: "page-bg-nic-4", label: "page-bg nic4" },
                       { key: "heading-nic-5", label: "heading nic5" },
+                      { key: "code-block-nir-1", label: "code-block nir1" },
+                      { key: "table-nir-2", label: "table nir2" },
+                      { key: "callout-nir-3", label: "callout nir3" },
+                      { key: "page-bg-nir-4", label: "page-bg nir4" },
+                      { key: "heading-nir-5", label: "heading nir5" },
                     ] as const
                   ).map((t) => (
                     <button
