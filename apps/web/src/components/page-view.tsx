@@ -4818,6 +4818,11 @@ export function PageView({
       "callout-urx-3",
       "page-bg-urx-4",
       "heading-urx-5",
+      "code-block-usm-1",
+      "table-usm-2",
+      "callout-usm-3",
+      "page-bg-usm-4",
+      "heading-usm-5",
     ];
     try {
       for (const k of toggles) {

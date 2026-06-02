@@ -5230,6 +5230,11 @@ export function PageStyleMenu({
                       { key: "callout-urx-3", label: "callout urx3" },
                       { key: "page-bg-urx-4", label: "page-bg urx4" },
                       { key: "heading-urx-5", label: "heading urx5" },
+                      { key: "code-block-usm-1", label: "code-block usm1" },
+                      { key: "table-usm-2", label: "table usm2" },
+                      { key: "callout-usm-3", label: "callout usm3" },
+                      { key: "page-bg-usm-4", label: "page-bg usm4" },
+                      { key: "heading-usm-5", label: "heading usm5" },
                     ] as const
                   ).map((t) => (
                     <button
