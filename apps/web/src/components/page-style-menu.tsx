@@ -5265,6 +5265,11 @@ export function PageStyleMenu({
                       { key: "callout-uvz-3", label: "callout uvz3" },
                       { key: "page-bg-uvz-4", label: "page-bg uvz4" },
                       { key: "heading-uvz-5", label: "heading uvz5" },
+                      { key: "code-block-uwo-1", label: "code-block uwo1" },
+                      { key: "table-uwo-2", label: "table uwo2" },
+                      { key: "callout-uwo-3", label: "callout uwo3" },
+                      { key: "page-bg-uwo-4", label: "page-bg uwo4" },
+                      { key: "heading-uwo-5", label: "heading uwo5" },
                     ] as const
                   ).map((t) => (
                     <button
