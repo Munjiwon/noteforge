@@ -5011,6 +5011,11 @@ export function PageStyleMenu({
                       { key: "callout-tsn-3", label: "callout tsn3" },
                       { key: "page-bg-tsn-4", label: "page-bg tsn4" },
                       { key: "heading-tsn-5", label: "heading tsn5" },
+                      { key: "code-block-ttc-1", label: "code-block ttc1" },
+                      { key: "table-ttc-2", label: "table ttc2" },
+                      { key: "callout-ttc-3", label: "callout ttc3" },
+                      { key: "page-bg-ttc-4", label: "page-bg ttc4" },
+                      { key: "heading-ttc-5", label: "heading ttc5" },
                     ] as const
                   ).map((t) => (
                     <button
