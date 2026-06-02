@@ -4631,6 +4631,11 @@ export function PageStyleMenu({
                       { key: "callout-sap-3", label: "callout sap3" },
                       { key: "page-bg-sap-4", label: "page-bg sap4" },
                       { key: "heading-sap-5", label: "heading sap5" },
+                      { key: "code-block-sbe-1", label: "code-block sbe1" },
+                      { key: "table-sbe-2", label: "table sbe2" },
+                      { key: "callout-sbe-3", label: "callout sbe3" },
+                      { key: "page-bg-sbe-4", label: "page-bg sbe4" },
+                      { key: "heading-sbe-5", label: "heading sbe5" },
                     ] as const
                   ).map((t) => (
                     <button
