@@ -5175,6 +5175,11 @@ export function PageStyleMenu({
                       { key: "callout-ulo-3", label: "callout ulo3" },
                       { key: "page-bg-ulo-4", label: "page-bg ulo4" },
                       { key: "heading-ulo-5", label: "heading ulo5" },
+                      { key: "code-block-umd-1", label: "code-block umd1" },
+                      { key: "table-umd-2", label: "table umd2" },
+                      { key: "callout-umd-3", label: "callout umd3" },
+                      { key: "page-bg-umd-4", label: "page-bg umd4" },
+                      { key: "heading-umd-5", label: "heading umd5" },
                     ] as const
                   ).map((t) => (
                     <button

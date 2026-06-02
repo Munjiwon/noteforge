@@ -4763,6 +4763,11 @@ export function PageView({
       "callout-ulo-3",
       "page-bg-ulo-4",
       "heading-ulo-5",
+      "code-block-umd-1",
+      "table-umd-2",
+      "callout-umd-3",
+      "page-bg-umd-4",
+      "heading-umd-5",
     ];
     try {
       for (const k of toggles) {
