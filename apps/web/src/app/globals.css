@@ -19571,6 +19571,23 @@ body.page-bg-tni-4 .bn-editor { background: rgba(226,158,240,0.12); }
 /* heading-tni-5 — heading accent. */
 body.heading-tni-5 .bn-editor [data-content-type="heading"] { color: #1da1f2; }
 
+/* code-block-tnx-1 — code block theme. */
+body.code-block-tnx-1 .bn-editor pre { background: #1e1e2e !important; color: #cdd6f4 !important; border: 1px solid #313244; }
+body.code-block-tnx-1 .bn-editor pre code { color: #cdd6f4 !important; }
+
+/* table-tnx-2 — table accent + zebra. */
+body.table-tnx-2 .bn-editor table td, body.table-tnx-2 .bn-editor table th { border: 1px solid #61afef; }
+body.table-tnx-2 .bn-editor table tr:nth-child(even) td { background: rgba(97,175,239,0.12); }
+
+/* callout-tnx-3 — callout accent. */
+body.callout-tnx-3 .bn-editor [data-content-type="callout"] { background: rgba(166,226,46,0.12); border-left: 3px solid #a6e22e; }
+
+/* page-bg-tnx-4 — page background tint. */
+body.page-bg-tnx-4 .bn-editor { background: rgba(38,139,210,0.12); }
+
+/* heading-tnx-5 — heading accent. */
+body.heading-tnx-5 .bn-editor [data-content-type="heading"] { color: #88c0d0; }
+
 /* Dotted divider — render horizontal rules as dots instead of a solid line. */
 body.dotted-divider .bn-editor hr {
   border: none !important;
