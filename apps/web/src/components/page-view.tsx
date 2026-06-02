@@ -4359,6 +4359,11 @@ export function PageView({
       "callout-sqt-3",
       "page-bg-sqt-4",
       "heading-sqt-5",
+      "code-block-sri-1",
+      "table-sri-2",
+      "callout-sri-3",
+      "page-bg-sri-4",
+      "heading-sri-5",
     ];
     try {
       for (const k of toggles) {
