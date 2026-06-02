@@ -4981,6 +4981,11 @@ export function PageStyleMenu({
                       { key: "callout-tpb-3", label: "callout tpb3" },
                       { key: "page-bg-tpb-4", label: "page-bg tpb4" },
                       { key: "heading-tpb-5", label: "heading tpb5" },
+                      { key: "code-block-tpq-1", label: "code-block tpq1" },
+                      { key: "table-tpq-2", label: "table tpq2" },
+                      { key: "callout-tpq-3", label: "callout tpq3" },
+                      { key: "page-bg-tpq-4", label: "page-bg tpq4" },
+                      { key: "heading-tpq-5", label: "heading tpq5" },
                     ] as const
                   ).map((t) => (
                     <button
