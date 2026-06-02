@@ -4214,6 +4214,11 @@ export function PageView({
       "callout-saa-3",
       "page-bg-saa-4",
       "heading-saa-5",
+      "code-block-sap-1",
+      "table-sap-2",
+      "callout-sap-3",
+      "page-bg-sap-4",
+      "heading-sap-5",
     ];
     try {
       for (const k of toggles) {
