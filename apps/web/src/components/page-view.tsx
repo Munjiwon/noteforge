@@ -4768,6 +4768,11 @@ export function PageView({
       "callout-umd-3",
       "page-bg-umd-4",
       "heading-umd-5",
+      "code-block-ums-1",
+      "table-ums-2",
+      "callout-ums-3",
+      "page-bg-ums-4",
+      "heading-ums-5",
     ];
     try {
       for (const k of toggles) {
