@@ -4753,6 +4753,11 @@ export function PageView({
       "callout-ukk-3",
       "page-bg-ukk-4",
       "heading-ukk-5",
+      "code-block-ukz-1",
+      "table-ukz-2",
+      "callout-ukz-3",
+      "page-bg-ukz-4",
+      "heading-ukz-5",
     ];
     try {
       for (const k of toggles) {
