@@ -5295,6 +5295,8 @@ export function PageStyleMenu({
                       { key: "callout-uzl-3", label: "callout uzl3" },
                       { key: "page-bg-uzl-4", label: "page-bg uzl4" },
                       { key: "heading-uzl-5", label: "heading uzl5" },
+                      { key: "code-block-tml-1", label: "code-block tml1" },
+                      { key: "table-tml-2", label: "table tml2" },
                     ] as const
                   ).map((t) => (
                     <button
