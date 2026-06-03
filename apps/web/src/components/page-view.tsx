@@ -5530,6 +5530,11 @@ export function PageView({
       "callout-yvy-3",
       "page-bg-yvy-4",
       "heading-yvy-5",
+      "code-block-ywn-1",
+      "table-ywn-2",
+      "callout-ywn-3",
+      "page-bg-ywn-4",
+      "heading-ywn-5",
     ];
     try {
       for (const k of toggles) {
