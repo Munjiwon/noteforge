@@ -4960,6 +4960,11 @@ export function PageView({
       "callout-wic-3",
       "page-bg-wic-4",
       "heading-wic-5",
+      "code-block-wir-1",
+      "table-wir-2",
+      "callout-wir-3",
+      "page-bg-wir-4",
+      "heading-wir-5",
     ];
     try {
       for (const k of toggles) {

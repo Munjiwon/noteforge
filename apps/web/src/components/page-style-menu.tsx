@@ -5372,6 +5372,11 @@ export function PageStyleMenu({
                       { key: "callout-wic-3", label: "callout wic3" },
                       { key: "page-bg-wic-4", label: "page-bg wic4" },
                       { key: "heading-wic-5", label: "heading wic5" },
+                      { key: "code-block-wir-1", label: "code-block wir1" },
+                      { key: "table-wir-2", label: "table wir2" },
+                      { key: "callout-wir-3", label: "callout wir3" },
+                      { key: "page-bg-wir-4", label: "page-bg wir4" },
+                      { key: "heading-wir-5", label: "heading wir5" },
                     ] as const
                   ).map((t) => (
                     <button
