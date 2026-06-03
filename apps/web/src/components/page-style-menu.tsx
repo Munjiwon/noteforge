@@ -5297,6 +5297,11 @@ export function PageStyleMenu({
                       { key: "heading-uzl-5", label: "heading uzl5" },
                       { key: "code-block-tml-1", label: "code-block tml1" },
                       { key: "table-tml-2", label: "table tml2" },
+                      { key: "code-block-waa-1", label: "code-block waa1" },
+                      { key: "table-waa-2", label: "table waa2" },
+                      { key: "callout-waa-3", label: "callout waa3" },
+                      { key: "page-bg-waa-4", label: "page-bg waa4" },
+                      { key: "heading-waa-5", label: "heading waa5" },
                     ] as const
                   ).map((t) => (
                     <button

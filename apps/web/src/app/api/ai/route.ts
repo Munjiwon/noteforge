@@ -18956,6 +18956,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Translate the following Korean text into Fijian (Oceanic, Fiji). Use authentic, natural Fijian as a fluent speaker would write it. Provide the Fijian translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
   doc_tml_d1: (text) =>
     `Write a Korean 로드맵 개요. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 비전, 분기별 테마, 주요 마일스톤, 의존성, 리스크 섹션으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  translate_waa_l1: (text) =>
+    `Translate the following Korean text into Faroese (North Germanic, Faroe Islands). Use authentic, natural Faroese as a fluent speaker would write it. Provide the Faroese translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_waa_l2: (text) =>
+    `Translate the following Korean text into Greenlandic (Kalaallisut, Eskimo-Aleut). Use authentic, natural Greenlandic as a fluent speaker would write it. Provide the Greenlandic translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_waa_l3: (text) =>
+    `Translate the following Korean text into Luxembourgish (West Germanic, Lëtzebuergesch). Use authentic, natural Luxembourgish as a fluent speaker would write it. Provide the Luxembourgish translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_waa_l4: (text) =>
+    `Translate the following Korean text into Romansh (Rhaeto-Romance, Switzerland). Use authentic, natural Romansh as a fluent speaker would write it. Provide the Romansh translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_waa_l5: (text) =>
+    `Translate the following Korean text into Sardinian (Romance, Sardinia). Use authentic, natural Sardinian as a fluent speaker would write it. Provide the Sardinian translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  doc_waa_d1: (text) =>
+    `Write a Korean 기획 제안서. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 목적/배경, 핵심 제안, 기대 효과, 일정, 리소스, 리스크 섹션으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  doc_waa_d2: (text) =>
+    `Write a Korean 주간 업무 보고. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 지난주 성과, 이번주 계획, 이슈/블로커, 도움 요청 섹션으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  doc_waa_d3: (text) =>
+    `Write a Korean 회의록. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 일시/참석자, 안건, 논의 요점, 결정 사항, Action Item(담당/기한) 섹션으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  doc_waa_d4: (text) =>
+    `Write a Korean 제품 요구사항 문서(PRD). 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 문제 정의, 목표, 사용자 시나리오, 기능 요구, 비기능 요구, 성공 지표 섹션으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  doc_waa_d5: (text) =>
+    `Write a Korean 고객 응대 스크립트. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 상황 요약, 공감 멘트, 해결 안내, 대안 제시, 마무리 인사 섹션으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
