@@ -5432,6 +5432,11 @@ export function PageStyleMenu({
                       { key: "callout-wpa-3", label: "callout wpa3" },
                       { key: "page-bg-wpa-4", label: "page-bg wpa4" },
                       { key: "heading-wpa-5", label: "heading wpa5" },
+                      { key: "code-block-wpp-1", label: "code-block wpp1" },
+                      { key: "table-wpp-2", label: "table wpp2" },
+                      { key: "callout-wpp-3", label: "callout wpp3" },
+                      { key: "page-bg-wpp-4", label: "page-bg wpp4" },
+                      { key: "heading-wpp-5", label: "heading wpp5" },
                     ] as const
                   ).map((t) => (
                     <button
