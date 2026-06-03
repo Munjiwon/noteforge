@@ -4995,6 +4995,11 @@ export function PageView({
       "callout-wmd-3",
       "page-bg-wmd-4",
       "heading-wmd-5",
+      "code-block-wms-1",
+      "table-wms-2",
+      "callout-wms-3",
+      "page-bg-wms-4",
+      "heading-wms-5",
     ];
     try {
       for (const k of toggles) {
