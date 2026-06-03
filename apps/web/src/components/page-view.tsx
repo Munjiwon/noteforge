@@ -4900,6 +4900,11 @@ export function PageView({
       "callout-wbe-3",
       "page-bg-wbe-4",
       "heading-wbe-5",
+      "code-block-wbt-1",
+      "table-wbt-2",
+      "callout-wbt-3",
+      "page-bg-wbt-4",
+      "heading-wbt-5",
     ];
     try {
       for (const k of toggles) {
