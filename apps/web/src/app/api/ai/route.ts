@@ -21996,6 +21996,26 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
     `Write a Korean 백로그 개요. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 제목, 요약(TL;DR), 본문 구조(소제목 3-5개), 마무리, CTA 구성으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
   doc_zjg_d5: (text) =>
     `Write a Korean 고객 설문 설계. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 목적, 대상, 질문 문항(객관식/주관식 혼합), 참여 안내 구성으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  translate_zjv_l1: (text) =>
+    `Translate the following Korean text into Luganda (Bantu, Uganda). Use authentic, natural Luganda as a fluent speaker would write it. Provide the Luganda translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_zjv_l2: (text) =>
+    `Translate the following Korean text into Malagasy (Austronesian, Madagascar). Use authentic, natural Malagasy as a fluent speaker would write it. Provide the Malagasy translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_zjv_l3: (text) =>
+    `Translate the following Korean text into Faroese (North Germanic, Faroe Islands). Use authentic, natural Faroese as a fluent speaker would write it. Provide the Faroese translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_zjv_l4: (text) =>
+    `Translate the following Korean text into Greenlandic (Kalaallisut, Eskimo-Aleut). Use authentic, natural Greenlandic as a fluent speaker would write it. Provide the Greenlandic translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  translate_zjv_l5: (text) =>
+    `Translate the following Korean text into Luxembourgish (West Germanic, Lëtzebuergesch). Use authentic, natural Luxembourgish as a fluent speaker would write it. Provide the Luxembourgish translation, then a romanized pronunciation line if the script is non-Latin, then a 1-line Korean note on any term you had to adapt. Output only the translation block.\n\nKorean text:\n${text}`,
+  doc_zjv_d1: (text) =>
+    `Write a Korean 대외 발표 소개글. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 훅(hook), 핵심 메시지, 근거 3가지, 행동 제안 구성으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  doc_zjv_d2: (text) =>
+    `Write a Korean 분기 사업 리뷰(QBR). 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 분기 요약, 달성 성과, 활용 현황, 오픈 이슈, 다음 분기 목표 구성으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  doc_zjv_d3: (text) =>
+    `Write a Korean 장애 회고. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 요약, 영향, 타임라인, 근본 원인, 재발 방지 책임(비난 없는 톤) 구성으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  doc_zjv_d4: (text) =>
+    `Write a Korean 뉴스레터 초안. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 제목, 인트로, 주요 소식 3개, 팁/링크, 마무리 구성으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
+  doc_zjv_d5: (text) =>
+    `Write a Korean 면접 평가표. 해요체로 자연스럽게, 실무에서 바로 쓸 수 있게. 다음 구조로 Markdown 작성: 지원자/포지션, 평가 역량(4-6개, 척도 포함), 인터뷰 노트, 종합 추천 구성으로. 입력에 있는 사실만 사용하고, 모르는 값은 '확인 필요'로 표기.\n\n입력:\n${text}`,
 };
 
 export async function POST(req: NextRequest) {
