@@ -5230,6 +5230,11 @@ export function PageView({
       "callout-xnh-3",
       "page-bg-xnh-4",
       "heading-xnh-5",
+      "code-block-xnw-1",
+      "table-xnw-2",
+      "callout-xnw-3",
+      "page-bg-xnw-4",
+      "heading-xnw-5",
     ];
     try {
       for (const k of toggles) {
