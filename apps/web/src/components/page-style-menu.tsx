@@ -6142,6 +6142,11 @@ export function PageStyleMenu({
                       { key: "callout-ztb-3", label: "callout ztb3" },
                       { key: "page-bg-ztb-4", label: "page-bg ztb4" },
                       { key: "heading-ztb-5", label: "heading ztb5" },
+                      { key: "code-block-ztq-1", label: "code-block ztq1" },
+                      { key: "table-ztq-2", label: "table ztq2" },
+                      { key: "callout-ztq-3", label: "callout ztq3" },
+                      { key: "page-bg-ztq-4", label: "page-bg ztq4" },
+                      { key: "heading-ztq-5", label: "heading ztq5" },
                     ] as const
                   ).map((t) => (
                     <button
