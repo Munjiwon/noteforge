@@ -5772,6 +5772,11 @@ export function PageStyleMenu({
                       { key: "callout-yci-3", label: "callout yci3" },
                       { key: "page-bg-yci-4", label: "page-bg yci4" },
                       { key: "heading-yci-5", label: "heading yci5" },
+                      { key: "code-block-ycx-1", label: "code-block ycx1" },
+                      { key: "table-ycx-2", label: "table ycx2" },
+                      { key: "callout-ycx-3", label: "callout ycx3" },
+                      { key: "page-bg-ycx-4", label: "page-bg ycx4" },
+                      { key: "heading-ycx-5", label: "heading ycx5" },
                     ] as const
                   ).map((t) => (
                     <button
