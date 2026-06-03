@@ -4920,6 +4920,11 @@ export function PageView({
       "callout-wdm-3",
       "page-bg-wdm-4",
       "heading-wdm-5",
+      "code-block-web-1",
+      "table-web-2",
+      "callout-web-3",
+      "page-bg-web-4",
+      "heading-web-5",
     ];
     try {
       for (const k of toggles) {
