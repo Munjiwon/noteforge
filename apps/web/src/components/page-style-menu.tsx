@@ -5662,6 +5662,11 @@ export function PageStyleMenu({
                       { key: "callout-xpp-3", label: "callout xpp3" },
                       { key: "page-bg-xpp-4", label: "page-bg xpp4" },
                       { key: "heading-xpp-5", label: "heading xpp5" },
+                      { key: "code-block-xqe-1", label: "code-block xqe1" },
+                      { key: "table-xqe-2", label: "table xqe2" },
+                      { key: "callout-xqe-3", label: "callout xqe3" },
+                      { key: "page-bg-xqe-4", label: "page-bg xqe4" },
+                      { key: "heading-xqe-5", label: "heading xqe5" },
                     ] as const
                   ).map((t) => (
                     <button
