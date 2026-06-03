@@ -5347,6 +5347,11 @@ export function PageStyleMenu({
                       { key: "callout-wff-3", label: "callout wff3" },
                       { key: "page-bg-wff-4", label: "page-bg wff4" },
                       { key: "heading-wff-5", label: "heading wff5" },
+                      { key: "code-block-wfu-1", label: "code-block wfu1" },
+                      { key: "table-wfu-2", label: "table wfu2" },
+                      { key: "callout-wfu-3", label: "callout wfu3" },
+                      { key: "page-bg-wfu-4", label: "page-bg wfu4" },
+                      { key: "heading-wfu-5", label: "heading wfu5" },
                     ] as const
                   ).map((t) => (
                     <button
