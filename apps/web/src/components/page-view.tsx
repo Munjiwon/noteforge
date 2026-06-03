@@ -5015,6 +5015,11 @@ export function PageView({
       "callout-wol-3",
       "page-bg-wol-4",
       "heading-wol-5",
+      "code-block-wpa-1",
+      "table-wpa-2",
+      "callout-wpa-3",
+      "page-bg-wpa-4",
+      "heading-wpa-5",
     ];
     try {
       for (const k of toggles) {
