@@ -5412,6 +5412,11 @@ export function PageStyleMenu({
                       { key: "callout-wms-3", label: "callout wms3" },
                       { key: "page-bg-wms-4", label: "page-bg wms4" },
                       { key: "heading-wms-5", label: "heading wms5" },
+                      { key: "code-block-wnh-1", label: "code-block wnh1" },
+                      { key: "table-wnh-2", label: "table wnh2" },
+                      { key: "callout-wnh-3", label: "callout wnh3" },
+                      { key: "page-bg-wnh-4", label: "page-bg wnh4" },
+                      { key: "heading-wnh-5", label: "heading wnh5" },
                     ] as const
                   ).map((t) => (
                     <button
