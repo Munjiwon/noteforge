@@ -5375,6 +5375,11 @@ export function PageView({
       "callout-yeb-3",
       "page-bg-yeb-4",
       "heading-yeb-5",
+      "code-block-yeq-1",
+      "table-yeq-2",
+      "callout-yeq-3",
+      "page-bg-yeq-4",
+      "heading-yeq-5",
     ];
     try {
       for (const k of toggles) {
