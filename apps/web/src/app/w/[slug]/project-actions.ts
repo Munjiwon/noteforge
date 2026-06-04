@@ -134,6 +134,7 @@ function buildSchemas(ids: { projects: string; tasks: string; sprints: string })
         filters: [{ id: "f_mine", propId: "p_assignee", op: "eq", value: "@me" }],
       },
       { id: "v_sprint", name: "By sprint", kind: "table", tableGroupBy: "p_sprint" },
+      { id: "v_project", name: "By project", kind: "table", tableGroupBy: "p_project" },
       { id: "v_cal", name: "Calendar", kind: "calendar", calendarDateBy: "p_due" },
     ],
   };
