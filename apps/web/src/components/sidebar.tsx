@@ -48,6 +48,7 @@ type SidebarPage = {
   tags?: string | null;
   createdAt?: string;
   updatedAt?: string;
+  authorId?: string | null;
 };
 
 type TrashItem = { id: string; title: string; icon: string | null; kind: string; deletedAt?: Date | string | null };
@@ -1194,7 +1195,35 @@ export function Sidebar({
           </p>
         </div>
       )}
-      <ul className="flex-1 overflow-auto pb-2">{tree.map((n) => renderNode(n, 0))}</ul>
+      {(() => {
+        const mine = tree.filter((n) => n.authorId === user.id);
+        const workspace = tree.filter((n) => n.authorId !== user.id);
+        if (mine.length === 0 || workspace.length === 0) {
+          return (
+            <ul className="flex-1 overflow-auto pb-2">{tree.map((n) => renderNode(n, 0))}</ul>
+          );
+        }
+        return (
+          <div className="flex-1 overflow-auto pb-2">
+            <details open className="group">
+              <summary className="px-3 py-1 text-[11px] uppercase tracking-wide text-gray-500 cursor-pointer list-none flex items-center gap-1">
+                <span className="text-gray-400 group-open:rotate-90 transition inline-block">▸</span>
+                {lang === "ko" ? "내 페이지" : "Private"}
+                <span className="text-gray-400 ml-auto">{mine.length}</span>
+              </summary>
+              <ul>{mine.map((n) => renderNode(n, 0))}</ul>
+            </details>
+            <details open className="group mt-1">
+              <summary className="px-3 py-1 text-[11px] uppercase tracking-wide text-gray-500 cursor-pointer list-none flex items-center gap-1">
+                <span className="text-gray-400 group-open:rotate-90 transition inline-block">▸</span>
+                {lang === "ko" ? "워크스페이스" : "Workspace"}
+                <span className="text-gray-400 ml-auto">{workspace.length}</span>
+              </summary>
+              <ul>{workspace.map((n) => renderNode(n, 0))}</ul>
+            </details>
+          </div>
+        );
+      })()}
 
       {templates && templates.length > 0 && (
         <details className="border-t border-black/10 px-3 py-2 group">

@@ -185,6 +185,7 @@ export default async function WorkspaceLayout({
         tags: true,
         createdAt: true,
         updatedAt: true,
+        authorId: true,
       },
     }),
     prisma.page.findMany({
@@ -325,6 +326,7 @@ export default async function WorkspaceLayout({
     tags: p.tags ?? null,
     createdAt: p.createdAt.toISOString(),
     updatedAt: p.updatedAt.toISOString(),
+    authorId: p.authorId,
   }));
   const todayStart = new Date();
   todayStart.setHours(0, 0, 0, 0);
