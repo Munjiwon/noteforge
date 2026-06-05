@@ -6059,76 +6059,18 @@ export function PageView({
               <div className="mt-2 mb-3 grid grid-cols-[minmax(120px,180px)_1fr] gap-x-3 gap-y-1 text-xs">
                 {rowContext.schema.props
                   .filter((p) => p.id !== "p_title")
-                  .map((p) => {
-                    const v = rowContext.dataValues![p.id];
-                    const empty =
-                      v === null ||
-                      v === undefined ||
-                      v === "" ||
-                      (Array.isArray(v) && v.length === 0);
-                    let display: React.ReactNode = empty ? (
-                      <span className="text-gray-300">Empty</span>
-                    ) : (
-                      String(v)
-                    );
-                    if (!empty) {
-                      if (p.type === "select" || p.type === "status") {
-                        const opt = p.options?.find((o) => o.id === v);
-                        display = opt ? (
-                          <span
-                            className="inline-block px-1.5 py-0.5 rounded text-[10px]"
-                            style={{ background: opt.color }}
-                          >
-                            {opt.name}
-                          </span>
-                        ) : (
-                          <span className="text-gray-300">Empty</span>
-                        );
-                      } else if (p.type === "checkbox") {
-                        display = v ? "☑" : "☐";
-                      } else if (p.type === "multi_select" && Array.isArray(v)) {
-                        display = (
-                          <span className="flex flex-wrap gap-0.5">
-                            {(v as string[]).map((id) => {
-                              const opt = p.options?.find((o) => o.id === id);
-                              return opt ? (
-                                <span
-                                  key={id}
-                                  className="inline-block px-1.5 py-0.5 rounded text-[10px]"
-                                  style={{ background: opt.color }}
-                                >
-                                  {opt.name}
-                                </span>
-                              ) : null;
-                            })}
-                          </span>
-                        );
-                      } else if (p.type === "url" && typeof v === "string") {
-                        display = (
-                          <a
-                            href={v}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:underline truncate"
-                          >
-                            {v.replace(/^https?:\/\//, "")}
-                          </a>
-                        );
-                      } else if (p.type === "email" && typeof v === "string") {
-                        display = (
-                          <a href={`mailto:${v}`} className="text-blue-600 hover:underline">
-                            {v}
-                          </a>
-                        );
-                      }
-                    }
-                    return (
-                      <React.Fragment key={p.id}>
-                        <div className="text-gray-500 truncate">{p.name}</div>
-                        <div className="text-gray-800 truncate">{display}</div>
-                      </React.Fragment>
-                    );
-                  })}
+                  .map((p) => (
+                    <React.Fragment key={p.id}>
+                      <div className="text-gray-500 truncate">{p.name}</div>
+                      <RowPropertyValue
+                        slug={slug}
+                        rowId={page.id}
+                        prop={p}
+                        value={rowContext.dataValues![p.id]}
+                        readOnly={readOnly}
+                      />
+                    </React.Fragment>
+                  ))}
               </div>
             )}
           </div>
@@ -6802,4 +6744,191 @@ function extractText(json: string, fallbackTitle: string): string {
   } catch {
     return fallbackTitle;
   }
+}
+
+type RowProp = {
+  id: string;
+  name: string;
+  type: string;
+  options?: { id: string; name: string; color: string }[];
+};
+
+function RowPropertyValue({
+  slug,
+  rowId,
+  prop,
+  value,
+  readOnly,
+}: {
+  slug: string;
+  rowId: string;
+  prop: RowProp;
+  value: unknown;
+  readOnly: boolean;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(value);
+  const [, start] = useTransition();
+  const empty =
+    value === null ||
+    value === undefined ||
+    value === "" ||
+    (Array.isArray(value) && value.length === 0);
+
+  const commit = async (v: unknown) => {
+    const { updateCell } = await import("@/app/w/[slug]/database-actions");
+    await updateCell(slug, rowId, prop.id, v);
+  };
+
+  if (readOnly || prop.type === "rollup" || prop.type === "formula" || prop.type === "created_at" || prop.type === "updated_at" || prop.type === "created_by") {
+    return <ReadValue prop={prop} value={value} empty={empty} />;
+  }
+
+  if (prop.type === "checkbox") {
+    return (
+      <button
+        type="button"
+        onClick={() => start(() => commit(!value))}
+        className="text-gray-800 text-left hover:text-blue-600"
+      >
+        {value ? "☑" : "☐"}
+      </button>
+    );
+  }
+
+  if ((prop.type === "select" || prop.type === "status") && prop.options) {
+    return (
+      <select
+        value={typeof value === "string" ? value : ""}
+        onChange={(e) => start(() => commit(e.target.value || null))}
+        className="bg-transparent border border-transparent hover:border-gray-200 rounded px-1 py-0.5 text-xs outline-none focus:border-gray-300"
+      >
+        <option value="">— Empty —</option>
+        {prop.options.map((o) => (
+          <option key={o.id} value={o.id}>
+            {o.name}
+          </option>
+        ))}
+      </select>
+    );
+  }
+
+  if (prop.type === "date") {
+    return (
+      <input
+        type="date"
+        value={typeof value === "string" ? value.slice(0, 10) : ""}
+        onChange={(e) => start(() => commit(e.target.value || null))}
+        className="bg-transparent border border-transparent hover:border-gray-200 rounded px-1 py-0.5 text-xs outline-none focus:border-gray-300"
+      />
+    );
+  }
+
+  if (prop.type === "number" || prop.type === "text" || prop.type === "url" || prop.type === "email" || prop.type === "phone") {
+    if (!editing) {
+      return (
+        <button
+          type="button"
+          onClick={() => {
+            setDraft(value);
+            setEditing(true);
+          }}
+          className="text-left w-full hover:text-blue-600"
+        >
+          <ReadValue prop={prop} value={value} empty={empty} />
+        </button>
+      );
+    }
+    return (
+      <input
+        autoFocus
+        type={prop.type === "number" ? "number" : "text"}
+        value={draft == null ? "" : String(draft)}
+        onChange={(e) => setDraft(e.target.value)}
+        onBlur={() => {
+          setEditing(false);
+          const next = prop.type === "number"
+            ? (draft === "" || draft === null ? null : Number(draft))
+            : (draft === "" ? null : draft);
+          if (next !== value) start(() => commit(next));
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") (e.target as HTMLInputElement).blur();
+          if (e.key === "Escape") {
+            setDraft(value);
+            setEditing(false);
+          }
+        }}
+        className="bg-white border border-gray-300 rounded px-1 py-0.5 text-xs outline-none w-full"
+      />
+    );
+  }
+
+  // multi_select / person / files / relation: fall back to read-only display;
+  // editing happens in the database table or peek modal.
+  return <ReadValue prop={prop} value={value} empty={empty} />;
+}
+
+function ReadValue({
+  prop,
+  value,
+  empty,
+}: {
+  prop: RowProp;
+  value: unknown;
+  empty: boolean;
+}) {
+  if (empty) return <span className="text-gray-300">Empty</span>;
+  if (prop.type === "select" || prop.type === "status") {
+    const opt = prop.options?.find((o) => o.id === value);
+    return opt ? (
+      <span
+        className="inline-block px-1.5 py-0.5 rounded text-[10px]"
+        style={{ background: opt.color }}
+      >
+        {opt.name}
+      </span>
+    ) : (
+      <span className="text-gray-300">Empty</span>
+    );
+  }
+  if (prop.type === "checkbox") return <span>{value ? "☑" : "☐"}</span>;
+  if (prop.type === "multi_select" && Array.isArray(value)) {
+    return (
+      <span className="flex flex-wrap gap-0.5">
+        {(value as string[]).map((id) => {
+          const opt = prop.options?.find((o) => o.id === id);
+          return opt ? (
+            <span
+              key={id}
+              className="inline-block px-1.5 py-0.5 rounded text-[10px]"
+              style={{ background: opt.color }}
+            >
+              {opt.name}
+            </span>
+          ) : null;
+        })}
+      </span>
+    );
+  }
+  if (prop.type === "url" && typeof value === "string") {
+    return (
+      <a
+        href={value}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-600 hover:underline truncate"
+      >
+        {value.replace(/^https?:\/\//, "")}
+      </a>
+    );
+  }
+  if (prop.type === "email" && typeof value === "string") {
+    return (
+      <a href={`mailto:${value}`} className="text-blue-600 hover:underline">
+        {value}
+      </a>
+    );
+  }
+  return <span className="text-gray-800 truncate">{String(value)}</span>;
 }
