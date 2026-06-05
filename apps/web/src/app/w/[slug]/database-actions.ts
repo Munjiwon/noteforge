@@ -12,9 +12,11 @@ import {
   DbSort,
   DbView,
   DEFAULT_STATUS_OPTIONS,
+  getActiveView,
   newId,
   parseSchema,
   parseValues,
+  SavedView,
   SELECT_COLORS,
 } from "@/lib/database";
 
@@ -238,7 +240,10 @@ export async function setHiddenColumns(
   ids: string[],
 ) {
   const { schema } = await loadDb(slug, dbId);
-  schema.hiddenColumns = ids.filter((id) => id !== "p_title");
+  const filtered = ids.filter((id) => id !== "p_title");
+  const active = getActiveView(schema);
+  if (active) active.hiddenColumns = filtered;
+  else schema.hiddenColumns = filtered;
   await saveSchema(dbId, schema);
   revalidatePath(`/w/${slug}/p/${dbId}`);
 }
@@ -249,7 +254,9 @@ export async function setColumnOrder(
   order: string[],
 ) {
   const { schema } = await loadDb(slug, dbId);
-  schema.columnOrder = order;
+  const active = getActiveView(schema);
+  if (active) active.columnOrder = order;
+  else schema.columnOrder = order;
   await saveSchema(dbId, schema);
   revalidatePath(`/w/${slug}/p/${dbId}`);
 }
@@ -260,15 +267,16 @@ export async function setTableGroup(
   propId: string | null,
 ) {
   const { schema } = await loadDb(slug, dbId);
+  const next = propId ?? undefined;
   if (propId) {
     const p = schema.props.find((x) => x.id === propId);
     if (!p || (p.type !== "select" && p.type !== "status")) {
       throw new Error("group-by must be a select or status column");
     }
-    schema.tableGroupBy = propId;
-  } else {
-    schema.tableGroupBy = undefined;
   }
+  const active = getActiveView(schema);
+  if (active) active.tableGroupBy = next;
+  else schema.tableGroupBy = next;
   await saveSchema(dbId, schema);
   revalidatePath(`/w/${slug}/p/${dbId}`);
 }
@@ -313,14 +321,18 @@ export async function setColumnWidth(
 
 export async function setFilters(slug: string, dbId: string, filters: DbFilter[]) {
   const { schema } = await loadDb(slug, dbId);
-  schema.filters = filters;
+  const active = getActiveView(schema);
+  if (active) active.filters = filters;
+  else schema.filters = filters;
   await saveSchema(dbId, schema);
   revalidatePath(`/w/${slug}/p/${dbId}`);
 }
 
 export async function setSort(slug: string, dbId: string, sort: DbSort[]) {
   const { schema } = await loadDb(slug, dbId);
-  schema.sort = sort;
+  const active = getActiveView(schema);
+  if (active) active.sort = sort;
+  else schema.sort = sort;
   await saveSchema(dbId, schema);
   revalidatePath(`/w/${slug}/p/${dbId}`);
 }
@@ -654,32 +666,122 @@ export async function updateCell(
   revalidatePath(`/w/${slug}/p/${row.parentId}`);
 }
 
-export async function setView(slug: string, dbId: string, view: DbView) {
-  const { schema } = await loadDb(slug, dbId);
-  schema.view = view;
-  if (view === "kanban" && !schema.kanbanGroupBy) {
+function applyViewKindDefaults(schema: DbSchema, target: DbSchema | SavedView, view: DbView) {
+  if (view === "kanban" && !target.kanbanGroupBy) {
     const firstSelect = schema.props.find((p) => p.type === "select");
-    if (firstSelect) schema.kanbanGroupBy = firstSelect.id;
+    if (firstSelect) target.kanbanGroupBy = firstSelect.id;
   }
-  if (view === "calendar" && !schema.calendarDateBy) {
+  if (view === "calendar" && !target.calendarDateBy) {
     const firstDate = schema.props.find((p) => p.type === "date");
-    if (firstDate) schema.calendarDateBy = firstDate.id;
+    if (firstDate) target.calendarDateBy = firstDate.id;
   }
   if (view === "timeline") {
     const dateProps = schema.props.filter((p) => p.type === "date");
-    if (!schema.timelineStartBy && dateProps[0]) schema.timelineStartBy = dateProps[0].id;
-    if (!schema.timelineEndBy && dateProps[1]) schema.timelineEndBy = dateProps[1].id;
-    if (!schema.timelineEndBy && dateProps[0]) schema.timelineEndBy = dateProps[0].id;
+    if (!target.timelineStartBy && dateProps[0]) target.timelineStartBy = dateProps[0].id;
+    if (!target.timelineEndBy && dateProps[1]) target.timelineEndBy = dateProps[1].id;
+    if (!target.timelineEndBy && dateProps[0]) target.timelineEndBy = dateProps[0].id;
+  }
+}
+
+export async function setView(slug: string, dbId: string, view: DbView) {
+  const { schema } = await loadDb(slug, dbId);
+  const active = getActiveView(schema);
+  if (active) {
+    active.kind = view;
+    applyViewKindDefaults(schema, active, view);
+  } else {
+    schema.view = view;
+    applyViewKindDefaults(schema, schema, view);
   }
   await saveSchema(dbId, schema);
   revalidatePath(`/w/${slug}/p/${dbId}`);
+}
+
+export async function addView(slug: string, dbId: string, kind: DbView, name?: string) {
+  await assertEditor(slug);
+  const { schema } = await loadDb(slug, dbId);
+  if (!schema.views) {
+    // First named view — seed with the current legacy single view so users don't lose state.
+    schema.views = [
+      {
+        id: newId("v"),
+        name: "Default",
+        kind: schema.view ?? "table",
+        filters: schema.filters,
+        sort: schema.sort,
+        hiddenColumns: schema.hiddenColumns,
+        columnOrder: schema.columnOrder,
+        tableGroupBy: schema.tableGroupBy,
+        kanbanGroupBy: schema.kanbanGroupBy,
+        calendarDateBy: schema.calendarDateBy,
+        timelineStartBy: schema.timelineStartBy,
+        timelineEndBy: schema.timelineEndBy,
+      },
+    ];
+    if (!schema.activeViewId) schema.activeViewId = schema.views[0].id;
+  }
+  const view: SavedView = {
+    id: newId("v"),
+    name: name?.trim() || defaultViewName(kind, schema.views!.length + 1),
+    kind,
+  };
+  applyViewKindDefaults(schema, view, kind);
+  schema.views!.push(view);
+  schema.activeViewId = view.id;
+  await saveSchema(dbId, schema);
+  revalidatePath(`/w/${slug}/p/${dbId}`);
+  return view.id;
+}
+
+export async function renameView(slug: string, dbId: string, viewId: string, name: string) {
+  await assertEditor(slug);
+  const { schema } = await loadDb(slug, dbId);
+  const view = schema.views?.find((v) => v.id === viewId);
+  if (!view) throw new Error("view not found");
+  view.name = name.trim() || view.name;
+  await saveSchema(dbId, schema);
+  revalidatePath(`/w/${slug}/p/${dbId}`);
+}
+
+export async function deleteView(slug: string, dbId: string, viewId: string) {
+  await assertEditor(slug);
+  const { schema } = await loadDb(slug, dbId);
+  if (!schema.views?.length) return;
+  if (schema.views.length === 1) throw new Error("cannot delete the only view");
+  schema.views = schema.views.filter((v) => v.id !== viewId);
+  if (schema.activeViewId === viewId) schema.activeViewId = schema.views[0]?.id;
+  await saveSchema(dbId, schema);
+  revalidatePath(`/w/${slug}/p/${dbId}`);
+}
+
+export async function setActiveView(slug: string, dbId: string, viewId: string) {
+  await assertEditor(slug);
+  const { schema } = await loadDb(slug, dbId);
+  if (!schema.views?.some((v) => v.id === viewId)) throw new Error("view not found");
+  schema.activeViewId = viewId;
+  await saveSchema(dbId, schema);
+  revalidatePath(`/w/${slug}/p/${dbId}`);
+}
+
+function defaultViewName(kind: DbView, n: number): string {
+  const map: Record<DbView, string> = {
+    table: "Table",
+    kanban: "Board",
+    gallery: "Gallery",
+    calendar: "Calendar",
+    timeline: "Timeline",
+    list: "List",
+  };
+  return `${map[kind]} ${n}`;
 }
 
 export async function setCalendarDate(slug: string, dbId: string, propId: string) {
   const { schema } = await loadDb(slug, dbId);
   const p = schema.props.find((x) => x.id === propId);
   if (!p || p.type !== "date") throw new Error("must be a date column");
-  schema.calendarDateBy = propId;
+  const active = getActiveView(schema);
+  if (active) active.calendarDateBy = propId;
+  else schema.calendarDateBy = propId;
   await saveSchema(dbId, schema);
   revalidatePath(`/w/${slug}/p/${dbId}`);
 }
@@ -696,8 +798,14 @@ export async function setTimelineRange(
   if (!s || s.type !== "date" || !e || e.type !== "date") {
     throw new Error("both must be date columns");
   }
-  schema.timelineStartBy = startPropId;
-  schema.timelineEndBy = endPropId;
+  const active = getActiveView(schema);
+  if (active) {
+    active.timelineStartBy = startPropId;
+    active.timelineEndBy = endPropId;
+  } else {
+    schema.timelineStartBy = startPropId;
+    schema.timelineEndBy = endPropId;
+  }
   await saveSchema(dbId, schema);
   revalidatePath(`/w/${slug}/p/${dbId}`);
 }
@@ -706,7 +814,9 @@ export async function setKanbanGroup(slug: string, dbId: string, propId: string)
   const { schema } = await loadDb(slug, dbId);
   const p = schema.props.find((x) => x.id === propId);
   if (!p || p.type !== "select") throw new Error("group-by must be a select column");
-  schema.kanbanGroupBy = propId;
+  const active = getActiveView(schema);
+  if (active) active.kanbanGroupBy = propId;
+  else schema.kanbanGroupBy = propId;
   await saveSchema(dbId, schema);
   revalidatePath(`/w/${slug}/p/${dbId}`);
 }

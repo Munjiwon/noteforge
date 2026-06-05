@@ -1,4 +1,4 @@
-import type { DbFilter, DbProp, DbSchema } from "./database";
+import { effectiveFilters, effectiveSort, type DbFilter, type DbProp, type DbSchema } from "./database";
 
 type BaseRow = {
   id: string;
@@ -46,8 +46,8 @@ function passes(filter: DbFilter, prop: DbProp, row: BaseRow): boolean {
 }
 
 export function applyQuery<R extends BaseRow>(schema: DbSchema, rows: R[]): R[] {
-  const filters = schema.filters ?? [];
-  const sort = schema.sort ?? [];
+  const filters = effectiveFilters(schema);
+  const sort = effectiveSort(schema);
 
   let out = rows;
 

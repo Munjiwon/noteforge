@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import clsx from "clsx";
 import Link from "next/link";
-import type { DbSchema } from "@/lib/database";
+import { effectiveTimelineRange, type DbSchema } from "@/lib/database";
 
 type Row = {
   id: string;
@@ -40,11 +40,12 @@ export function TimelineView({
   });
 
   const startProp = useMemo(() => {
-    const id = schema.timelineStartBy;
+    const id = effectiveTimelineRange(schema).startBy;
     return id ? schema.props.find((p) => p.id === id && p.type === "date") : null;
   }, [schema]);
   const endProp = useMemo(() => {
-    const id = schema.timelineEndBy ?? schema.timelineStartBy;
+    const { startBy, endBy } = effectiveTimelineRange(schema);
+    const id = endBy ?? startBy;
     return id ? schema.props.find((p) => p.id === id && p.type === "date") : null;
   }, [schema]);
 

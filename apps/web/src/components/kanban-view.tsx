@@ -8,7 +8,7 @@ import {
   deleteRow,
   updateCell,
 } from "@/app/w/[slug]/database-actions";
-import type { DbSchema } from "@/lib/database";
+import { effectiveKanbanGroupBy, type DbSchema } from "@/lib/database";
 
 type Row = {
   id: string;
@@ -37,8 +37,9 @@ export function KanbanView({
   const [dropTarget, setDropTarget] = useState<string | null>(null);
 
   const groupProp = useMemo(() => {
-    if (!schema.kanbanGroupBy) return null;
-    const p = schema.props.find((x) => x.id === schema.kanbanGroupBy);
+    const groupId = effectiveKanbanGroupBy(schema);
+    if (!groupId) return null;
+    const p = schema.props.find((x) => x.id === groupId);
     return p && p.type === "select" ? p : null;
   }, [schema]);
 
@@ -181,7 +182,7 @@ function Card({
   onDragEnd: () => void;
 }) {
   const [, start] = useTransition();
-  const groupId = schema.kanbanGroupBy;
+  const groupId = effectiveKanbanGroupBy(schema);
 
   const visibleProps = schema.props.filter(
     (p) => p.id !== "p_title" && p.id !== groupId,

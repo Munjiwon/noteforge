@@ -26,7 +26,7 @@ import {
   setSort,
   updateCell,
 } from "@/app/w/[slug]/database-actions";
-import { SELECT_COLORS } from "@/lib/database";
+import { effectiveSort, effectiveTableGroupBy, SELECT_COLORS } from "@/lib/database";
 import { duplicatePage, moveRowToEdge, reorderPage } from "@/app/w/[slug]/actions";
 import type { DbProp, DbPropType, DbSchema } from "@/lib/database";
 import {
@@ -320,8 +320,9 @@ export function DatabaseView({
           </thead>
           <tbody>
             {(() => {
-              const groupBy = schema.tableGroupBy
-                ? schema.props.find((p) => p.id === schema.tableGroupBy)
+              const groupId = effectiveTableGroupBy(schema);
+              const groupBy = groupId
+                ? schema.props.find((p) => p.id === groupId)
                 : null;
               const rowProps = (row: Row, idx: number) => ({
                 key: row.id,
@@ -538,7 +539,7 @@ function ColumnHeader({
               <button
                 className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded"
                 onClick={() => {
-                  const next = (schema.sort ?? []).filter((s) => s.propId !== prop.id);
+                  const next = effectiveSort(schema).filter((s) => s.propId !== prop.id);
                   next.unshift({ propId: prop.id, dir: "asc" });
                   start(() => setSort(slug, dbId, next));
                   onOpen(false);
@@ -549,7 +550,7 @@ function ColumnHeader({
               <button
                 className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded"
                 onClick={() => {
-                  const next = (schema.sort ?? []).filter((s) => s.propId !== prop.id);
+                  const next = effectiveSort(schema).filter((s) => s.propId !== prop.id);
                   next.unshift({ propId: prop.id, dir: "desc" });
                   start(() => setSort(slug, dbId, next));
                   onOpen(false);

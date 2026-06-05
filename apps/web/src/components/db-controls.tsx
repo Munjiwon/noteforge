@@ -8,12 +8,18 @@ import {
   setSort,
   setTableGroup,
 } from "@/app/w/[slug]/database-actions";
-import type {
-  DbFilter,
-  DbFilterOp,
-  DbProp,
-  DbSchema,
-  DbSort,
+import {
+  effectiveColumnOrder,
+  effectiveFilters,
+  effectiveHidden,
+  effectiveSort,
+  effectiveTableGroupBy,
+  effectiveViewKind,
+  type DbFilter,
+  type DbFilterOp,
+  type DbProp,
+  type DbSchema,
+  type DbSort,
 } from "@/lib/database";
 
 const newId = () => "f_" + Math.random().toString(36).slice(2, 10);
@@ -71,11 +77,11 @@ export function DbControls({
   const [openColumns, setOpenColumns] = useState(false);
   const [, start] = useTransition();
 
-  const filters = schema.filters ?? [];
-  const sort = schema.sort ?? [];
+  const filters = effectiveFilters(schema);
+  const sort = effectiveSort(schema);
   const filterableProps = schema.props;
   const sortableProps = schema.props;
-  const view = schema.view ?? "table";
+  const view = effectiveViewKind(schema);
   // Group + Columns only make sense in Table view; hide in list/calendar/timeline.
   const showGroupAndColumns = view === "table";
 
@@ -135,7 +141,7 @@ export function DbControls({
           <span className="text-gray-400">Group:</span>
           <select
             disabled={readOnly}
-            value={schema.tableGroupBy ?? ""}
+            value={effectiveTableGroupBy(schema) ?? ""}
             onChange={(e) =>
               start(() =>
                 setTableGroup(slug, dbId, e.target.value || null),
@@ -210,11 +216,11 @@ function ColumnsPanel({
   readOnly: boolean;
 }) {
   const [, start] = useTransition();
-  const hidden = new Set(schema.hiddenColumns ?? []);
+  const hidden = new Set(effectiveHidden(schema));
   // build current order (existing + remaining)
   const order: string[] = (() => {
     const known = new Set(schema.props.map((p) => p.id));
-    const fromSchema = (schema.columnOrder ?? []).filter((id) => known.has(id));
+    const fromSchema = effectiveColumnOrder(schema).filter((id) => known.has(id));
     const remaining = schema.props
       .map((p) => p.id)
       .filter((id) => !fromSchema.includes(id));

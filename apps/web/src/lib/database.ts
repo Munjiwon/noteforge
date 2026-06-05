@@ -93,9 +93,26 @@ export type DbSort = { propId: string; dir: "asc" | "desc" };
 
 export type DbView = "table" | "kanban" | "gallery" | "calendar" | "timeline" | "list";
 
+export type SavedView = {
+  id: string;
+  name: string;
+  kind: DbView;
+  filters?: DbFilter[];
+  sort?: DbSort[];
+  hiddenColumns?: string[];
+  columnOrder?: string[];
+  tableGroupBy?: string;
+  kanbanGroupBy?: string;
+  calendarDateBy?: string;
+  timelineStartBy?: string;
+  timelineEndBy?: string;
+};
+
 export type DbSchema = {
   props: DbProp[];
   view?: DbView;
+  views?: SavedView[];
+  activeViewId?: string;
   kanbanGroupBy?: string;
   calendarDateBy?: string;
   timelineStartBy?: string;
@@ -107,6 +124,57 @@ export type DbSchema = {
   columnWidths?: Record<string, number>;
   tableGroupBy?: string;
 };
+
+export function getActiveView(schema: DbSchema): SavedView | null {
+  if (!schema.views?.length) return null;
+  return schema.views.find((v) => v.id === schema.activeViewId) ?? schema.views[0];
+}
+
+export function effectiveViewKind(schema: DbSchema): DbView {
+  return getActiveView(schema)?.kind ?? schema.view ?? "table";
+}
+
+export function effectiveFilters(schema: DbSchema): DbFilter[] {
+  const v = getActiveView(schema);
+  return (v ? v.filters : schema.filters) ?? [];
+}
+
+export function effectiveSort(schema: DbSchema): DbSort[] {
+  const v = getActiveView(schema);
+  return (v ? v.sort : schema.sort) ?? [];
+}
+
+export function effectiveHidden(schema: DbSchema): string[] {
+  const v = getActiveView(schema);
+  return (v ? v.hiddenColumns : schema.hiddenColumns) ?? [];
+}
+
+export function effectiveColumnOrder(schema: DbSchema): string[] {
+  const v = getActiveView(schema);
+  return (v ? v.columnOrder : schema.columnOrder) ?? [];
+}
+
+export function effectiveTableGroupBy(schema: DbSchema): string | undefined {
+  const v = getActiveView(schema);
+  return v ? v.tableGroupBy : schema.tableGroupBy;
+}
+
+export function effectiveKanbanGroupBy(schema: DbSchema): string | undefined {
+  const v = getActiveView(schema);
+  return v ? v.kanbanGroupBy : schema.kanbanGroupBy;
+}
+
+export function effectiveCalendarDateBy(schema: DbSchema): string | undefined {
+  const v = getActiveView(schema);
+  return v ? v.calendarDateBy : schema.calendarDateBy;
+}
+
+export function effectiveTimelineRange(schema: DbSchema): { startBy?: string; endBy?: string } {
+  const v = getActiveView(schema);
+  return v
+    ? { startBy: v.timelineStartBy, endBy: v.timelineEndBy }
+    : { startBy: schema.timelineStartBy, endBy: schema.timelineEndBy };
+}
 
 export function formatNumber(n: number, format: NumberFormat | undefined): string {
   if (!Number.isFinite(n)) return "";
@@ -153,8 +221,8 @@ export function formatDate(iso: string, format: DateFormat | undefined): string 
 
 export function orderedVisibleProps(schema: DbSchema): DbProp[] {
   const byId = new Map(schema.props.map((p) => [p.id, p]));
-  const hidden = new Set(schema.hiddenColumns ?? []);
-  const orderedIds = (schema.columnOrder ?? []).filter((id) => byId.has(id));
+  const hidden = new Set(effectiveHidden(schema));
+  const orderedIds = effectiveColumnOrder(schema).filter((id) => byId.has(id));
   const remaining = schema.props.filter((p) => !orderedIds.includes(p.id));
   return [...orderedIds.map((id) => byId.get(id)!), ...remaining].filter(
     (p) => p.id === "p_title" || !hidden.has(p.id),

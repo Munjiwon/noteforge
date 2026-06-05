@@ -1,6 +1,6 @@
 "use client";
 
-import type { DbSchema } from "@/lib/database";
+import { effectiveViewKind, type DbSchema } from "@/lib/database";
 import { DatabaseView } from "./database-view";
 import { KanbanView } from "./kanban-view";
 import { GalleryView } from "./gallery-view";
@@ -26,7 +26,7 @@ export function PublicDatabaseView({
   schema: DbSchema;
   rows: Row[];
 }) {
-  const view = schema.view ?? "table";
+  const view = effectiveViewKind(schema);
   const visibleRows = applyQuery(schema, rows);
   // Database actions still require auth → server actions will throw if invoked.
   // Read-only UI (readOnly=true) hides all mutation buttons.

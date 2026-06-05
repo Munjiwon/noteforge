@@ -4,7 +4,7 @@ import { useMemo, useState, useTransition } from "react";
 import clsx from "clsx";
 import Link from "next/link";
 import { addRow, updateCell } from "@/app/w/[slug]/database-actions";
-import type { DbSchema } from "@/lib/database";
+import { effectiveCalendarDateBy, type DbSchema } from "@/lib/database";
 
 type Row = {
   id: string;
@@ -43,8 +43,9 @@ export function CalendarView({
   const [mode, setMode] = useState<"month" | "week">("month");
 
   const dateProp = useMemo(() => {
-    if (!schema.calendarDateBy) return null;
-    const p = schema.props.find((x) => x.id === schema.calendarDateBy);
+    const dateId = effectiveCalendarDateBy(schema);
+    if (!dateId) return null;
+    const p = schema.props.find((x) => x.id === dateId);
     return p && p.type === "date" ? p : null;
   }, [schema]);
 

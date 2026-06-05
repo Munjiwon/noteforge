@@ -9,6 +9,10 @@ import { DbExportCsvButton } from "./db-export-csv";
 import {
   addRow,
   addRowFromTemplate,
+  addView,
+  deleteView,
+  renameView,
+  setActiveView,
   setKanbanGroup,
   setView,
 } from "@/app/w/[slug]/database-actions";
@@ -23,7 +27,7 @@ import { PageCover } from "./page-cover";
 import { ShareButton } from "./share-button";
 import { DbControls } from "./db-controls";
 import { applyQuery } from "@/lib/db-query";
-import type { DbSchema, DbView } from "@/lib/database";
+import { effectiveKanbanGroupBy, effectiveViewKind, getActiveView, type DbSchema, type DbView } from "@/lib/database";
 import type { PermItem } from "./share-button";
 
 
@@ -73,7 +77,9 @@ export function DatabasePage({
   const readOnly = role === "viewer";
   const width = db.width ?? "normal";
   const font = db.font ?? "default";
-  const view: DbView = db.schema.view ?? "table";
+  const view: DbView = effectiveViewKind(db.schema);
+  const savedViews = db.schema.views ?? [];
+  const activeView = getActiveView(db.schema);
   const selectProps = db.schema.props.filter((p) => p.type === "select");
   const [rowSearch, setRowSearch] = useState("");
   const queried = applyQuery(db.schema, rows);
@@ -194,6 +200,17 @@ export function DatabasePage({
         placeholder="Untitled database"
         className="w-full text-4xl font-bold outline-none bg-transparent placeholder-gray-300 mb-1"
       />
+      <ViewTabs
+        slug={slug}
+        dbId={db.id}
+        views={
+          savedViews.length > 0
+            ? savedViews
+            : [{ id: "__legacy", name: "Default", kind: view }]
+        }
+        activeViewId={activeView?.id ?? (savedViews.length === 0 ? "__legacy" : null)}
+        readOnly={readOnly}
+      />
       <div className="flex items-center gap-3 mb-4 text-xs text-gray-500">
         <span>Database</span>
         <span className="text-gray-300">·</span>
@@ -297,7 +314,7 @@ export function DatabasePage({
             <select
               className="bg-transparent border border-gray-200 rounded px-1 py-0.5"
               disabled={readOnly}
-              value={db.schema.kanbanGroupBy ?? selectProps[0].id}
+              value={effectiveKanbanGroupBy(db.schema) ?? selectProps[0].id}
               onChange={(e) =>
                 start(() => setKanbanGroup(slug, db.id, e.target.value))
               }
@@ -460,6 +477,137 @@ function RowAddMenu({
               <span className="truncate flex-1">{tpl.title || "Untitled"}</span>
             </button>
           ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+const VIEW_KIND_ICONS: Record<DbView, string> = {
+  table: "▤",
+  kanban: "▥",
+  gallery: "▦",
+  calendar: "▣",
+  timeline: "▰",
+  list: "≣",
+};
+
+function ViewTabs({
+  slug,
+  dbId,
+  views,
+  activeViewId,
+  readOnly,
+}: {
+  slug: string;
+  dbId: string;
+  views: { id: string; name: string; kind: DbView }[];
+  activeViewId: string | null;
+  readOnly: boolean;
+}) {
+  const [, start] = useTransition();
+  const [adderOpen, setAdderOpen] = useState(false);
+  const [menuFor, setMenuFor] = useState<string | null>(null);
+  return (
+    <div className="flex items-center gap-1 border-b border-gray-200 mb-3 -mx-2 px-2 overflow-x-auto">
+      {views.map((v) => {
+        const active = v.id === activeViewId;
+        return (
+          <div key={v.id} className="relative">
+            <button
+              disabled={readOnly}
+              onClick={() => {
+                if (!active) start(() => setActiveView(slug, dbId, v.id));
+              }}
+              onDoubleClick={() => {
+                if (readOnly) return;
+                const next = prompt("Rename view", v.name);
+                if (next && next.trim() && next.trim() !== v.name) {
+                  start(() => renameView(slug, dbId, v.id, next.trim()));
+                }
+              }}
+              className={
+                "px-3 py-1.5 text-sm border-b-2 -mb-px flex items-center gap-1.5 " +
+                (active
+                  ? "border-gray-900 text-gray-900 font-medium"
+                  : "border-transparent text-gray-500 hover:text-gray-900")
+              }
+            >
+              <span className="text-xs opacity-60">{VIEW_KIND_ICONS[v.kind]}</span>
+              <span>{v.name}</span>
+              {active && !readOnly && (
+                <span
+                  className="ml-1 text-gray-400 hover:text-gray-900"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setMenuFor((cur) => (cur === v.id ? null : v.id));
+                  }}
+                >
+                  ⌄
+                </span>
+              )}
+            </button>
+            {menuFor === v.id && (
+              <div className="absolute z-20 top-full mt-1 left-0 bg-white border border-gray-200 rounded shadow text-xs min-w-[140px]">
+                <button
+                  className="block w-full text-left px-3 py-1.5 hover:bg-black/5"
+                  onClick={() => {
+                    setMenuFor(null);
+                    const next = prompt("Rename view", v.name);
+                    if (next && next.trim() && next.trim() !== v.name) {
+                      start(() => renameView(slug, dbId, v.id, next.trim()));
+                    }
+                  }}
+                >
+                  ✎ Rename
+                </button>
+                {views.length > 1 && (
+                  <button
+                    className="block w-full text-left px-3 py-1.5 hover:bg-black/5 text-red-600"
+                    onClick={() => {
+                      setMenuFor(null);
+                      if (confirm(`Delete view "${v.name}"?`)) {
+                        start(() => deleteView(slug, dbId, v.id));
+                      }
+                    }}
+                  >
+                    🗑 Delete
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      })}
+      {!readOnly && (
+        <div className="relative">
+          <button
+            className="px-2 py-1.5 text-sm text-gray-400 hover:text-gray-900"
+            onClick={() => setAdderOpen((o) => !o)}
+          >
+            + Add view
+          </button>
+          {adderOpen && (
+            <div className="absolute z-20 top-full mt-1 left-0 bg-white border border-gray-200 rounded shadow text-xs min-w-[140px]">
+              {(["table", "kanban", "gallery", "calendar", "timeline", "list"] as DbView[]).map(
+                (k) => (
+                  <button
+                    key={k}
+                    className="block w-full text-left px-3 py-1.5 hover:bg-black/5 capitalize"
+                    onClick={() => {
+                      setAdderOpen(false);
+                      start(async () => {
+                        await addView(slug, dbId, k);
+                      });
+                    }}
+                  >
+                    <span className="opacity-60 mr-1.5">{VIEW_KIND_ICONS[k]}</span>
+                    {k}
+                  </button>
+                ),
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>
