@@ -19,6 +19,7 @@ import {
   recreateRow,
   renameColumn,
   setColumnDescription,
+  setColumnOrder,
   setColumnWidth,
   setDateFormat,
   setNumberFormat,
@@ -157,6 +158,8 @@ export function DatabaseView({
   const [openMenuPropId, setOpenMenuPropId] = useState<string | null>(null);
   const [dragRowId, setDragRowId] = useState<string | null>(null);
   const [dragOverRowId, setDragOverRowId] = useState<string | null>(null);
+  const [dragColId, setDragColId] = useState<string | null>(null);
+  const [dragOverColId, setDragOverColId] = useState<string | null>(null);
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
   const collapseKey = `noteforge:db-collapsed:${dbId}`;
   const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(() => {
@@ -258,34 +261,94 @@ export function DatabaseView({
         <table className="border-collapse w-max min-w-full">
           <thead>
             <tr className="bg-gray-50 border-b border-gray-200">
-              {visibleProps.map((p) => (
-                <th
-                  key={p.id}
-                  className="text-left text-xs font-medium text-gray-600 border-r border-gray-200 last:border-r-0 align-top relative"
-                  style={{
-                    width: schema.columnWidths?.[p.id] ?? undefined,
-                    minWidth: schema.columnWidths?.[p.id] ?? 160,
-                  }}
-                >
-                  <ColumnHeader
-                    prop={p}
-                    slug={slug}
-                    dbId={dbId}
-                    schema={schema}
-                    open={openMenuPropId === p.id}
-                    onOpen={(v) => setOpenMenuPropId(v ? p.id : null)}
-                    readOnly={readOnly}
-                  />
-                  {!readOnly && (
-                    <ColumnResizer
+              {visibleProps.map((p) => {
+                const draggable = !readOnly && p.id !== "p_title";
+                const isDragOver = dragOverColId === p.id && dragColId !== p.id;
+                return (
+                  <th
+                    key={p.id}
+                    draggable={draggable}
+                    onDragStart={
+                      draggable
+                        ? (e) => {
+                            setDragColId(p.id);
+                            e.dataTransfer.effectAllowed = "move";
+                          }
+                        : undefined
+                    }
+                    onDragOver={
+                      draggable
+                        ? (e) => {
+                            if (!dragColId || dragColId === p.id) return;
+                            e.preventDefault();
+                            e.dataTransfer.dropEffect = "move";
+                            if (dragOverColId !== p.id) setDragOverColId(p.id);
+                          }
+                        : undefined
+                    }
+                    onDragLeave={
+                      draggable
+                        ? () => {
+                            if (dragOverColId === p.id) setDragOverColId(null);
+                          }
+                        : undefined
+                    }
+                    onDrop={
+                      draggable
+                        ? (e) => {
+                            e.preventDefault();
+                            if (!dragColId || dragColId === p.id) return;
+                            const ids = visibleProps.map((vp) => vp.id);
+                            const from = ids.indexOf(dragColId);
+                            const to = ids.indexOf(p.id);
+                            if (from < 0 || to < 0) return;
+                            const next = ids.slice();
+                            const [moved] = next.splice(from, 1);
+                            next.splice(to, 0, moved);
+                            // Preserve any non-visible props in original positions at the end.
+                            const allIds = schema.props.map((sp) => sp.id);
+                            const hidden = allIds.filter((id) => !next.includes(id));
+                            start(() => setColumnOrder(slug, dbId, [...next, ...hidden]));
+                            setDragColId(null);
+                            setDragOverColId(null);
+                          }
+                        : undefined
+                    }
+                    onDragEnd={() => {
+                      setDragColId(null);
+                      setDragOverColId(null);
+                    }}
+                    className={
+                      "text-left text-xs font-medium text-gray-600 border-r border-gray-200 last:border-r-0 align-top relative " +
+                      (isDragOver ? "outline outline-2 outline-blue-400 -outline-offset-2" : "")
+                    }
+                    style={{
+                      width: schema.columnWidths?.[p.id] ?? undefined,
+                      minWidth: schema.columnWidths?.[p.id] ?? 160,
+                      cursor: draggable ? "grab" : undefined,
+                      opacity: dragColId === p.id ? 0.4 : undefined,
+                    }}
+                  >
+                    <ColumnHeader
+                      prop={p}
                       slug={slug}
                       dbId={dbId}
-                      propId={p.id}
-                      initialWidth={schema.columnWidths?.[p.id] ?? 160}
+                      schema={schema}
+                      open={openMenuPropId === p.id}
+                      onOpen={(v) => setOpenMenuPropId(v ? p.id : null)}
+                      readOnly={readOnly}
                     />
-                  )}
-                </th>
-              ))}
+                    {!readOnly && (
+                      <ColumnResizer
+                        slug={slug}
+                        dbId={dbId}
+                        propId={p.id}
+                        initialWidth={schema.columnWidths?.[p.id] ?? 160}
+                      />
+                    )}
+                  </th>
+                );
+              })}
               {!readOnly && (
                 <th className="border-r-0 bg-gray-50 align-top" style={{ minWidth: 100 }}>
                   <div className="relative">
