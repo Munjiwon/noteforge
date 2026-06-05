@@ -66,9 +66,9 @@ export default async function SettingsPage({
       }
       workspaceDefaultWidth={
         (ctx.workspace.defaultWidth === "wide" ||
-        ctx.workspace.defaultWidth === "full"
+        ctx.workspace.defaultWidth === "normal"
           ? ctx.workspace.defaultWidth
-          : "normal") as "normal" | "wide" | "full"
+          : "full") as "normal" | "wide" | "full"
       }
       workspaceAiEnabled={ctx.workspace.aiEnabled}
       workspaceBannerUrl={ctx.workspace.bannerUrl ?? null}

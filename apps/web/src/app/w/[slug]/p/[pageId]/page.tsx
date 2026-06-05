@@ -206,7 +206,7 @@ export default async function PageRoute({
             publicViewCount: page.publicViewCount,
             permissions,
             locked: page.locked,
-            width: (page.width === "wide" || page.width === "full" ? page.width : "normal") as "normal" | "wide" | "full",
+            width: (page.width === "wide" || page.width === "normal" ? page.width : "full") as "normal" | "wide" | "full",
             font: (page.font === "serif" || page.font === "mono" ? page.font : "default") as "default" | "serif" | "mono",
           }}
           canChangeSettings={canChangePageSettings}
@@ -387,7 +387,7 @@ export default async function PageRoute({
         page={{
           ...page,
           publicAccess: (page.publicAccess === "view" ? "view" : "none"),
-          width: (page.width === "wide" || page.width === "full" ? page.width : "normal") as "normal" | "wide" | "full",
+          width: (page.width === "wide" || page.width === "normal" ? page.width : "full") as "normal" | "wide" | "full",
           font: (page.font === "serif" || page.font === "mono" ? page.font : "default") as "default" | "serif" | "mono",
           expiresAt: page.expiresAt ? page.expiresAt.toISOString() : null,
           lockedUntil: page.lockedUntil ? page.lockedUntil.toISOString() : null,
@@ -427,9 +427,9 @@ export default async function PageRoute({
         }
         workspaceDefaultWidth={
           (ctx.workspace.defaultWidth === "wide" ||
-          ctx.workspace.defaultWidth === "full"
+          ctx.workspace.defaultWidth === "normal"
             ? ctx.workspace.defaultWidth
-            : "normal") as "normal" | "wide" | "full"
+            : "full") as "normal" | "wide" | "full"
         }
         aiEnabled={ctx.workspace.aiEnabled}
         subPages={subPages}
