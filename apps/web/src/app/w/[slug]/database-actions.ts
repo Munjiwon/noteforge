@@ -514,7 +514,11 @@ export async function addSelectOption(
   return opt;
 }
 
-export async function addRow(slug: string, dbId: string) {
+export async function addRow(
+  slug: string,
+  dbId: string,
+  initialValues?: Record<string, unknown>,
+) {
   const ctx = await assertEditor(slug);
   const max = await prisma.page.aggregate({
     where: { workspaceId: ctx.workspace.id, parentId: dbId },
@@ -528,7 +532,7 @@ export async function addRow(slug: string, dbId: string) {
       title: "",
       position: (max._max.position ?? 0) + 1,
       authorId: ctx.user.id,
-      dataValues: "{}",
+      dataValues: JSON.stringify(initialValues ?? {}),
     },
   });
   revalidatePath(`/w/${slug}/p/${dbId}`);

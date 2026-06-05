@@ -417,6 +417,34 @@ export function DatabaseView({
                 }
               }
               const out: React.ReactNode[] = [];
+              const seedForBucket = (b: { key: string }): Record<string, unknown> => {
+                if (!groupBy) return {};
+                if (b.key === "__none__") return {};
+                if (groupBy.type === "select" || groupBy.type === "status") {
+                  return { [groupBy.id]: b.key };
+                }
+                if (groupBy.type === "date") {
+                  const today = new Date();
+                  const ymd = (d: Date) =>
+                    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+                  if (b.key === "__upcoming7__") {
+                    const d = new Date(today);
+                    d.setDate(d.getDate() + 1);
+                    return { [groupBy.id]: ymd(d) };
+                  }
+                  if (b.key === "__past7__") return { [groupBy.id]: ymd(today) };
+                  if (b.key === "__past30__") {
+                    const d = new Date(today);
+                    d.setDate(d.getDate() - 14);
+                    return { [groupBy.id]: ymd(d) };
+                  }
+                  if (b.key.startsWith("__ym__")) {
+                    const ym = b.key.slice(6); // "YYYY-MM"
+                    return { [groupBy.id]: `${ym}-15` };
+                  }
+                }
+                return {};
+              };
               for (const b of buckets) {
                 if (b.list.length === 0) continue;
                 out.push(
@@ -438,6 +466,24 @@ export function DatabaseView({
                 for (const row of b.list) {
                   const idx = rows.indexOf(row);
                   out.push(<RowRow {...rowProps(row, idx)} />);
+                }
+                if (!readOnly) {
+                  const seed = seedForBucket(b);
+                  out.push(
+                    <tr key={`g-add-${b.key}`}>
+                      <td
+                        colSpan={visibleProps.length + 1}
+                        className="px-3 py-1 text-xs"
+                      >
+                        <button
+                          onClick={() => start(async () => { await addRow(slug, dbId, seed); })}
+                          className="text-gray-400 hover:text-gray-900"
+                        >
+                          + 새 항목
+                        </button>
+                      </td>
+                    </tr>,
+                  );
                 }
               }
               return out;
