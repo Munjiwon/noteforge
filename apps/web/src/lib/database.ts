@@ -93,11 +93,14 @@ export type DbSort = { propId: string; dir: "asc" | "desc" };
 
 export type DbView = "table" | "kanban" | "gallery" | "calendar" | "timeline" | "list";
 
+export type FilterCombinator = "and" | "or";
+
 export type SavedView = {
   id: string;
   name: string;
   kind: DbView;
   filters?: DbFilter[];
+  filterCombinator?: FilterCombinator;
   sort?: DbSort[];
   hiddenColumns?: string[];
   columnOrder?: string[];
@@ -118,6 +121,7 @@ export type DbSchema = {
   timelineStartBy?: string;
   timelineEndBy?: string;
   filters?: DbFilter[];
+  filterCombinator?: FilterCombinator;
   sort?: DbSort[];
   columnOrder?: string[];
   hiddenColumns?: string[];
@@ -137,6 +141,11 @@ export function effectiveViewKind(schema: DbSchema): DbView {
 export function effectiveFilters(schema: DbSchema): DbFilter[] {
   const v = getActiveView(schema);
   return (v ? v.filters : schema.filters) ?? [];
+}
+
+export function effectiveFilterCombinator(schema: DbSchema): FilterCombinator {
+  const v = getActiveView(schema);
+  return (v ? v.filterCombinator : schema.filterCombinator) ?? "and";
 }
 
 export function effectiveSort(schema: DbSchema): DbSort[] {

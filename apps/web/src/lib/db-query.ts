@@ -1,4 +1,11 @@
-import { effectiveFilters, effectiveSort, type DbFilter, type DbProp, type DbSchema } from "./database";
+import {
+  effectiveFilterCombinator,
+  effectiveFilters,
+  effectiveSort,
+  type DbFilter,
+  type DbProp,
+  type DbSchema,
+} from "./database";
 
 type BaseRow = {
   id: string;
@@ -47,17 +54,21 @@ function passes(filter: DbFilter, prop: DbProp, row: BaseRow): boolean {
 
 export function applyQuery<R extends BaseRow>(schema: DbSchema, rows: R[]): R[] {
   const filters = effectiveFilters(schema);
+  const combinator = effectiveFilterCombinator(schema);
   const sort = effectiveSort(schema);
 
   let out = rows;
 
   if (filters.length > 0) {
+    const test = (row: BaseRow, f: DbFilter) => {
+      const prop = schema.props.find((p) => p.id === f.propId);
+      if (!prop) return combinator === "and"; // unknown prop: AND keeps row, OR skips it
+      return passes(f, prop, row);
+    };
     out = rows.filter((row) =>
-      filters.every((f) => {
-        const prop = schema.props.find((p) => p.id === f.propId);
-        if (!prop) return true;
-        return passes(f, prop, row);
-      }),
+      combinator === "or"
+        ? filters.some((f) => test(row, f))
+        : filters.every((f) => test(row, f)),
     );
   }
 

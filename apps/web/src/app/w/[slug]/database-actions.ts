@@ -12,6 +12,7 @@ import {
   DbSort,
   DbView,
   DEFAULT_STATUS_OPTIONS,
+  FilterCombinator,
   getActiveView,
   newId,
   parseSchema,
@@ -324,6 +325,19 @@ export async function setFilters(slug: string, dbId: string, filters: DbFilter[]
   const active = getActiveView(schema);
   if (active) active.filters = filters;
   else schema.filters = filters;
+  await saveSchema(dbId, schema);
+  revalidatePath(`/w/${slug}/p/${dbId}`);
+}
+
+export async function setFilterCombinator(
+  slug: string,
+  dbId: string,
+  combinator: FilterCombinator,
+) {
+  const { schema } = await loadDb(slug, dbId);
+  const active = getActiveView(schema);
+  if (active) active.filterCombinator = combinator;
+  else schema.filterCombinator = combinator;
   await saveSchema(dbId, schema);
   revalidatePath(`/w/${slug}/p/${dbId}`);
 }

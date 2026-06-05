@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import {
   setColumnOrder,
+  setFilterCombinator,
   setFilters,
   setHiddenColumns,
   setSort,
@@ -10,6 +11,7 @@ import {
 } from "@/app/w/[slug]/database-actions";
 import {
   effectiveColumnOrder,
+  effectiveFilterCombinator,
   effectiveFilters,
   effectiveHidden,
   effectiveSort,
@@ -20,6 +22,7 @@ import {
   type DbProp,
   type DbSchema,
   type DbSort,
+  type FilterCombinator,
 } from "@/lib/database";
 
 const newId = () => "f_" + Math.random().toString(36).slice(2, 10);
@@ -78,6 +81,7 @@ export function DbControls({
   const [, start] = useTransition();
 
   const filters = effectiveFilters(schema);
+  const combinator = effectiveFilterCombinator(schema);
   const sort = effectiveSort(schema);
   const filterableProps = schema.props;
   const sortableProps = schema.props;
@@ -88,6 +92,8 @@ export function DbControls({
   const updateFilters = (next: DbFilter[]) =>
     start(() => setFilters(slug, dbId, next));
   const updateSort = (next: DbSort[]) => start(() => setSort(slug, dbId, next));
+  const updateCombinator = (next: FilterCombinator) =>
+    start(() => setFilterCombinator(slug, dbId, next));
 
   return (
     <div className="flex items-center gap-2 text-xs text-gray-500">
@@ -106,8 +112,10 @@ export function DbControls({
           <FilterPanel
             schema={schema}
             filters={filters}
+            combinator={combinator}
             props={filterableProps}
             onChange={updateFilters}
+            onCombinatorChange={updateCombinator}
             onClose={() => setOpenFilter(false)}
             readOnly={readOnly}
           />
@@ -320,15 +328,19 @@ function ColumnsPanel({
 function FilterPanel({
   schema,
   filters,
+  combinator,
   props,
   onChange,
+  onCombinatorChange,
   onClose,
   readOnly,
 }: {
   schema: DbSchema;
   filters: DbFilter[];
+  combinator: FilterCombinator;
   props: DbProp[];
   onChange: (next: DbFilter[]) => void;
+  onCombinatorChange: (next: FilterCombinator) => void;
   onClose: () => void;
   readOnly: boolean;
 }) {
@@ -351,19 +363,38 @@ function FilterPanel({
     <div className="absolute top-full left-0 z-30 mt-1 bg-white border border-gray-200 rounded shadow-lg p-3 min-w-[420px]">
       <div className="flex items-center justify-between mb-2">
         <span className="text-xs font-medium text-gray-700">Filters</span>
-        <button onClick={onClose} className="text-gray-400 hover:text-gray-900">
-          ✕
-        </button>
+        <div className="flex items-center gap-2">
+          {filters.length > 1 && (
+            <select
+              disabled={readOnly}
+              value={combinator}
+              onChange={(e) => onCombinatorChange(e.target.value as FilterCombinator)}
+              className="text-xs border border-gray-200 rounded px-1 py-0.5 bg-white"
+              title="How to combine multiple filters"
+            >
+              <option value="and">Match all (AND)</option>
+              <option value="or">Match any (OR)</option>
+            </select>
+          )}
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-900">
+            ✕
+          </button>
+        </div>
       </div>
       {filters.length === 0 && (
         <p className="text-xs text-gray-400 mb-2">No filters yet.</p>
       )}
       <ul className="space-y-2">
-        {filters.map((f) => {
+        {filters.map((f, idx) => {
           const prop = schema.props.find((p) => p.id === f.propId) ?? props[0];
           const ops = OPS_BY_TYPE[prop.type];
+          const joiner =
+            idx === 0 ? "Where" : combinator === "or" ? "or" : "and";
           return (
             <li key={f.id} className="flex items-center gap-1">
+              <span className="w-12 text-[11px] text-gray-400 uppercase tracking-wide">
+                {joiner}
+              </span>
               <select
                 disabled={readOnly}
                 className="border border-gray-200 rounded px-1 py-0.5 text-xs"
