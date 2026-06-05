@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState, useTransition } from "react";
+import React, { useEffect, useRef, useState, useTransition } from "react";
 import {
   createPage,
   incrementPageView,
@@ -6056,53 +6056,77 @@ export function PageView({
               <span>Row in {rowContext.dbTitle || "Untitled database"}</span>
             </a>
             {rowContext.schema && rowContext.dataValues && (
-              <div className="mt-1 flex flex-wrap gap-1">
+              <div className="mt-2 mb-3 grid grid-cols-[minmax(120px,180px)_1fr] gap-x-3 gap-y-1 text-xs">
                 {rowContext.schema.props
                   .filter((p) => p.id !== "p_title")
-                  .slice(0, 6)
                   .map((p) => {
                     const v = rowContext.dataValues![p.id];
-                    if (v === null || v === undefined || v === "") return null;
-                    let display: React.ReactNode = String(v);
-                    if (p.type === "select" || p.type === "status") {
-                      const opt = p.options?.find((o) => o.id === v);
-                      if (!opt) return null;
-                      display = (
-                        <span
-                          className="inline-block px-1.5 py-0.5 rounded text-[10px]"
-                          style={{ background: opt.color }}
-                        >
-                          {opt.name}
-                        </span>
-                      );
-                    } else if (p.type === "checkbox") {
-                      display = v ? "☑" : "☐";
-                    } else if (p.type === "multi_select" && Array.isArray(v)) {
-                      display = (
-                        <span className="flex flex-wrap gap-0.5">
-                          {(v as string[]).map((id) => {
-                            const opt = p.options?.find((o) => o.id === id);
-                            return opt ? (
-                              <span
-                                key={id}
-                                className="inline-block px-1.5 py-0.5 rounded text-[10px]"
-                                style={{ background: opt.color }}
-                              >
-                                {opt.name}
-                              </span>
-                            ) : null;
-                          })}
-                        </span>
-                      );
+                    const empty =
+                      v === null ||
+                      v === undefined ||
+                      v === "" ||
+                      (Array.isArray(v) && v.length === 0);
+                    let display: React.ReactNode = empty ? (
+                      <span className="text-gray-300">Empty</span>
+                    ) : (
+                      String(v)
+                    );
+                    if (!empty) {
+                      if (p.type === "select" || p.type === "status") {
+                        const opt = p.options?.find((o) => o.id === v);
+                        display = opt ? (
+                          <span
+                            className="inline-block px-1.5 py-0.5 rounded text-[10px]"
+                            style={{ background: opt.color }}
+                          >
+                            {opt.name}
+                          </span>
+                        ) : (
+                          <span className="text-gray-300">Empty</span>
+                        );
+                      } else if (p.type === "checkbox") {
+                        display = v ? "☑" : "☐";
+                      } else if (p.type === "multi_select" && Array.isArray(v)) {
+                        display = (
+                          <span className="flex flex-wrap gap-0.5">
+                            {(v as string[]).map((id) => {
+                              const opt = p.options?.find((o) => o.id === id);
+                              return opt ? (
+                                <span
+                                  key={id}
+                                  className="inline-block px-1.5 py-0.5 rounded text-[10px]"
+                                  style={{ background: opt.color }}
+                                >
+                                  {opt.name}
+                                </span>
+                              ) : null;
+                            })}
+                          </span>
+                        );
+                      } else if (p.type === "url" && typeof v === "string") {
+                        display = (
+                          <a
+                            href={v}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:underline truncate"
+                          >
+                            {v.replace(/^https?:\/\//, "")}
+                          </a>
+                        );
+                      } else if (p.type === "email" && typeof v === "string") {
+                        display = (
+                          <a href={`mailto:${v}`} className="text-blue-600 hover:underline">
+                            {v}
+                          </a>
+                        );
+                      }
                     }
                     return (
-                      <span
-                        key={p.id}
-                        className="inline-flex items-center gap-1 text-[11px] text-gray-600"
-                      >
-                        <span className="text-gray-400">{p.name}:</span>
-                        {display}
-                      </span>
+                      <React.Fragment key={p.id}>
+                        <div className="text-gray-500 truncate">{p.name}</div>
+                        <div className="text-gray-800 truncate">{display}</div>
+                      </React.Fragment>
                     );
                   })}
               </div>
