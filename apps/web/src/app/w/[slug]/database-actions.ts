@@ -761,6 +761,24 @@ export async function renameView(slug: string, dbId: string, viewId: string, nam
   revalidatePath(`/w/${slug}/p/${dbId}`);
 }
 
+export async function duplicateView(slug: string, dbId: string, viewId: string) {
+  await assertEditor(slug);
+  const { schema } = await loadDb(slug, dbId);
+  const src = schema.views?.find((v) => v.id === viewId);
+  if (!src) throw new Error("view not found");
+  const copy: SavedView = {
+    ...src,
+    id: newId("v"),
+    name: src.name + " (copy)",
+  };
+  const idx = schema.views!.indexOf(src);
+  schema.views!.splice(idx + 1, 0, copy);
+  schema.activeViewId = copy.id;
+  await saveSchema(dbId, schema);
+  revalidatePath(`/w/${slug}/p/${dbId}`);
+  return copy.id;
+}
+
 export async function deleteView(slug: string, dbId: string, viewId: string) {
   await assertEditor(slug);
   const { schema } = await loadDb(slug, dbId);

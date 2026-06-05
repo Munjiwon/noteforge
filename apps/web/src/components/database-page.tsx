@@ -11,6 +11,7 @@ import {
   addRowFromTemplate,
   addView,
   deleteView,
+  duplicateView,
   renameView,
   setActiveView,
   setKanbanGroup,
@@ -560,6 +561,19 @@ function ViewTabs({
                   }}
                 >
                   ✎ Rename
+                </button>
+                <button
+                  className="block w-full text-left px-3 py-1.5 hover:bg-black/5"
+                  onClick={() => {
+                    setMenuFor(null);
+                    if (v.id === "__legacy") return;
+                    start(async () => {
+                      await duplicateView(slug, dbId, v.id);
+                    });
+                  }}
+                  disabled={v.id === "__legacy"}
+                >
+                  ⎘ Duplicate
                 </button>
                 {views.length > 1 && (
                   <button
