@@ -6123,27 +6123,14 @@ export function PageView({
               )}
             </div>
             {rowContext.schema && rowContext.dataValues && (
-              <div className="mt-2 mb-3">
-                <div className="grid grid-cols-[minmax(120px,180px)_1fr] gap-x-3 gap-y-1 text-xs">
-                  {rowContext.schema.props
-                    .filter((p) => p.id !== "p_title")
-                    .map((p) => (
-                      <React.Fragment key={p.id}>
-                        <div className="text-gray-500 truncate">{p.name}</div>
-                        <RowPropertyValue
-                          slug={slug}
-                          rowId={page.id}
-                          prop={p}
-                          value={rowContext.dataValues![p.id]}
-                          readOnly={readOnly}
-                        />
-                      </React.Fragment>
-                    ))}
-                </div>
-                {!readOnly && (
-                  <AddRowProperty slug={slug} dbId={rowContext.dbId} />
-                )}
-              </div>
+              <RowPropertiesPanel
+                slug={slug}
+                rowId={page.id}
+                dbId={rowContext.dbId}
+                schema={rowContext.schema}
+                dataValues={rowContext.dataValues}
+                readOnly={readOnly}
+              />
             )}
           </div>
         )}
@@ -6956,6 +6943,79 @@ const ADDABLE_TYPES: { type: string; label: string; icon: string }[] = [
   { type: "files", label: "Files", icon: "📎" },
   { type: "relation", label: "Relation", icon: "↔" },
 ];
+
+function RowPropertiesPanel({
+  slug,
+  rowId,
+  dbId,
+  schema,
+  dataValues,
+  readOnly,
+}: {
+  slug: string;
+  rowId: string;
+  dbId: string;
+  schema: { props: RowProp[] };
+  dataValues: Record<string, unknown>;
+  readOnly: boolean;
+}) {
+  const collapseKey = `noteforge:row-props-collapsed:${dbId}`;
+  const [collapsed, setCollapsed] = useState(() => {
+    if (typeof window === "undefined") return false;
+    try {
+      return localStorage.getItem(collapseKey) === "1";
+    } catch {
+      return false;
+    }
+  });
+  const toggle = () =>
+    setCollapsed((v) => {
+      const next = !v;
+      try {
+        localStorage.setItem(collapseKey, next ? "1" : "0");
+      } catch {}
+      return next;
+    });
+  const filledCount = schema.props.filter((p) => {
+    if (p.id === "p_title") return false;
+    const v = dataValues[p.id];
+    return !(v === null || v === undefined || v === "" || (Array.isArray(v) && v.length === 0));
+  }).length;
+  return (
+    <div className="mt-2 mb-3">
+      <button
+        type="button"
+        onClick={toggle}
+        className="inline-flex items-center gap-1 text-[11px] text-gray-400 hover:text-gray-700 mb-1"
+        title={collapsed ? "Show properties" : "Hide properties"}
+      >
+        <span className="w-3">{collapsed ? "▶" : "▼"}</span>
+        <span>{collapsed ? `${filledCount} properties` : "Properties"}</span>
+      </button>
+      {!collapsed && (
+        <>
+          <div className="grid grid-cols-[minmax(120px,180px)_1fr] gap-x-3 gap-y-1 text-xs">
+            {schema.props
+              .filter((p) => p.id !== "p_title")
+              .map((p) => (
+                <React.Fragment key={p.id}>
+                  <div className="text-gray-500 truncate">{p.name}</div>
+                  <RowPropertyValue
+                    slug={slug}
+                    rowId={rowId}
+                    prop={p}
+                    value={dataValues[p.id]}
+                    readOnly={readOnly}
+                  />
+                </React.Fragment>
+              ))}
+          </div>
+          {!readOnly && <AddRowProperty slug={slug} dbId={dbId} />}
+        </>
+      )}
+    </div>
+  );
+}
 
 function AddRowProperty({ slug, dbId }: { slug: string; dbId: string }) {
   const [open, setOpen] = useState(false);
