@@ -177,6 +177,34 @@ export function PageView({
     void incrementPageView(slug, page.id);
   }, [page.id, slug]);
 
+  // Cmd/Ctrl + ↑/↓ → previous/next row in the parent database.
+  useEffect(() => {
+    if (!rowContext) return;
+    const prevId = rowContext.prevRowId;
+    const nextId = rowContext.nextRowId;
+    if (!prevId && !nextId) return;
+    const handler = (e: KeyboardEvent) => {
+      if (!(e.metaKey || e.ctrlKey)) return;
+      const t = e.target as HTMLElement | null;
+      if (
+        t &&
+        (t.tagName === "INPUT" ||
+          t.tagName === "TEXTAREA" ||
+          t.isContentEditable)
+      )
+        return;
+      if (e.key === "ArrowUp" && prevId) {
+        e.preventDefault();
+        window.location.href = `/w/${slug}/p/${prevId}`;
+      } else if (e.key === "ArrowDown" && nextId) {
+        e.preventDefault();
+        window.location.href = `/w/${slug}/p/${nextId}`;
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [rowContext, slug]);
+
   // Word goal celebration — fire once per page per session when the count
   // crosses the goal.
   useEffect(() => {
@@ -6070,7 +6098,7 @@ export function PageView({
                         ? "hover:bg-gray-100 text-gray-700"
                         : "text-gray-300 pointer-events-none")
                     }
-                    title="Previous row"
+                    title="Previous row (⌘↑)"
                   >
                     ↑
                   </a>
@@ -6082,7 +6110,7 @@ export function PageView({
                         ? "hover:bg-gray-100 text-gray-700"
                         : "text-gray-300 pointer-events-none")
                     }
-                    title="Next row"
+                    title="Next row (⌘↓)"
                   >
                     ↓
                   </a>
