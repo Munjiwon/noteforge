@@ -158,6 +158,26 @@ export function DatabaseView({
   const [dragRowId, setDragRowId] = useState<string | null>(null);
   const [dragOverRowId, setDragOverRowId] = useState<string | null>(null);
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
+  const collapseKey = `noteforge:db-collapsed:${dbId}`;
+  const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(() => {
+    if (typeof window === "undefined") return new Set();
+    try {
+      const raw = localStorage.getItem(collapseKey);
+      return raw ? new Set(JSON.parse(raw) as string[]) : new Set();
+    } catch {
+      return new Set();
+    }
+  });
+  const toggleGroup = (key: string) =>
+    setCollapsedGroups((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      try {
+        localStorage.setItem(collapseKey, JSON.stringify(Array.from(next)));
+      } catch {}
+      return next;
+    });
   const [lastDeleted, setLastDeleted] = useState<
     { title: string; dataValues: Record<string, unknown> } | null
   >(null);
@@ -447,22 +467,32 @@ export function DatabaseView({
               };
               for (const b of buckets) {
                 if (b.list.length === 0) continue;
+                const collapsed = collapsedGroups.has(b.key);
                 out.push(
                   <tr key={`g-${b.key}`} className="bg-gray-50">
                     <td
                       colSpan={visibleProps.length + (readOnly ? 0 : 1)}
-                      className="px-3 py-1 text-xs"
+                      className="px-3 py-1 text-xs select-none"
                     >
-                      <span
-                        className="inline-block px-2 py-0.5 rounded"
-                        style={{ background: b.color }}
+                      <button
+                        type="button"
+                        onClick={() => toggleGroup(b.key)}
+                        className="inline-flex items-center gap-1 text-gray-500 hover:text-gray-900"
+                        title={collapsed ? "Expand group" : "Collapse group"}
                       >
-                        {b.label}
-                      </span>
-                      <span className="ml-2 text-gray-400">{b.list.length}</span>
+                        <span className="w-3 text-[10px]">{collapsed ? "▶" : "▼"}</span>
+                        <span
+                          className="inline-block px-2 py-0.5 rounded"
+                          style={{ background: b.color }}
+                        >
+                          {b.label}
+                        </span>
+                        <span className="text-gray-400">{b.list.length}</span>
+                      </button>
                     </td>
                   </tr>,
                 );
+                if (collapsed) continue;
                 for (const row of b.list) {
                   const idx = rows.indexOf(row);
                   out.push(<RowRow {...rowProps(row, idx)} />);
