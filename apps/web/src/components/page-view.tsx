@@ -6123,21 +6123,26 @@ export function PageView({
               )}
             </div>
             {rowContext.schema && rowContext.dataValues && (
-              <div className="mt-2 mb-3 grid grid-cols-[minmax(120px,180px)_1fr] gap-x-3 gap-y-1 text-xs">
-                {rowContext.schema.props
-                  .filter((p) => p.id !== "p_title")
-                  .map((p) => (
-                    <React.Fragment key={p.id}>
-                      <div className="text-gray-500 truncate">{p.name}</div>
-                      <RowPropertyValue
-                        slug={slug}
-                        rowId={page.id}
-                        prop={p}
-                        value={rowContext.dataValues![p.id]}
-                        readOnly={readOnly}
-                      />
-                    </React.Fragment>
-                  ))}
+              <div className="mt-2 mb-3">
+                <div className="grid grid-cols-[minmax(120px,180px)_1fr] gap-x-3 gap-y-1 text-xs">
+                  {rowContext.schema.props
+                    .filter((p) => p.id !== "p_title")
+                    .map((p) => (
+                      <React.Fragment key={p.id}>
+                        <div className="text-gray-500 truncate">{p.name}</div>
+                        <RowPropertyValue
+                          slug={slug}
+                          rowId={page.id}
+                          prop={p}
+                          value={rowContext.dataValues![p.id]}
+                          readOnly={readOnly}
+                        />
+                      </React.Fragment>
+                    ))}
+                </div>
+                {!readOnly && (
+                  <AddRowProperty slug={slug} dbId={rowContext.dbId} />
+                )}
               </div>
             )}
           </div>
@@ -6934,6 +6939,60 @@ function RowPropertyValue({
   // multi_select / person / files / relation: fall back to read-only display;
   // editing happens in the database table or peek modal.
   return <ReadValue prop={prop} value={value} empty={empty} />;
+}
+
+const ADDABLE_TYPES: { type: string; label: string; icon: string }[] = [
+  { type: "text", label: "Text", icon: "A" },
+  { type: "number", label: "Number", icon: "#" },
+  { type: "select", label: "Select", icon: "▼" },
+  { type: "multi_select", label: "Multi-select", icon: "≣" },
+  { type: "status", label: "Status", icon: "◉" },
+  { type: "date", label: "Date", icon: "📅" },
+  { type: "checkbox", label: "Checkbox", icon: "☑" },
+  { type: "url", label: "URL", icon: "🔗" },
+  { type: "email", label: "Email", icon: "✉" },
+  { type: "phone", label: "Phone", icon: "☎" },
+  { type: "person", label: "Person", icon: "👤" },
+  { type: "files", label: "Files", icon: "📎" },
+  { type: "relation", label: "Relation", icon: "↔" },
+];
+
+function AddRowProperty({ slug, dbId }: { slug: string; dbId: string }) {
+  const [open, setOpen] = useState(false);
+  const [, start] = useTransition();
+  return (
+    <div className="relative mt-2">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="text-[11px] text-gray-400 hover:text-gray-900"
+      >
+        + Add a property
+      </button>
+      {open && (
+        <div className="absolute z-30 left-0 top-full mt-1 bg-white border border-gray-200 rounded shadow text-xs min-w-[170px] max-h-72 overflow-y-auto">
+          {ADDABLE_TYPES.map((t) => (
+            <button
+              key={t.type}
+              className="block w-full text-left px-3 py-1.5 hover:bg-black/5"
+              onClick={() => {
+                setOpen(false);
+                start(async () => {
+                  const { addColumn } = await import(
+                    "@/app/w/[slug]/database-actions"
+                  );
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  await addColumn(slug, dbId, t.type as any);
+                });
+              }}
+            >
+              <span className="inline-block w-5 text-gray-400">{t.icon}</span>
+              {t.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
 
 function ReadValue({
