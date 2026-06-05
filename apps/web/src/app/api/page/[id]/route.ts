@@ -27,15 +27,34 @@ export async function GET(
         select: { id: true, title: true, icon: true, kind: true, dbSchema: true },
       })
     : null;
-  const parentDatabase =
-    parentDb && parentDb.kind === "database"
-      ? {
-          id: parentDb.id,
-          title: parentDb.title,
-          icon: parentDb.icon,
-          schema: parentDb.dbSchema,
-        }
-      : null;
+  let parentDatabase: {
+    id: string;
+    title: string;
+    icon: string | null;
+    schema: string | null;
+    prevRowId: string | null;
+    nextRowId: string | null;
+    rowIndex: number;
+    rowTotal: number;
+  } | null = null;
+  if (parentDb && parentDb.kind === "database") {
+    const siblings = await prisma.page.findMany({
+      where: { parentId: parentDb.id, deletedAt: null },
+      orderBy: [{ position: "asc" }, { createdAt: "asc" }],
+      select: { id: true },
+    });
+    const idx = siblings.findIndex((s) => s.id === page.id);
+    parentDatabase = {
+      id: parentDb.id,
+      title: parentDb.title,
+      icon: parentDb.icon,
+      schema: parentDb.dbSchema,
+      prevRowId: idx > 0 ? siblings[idx - 1].id : null,
+      nextRowId: idx >= 0 && idx < siblings.length - 1 ? siblings[idx + 1].id : null,
+      rowIndex: idx,
+      rowTotal: siblings.length,
+    };
+  }
   const activities = await prisma.pageActivity.findMany({
     where: { pageId: page.id },
     orderBy: { createdAt: "desc" },

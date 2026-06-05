@@ -27,6 +27,10 @@ type ParentDb = {
   title: string;
   icon: string | null;
   schema: string | null;
+  prevRowId?: string | null;
+  nextRowId?: string | null;
+  rowIndex?: number;
+  rowTotal?: number;
 };
 type PageData = {
   id: string;
@@ -134,14 +138,19 @@ function renderPeekValue(prop: RowProp, v: unknown): React.ReactNode {
 }
 
 export function PeekModal({
-  pageId,
+  pageId: initialPageId,
   onClose,
 }: {
   pageId: string | null;
   onClose: () => void;
 }) {
+  const [pageId, setPageId] = useState<string | null>(initialPageId);
   const [data, setData] = useState<PageData | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setPageId(initialPageId);
+  }, [initialPageId]);
 
   useEffect(() => {
     if (!pageId) {
@@ -167,10 +176,19 @@ export function PeekModal({
     if (!pageId) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
+      if ((e.metaKey || e.ctrlKey) && data?.parentDatabase) {
+        if (e.key === "ArrowUp" && data.parentDatabase.prevRowId) {
+          e.preventDefault();
+          setPageId(data.parentDatabase.prevRowId);
+        } else if (e.key === "ArrowDown" && data.parentDatabase.nextRowId) {
+          e.preventDefault();
+          setPageId(data.parentDatabase.nextRowId);
+        }
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [pageId, onClose]);
+  }, [pageId, onClose, data]);
 
   if (!pageId) return null;
 
@@ -183,7 +201,34 @@ export function PeekModal({
     >
       <aside className="bg-white w-[640px] max-w-[95vw] h-full overflow-y-auto shadow-2xl flex flex-col">
         <div className="flex items-center justify-between px-4 py-2 border-b border-gray-100 sticky top-0 bg-white z-10">
-          <span className="text-xs text-gray-500">Peek</span>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-gray-500">Peek</span>
+            {data?.parentDatabase && (data.parentDatabase.prevRowId || data.parentDatabase.nextRowId) && (
+              <span className="inline-flex items-center gap-1 text-xs">
+                <button
+                  onClick={() => data.parentDatabase!.prevRowId && setPageId(data.parentDatabase!.prevRowId)}
+                  disabled={!data.parentDatabase.prevRowId}
+                  className="px-1.5 py-0.5 rounded border border-gray-200 hover:bg-gray-100 text-gray-700 disabled:text-gray-300 disabled:hover:bg-transparent"
+                  title="Previous row (⌘↑)"
+                >
+                  ↑
+                </button>
+                <button
+                  onClick={() => data.parentDatabase!.nextRowId && setPageId(data.parentDatabase!.nextRowId)}
+                  disabled={!data.parentDatabase.nextRowId}
+                  className="px-1.5 py-0.5 rounded border border-gray-200 hover:bg-gray-100 text-gray-700 disabled:text-gray-300 disabled:hover:bg-transparent"
+                  title="Next row (⌘↓)"
+                >
+                  ↓
+                </button>
+                {typeof data.parentDatabase.rowIndex === "number" && typeof data.parentDatabase.rowTotal === "number" && data.parentDatabase.rowIndex >= 0 && (
+                  <span className="text-[10px] text-gray-400">
+                    {data.parentDatabase.rowIndex + 1} / {data.parentDatabase.rowTotal}
+                  </span>
+                )}
+              </span>
+            )}
+          </div>
           <div className="flex gap-2">
             {data && (
               <Link
