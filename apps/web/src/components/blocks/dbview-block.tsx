@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { createReactBlockSpec } from "@blocknote/react";
 import { orderedVisibleProps, type DbSchema } from "@/lib/database";
+import { applyQuery } from "@/lib/db-query";
 
 const ROW_LIMIT = 25;
 
@@ -32,12 +33,14 @@ export const DbViewBlock = createReactBlockSpec(
     type: "dbView",
     propSchema: {
       dbPageId: { default: "" },
+      viewId: { default: "" },
     },
     content: "none",
   },
   {
     render: ({ block, editor }) => {
       const dbId = block.props.dbPageId;
+      const linkedViewId = block.props.viewId;
       const editable = (editor as { isEditable: boolean }).isEditable;
       const [data, setData] = useState<DbPayload | null>(null);
       const [error, setError] = useState<string | null>(null);
@@ -108,7 +111,14 @@ export const DbViewBlock = createReactBlockSpec(
         );
       }
 
-      const visibleCols = orderedVisibleProps(data.schema);
+      const savedViews = data.schema.views ?? [];
+      const effSchema = linkedViewId
+        ? { ...data.schema, activeViewId: linkedViewId }
+        : data.schema;
+      const visibleCols = orderedVisibleProps(effSchema);
+      const filteredRows = applyQuery(effSchema, data.rows);
+      const activeName =
+        savedViews.find((v) => v.id === linkedViewId)?.name ?? "All";
 
       return (
         <div className="border border-gray-200 rounded my-2 overflow-hidden" contentEditable={false}>
@@ -120,8 +130,33 @@ export const DbViewBlock = createReactBlockSpec(
             >
               {data.title || "Untitled"}
             </Link>
+            {savedViews.length > 0 && editable && (
+              <select
+                className="text-xs border border-gray-200 rounded px-1 py-0.5 bg-white"
+                value={linkedViewId}
+                onChange={(e) =>
+                  editor.updateBlock(block, {
+                    props: { dbPageId: dbId, viewId: e.target.value } as Record<string, unknown>,
+                  })
+                }
+                title="Source view"
+              >
+                <option value="">All rows</option>
+                {savedViews.map((v) => (
+                  <option key={v.id} value={v.id}>
+                    {v.name}
+                  </option>
+                ))}
+              </select>
+            )}
+            {savedViews.length > 0 && !editable && linkedViewId && (
+              <span className="text-xs text-gray-500">· {activeName}</span>
+            )}
             <span className="ml-auto text-xs text-gray-500">
-              {data.rows.length} row{data.rows.length === 1 ? "" : "s"}
+              {filteredRows.length} row{filteredRows.length === 1 ? "" : "s"}
+              {filteredRows.length !== data.rows.length && (
+                <span className="text-gray-400"> of {data.rows.length}</span>
+              )}
             </span>
           </div>
           <div className="overflow-x-auto">
@@ -136,7 +171,7 @@ export const DbViewBlock = createReactBlockSpec(
                 </tr>
               </thead>
               <tbody>
-                {data.rows.slice(0, ROW_LIMIT).map((r) => (
+                {filteredRows.slice(0, ROW_LIMIT).map((r) => (
                   <tr
                     key={r.id}
                     className="border-b border-gray-50 last:border-b-0 hover:bg-gray-50 cursor-pointer"
@@ -160,7 +195,7 @@ export const DbViewBlock = createReactBlockSpec(
                     ))}
                   </tr>
                 ))}
-                {data.rows.length === 0 && (
+                {filteredRows.length === 0 && (
                   <tr>
                     <td colSpan={visibleCols.length} className="text-center text-gray-400 py-3">
                       Empty
@@ -170,9 +205,9 @@ export const DbViewBlock = createReactBlockSpec(
               </tbody>
             </table>
           </div>
-          {data.rows.length > ROW_LIMIT && (
+          {filteredRows.length > ROW_LIMIT && (
             <div className="px-3 py-1 text-[11px] text-gray-400 border-t border-gray-100">
-              showing {ROW_LIMIT} of {data.rows.length} —{" "}
+              showing {ROW_LIMIT} of {filteredRows.length} —{" "}
               <Link href={`/w/${data.slug}/p/${data.id}`} className="text-blue-600 hover:underline">
                 open full database
               </Link>
