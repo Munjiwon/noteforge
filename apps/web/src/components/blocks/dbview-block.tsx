@@ -3,7 +3,13 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { createReactBlockSpec } from "@blocknote/react";
-import type { DbSchema } from "@/lib/database";
+import { orderedVisibleProps, type DbSchema } from "@/lib/database";
+
+const ROW_LIMIT = 25;
+
+function openPeek(pageId: string) {
+  window.dispatchEvent(new CustomEvent("db-row-peek", { detail: { pageId } }));
+}
 
 type Hit = {
   id: string;
@@ -102,7 +108,7 @@ export const DbViewBlock = createReactBlockSpec(
         );
       }
 
-      const visibleCols = data.schema.props.slice(0, 4);
+      const visibleCols = orderedVisibleProps(data.schema);
 
       return (
         <div className="border border-gray-200 rounded my-2 overflow-hidden" contentEditable={false}>
@@ -118,47 +124,55 @@ export const DbViewBlock = createReactBlockSpec(
               {data.rows.length} row{data.rows.length === 1 ? "" : "s"}
             </span>
           </div>
-          <table className="w-full text-xs">
-            <thead className="bg-gray-50/50 text-gray-500">
-              <tr>
-                {visibleCols.map((p) => (
-                  <th key={p.id} className="text-left px-2 py-1 border-b border-gray-100 font-normal">
-                    {p.name}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {data.rows.slice(0, 12).map((r) => (
-                <tr key={r.id} className="border-b border-gray-50 last:border-b-0 hover:bg-gray-50">
-                  {visibleCols.map((p, i) => (
-                    <td key={p.id} className="px-2 py-1 truncate max-w-[200px]">
-                      {i === 0 ? (
-                        <Link
-                          href={`/w/${data.slug}/p/${r.id}`}
-                          className="text-gray-800 hover:text-blue-600"
-                        >
-                          {r.title || "Untitled"}
-                        </Link>
-                      ) : (
-                        renderValue(p, r.dataValues[p.id])
-                      )}
-                    </td>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead className="bg-gray-50/50 text-gray-500">
+                <tr>
+                  {visibleCols.map((p) => (
+                    <th key={p.id} className="text-left px-2 py-1 border-b border-gray-100 font-normal whitespace-nowrap">
+                      {p.name}
+                    </th>
                   ))}
                 </tr>
-              ))}
-              {data.rows.length === 0 && (
-                <tr>
-                  <td colSpan={visibleCols.length} className="text-center text-gray-400 py-3">
-                    Empty
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-          {data.rows.length > 12 && (
+              </thead>
+              <tbody>
+                {data.rows.slice(0, ROW_LIMIT).map((r) => (
+                  <tr
+                    key={r.id}
+                    className="border-b border-gray-50 last:border-b-0 hover:bg-gray-50 cursor-pointer"
+                    onClick={(e) => {
+                      // Don't intercept link clicks inside cells (url props etc).
+                      const t = e.target as HTMLElement;
+                      if (t.closest("a")) return;
+                      openPeek(r.id);
+                    }}
+                  >
+                    {visibleCols.map((p, i) => (
+                      <td key={p.id} className="px-2 py-1 truncate max-w-[240px]">
+                        {i === 0 ? (
+                          <span className="text-gray-800">{r.title || "Untitled"}</span>
+                        ) : p.id === "p_title" ? (
+                          <span className="text-gray-800">{r.title || "Untitled"}</span>
+                        ) : (
+                          renderValue(p, r.dataValues[p.id])
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+                {data.rows.length === 0 && (
+                  <tr>
+                    <td colSpan={visibleCols.length} className="text-center text-gray-400 py-3">
+                      Empty
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+          {data.rows.length > ROW_LIMIT && (
             <div className="px-3 py-1 text-[11px] text-gray-400 border-t border-gray-100">
-              showing 12 of {data.rows.length} —{" "}
+              showing {ROW_LIMIT} of {data.rows.length} —{" "}
               <Link href={`/w/${data.slug}/p/${data.id}`} className="text-blue-600 hover:underline">
                 open full database
               </Link>
