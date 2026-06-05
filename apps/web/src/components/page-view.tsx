@@ -111,6 +111,10 @@ export function PageView({
     dbIcon: string | null;
     schema?: { props: { id: string; name: string; type: string; options?: { id: string; name: string; color: string }[] }[] };
     dataValues?: Record<string, unknown>;
+    prevRowId?: string | null;
+    nextRowId?: string | null;
+    rowIndex?: number;
+    rowTotal?: number;
   } | null;
   reactions?: PageReactionGroup[];
   subscribed?: boolean;
@@ -6048,13 +6052,48 @@ export function PageView({
       <div className={`${widthClass(width)} mx-auto px-12 md:px-24 py-10`}>
         {rowContext && (
           <div className="mb-2 no-print">
-            <a
-              href={`/w/${slug}/p/${rowContext.dbId}`}
-              className="text-xs text-gray-500 inline-flex items-center gap-1 hover:text-gray-900"
-            >
-              <span>{rowContext.dbIcon ?? "📊"}</span>
-              <span>Row in {rowContext.dbTitle || "Untitled database"}</span>
-            </a>
+            <div className="flex items-center gap-2 text-xs text-gray-500">
+              <a
+                href={`/w/${slug}/p/${rowContext.dbId}`}
+                className="inline-flex items-center gap-1 hover:text-gray-900"
+              >
+                <span>{rowContext.dbIcon ?? "📊"}</span>
+                <span>Row in {rowContext.dbTitle || "Untitled database"}</span>
+              </a>
+              {(rowContext.prevRowId || rowContext.nextRowId) && (
+                <span className="inline-flex items-center gap-1 ml-2">
+                  <a
+                    href={rowContext.prevRowId ? `/w/${slug}/p/${rowContext.prevRowId}` : undefined}
+                    className={
+                      "px-1.5 py-0.5 rounded border border-gray-200 " +
+                      (rowContext.prevRowId
+                        ? "hover:bg-gray-100 text-gray-700"
+                        : "text-gray-300 pointer-events-none")
+                    }
+                    title="Previous row"
+                  >
+                    ↑
+                  </a>
+                  <a
+                    href={rowContext.nextRowId ? `/w/${slug}/p/${rowContext.nextRowId}` : undefined}
+                    className={
+                      "px-1.5 py-0.5 rounded border border-gray-200 " +
+                      (rowContext.nextRowId
+                        ? "hover:bg-gray-100 text-gray-700"
+                        : "text-gray-300 pointer-events-none")
+                    }
+                    title="Next row"
+                  >
+                    ↓
+                  </a>
+                  {typeof rowContext.rowIndex === "number" && typeof rowContext.rowTotal === "number" && rowContext.rowIndex >= 0 && (
+                    <span className="text-gray-400 text-[10px]">
+                      {rowContext.rowIndex + 1} / {rowContext.rowTotal}
+                    </span>
+                  )}
+                </span>
+              )}
+            </div>
             {rowContext.schema && rowContext.dataValues && (
               <div className="mt-2 mb-3 grid grid-cols-[minmax(120px,180px)_1fr] gap-x-3 gap-y-1 text-xs">
                 {rowContext.schema.props
