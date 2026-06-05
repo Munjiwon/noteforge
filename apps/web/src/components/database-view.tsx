@@ -345,44 +345,97 @@ export function DatabaseView({
                 },
                 onDrop: () => onDropOnRow(idx),
               });
-              if (!groupBy || (groupBy.type !== "select" && groupBy.type !== "status")) {
+              if (
+                !groupBy ||
+                (groupBy.type !== "select" &&
+                  groupBy.type !== "status" &&
+                  groupBy.type !== "date")
+              ) {
                 return rows.map((row, idx) => (
                   <RowRow {...rowProps(row, idx)} />
                 ));
               }
-              const buckets = new Map<string, Row[]>();
-              for (const opt of groupBy.options) buckets.set(opt.id, []);
-              buckets.set("__none__", []);
-              for (const row of rows) {
-                const v = row.dataValues[groupBy.id];
-                const key =
-                  typeof v === "string" && buckets.has(v) ? v : "__none__";
-                buckets.get(key)!.push(row);
+              type Bucket = { key: string; label: string; color: string; list: Row[] };
+              const buckets: Bucket[] = [];
+              const bucketIndex = new Map<string, number>();
+              const addToBucket = (key: string, label: string, color: string, row: Row) => {
+                let idx = bucketIndex.get(key);
+                if (idx === undefined) {
+                  idx = buckets.length;
+                  bucketIndex.set(key, idx);
+                  buckets.push({ key, label, color, list: [] });
+                }
+                buckets[idx].list.push(row);
+              };
+              if (groupBy.type === "date") {
+                const now = new Date();
+                const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                const dayMs = 86400000;
+                for (const row of rows) {
+                  const v = row.dataValues[groupBy.id];
+                  if (typeof v !== "string" || !/^\d{4}-\d{2}-\d{2}/.test(v)) {
+                    addToBucket("__none__", "No " + groupBy.name, "#f3f4f6", row);
+                    continue;
+                  }
+                  const d = new Date(v.slice(0, 10) + "T00:00:00");
+                  const diffDays = Math.round((today.getTime() - d.getTime()) / dayMs);
+                  if (diffDays >= -7 && diffDays <= 0) {
+                    addToBucket("__upcoming7__", "다음 7일 이내", "#dbeafe", row);
+                  } else if (diffDays > 0 && diffDays <= 7) {
+                    addToBucket("__past7__", "지난 7일", "#dcfce7", row);
+                  } else if (diffDays > 7 && diffDays <= 30) {
+                    addToBucket("__past30__", "지난 30일", "#fef9c3", row);
+                  } else {
+                    const y = d.getFullYear();
+                    const m = d.getMonth() + 1;
+                    addToBucket(`__ym__${y}-${String(m).padStart(2, "0")}`, `${y}년 ${m}월`, "#f3f4f6", row);
+                  }
+                }
+                // Order: upcoming → past7 → past30 → year-month (newest first) → none
+                const orderKey = (b: Bucket) => {
+                  if (b.key === "__upcoming7__") return [0, 0];
+                  if (b.key === "__past7__") return [1, 0];
+                  if (b.key === "__past30__") return [2, 0];
+                  if (b.key.startsWith("__ym__")) {
+                    return [3, -Date.parse(b.key.slice(6) + "-01")];
+                  }
+                  return [4, 0];
+                };
+                buckets.sort((a, b) => {
+                  const [oa, sa] = orderKey(a);
+                  const [ob, sb] = orderKey(b);
+                  return oa - ob || sa - sb;
+                });
+              } else {
+                for (const opt of groupBy.options) buckets.push({ key: opt.id, label: opt.name, color: opt.color, list: [] });
+                buckets.push({ key: "__none__", label: "No " + groupBy.name, color: "#f3f4f6", list: [] });
+                for (let i = 0; i < buckets.length; i++) bucketIndex.set(buckets[i].key, i);
+                for (const row of rows) {
+                  const v = row.dataValues[groupBy.id];
+                  const key = typeof v === "string" && bucketIndex.has(v) ? v : "__none__";
+                  addToBucket(key, buckets[bucketIndex.get(key)!].label, buckets[bucketIndex.get(key)!].color, row);
+                }
               }
               const out: React.ReactNode[] = [];
-              for (const [key, list] of buckets.entries()) {
-                if (list.length === 0) continue;
-                const opt =
-                  key === "__none__"
-                    ? { name: "No " + groupBy.name, color: "#f3f4f6" }
-                    : groupBy.options.find((o) => o.id === key)!;
+              for (const b of buckets) {
+                if (b.list.length === 0) continue;
                 out.push(
-                  <tr key={`g-${key}`} className="bg-gray-50">
+                  <tr key={`g-${b.key}`} className="bg-gray-50">
                     <td
                       colSpan={visibleProps.length + (readOnly ? 0 : 1)}
                       className="px-3 py-1 text-xs"
                     >
                       <span
                         className="inline-block px-2 py-0.5 rounded"
-                        style={{ background: opt.color }}
+                        style={{ background: b.color }}
                       >
-                        {opt.name}
+                        {b.label}
                       </span>
-                      <span className="ml-2 text-gray-400">{list.length}</span>
+                      <span className="ml-2 text-gray-400">{b.list.length}</span>
                     </td>
                   </tr>,
                 );
-                for (const row of list) {
+                for (const row of b.list) {
                   const idx = rows.indexOf(row);
                   out.push(<RowRow {...rowProps(row, idx)} />);
                 }
