@@ -21,6 +21,21 @@ export async function GET(
   if (page.workspace.members.length === 0) {
     return NextResponse.json({ error: "forbidden" }, { status: 403 });
   }
+  const parentDb = page.parentId
+    ? await prisma.page.findUnique({
+        where: { id: page.parentId },
+        select: { id: true, title: true, icon: true, kind: true, dbSchema: true },
+      })
+    : null;
+  const parentDatabase =
+    parentDb && parentDb.kind === "database"
+      ? {
+          id: parentDb.id,
+          title: parentDb.title,
+          icon: parentDb.icon,
+          schema: parentDb.dbSchema,
+        }
+      : null;
   const activities = await prisma.pageActivity.findMany({
     where: { pageId: page.id },
     orderBy: { createdAt: "desc" },
@@ -49,6 +64,7 @@ export async function GET(
     author: page.author,
     createdAt: page.createdAt.toISOString(),
     updatedAt: page.updatedAt.toISOString(),
+    parentDatabase,
     activities: activities.map((a) => ({
       id: a.id,
       action: a.action,

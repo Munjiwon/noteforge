@@ -16,6 +16,18 @@ type Activity = {
   createdAt: string;
   user: { name: string; color: string } | null;
 };
+type RowProp = {
+  id: string;
+  name: string;
+  type: string;
+  options?: { id: string; name: string; color: string }[];
+};
+type ParentDb = {
+  id: string;
+  title: string;
+  icon: string | null;
+  schema: string | null;
+};
 type PageData = {
   id: string;
   title: string;
@@ -23,12 +35,33 @@ type PageData = {
   cover: string | null;
   kind: string;
   content: string;
+  dataValues?: string | null;
   slug: string;
   author: { name: string; color: string } | null;
   createdAt: string;
   updatedAt: string;
   activities?: Activity[];
+  parentDatabase?: ParentDb | null;
 };
+
+function parseSchemaJson(s: string | null | undefined): { props: RowProp[] } | null {
+  if (!s) return null;
+  try {
+    const p = JSON.parse(s) as { props?: RowProp[] };
+    return Array.isArray(p.props) ? { props: p.props } : null;
+  } catch {
+    return null;
+  }
+}
+function parseValuesJson(s: string | null | undefined): Record<string, unknown> {
+  if (!s) return {};
+  try {
+    const v = JSON.parse(s);
+    return typeof v === "object" && v ? (v as Record<string, unknown>) : {};
+  } catch {
+    return {};
+  }
+}
 
 function describeActivity(a: Activity): string {
   if (a.action === "cell_changed" && a.meta) {
@@ -52,6 +85,52 @@ function formatVal(v: unknown): string {
   if (v === null || v === undefined) return "";
   if (typeof v === "object") return JSON.stringify(v).slice(0, 60);
   return String(v).slice(0, 60);
+}
+
+function renderPeekValue(prop: RowProp, v: unknown): React.ReactNode {
+  const empty =
+    v === null || v === undefined || v === "" || (Array.isArray(v) && v.length === 0);
+  if (empty) return <span className="text-gray-300">Empty</span>;
+  if (prop.type === "select" || prop.type === "status") {
+    const opt = prop.options?.find((o) => o.id === v);
+    return opt ? (
+      <span className="inline-block px-1.5 py-0.5 rounded text-[10px]" style={{ background: opt.color }}>
+        {opt.name}
+      </span>
+    ) : (
+      <span className="text-gray-300">Empty</span>
+    );
+  }
+  if (prop.type === "checkbox") return <span>{v ? "☑" : "☐"}</span>;
+  if (prop.type === "multi_select" && Array.isArray(v)) {
+    return (
+      <span className="flex flex-wrap gap-0.5">
+        {(v as string[]).map((id) => {
+          const opt = prop.options?.find((o) => o.id === id);
+          return opt ? (
+            <span key={id} className="inline-block px-1.5 py-0.5 rounded text-[10px]" style={{ background: opt.color }}>
+              {opt.name}
+            </span>
+          ) : null;
+        })}
+      </span>
+    );
+  }
+  if (prop.type === "url" && typeof v === "string") {
+    return (
+      <a href={v} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline truncate">
+        {v.replace(/^https?:\/\//, "")}
+      </a>
+    );
+  }
+  if (prop.type === "email" && typeof v === "string") {
+    return (
+      <a href={`mailto:${v}`} className="text-blue-600 hover:underline">
+        {v}
+      </a>
+    );
+  }
+  return <span className="truncate">{String(v)}</span>;
 }
 
 export function PeekModal({
@@ -142,6 +221,35 @@ export function PeekModal({
                 {data.author?.name ?? "Unknown"} · last edited{" "}
                 {new Date(data.updatedAt).toLocaleString()}
               </div>
+              {data.parentDatabase &&
+                (() => {
+                  const schema = parseSchemaJson(data.parentDatabase.schema);
+                  const values = parseValuesJson(data.dataValues);
+                  if (!schema) return null;
+                  return (
+                    <div className="mb-4">
+                      <Link
+                        href={`/w/${data.slug}/p/${data.parentDatabase.id}`}
+                        className="text-xs text-gray-500 inline-flex items-center gap-1 hover:text-gray-900 mb-2"
+                      >
+                        <span>{data.parentDatabase.icon ?? "📊"}</span>
+                        <span>{data.parentDatabase.title || "Untitled database"}</span>
+                      </Link>
+                      <div className="grid grid-cols-[minmax(120px,180px)_1fr] gap-x-3 gap-y-1 text-xs">
+                        {schema.props
+                          .filter((p) => p.id !== "p_title")
+                          .map((p) => (
+                            <div key={p.id} className="contents">
+                              <div className="text-gray-500 truncate">{p.name}</div>
+                              <div className="text-gray-800 truncate">
+                                {renderPeekValue(p, values[p.id])}
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  );
+                })()}
               <StaticEditor content={data.content} />
               {data.activities && data.activities.length > 0 && (
                 <section className="mt-6 border-t border-gray-100 pt-4">
