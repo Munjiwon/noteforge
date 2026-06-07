@@ -643,11 +643,30 @@ export function Sidebar({
                 <span className="block text-gray-500 line-clamp-3">
                   {node.preview || "(no content yet)"}
                 </span>
-                {node.updatedAt && (
-                  <span className="block text-[10px] text-gray-400 mt-1">
-                    {relTime(node.updatedAt)}
-                  </span>
-                )}
+                {(() => {
+                  const author = node.authorId
+                    ? members?.find((m) => m.id === node.authorId)
+                    : null;
+                  if (!author && !node.updatedAt) return null;
+                  return (
+                    <span className="flex items-center gap-1.5 mt-1 text-[10px] text-gray-400">
+                      {author && (
+                        <span className="inline-flex items-center gap-1">
+                          <span
+                            className="inline-block w-3 h-3 rounded-full text-white text-[8px] leading-3 text-center"
+                            style={{ background: author.color }}
+                          >
+                            {author.name.slice(0, 1).toUpperCase()}
+                          </span>
+                          <span className="text-gray-500 truncate max-w-[120px]">
+                            {author.name}
+                          </span>
+                        </span>
+                      )}
+                      {node.updatedAt && <span>· {relTime(node.updatedAt)}</span>}
+                    </span>
+                  );
+                })()}
               </span>
             )}
             {typeof node.count === "number" && node.count > 0 && (
