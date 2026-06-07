@@ -6981,6 +6981,32 @@ function RowPropertiesPanel({
     const v = dataValues[p.id];
     return !(v === null || v === undefined || v === "" || (Array.isArray(v) && v.length === 0));
   }).length;
+  const orderable = schema.props.filter((p) => p.id !== "p_title");
+  const [dragId, setDragId] = useState<string | null>(null);
+  const [, startReorder] = useTransition();
+  const onDrop = (targetId: string) => {
+    if (!dragId || dragId === targetId) {
+      setDragId(null);
+      return;
+    }
+    const ids = orderable.map((p) => p.id);
+    const from = ids.indexOf(dragId);
+    const to = ids.indexOf(targetId);
+    if (from < 0 || to < 0) {
+      setDragId(null);
+      return;
+    }
+    const next = ids.slice();
+    next.splice(from, 1);
+    next.splice(to, 0, dragId);
+    setDragId(null);
+    startReorder(async () => {
+      const { setColumnOrder } = await import(
+        "@/app/w/[slug]/database-actions"
+      );
+      await setColumnOrder(slug, dbId, next);
+    });
+  };
   return (
     <div className="mt-2 mb-3">
       <button
@@ -6994,21 +7020,39 @@ function RowPropertiesPanel({
       </button>
       {!collapsed && (
         <>
-          <div className="grid grid-cols-[minmax(120px,180px)_1fr] gap-x-3 gap-y-1 text-xs">
-            {schema.props
-              .filter((p) => p.id !== "p_title")
-              .map((p) => (
-                <React.Fragment key={p.id}>
-                  <div className="text-gray-500 truncate">{p.name}</div>
-                  <RowPropertyValue
-                    slug={slug}
-                    rowId={rowId}
-                    prop={p}
-                    value={dataValues[p.id]}
-                    readOnly={readOnly}
-                  />
-                </React.Fragment>
-              ))}
+          <div className="grid grid-cols-[14px_minmax(120px,180px)_1fr] gap-x-2 gap-y-1 text-xs items-center">
+            {orderable.map((p) => (
+              <React.Fragment key={p.id}>
+                <div
+                  draggable={!readOnly}
+                  onDragStart={() => setDragId(p.id)}
+                  onDragOver={(e) => {
+                    if (dragId && dragId !== p.id) e.preventDefault();
+                  }}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    onDrop(p.id);
+                  }}
+                  onDragEnd={() => setDragId(null)}
+                  className={
+                    readOnly
+                      ? "text-gray-200 select-none"
+                      : `cursor-grab text-gray-300 hover:text-gray-600 select-none ${dragId === p.id ? "opacity-40" : ""}`
+                  }
+                  title={readOnly ? undefined : "Drag to reorder"}
+                >
+                  ⋮⋮
+                </div>
+                <div className="text-gray-500 truncate">{p.name}</div>
+                <RowPropertyValue
+                  slug={slug}
+                  rowId={rowId}
+                  prop={p}
+                  value={dataValues[p.id]}
+                  readOnly={readOnly}
+                />
+              </React.Fragment>
+            ))}
           </div>
           {!readOnly && <AddRowProperty slug={slug} dbId={dbId} />}
         </>
