@@ -91,6 +91,80 @@ function formatVal(v: unknown): string {
   return String(v).slice(0, 60);
 }
 
+function PeekMultiSelect({
+  prop,
+  value,
+  onChange,
+}: {
+  prop: RowProp;
+  value: unknown;
+  onChange: (next: unknown) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const ids: string[] = Array.isArray(value)
+    ? (value as unknown[]).filter((x): x is string => typeof x === "string")
+    : [];
+  const toggle = (id: string) => {
+    const next = ids.includes(id) ? ids.filter((x) => x !== id) : [...ids, id];
+    onChange(next);
+  };
+  return (
+    <span className="relative inline-block">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="inline-flex flex-wrap gap-0.5 items-center min-h-[18px] hover:ring-1 hover:ring-gray-300 rounded px-1 -mx-1"
+      >
+        {ids.length === 0 ? (
+          <span className="text-gray-300 text-[10px]">Empty</span>
+        ) : (
+          ids.map((id) => {
+            const opt = prop.options?.find((o) => o.id === id);
+            return opt ? (
+              <span
+                key={id}
+                className="inline-block px-1.5 py-0.5 rounded text-[10px]"
+                style={{ background: opt.color }}
+              >
+                {opt.name}
+              </span>
+            ) : null;
+          })
+        )}
+      </button>
+      {open && (
+        <span
+          className="absolute z-50 left-0 top-full mt-1 bg-white border border-gray-200 rounded shadow text-xs min-w-[160px] max-h-48 overflow-y-auto"
+          onMouseLeave={() => setOpen(false)}
+        >
+          {prop.options?.map((o) => {
+            const on = ids.includes(o.id);
+            return (
+              <button
+                key={o.id}
+                type="button"
+                className="flex w-full items-center gap-2 px-2 py-1 hover:bg-black/5 text-left"
+                onClick={() => toggle(o.id)}
+              >
+                <span className="w-3 text-[10px]">{on ? "✓" : ""}</span>
+                <span
+                  className="inline-block px-1.5 py-0.5 rounded text-[10px]"
+                  style={{ background: o.color }}
+                >
+                  {o.name}
+                </span>
+              </button>
+            );
+          })}
+          {prop.options && prop.options.length === 0 && (
+            <span className="block px-2 py-1 text-gray-400">No options</span>
+          )}
+        </span>
+      )}
+    </span>
+  );
+}
+
 function PeekText({
   prop,
   value,
@@ -271,6 +345,15 @@ function renderPeekValue(
     prop.type === "date";
   if (editableSimple && onChange) {
     return <PeekText prop={prop} value={v} onChange={onChange} />;
+  }
+  if (prop.type === "multi_select") {
+    if (!onChange) {
+      if (!Array.isArray(v) || v.length === 0) {
+        return <span className="text-gray-300">Empty</span>;
+      }
+    } else {
+      return <PeekMultiSelect prop={prop} value={v} onChange={onChange} />;
+    }
   }
   if (empty) return <span className="text-gray-300">Empty</span>;
   if (prop.type === "multi_select" && Array.isArray(v)) {
