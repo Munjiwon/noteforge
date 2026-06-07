@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
@@ -89,6 +89,89 @@ function formatVal(v: unknown): string {
   if (v === null || v === undefined) return "";
   if (typeof v === "object") return JSON.stringify(v).slice(0, 60);
   return String(v).slice(0, 60);
+}
+
+const PEEK_ICON_PRESETS = [
+  "📄", "📊", "📝", "📌", "✅", "💡", "🎯", "🔥",
+  "⭐", "📅", "📚", "🏷️", "💬", "🚀", "🧩", "🎨",
+];
+
+function PeekIcon({
+  pageId,
+  icon,
+  fallback,
+  onChange,
+}: {
+  pageId: string;
+  icon: string | null;
+  fallback: string;
+  onChange: (next: string | null) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, [open]);
+  const apply = (next: string | null) => {
+    setOpen(false);
+    onChange(next);
+    void fetch(`/api/page/${encodeURIComponent(pageId)}/icon`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ icon: next }),
+    });
+  };
+  return (
+    <div className="relative mb-2" ref={ref}>
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="text-4xl leading-none hover:bg-gray-100 rounded px-1 -mx-1"
+        title="Change icon"
+      >
+        {icon ?? fallback}
+      </button>
+      {open && (
+        <div className="absolute z-50 left-0 top-full mt-1 bg-white border border-gray-200 rounded shadow p-2 w-[260px]">
+          <div className="grid grid-cols-8 gap-1 mb-2">
+            {PEEK_ICON_PRESETS.map((e) => (
+              <button
+                key={e}
+                type="button"
+                onClick={() => apply(e)}
+                className="text-xl leading-none hover:bg-gray-100 rounded p-1"
+              >
+                {e}
+              </button>
+            ))}
+          </div>
+          <input
+            type="text"
+            placeholder="Custom emoji…"
+            className="w-full text-sm border border-gray-200 rounded px-2 py-1 outline-none"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                const v = (e.currentTarget.value || "").trim();
+                if (v) apply(v);
+              }
+            }}
+          />
+          <button
+            type="button"
+            onClick={() => apply(null)}
+            className="block w-full text-left text-xs text-gray-500 hover:text-red-600 mt-2 px-1"
+          >
+            ✕ Remove
+          </button>
+        </div>
+      )}
+    </div>
+  );
 }
 
 function PeekTitle({
@@ -552,7 +635,15 @@ export function PeekModal({
               )
             )}
             <div className="px-6 py-6">
-              <div className="text-4xl leading-none mb-2">{data.icon ?? (data.kind === "database" ? "📊" : "📄")}</div>
+              <PeekIcon
+                key={`icon-${data.id}`}
+                pageId={data.id}
+                icon={data.icon}
+                fallback={data.kind === "database" ? "📊" : "📄"}
+                onChange={(next) =>
+                  setData((prev) => (prev ? { ...prev, icon: next } : prev))
+                }
+              />
               <PeekTitle
                 key={data.id}
                 pageId={data.id}
