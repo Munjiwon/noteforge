@@ -91,6 +91,66 @@ function formatVal(v: unknown): string {
   return String(v).slice(0, 60);
 }
 
+function PeekSelect({
+  prop,
+  value,
+  onChange,
+}: {
+  prop: RowProp;
+  value: unknown;
+  onChange: (next: unknown) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const opt = prop.options?.find((o) => o.id === value);
+  return (
+    <span className="relative inline-block">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="inline-block px-1.5 py-0.5 rounded text-[10px] hover:ring-1 hover:ring-gray-300"
+        style={opt ? { background: opt.color } : { background: "#f3f4f6", color: "#9ca3af" }}
+      >
+        {opt ? opt.name : "Empty"}
+      </button>
+      {open && (
+        <span
+          className="absolute z-50 left-0 top-full mt-1 bg-white border border-gray-200 rounded shadow text-xs min-w-[140px] max-h-48 overflow-y-auto"
+          onMouseLeave={() => setOpen(false)}
+        >
+          <button
+            type="button"
+            className="block w-full text-left px-2 py-1 hover:bg-black/5 text-gray-400"
+            onClick={() => {
+              setOpen(false);
+              onChange("");
+            }}
+          >
+            ✕ Clear
+          </button>
+          {prop.options?.map((o) => (
+            <button
+              key={o.id}
+              type="button"
+              className="block w-full text-left px-2 py-1 hover:bg-black/5"
+              onClick={() => {
+                setOpen(false);
+                onChange(o.id);
+              }}
+            >
+              <span
+                className="inline-block px-1.5 py-0.5 rounded text-[10px] mr-1"
+                style={{ background: o.color }}
+              >
+                {o.name}
+              </span>
+            </button>
+          ))}
+        </span>
+      )}
+    </span>
+  );
+}
+
 function renderPeekValue(
   prop: RowProp,
   v: unknown,
@@ -112,17 +172,20 @@ function renderPeekValue(
       </button>
     );
   }
-  if (empty) return <span className="text-gray-300">Empty</span>;
   if (prop.type === "select" || prop.type === "status") {
-    const opt = prop.options?.find((o) => o.id === v);
-    return opt ? (
-      <span className="inline-block px-1.5 py-0.5 rounded text-[10px]" style={{ background: opt.color }}>
-        {opt.name}
-      </span>
-    ) : (
-      <span className="text-gray-300">Empty</span>
-    );
+    if (!onChange) {
+      const opt = prop.options?.find((o) => o.id === v);
+      return opt ? (
+        <span className="inline-block px-1.5 py-0.5 rounded text-[10px]" style={{ background: opt.color }}>
+          {opt.name}
+        </span>
+      ) : (
+        <span className="text-gray-300">Empty</span>
+      );
+    }
+    return <PeekSelect prop={prop} value={v} onChange={onChange} />;
   }
+  if (empty) return <span className="text-gray-300">Empty</span>;
   if (prop.type === "multi_select" && Array.isArray(v)) {
     return (
       <span className="flex flex-wrap gap-0.5">
