@@ -91,6 +91,48 @@ function formatVal(v: unknown): string {
   return String(v).slice(0, 60);
 }
 
+function PeekTitle({
+  pageId,
+  initial,
+  onChange,
+}: {
+  pageId: string;
+  initial: string;
+  onChange: (t: string) => void;
+}) {
+  const [v, setV] = useState(initial);
+  useEffect(() => setV(initial), [initial]);
+  const commit = () => {
+    const trimmed = v.trim();
+    if (trimmed === initial.trim()) return;
+    onChange(trimmed);
+    void fetch(`/api/page/${encodeURIComponent(pageId)}/title`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ title: trimmed }),
+    });
+  };
+  return (
+    <input
+      type="text"
+      value={v}
+      onChange={(e) => setV(e.target.value)}
+      onBlur={commit}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          (e.currentTarget as HTMLInputElement).blur();
+        } else if (e.key === "Escape") {
+          setV(initial);
+          (e.currentTarget as HTMLInputElement).blur();
+        }
+      }}
+      placeholder="Untitled"
+      className="w-full text-3xl font-bold mb-4 bg-transparent outline-none placeholder-gray-300"
+    />
+  );
+}
+
 function PeekMultiSelect({
   prop,
   value,
@@ -511,7 +553,14 @@ export function PeekModal({
             )}
             <div className="px-6 py-6">
               <div className="text-4xl leading-none mb-2">{data.icon ?? (data.kind === "database" ? "📊" : "📄")}</div>
-              <h1 className="text-3xl font-bold mb-4">{data.title || "Untitled"}</h1>
+              <PeekTitle
+                key={data.id}
+                pageId={data.id}
+                initial={data.title}
+                onChange={(t) =>
+                  setData((prev) => (prev ? { ...prev, title: t } : prev))
+                }
+              />
               <div className="text-xs text-gray-400 mb-4">
                 {data.author?.name ?? "Unknown"} · last edited{" "}
                 {new Date(data.updatedAt).toLocaleString()}
