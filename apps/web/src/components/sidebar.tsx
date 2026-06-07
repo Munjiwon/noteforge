@@ -508,6 +508,25 @@ export function Sidebar({
 
   const [addMenuFor, setAddMenuFor] = useState<string | "root" | null>(null);
 
+  useEffect(() => {
+    if (addMenuFor === null) return;
+    const onDocDown = (e: MouseEvent) => {
+      const t = e.target as HTMLElement | null;
+      if (!t) return;
+      if (t.closest('[data-sidebar-menu="1"]')) return;
+      setAddMenuFor(null);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setAddMenuFor(null);
+    };
+    document.addEventListener("mousedown", onDocDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDocDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [addMenuFor]);
+
   function renderNode(node: Tree, depth: number) {
     const isOpen = open.has(node.id);
     const hasKids = node.children.length > 0;
@@ -517,6 +536,14 @@ export function Sidebar({
       <li key={node.id}>
         <div
           draggable={role !== "viewer" && !selectMode}
+          onContextMenu={
+            role !== "viewer"
+              ? (e) => {
+                  e.preventDefault();
+                  setAddMenuFor(node.id);
+                }
+              : undefined
+          }
           onDragStart={(e) => {
             e.stopPropagation();
             setDragId(node.id);
@@ -649,7 +676,7 @@ export function Sidebar({
           </button>
           {role !== "viewer" && (
             <>
-              <div className="relative">
+              <div className="relative" data-sidebar-menu="1">
                 <button
                   onClick={() => setAddMenuFor(addMenuFor === node.id ? null : node.id)}
                   className="opacity-0 group-hover:opacity-100 text-gray-500 hover:text-gray-900 px-1"
@@ -658,7 +685,10 @@ export function Sidebar({
                   +
                 </button>
                 {addMenuFor === node.id && (
-                  <div className="absolute top-full right-0 z-30 bg-white shadow-lg border rounded p-1 min-w-[140px]">
+                  <div
+                    data-sidebar-menu="1"
+                    className="absolute top-full right-0 z-30 bg-white shadow-lg border rounded p-1 min-w-[140px]"
+                  >
                     <button
                       className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded"
                       onClick={() => {
@@ -1054,7 +1084,7 @@ export function Sidebar({
           )}
         </span>
         {role !== "viewer" && (
-          <div className="relative">
+          <div className="relative" data-sidebar-menu="1">
             <button
               onClick={() => setAddMenuFor(addMenuFor === "root" ? null : "root")}
               className="text-gray-500 hover:text-gray-900"
@@ -1063,7 +1093,10 @@ export function Sidebar({
               +
             </button>
             {addMenuFor === "root" && (
-              <div className="absolute top-full right-0 z-30 bg-white shadow-lg border rounded p-1 min-w-[140px]">
+              <div
+                data-sidebar-menu="1"
+                className="absolute top-full right-0 z-30 bg-white shadow-lg border rounded p-1 min-w-[140px]"
+              >
                 <button
                   className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded"
                   onClick={() => {
