@@ -91,6 +91,83 @@ function formatVal(v: unknown): string {
   return String(v).slice(0, 60);
 }
 
+function PeekText({
+  prop,
+  value,
+  onChange,
+}: {
+  prop: RowProp;
+  value: unknown;
+  onChange: (next: unknown) => void;
+}) {
+  const initial = value === null || value === undefined ? "" : String(value);
+  const [v, setV] = useState(initial);
+  const [editing, setEditing] = useState(false);
+  useEffect(() => setV(initial), [initial]);
+  const commit = () => {
+    setEditing(false);
+    const trimmed = v;
+    if (trimmed === initial) return;
+    if (prop.type === "number") {
+      const n = trimmed === "" ? null : Number(trimmed);
+      onChange(n === null || Number.isNaN(n) ? null : n);
+    } else {
+      onChange(trimmed === "" ? null : trimmed);
+    }
+  };
+  if (!editing) {
+    const empty = initial === "" || initial === "null";
+    return (
+      <button
+        type="button"
+        onClick={() => setEditing(true)}
+        className="text-left w-full truncate hover:bg-gray-50 rounded px-1 -mx-1"
+      >
+        {empty ? (
+          <span className="text-gray-300">Empty</span>
+        ) : prop.type === "url" ? (
+          <span className="text-blue-600">{initial.replace(/^https?:\/\//, "")}</span>
+        ) : prop.type === "email" ? (
+          <span className="text-blue-600">{initial}</span>
+        ) : (
+          <span>{initial}</span>
+        )}
+      </button>
+    );
+  }
+  const inputType =
+    prop.type === "number"
+      ? "number"
+      : prop.type === "url"
+        ? "url"
+        : prop.type === "email"
+          ? "email"
+          : prop.type === "phone"
+            ? "tel"
+            : prop.type === "date"
+              ? "date"
+              : "text";
+  return (
+    <input
+      autoFocus
+      type={inputType}
+      value={v}
+      onChange={(e) => setV(e.target.value)}
+      onBlur={commit}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          (e.currentTarget as HTMLInputElement).blur();
+        } else if (e.key === "Escape") {
+          setV(initial);
+          setEditing(false);
+        }
+      }}
+      className="w-full bg-white border border-blue-400 rounded px-1 text-xs outline-none"
+    />
+  );
+}
+
 function PeekSelect({
   prop,
   value,
@@ -184,6 +261,16 @@ function renderPeekValue(
       );
     }
     return <PeekSelect prop={prop} value={v} onChange={onChange} />;
+  }
+  const editableSimple =
+    prop.type === "text" ||
+    prop.type === "number" ||
+    prop.type === "url" ||
+    prop.type === "email" ||
+    prop.type === "phone" ||
+    prop.type === "date";
+  if (editableSimple && onChange) {
+    return <PeekText prop={prop} value={v} onChange={onChange} />;
   }
   if (empty) return <span className="text-gray-300">Empty</span>;
   if (prop.type === "multi_select" && Array.isArray(v)) {
