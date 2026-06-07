@@ -60,6 +60,7 @@ export function DatabasePage({
     id: string;
     parentId: string;
     title: string;
+    icon?: string | null;
     cover?: string | null;
     dataValues: Record<string, unknown>;
     createdAt?: string;

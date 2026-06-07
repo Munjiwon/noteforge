@@ -186,6 +186,7 @@ export default async function PageRoute({
         select: {
           id: true,
           title: true,
+          icon: true,
           cover: true,
           dataValues: true,
           createdAt: true,
@@ -234,6 +235,7 @@ export default async function PageRoute({
             id: r.id,
             parentId: page.id,
             title: r.title,
+            icon: r.icon,
             cover: r.cover,
             dataValues: parseValues(r.dataValues),
             createdAt: r.createdAt.toISOString(),

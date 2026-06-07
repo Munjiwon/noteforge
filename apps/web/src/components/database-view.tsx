@@ -45,6 +45,7 @@ type Row = {
   id: string;
   parentId: string;
   title: string;
+  icon?: string | null;
   dataValues: Record<string, unknown>;
   createdAt?: string;
   updatedAt?: string;
@@ -946,6 +947,11 @@ function RowRow({
           className="border-r border-gray-100 last:border-r-0 align-top relative"
         >
           <div className="flex items-center">
+            {p.id === "p_title" && row.icon && (
+              <span className="pl-3 pr-1 text-sm leading-none shrink-0">
+                {row.icon}
+              </span>
+            )}
             <div className="flex-1 min-w-0">
               <Cell
                 prop={p}
