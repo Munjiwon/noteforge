@@ -91,9 +91,27 @@ function formatVal(v: unknown): string {
   return String(v).slice(0, 60);
 }
 
-function renderPeekValue(prop: RowProp, v: unknown): React.ReactNode {
+function renderPeekValue(
+  prop: RowProp,
+  v: unknown,
+  onChange?: (next: unknown) => void,
+): React.ReactNode {
   const empty =
     v === null || v === undefined || v === "" || (Array.isArray(v) && v.length === 0);
+  if (prop.type === "checkbox") {
+    const checked = !!v;
+    if (!onChange) return <span>{checked ? "☑" : "☐"}</span>;
+    return (
+      <button
+        type="button"
+        onClick={() => onChange(!checked)}
+        className="text-base leading-none hover:text-blue-600"
+        title="Toggle"
+      >
+        {checked ? "☑" : "☐"}
+      </button>
+    );
+  }
   if (empty) return <span className="text-gray-300">Empty</span>;
   if (prop.type === "select" || prop.type === "status") {
     const opt = prop.options?.find((o) => o.id === v);
@@ -105,7 +123,6 @@ function renderPeekValue(prop: RowProp, v: unknown): React.ReactNode {
       <span className="text-gray-300">Empty</span>
     );
   }
-  if (prop.type === "checkbox") return <span>{v ? "☑" : "☐"}</span>;
   if (prop.type === "multi_select" && Array.isArray(v)) {
     return (
       <span className="flex flex-wrap gap-0.5">
@@ -271,6 +288,19 @@ export function PeekModal({
                   const schema = parseSchemaJson(data.parentDatabase.schema);
                   const values = parseValuesJson(data.dataValues);
                   if (!schema) return null;
+                  const writeCell = (propId: string, next: unknown) => {
+                    setData((prev) => {
+                      if (!prev) return prev;
+                      const cur = parseValuesJson(prev.dataValues);
+                      const upd: Record<string, unknown> = { ...cur, [propId]: next };
+                      return { ...prev, dataValues: JSON.stringify(upd) };
+                    });
+                    void fetch(`/api/page/${encodeURIComponent(data.id)}/cell`, {
+                      method: "POST",
+                      headers: { "content-type": "application/json" },
+                      body: JSON.stringify({ propId, value: next }),
+                    });
+                  };
                   return (
                     <div className="mb-4">
                       <Link
@@ -287,7 +317,9 @@ export function PeekModal({
                             <div key={p.id} className="contents">
                               <div className="text-gray-500 truncate">{p.name}</div>
                               <div className="text-gray-800 truncate">
-                                {renderPeekValue(p, values[p.id])}
+                                {renderPeekValue(p, values[p.id], (next) =>
+                                  writeCell(p.id, next),
+                                )}
                               </div>
                             </div>
                           ))}
