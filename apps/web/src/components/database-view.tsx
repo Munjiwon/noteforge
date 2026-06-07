@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition, useRef, useEffect, useMemo } from "react";
+import { createPortal } from "react-dom";
 import clsx from "clsx";
 import { evalFormula } from "@/lib/formula";
 import {
@@ -883,8 +884,24 @@ function RowRow({
   onDrop?: () => void;
 }) {
   const [hover, setHover] = useState(false);
+  const [ctxMenu, setCtxMenu] = useState<{ x: number; y: number } | null>(null);
   const [, start] = useTransition();
   const visibleProps = orderedVisibleProps(schema);
+  useEffect(() => {
+    if (!ctxMenu) return;
+    const close = () => setCtxMenu(null);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setCtxMenu(null);
+    };
+    document.addEventListener("mousedown", close);
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("scroll", close, true);
+    return () => {
+      document.removeEventListener("mousedown", close);
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("scroll", close, true);
+    };
+  }, [ctxMenu]);
   return (
     <tr
       draggable={draggable}
@@ -903,6 +920,18 @@ function RowRow({
         e.preventDefault();
         onDrop?.();
       }}
+      onContextMenu={
+        readOnly
+          ? undefined
+          : (e) => {
+              const target = e.target as HTMLElement | null;
+              if (target && target.closest("input, textarea, select, [contenteditable=true], a, button")) {
+                return;
+              }
+              e.preventDefault();
+              setCtxMenu({ x: e.clientX, y: e.clientY });
+            }
+      }
       className={
         "border-b border-gray-100 hover:bg-gray-50 " +
         (isDragging ? "opacity-40 " : "") +
@@ -1012,6 +1041,88 @@ function RowRow({
               </button>
             </>
           )}
+          {ctxMenu && typeof document !== "undefined" &&
+            createPortal(
+              <div
+                className="fixed z-50 bg-white border border-gray-200 rounded shadow-lg text-xs min-w-[160px] py-1"
+                style={{ left: ctxMenu.x, top: ctxMenu.y }}
+                onMouseDown={(e) => e.stopPropagation()}
+              >
+                <button
+                  className="block w-full text-left px-3 py-1.5 hover:bg-black/5"
+                  onClick={() => {
+                    setCtxMenu(null);
+                    window.location.href = `/w/${slug}/p/${row.id}`;
+                  }}
+                >
+                  ↗ Open as page
+                </button>
+                <button
+                  className="block w-full text-left px-3 py-1.5 hover:bg-black/5"
+                  onClick={() => {
+                    setCtxMenu(null);
+                    window.dispatchEvent(
+                      new CustomEvent("db-row-peek", { detail: { pageId: row.id } }),
+                    );
+                  }}
+                >
+                  👁 Open in side peek
+                </button>
+                <button
+                  className="block w-full text-left px-3 py-1.5 hover:bg-black/5"
+                  onClick={() => {
+                    setCtxMenu(null);
+                    const url = `${window.location.origin}/w/${slug}/p/${row.id}`;
+                    void navigator.clipboard?.writeText(url);
+                  }}
+                >
+                  🔗 Copy link
+                </button>
+                <div className="border-t border-gray-100 my-1" />
+                <button
+                  className="block w-full text-left px-3 py-1.5 hover:bg-black/5"
+                  onClick={() => {
+                    setCtxMenu(null);
+                    start(() => moveRowToEdge(slug, row.id, "top"));
+                  }}
+                >
+                  ⤒ Move to top
+                </button>
+                <button
+                  className="block w-full text-left px-3 py-1.5 hover:bg-black/5"
+                  onClick={() => {
+                    setCtxMenu(null);
+                    start(() => moveRowToEdge(slug, row.id, "bottom"));
+                  }}
+                >
+                  ⤓ Move to bottom
+                </button>
+                <button
+                  className="block w-full text-left px-3 py-1.5 hover:bg-black/5"
+                  onClick={() => {
+                    setCtxMenu(null);
+                    start(async () => {
+                      await duplicatePage(slug, row.id);
+                    });
+                  }}
+                >
+                  ⎘ Duplicate
+                </button>
+                <div className="border-t border-gray-100 my-1" />
+                <button
+                  className="block w-full text-left px-3 py-1.5 hover:bg-black/5 text-red-600"
+                  onClick={() => {
+                    setCtxMenu(null);
+                    if (!confirm("Delete this row?")) return;
+                    onBeforeDelete?.(row);
+                    start(() => deleteRow(slug, row.id));
+                  }}
+                >
+                  🗑 Delete
+                </button>
+              </div>,
+              document.body,
+            )}
         </td>
       )}
     </tr>
