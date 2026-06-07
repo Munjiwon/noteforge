@@ -96,6 +96,81 @@ const PEEK_ICON_PRESETS = [
   "⭐", "📅", "📚", "🏷️", "💬", "🚀", "🧩", "🎨",
 ];
 
+function PeekActionsMenu({
+  slug,
+  pageId,
+  onClose,
+  onAfterDelete,
+}: {
+  slug: string;
+  pageId: string;
+  onClose: () => void;
+  onAfterDelete: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, [open]);
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="text-gray-500 hover:text-gray-900 px-1"
+        title="More"
+      >
+        ⋯
+      </button>
+      {open && (
+        <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded shadow text-xs min-w-[160px] py-1 z-50">
+          <button
+            className="block w-full text-left px-3 py-1.5 hover:bg-black/5"
+            onClick={() => {
+              setOpen(false);
+              const url = `${window.location.origin}/w/${slug}/p/${pageId}`;
+              void navigator.clipboard?.writeText(url);
+            }}
+          >
+            🔗 Copy link
+          </button>
+          <button
+            className="block w-full text-left px-3 py-1.5 hover:bg-black/5"
+            onClick={() => {
+              setOpen(false);
+              void fetch(`/api/page/${encodeURIComponent(pageId)}/duplicate`, {
+                method: "POST",
+              });
+            }}
+          >
+            ⎘ Duplicate
+          </button>
+          <div className="border-t border-gray-100 my-1" />
+          <button
+            className="block w-full text-left px-3 py-1.5 hover:bg-black/5 text-red-600"
+            onClick={async () => {
+              setOpen(false);
+              if (!window.confirm("Delete this row?")) return;
+              await fetch(`/api/page/${encodeURIComponent(pageId)}/delete`, {
+                method: "POST",
+              });
+              onAfterDelete();
+              onClose();
+            }}
+          >
+            🗑 Delete
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function PeekIcon({
   pageId,
   icon,
@@ -604,7 +679,7 @@ export function PeekModal({
               </span>
             )}
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             {data && (
               <Link
                 href={`/w/${data.slug}/p/${data.id}`}
@@ -613,6 +688,18 @@ export function PeekModal({
               >
                 ↗ Open full page
               </Link>
+            )}
+            {data && (
+              <PeekActionsMenu
+                slug={data.slug}
+                pageId={data.id}
+                onClose={onClose}
+                onAfterDelete={() => {
+                  const nextId = data.parentDatabase?.nextRowId ?? data.parentDatabase?.prevRowId ?? null;
+                  if (nextId) setPageId(nextId);
+                  else onClose();
+                }}
+              />
             )}
             <button onClick={onClose} className="text-gray-400 hover:text-gray-900">
               ✕
