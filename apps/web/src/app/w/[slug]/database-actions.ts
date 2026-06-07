@@ -262,6 +262,23 @@ export async function setColumnOrder(
   revalidatePath(`/w/${slug}/p/${dbId}`);
 }
 
+export async function addHiddenColumn(
+  slug: string,
+  dbId: string,
+  propId: string,
+) {
+  if (propId === "p_title") return;
+  const { schema } = await loadDb(slug, dbId);
+  const active = getActiveView(schema);
+  const cur = active?.hiddenColumns ?? schema.hiddenColumns ?? [];
+  if (cur.includes(propId)) return;
+  const next = [...cur, propId];
+  if (active) active.hiddenColumns = next;
+  else schema.hiddenColumns = next;
+  await saveSchema(dbId, schema);
+  revalidatePath(`/w/${slug}/p/${dbId}`);
+}
+
 export async function setTableGroup(
   slug: string,
   dbId: string,

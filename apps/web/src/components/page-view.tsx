@@ -7043,7 +7043,12 @@ function RowPropertiesPanel({
                 >
                   ⋮⋮
                 </div>
-                <div className="text-gray-500 truncate">{p.name}</div>
+                <RowPropertyName
+                  slug={slug}
+                  dbId={dbId}
+                  prop={p}
+                  readOnly={readOnly}
+                />
                 <RowPropertyValue
                   slug={slug}
                   rowId={rowId}
@@ -7056,6 +7061,109 @@ function RowPropertiesPanel({
           </div>
           {!readOnly && <AddRowProperty slug={slug} dbId={dbId} />}
         </>
+      )}
+    </div>
+  );
+}
+
+function RowPropertyName({
+  slug,
+  dbId,
+  prop,
+  readOnly,
+}: {
+  slug: string;
+  dbId: string;
+  prop: RowProp;
+  readOnly: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [, start] = useTransition();
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      const t = e.target as Node | null;
+      if (t && ref.current && !ref.current.contains(t)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+  if (readOnly) {
+    return <div className="text-gray-500 truncate">{prop.name}</div>;
+  }
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          setOpen(true);
+        }}
+        className="text-gray-500 truncate text-left w-full hover:text-gray-900"
+        title="Click to edit property"
+      >
+        {prop.name}
+      </button>
+      {open && (
+        <div className="absolute z-30 left-0 top-full mt-1 bg-white border border-gray-200 rounded shadow text-xs min-w-[160px]">
+          <button
+            className="block w-full text-left px-3 py-1.5 hover:bg-black/5"
+            onClick={() => {
+              setOpen(false);
+              const next = window.prompt("Rename property", prop.name);
+              if (next === null) return;
+              const v = next.trim();
+              if (!v || v === prop.name) return;
+              start(async () => {
+                const { renameColumn } = await import(
+                  "@/app/w/[slug]/database-actions"
+                );
+                await renameColumn(slug, dbId, prop.id, v);
+              });
+            }}
+          >
+            ✎ Rename
+          </button>
+          <button
+            className="block w-full text-left px-3 py-1.5 hover:bg-black/5"
+            onClick={() => {
+              setOpen(false);
+              start(async () => {
+                const { addHiddenColumn } = await import(
+                  "@/app/w/[slug]/database-actions"
+                );
+                await addHiddenColumn(slug, dbId, prop.id);
+              });
+            }}
+          >
+            👁 Hide in view
+          </button>
+          <div className="border-t border-gray-100" />
+          <button
+            className="block w-full text-left px-3 py-1.5 hover:bg-black/5 text-red-600"
+            onClick={() => {
+              setOpen(false);
+              if (!window.confirm(`Delete property "${prop.name}"?`)) return;
+              start(async () => {
+                const { deleteColumn } = await import(
+                  "@/app/w/[slug]/database-actions"
+                );
+                await deleteColumn(slug, dbId, prop.id);
+              });
+            }}
+          >
+            🗑 Delete
+          </button>
+        </div>
       )}
     </div>
   );
