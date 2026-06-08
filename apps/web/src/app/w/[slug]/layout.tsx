@@ -167,7 +167,7 @@ export default async function WorkspaceLayout({
       },
     })
     .catch(() => {});
-  const [allPages, trashedPages, workspaces, memberCount, memberList, notifRows, recentRows] = await Promise.all([
+  const [allPages, trashedPages, workspaces, memberCount, memberList, notifRows, recentRows, teamspaceRows] = await Promise.all([
     prisma.page.findMany({
       where: { workspaceId: ctx.workspace.id, deletedAt: null, archivedAt: null },
       orderBy: [{ position: "asc" }, { createdAt: "asc" }],
@@ -186,6 +186,7 @@ export default async function WorkspaceLayout({
         createdAt: true,
         updatedAt: true,
         authorId: true,
+        teamspaceId: true,
       },
     }),
     prisma.page.findMany({
@@ -240,6 +241,13 @@ export default async function WorkspaceLayout({
       orderBy: { updatedAt: "desc" },
       take: 20,
       select: { id: true, title: true, icon: true, kind: true },
+    }),
+    prisma.teamspace.findMany({
+      where: { workspaceId: ctx.workspace.id, archivedAt: null },
+      orderBy: [{ position: "asc" }, { createdAt: "asc" }],
+      include: {
+        members: { where: { userId: ctx.user.id }, select: { role: true } },
+      },
     }),
   ]);
 
@@ -327,7 +335,20 @@ export default async function WorkspaceLayout({
     createdAt: p.createdAt.toISOString(),
     updatedAt: p.updatedAt.toISOString(),
     authorId: p.authorId,
+    teamspaceId: p.teamspaceId,
   }));
+  const teamspaces = teamspaceRows
+    .filter(
+      (t) =>
+        t.access !== "private" || t.members.length > 0 || ctx.role === "owner",
+    )
+    .map((t) => ({
+      id: t.id,
+      name: t.name,
+      icon: t.icon,
+      access: t.access as "open" | "closed" | "private",
+      isMember: t.members.length > 0,
+    }));
   const todayStart = new Date();
   todayStart.setHours(0, 0, 0, 0);
   const todayCount = pages.filter(
@@ -417,6 +438,7 @@ export default async function WorkspaceLayout({
         trashed={trashedPages}
         notifications={notifications}
         recent={recentRows}
+        teamspaces={teamspaces}
         trashStaleCount={trashedPages.filter((t) => t.deletedAt && Date.now() - t.deletedAt.getTime() > 30 * 24 * 3600 * 1000).length}
         user={{ ...ctx.user, avatarUrl: currentUserAvatar }}
         footerStats={{ pageCount: footerPageCount, fileBytes: footerFileBytes }}

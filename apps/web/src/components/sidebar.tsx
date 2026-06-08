@@ -49,6 +49,15 @@ type SidebarPage = {
   createdAt?: string;
   updatedAt?: string;
   authorId?: string | null;
+  teamspaceId?: string | null;
+};
+
+type SidebarTeamspace = {
+  id: string;
+  name: string;
+  icon: string | null;
+  access: "open" | "closed" | "private";
+  isMember: boolean;
 };
 
 type TrashItem = { id: string; title: string; icon: string | null; kind: string; deletedAt?: Date | string | null };
@@ -114,6 +123,7 @@ export function Sidebar({
   footerStats,
   todayCount,
   members,
+  teamspaces,
 }: {
   workspaces: { slug: string; name: string }[];
   currentSlug: string;
@@ -142,6 +152,7 @@ export function Sidebar({
     email: string;
     role: string;
   }[];
+  teamspaces?: SidebarTeamspace[];
 }) {
   const params = useParams<{ pageId?: string }>();
   const activePageId = params.pageId;
@@ -1248,31 +1259,61 @@ export function Sidebar({
         </div>
       )}
       {(() => {
-        const mine = tree.filter((n) => n.authorId === user.id);
-        const workspace = tree.filter((n) => n.authorId !== user.id);
-        if (mine.length === 0 || workspace.length === 0) {
+        const tsList = teamspaces ?? [];
+        const tsById = new Map(tsList.map((t) => [t.id, t]));
+        const inTeamspace = tree.filter((n) => n.teamspaceId && tsById.has(n.teamspaceId));
+        const looseTree = tree.filter((n) => !n.teamspaceId || !tsById.has(n.teamspaceId));
+        const mine = looseTree.filter((n) => n.authorId === user.id);
+        const workspace = looseTree.filter((n) => n.authorId !== user.id);
+        const renderLoose = () => {
+          if (mine.length === 0 || workspace.length === 0) {
+            return <ul>{looseTree.map((n) => renderNode(n, 0))}</ul>;
+          }
           return (
-            <ul className="flex-1 overflow-auto pb-2">{tree.map((n) => renderNode(n, 0))}</ul>
+            <>
+              <details open className="group">
+                <summary className="px-3 py-1 text-[11px] uppercase tracking-wide text-gray-500 cursor-pointer list-none flex items-center gap-1">
+                  <span className="text-gray-400 group-open:rotate-90 transition inline-block">▸</span>
+                  {lang === "ko" ? "내 페이지" : "Private"}
+                  <span className="text-gray-400 ml-auto">{mine.length}</span>
+                </summary>
+                <ul>{mine.map((n) => renderNode(n, 0))}</ul>
+              </details>
+              <details open className="group mt-1">
+                <summary className="px-3 py-1 text-[11px] uppercase tracking-wide text-gray-500 cursor-pointer list-none flex items-center gap-1">
+                  <span className="text-gray-400 group-open:rotate-90 transition inline-block">▸</span>
+                  {lang === "ko" ? "워크스페이스" : "Workspace"}
+                  <span className="text-gray-400 ml-auto">{workspace.length}</span>
+                </summary>
+                <ul>{workspace.map((n) => renderNode(n, 0))}</ul>
+              </details>
+            </>
           );
-        }
+        };
         return (
           <div className="flex-1 overflow-auto pb-2">
-            <details open className="group">
-              <summary className="px-3 py-1 text-[11px] uppercase tracking-wide text-gray-500 cursor-pointer list-none flex items-center gap-1">
-                <span className="text-gray-400 group-open:rotate-90 transition inline-block">▸</span>
-                {lang === "ko" ? "내 페이지" : "Private"}
-                <span className="text-gray-400 ml-auto">{mine.length}</span>
-              </summary>
-              <ul>{mine.map((n) => renderNode(n, 0))}</ul>
-            </details>
-            <details open className="group mt-1">
-              <summary className="px-3 py-1 text-[11px] uppercase tracking-wide text-gray-500 cursor-pointer list-none flex items-center gap-1">
-                <span className="text-gray-400 group-open:rotate-90 transition inline-block">▸</span>
-                {lang === "ko" ? "워크스페이스" : "Workspace"}
-                <span className="text-gray-400 ml-auto">{workspace.length}</span>
-              </summary>
-              <ul>{workspace.map((n) => renderNode(n, 0))}</ul>
-            </details>
+            {tsList.map((ts) => {
+              const ours = inTeamspace.filter((n) => n.teamspaceId === ts.id);
+              const lockIcon =
+                ts.access === "private" ? "🔒" : ts.access === "closed" ? "🔐" : "";
+              return (
+                <details key={ts.id} open className="group mt-1">
+                  <summary className="px-3 py-1 text-[11px] uppercase tracking-wide text-gray-500 cursor-pointer list-none flex items-center gap-1">
+                    <span className="text-gray-400 group-open:rotate-90 transition inline-block">▸</span>
+                    <span>{ts.icon ?? "👥"}</span>
+                    <span className="truncate flex-1">{ts.name}</span>
+                    {lockIcon && <span className="text-[10px]">{lockIcon}</span>}
+                    <span className="text-gray-400">{ours.length}</span>
+                  </summary>
+                  {ours.length === 0 ? (
+                    <p className="px-6 py-1 text-[10px] text-gray-400">No pages yet</p>
+                  ) : (
+                    <ul>{ours.map((n) => renderNode(n, 0))}</ul>
+                  )}
+                </details>
+              );
+            })}
+            {renderLoose()}
           </div>
         );
       })()}
