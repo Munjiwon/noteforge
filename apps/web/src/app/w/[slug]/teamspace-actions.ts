@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { prisma } from "db";
 import { requireWorkspaceMember } from "@/lib/workspace";
 
@@ -219,6 +220,39 @@ export async function movePageToTeamspace(
     data: { teamspaceId, parentId: null },
   });
   revalidatePath(`/w/${slug}`);
+}
+
+export async function createPageInTeamspace(
+  slug: string,
+  teamspaceId: string,
+  kind: "doc" | "database" = "doc",
+) {
+  const ctx = await assertEditor(slug);
+  const ts = await prisma.teamspace.findFirst({
+    where: { id: teamspaceId, workspaceId: ctx.workspace.id },
+  });
+  if (!ts) throw new Error("teamspace not found");
+  const max = await prisma.page.aggregate({
+    where: { workspaceId: ctx.workspace.id, parentId: null, teamspaceId },
+    _max: { position: true },
+  });
+  const page = await prisma.page.create({
+    data: {
+      workspaceId: ctx.workspace.id,
+      teamspaceId,
+      parentId: null,
+      kind,
+      title: "Untitled",
+      ...(kind === "database" ? { dbSchema: '{"props":[{"id":"p_title","name":"Name","type":"text"}]}' } : {}),
+      position: (max._max.position ?? 0) + 1,
+      authorId: ctx.user.id,
+    },
+  });
+  await prisma.pageActivity.create({
+    data: { pageId: page.id, userId: ctx.user.id, action: "created" },
+  });
+  revalidatePath(`/w/${slug}`, "layout");
+  redirect(`/w/${slug}/p/${page.id}`);
 }
 
 export async function reorderTeamspace(

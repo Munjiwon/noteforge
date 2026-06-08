@@ -1316,11 +1316,29 @@ export function Sidebar({
                 ts.access === "private" ? "🔒" : ts.access === "closed" ? "🔐" : "";
               return (
                 <details key={ts.id} open className="group mt-1">
-                  <summary className="px-3 py-1 text-[11px] uppercase tracking-wide text-gray-500 cursor-pointer list-none flex items-center gap-1">
+                  <summary className="px-3 py-1 text-[11px] uppercase tracking-wide text-gray-500 cursor-pointer list-none flex items-center gap-1 group/ts">
                     <span className="text-gray-400 group-open:rotate-90 transition inline-block">▸</span>
                     <span>{ts.icon ?? "👥"}</span>
                     <span className="truncate flex-1">{ts.name}</span>
                     {lockIcon && <span className="text-[10px]">{lockIcon}</span>}
+                    {role !== "viewer" && (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          startTransition(async () => {
+                            const { createPageInTeamspace } = await import(
+                              "@/app/w/[slug]/teamspace-actions"
+                            );
+                            await createPageInTeamspace(currentSlug, ts.id, "doc");
+                          });
+                        }}
+                        className="opacity-0 group-hover/ts:opacity-100 text-gray-400 hover:text-gray-900 px-1 normal-case tracking-normal text-xs"
+                        title="New page in teamspace"
+                      >
+                        +
+                      </button>
+                    )}
                     <span className="text-gray-400">{ours.length}</span>
                   </summary>
                   {ours.length === 0 ? (
