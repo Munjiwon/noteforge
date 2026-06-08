@@ -450,7 +450,7 @@ export default async function WorkspaceLayout({
         <MobileSidebarToggle />
         {children}
       </main>
-      <SearchPalette slug={ctx.workspace.slug} />
+      <SearchPalette slug={ctx.workspace.slug} teamspaces={teamspaces} />
       <ShortcutsHelp />
       {ctx.role !== "viewer" && <QuickAddFab slug={ctx.workspace.slug} />}
       <GlobalPeek />

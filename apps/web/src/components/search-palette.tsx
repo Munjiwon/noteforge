@@ -41,7 +41,13 @@ function escapeReg(s: string) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-export function SearchPalette({ slug }: { slug: string }) {
+export function SearchPalette({
+  slug,
+  teamspaces = [],
+}: {
+  slug: string;
+  teamspaces?: { id: string; name: string; icon: string | null }[];
+}) {
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState("");
   const [hits, setHits] = useState<Hit[]>([]);
@@ -274,6 +280,36 @@ export function SearchPalette({ slug }: { slug: string }) {
           )}
         </div>
         <div className="max-h-[60vh] overflow-y-auto">
+          {q.trim() !== "" &&
+            (() => {
+              const needle = q.trim().toLowerCase();
+              const matches = teamspaces.filter((t) =>
+                t.name.toLowerCase().includes(needle),
+              );
+              if (matches.length === 0) return null;
+              return (
+                <div className="border-b border-gray-100">
+                  <div className="px-3 pt-2 pb-1 text-[10px] uppercase tracking-wide text-gray-400">
+                    Teamspaces
+                  </div>
+                  <ul>
+                    {matches.map((ts) => (
+                      <li key={ts.id}>
+                        <a
+                          href={`/w/${slug}/teamspace/${ts.id}`}
+                          onClick={() => setOpen(false)}
+                          className="block px-3 py-1.5 text-sm hover:bg-gray-100 flex items-center gap-2"
+                        >
+                          <span>{ts.icon ?? "👥"}</span>
+                          <span className="truncate">{ts.name}</span>
+                          <span className="ml-auto text-[10px] text-gray-400">Teamspace</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })()}
           {q.trim() === "" ? (
             <RecentSearches onPick={(t) => setQ(t)} />
           ) : loading && hits.length === 0 ? (
