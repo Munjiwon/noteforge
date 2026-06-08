@@ -1156,6 +1156,24 @@ export function Sidebar({
                 >
                   📥 Import markdown…
                 </button>
+                <button
+                  className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded"
+                  onClick={() => {
+                    setAddMenuFor(null);
+                    const name = window.prompt(
+                      lang === "ko" ? "팀스페이스 이름" : "Teamspace name",
+                    );
+                    if (!name) return;
+                    startTransition(async () => {
+                      const { createTeamspace } = await import(
+                        "@/app/w/[slug]/teamspace-actions"
+                      );
+                      await createTeamspace(currentSlug, name);
+                    });
+                  }}
+                >
+                  👥 {lang === "ko" ? "새 팀스페이스" : "New teamspace"}
+                </button>
                 <div className="border-t my-1" />
                 <div className="text-[10px] uppercase text-gray-400 px-2 pb-1">From template</div>
                 {PAGE_TEMPLATES.map((t) => (
