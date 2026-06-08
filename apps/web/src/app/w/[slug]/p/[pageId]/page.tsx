@@ -86,6 +86,7 @@ export default async function PageRoute({
       status: true,
       slug: true,
       expiresAt: true,
+      teamspaceId: true,
       author: { select: { name: true, color: true, avatarUrl: true } },
     },
   });
@@ -145,7 +146,7 @@ export default async function PageRoute({
   }
 
   // Collect ancestor chain for breadcrumb
-  const ancestors: { id: string; title: string; icon: string | null }[] = [];
+  const ancestors: { id: string; title: string; icon: string | null; href?: string }[] = [];
   let cursor: { id: string; title: string; icon: string | null; parentId: string | null } | null = await prisma.page.findUnique({
     where: { id: page.id },
     select: { id: true, title: true, icon: true, parentId: true },
@@ -159,6 +160,21 @@ export default async function PageRoute({
     if (!parent) break;
     ancestors.unshift({ id: parent.id, title: parent.title, icon: parent.icon });
     cursor = parent;
+  }
+  // Prepend teamspace when the topmost ancestor is itself in one
+  if (page.teamspaceId) {
+    const ts = await prisma.teamspace.findUnique({
+      where: { id: page.teamspaceId },
+      select: { id: true, name: true, icon: true },
+    });
+    if (ts) {
+      ancestors.unshift({
+        id: `teamspace-${ts.id}`,
+        title: ts.name,
+        icon: ts.icon ?? "👥",
+        href: `/w/${params.slug}/teamspace/${ts.id}`,
+      });
+    }
   }
 
   const permRows = await prisma.pagePermission.findMany({

@@ -104,7 +104,7 @@ export function PageView({
     lastEditor?: { name: string; color: string; avatarUrl?: string | null } | null;
   };
   permissions: PermItem[];
-  ancestors?: { id: string; title: string; icon: string | null }[];
+  ancestors?: { id: string; title: string; icon: string | null; href?: string }[];
   rowContext?: {
     dbId: string;
     dbTitle: string;
@@ -6139,7 +6139,7 @@ export function PageView({
             {ancestors.map((a) => (
               <span key={a.id} className="inline-flex items-center gap-1">
                 <a
-                  href={`/w/${slug}/p/${a.id}`}
+                  href={a.href ?? `/w/${slug}/p/${a.id}`}
                   className="hover:text-gray-900 inline-flex items-center gap-1"
                 >
                   <span>{a.icon ?? "📄"}</span>
