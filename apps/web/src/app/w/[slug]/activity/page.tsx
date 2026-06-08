@@ -20,15 +20,19 @@ export default async function ActivityPage({
   searchParams,
 }: {
   params: { slug: string };
-  searchParams: { user?: string; action?: string };
+  searchParams: { user?: string; action?: string; teamspace?: string };
 }) {
   const ctx = await requireWorkspaceMember(params.slug);
   const userFilter = searchParams.user;
   const actionFilter = searchParams.action;
+  const teamspaceFilter = searchParams.teamspace;
   // fetch latest 200 activities scoped to the workspace
   const activities = await prisma.pageActivity.findMany({
     where: {
-      page: { workspaceId: ctx.workspace.id },
+      page: {
+        workspaceId: ctx.workspace.id,
+        ...(teamspaceFilter ? { teamspaceId: teamspaceFilter } : {}),
+      },
       ...(userFilter ? { userId: userFilter } : {}),
       ...(actionFilter ? { action: actionFilter } : {}),
     },
@@ -37,6 +41,11 @@ export default async function ActivityPage({
     include: {
       page: { select: { id: true, title: true, icon: true, kind: true } },
     },
+  });
+  const teamspacesForFilter = await prisma.teamspace.findMany({
+    where: { workspaceId: ctx.workspace.id, archivedAt: null },
+    orderBy: [{ position: "asc" }, { createdAt: "asc" }],
+    select: { id: true, name: true, icon: true },
   });
   // For the filter UI, fetch all distinct authors across recent activity.
   const allUsers = await prisma.user.findMany({
@@ -74,7 +83,7 @@ export default async function ActivityPage({
           href={`/w/${params.slug}/activity`}
           className={
             "px-2 py-0.5 rounded " +
-            (!userFilter && !actionFilter
+            (!userFilter && !actionFilter && !teamspaceFilter
               ? "bg-gray-900 text-white"
               : "hover:bg-black/5 text-gray-500")
           }
@@ -86,6 +95,34 @@ export default async function ActivityPage({
           users={allUsers}
           current={userFilter ?? ""}
         />
+        {teamspacesForFilter.length > 0 && (
+          <>
+            <span className="text-gray-300">·</span>
+            {teamspacesForFilter.map((ts) => {
+              const params2 = new URLSearchParams();
+              params2.set("teamspace", ts.id);
+              if (userFilter) params2.set("user", userFilter);
+              if (actionFilter) params2.set("action", actionFilter);
+              return (
+                <Link
+                  key={ts.id}
+                  href={`/w/${params.slug}/activity?${params2.toString()}`}
+                  className={
+                    "px-2 py-0.5 rounded " +
+                    (teamspaceFilter === ts.id
+                      ? "bg-gray-900 text-white"
+                      : "hover:bg-black/5 text-gray-500")
+                  }
+                  title={`Filter by ${ts.name}`}
+                >
+                  <span className="mr-0.5">{ts.icon ?? "👥"}</span>
+                  {ts.name}
+                </Link>
+              );
+            })}
+            <span className="text-gray-300">·</span>
+          </>
+        )}
         {Object.entries(ACTION_LABEL).map(([k, label]) => (
           <Link
             key={k}
