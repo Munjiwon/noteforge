@@ -35,6 +35,81 @@ export async function createTeamspace(
       },
     },
   });
+  // Seed a welcome page so the teamspace doesn't show up empty.
+  const welcomeContent = [
+    {
+      id: "h1",
+      type: "heading",
+      props: { level: 1, textColor: "default", backgroundColor: "default", textAlignment: "left" },
+      content: [{ type: "text", text: `${trimmed} 시작하기`, styles: {} }],
+      children: [],
+    },
+    {
+      id: "p1",
+      type: "paragraph",
+      props: { textColor: "default", backgroundColor: "default", textAlignment: "left" },
+      content: [
+        {
+          type: "text",
+          text: "이 페이지는 팀스페이스 멤버 모두가 함께 보는 환영 페이지입니다. 멤버 소개, 주요 링크, 공지를 여기에 적어보세요.",
+          styles: {},
+        },
+      ],
+      children: [],
+    },
+    {
+      id: "h2a",
+      type: "heading",
+      props: { level: 2, textColor: "default", backgroundColor: "default", textAlignment: "left" },
+      content: [{ type: "text", text: "📌 주요 링크", styles: {} }],
+      children: [],
+    },
+    {
+      id: "li1",
+      type: "bulletListItem",
+      props: { textColor: "default", backgroundColor: "default", textAlignment: "left" },
+      content: [{ type: "text", text: "회의록 모음", styles: {} }],
+      children: [],
+    },
+    {
+      id: "li2",
+      type: "bulletListItem",
+      props: { textColor: "default", backgroundColor: "default", textAlignment: "left" },
+      content: [{ type: "text", text: "프로젝트 보드", styles: {} }],
+      children: [],
+    },
+    {
+      id: "h2b",
+      type: "heading",
+      props: { level: 2, textColor: "default", backgroundColor: "default", textAlignment: "left" },
+      content: [{ type: "text", text: "👥 멤버", styles: {} }],
+      children: [],
+    },
+    {
+      id: "p2",
+      type: "paragraph",
+      props: { textColor: "default", backgroundColor: "default", textAlignment: "left" },
+      content: [
+        {
+          type: "text",
+          text: "팀스페이스 헤더의 ⋯ 메뉴 → 멤버 관리에서 워크스페이스 멤버를 초대할 수 있습니다.",
+          styles: {},
+        },
+      ],
+      children: [],
+    },
+  ];
+  await prisma.page.create({
+    data: {
+      workspaceId: ctx.workspace.id,
+      teamspaceId: ts.id,
+      title: `${trimmed} home`,
+      icon: options?.icon ?? "👋",
+      content: JSON.stringify(welcomeContent),
+      position: 0,
+      authorId: ctx.user.id,
+    },
+  });
   revalidatePath(`/w/${slug}`);
   return ts.id;
 }
