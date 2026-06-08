@@ -51,6 +51,7 @@ export function SettingsClient({
   stats,
   tokens = [],
   profile = null,
+  teamspaces = [],
 }: {
   slug: string;
   workspaceName: string;
@@ -76,6 +77,16 @@ export function SettingsClient({
   stats?: { pageCount: number; commentCount: number; lastActivityAt: string | null };
   tokens?: { id: string; name: string; lastUsedAt: string | null; createdAt: string }[];
   profile?: { name: string; color: string; avatarUrl: string | null } | null;
+  teamspaces?: {
+    id: string;
+    name: string;
+    icon: string | null;
+    access: "open" | "closed" | "private";
+    description: string | null;
+    memberCount: number;
+    pageCount: number;
+    archived: boolean;
+  }[];
 }) {
   const [name, setName] = useState(workspaceName);
   const [icon, setIcon] = useState(workspaceIcon);
@@ -350,6 +361,8 @@ export function SettingsClient({
           </div>
         </section>
       )}
+
+      <TeamspacesSection slug={slug} teamspaces={teamspaces} canEdit={role !== "viewer"} />
 
       <section>
         <h2 className="text-sm font-medium text-gray-700 mb-2">Members ({members.length})</h2>
@@ -936,5 +949,151 @@ function ClipperHint({ slug }: { slug: string }) {
         {copied ? "Copied!" : "Copy"}
       </button>
     </details>
+  );
+}
+
+function TeamspacesSection({
+  slug,
+  teamspaces,
+  canEdit,
+}: {
+  slug: string;
+  teamspaces: {
+    id: string;
+    name: string;
+    icon: string | null;
+    access: "open" | "closed" | "private";
+    description: string | null;
+    memberCount: number;
+    pageCount: number;
+    archived: boolean;
+  }[];
+  canEdit: boolean;
+}) {
+  const [, start] = useTransition();
+  const active = teamspaces.filter((t) => !t.archived);
+  const archived = teamspaces.filter((t) => t.archived);
+  return (
+    <section>
+      <div className="flex items-center justify-between mb-2">
+        <h2 className="text-sm font-medium text-gray-700">
+          Teamspaces ({active.length})
+        </h2>
+        {canEdit && (
+          <button
+            onClick={() => {
+              const name = window.prompt("Teamspace name");
+              if (!name) return;
+              start(async () => {
+                const { createTeamspace } = await import(
+                  "@/app/w/[slug]/teamspace-actions"
+                );
+                await createTeamspace(slug, name);
+              });
+            }}
+            className="text-xs text-blue-600 hover:text-blue-800"
+          >
+            + New teamspace
+          </button>
+        )}
+      </div>
+      {active.length === 0 && (
+        <p className="text-xs text-gray-400">No teamspaces yet.</p>
+      )}
+      <ul className="divide-y divide-gray-100">
+        {active.map((t) => (
+          <li key={t.id} className="py-2 flex items-center gap-3">
+            <span className="text-xl">{t.icon ?? "👥"}</span>
+            <div className="flex-1 min-w-0">
+              <a
+                href={`/w/${slug}/teamspace/${t.id}`}
+                className="text-sm font-medium text-gray-900 hover:underline truncate block"
+              >
+                {t.name}
+              </a>
+              <div className="text-[11px] text-gray-500 truncate">
+                {t.access === "private" ? "🔒 Private" : t.access === "closed" ? "🔐 Closed" : "🌐 Open"}
+                <span className="mx-1">·</span>
+                {t.memberCount} member{t.memberCount === 1 ? "" : "s"}
+                <span className="mx-1">·</span>
+                {t.pageCount} page{t.pageCount === 1 ? "" : "s"}
+                {t.description && (
+                  <>
+                    <span className="mx-1">·</span>
+                    <span>{t.description}</span>
+                  </>
+                )}
+              </div>
+            </div>
+            {canEdit && (
+              <>
+                <button
+                  onClick={() => {
+                    start(async () => {
+                      const { archiveTeamspace } = await import(
+                        "@/app/w/[slug]/teamspace-actions"
+                      );
+                      await archiveTeamspace(slug, t.id);
+                    });
+                  }}
+                  className="text-[11px] text-gray-500 hover:text-gray-900 px-2"
+                >
+                  Archive
+                </button>
+                <button
+                  onClick={() => {
+                    if (
+                      !window.confirm(
+                        `Delete "${t.name}"? Pages move back to the workspace root.`,
+                      )
+                    )
+                      return;
+                    start(async () => {
+                      const { deleteTeamspace } = await import(
+                        "@/app/w/[slug]/teamspace-actions"
+                      );
+                      await deleteTeamspace(slug, t.id);
+                    });
+                  }}
+                  className="text-[11px] text-red-600 hover:text-red-800 px-2"
+                >
+                  Delete
+                </button>
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+      {archived.length > 0 && (
+        <details className="mt-3">
+          <summary className="text-xs text-gray-500 cursor-pointer">
+            Archived ({archived.length})
+          </summary>
+          <ul className="divide-y divide-gray-100 mt-1">
+            {archived.map((t) => (
+              <li key={t.id} className="py-2 flex items-center gap-2 text-gray-500">
+                <span>{t.icon ?? "👥"}</span>
+                <span className="flex-1 truncate text-sm">{t.name}</span>
+                {canEdit && (
+                  <button
+                    onClick={() => {
+                      start(async () => {
+                        const { restoreTeamspace } = await import(
+                          "@/app/w/[slug]/teamspace-actions"
+                        );
+                        await restoreTeamspace(slug, t.id);
+                      });
+                    }}
+                    className="text-[11px] text-blue-600 hover:text-blue-800 px-2"
+                  >
+                    Restore
+                  </button>
+                )}
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
+    </section>
   );
 }

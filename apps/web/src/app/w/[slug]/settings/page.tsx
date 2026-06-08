@@ -30,7 +30,7 @@ export default async function SettingsPage({
     const v = JSON.parse(currentMember?.mutedKinds ?? "[]");
     if (Array.isArray(v)) muted = v.filter((x: unknown) => typeof x === "string");
   } catch {}
-  const [members, invites, pageCount, commentCount, lastActivity] = await Promise.all([
+  const [members, invites, pageCount, commentCount, lastActivity, teamspacesRaw] = await Promise.all([
     prisma.workspaceMember.findMany({
       where: { workspaceId: ctx.workspace.id },
       include: { user: { select: { id: true, name: true, email: true, color: true } } },
@@ -50,6 +50,14 @@ export default async function SettingsPage({
       where: { page: { workspaceId: ctx.workspace.id } },
       orderBy: { createdAt: "desc" },
       select: { createdAt: true },
+    }),
+    prisma.teamspace.findMany({
+      where: { workspaceId: ctx.workspace.id },
+      orderBy: [{ archivedAt: "asc" }, { position: "asc" }, { createdAt: "asc" }],
+      include: {
+        members: { select: { userId: true } },
+        _count: { select: { pages: true } },
+      },
     }),
   ]);
   return (
@@ -109,6 +117,16 @@ export default async function SettingsPage({
             }
           : null
       }
+      teamspaces={teamspacesRaw.map((t) => ({
+        id: t.id,
+        name: t.name,
+        icon: t.icon,
+        access: t.access as "open" | "closed" | "private",
+        description: t.description,
+        memberCount: t.members.length,
+        pageCount: t._count.pages,
+        archived: !!t.archivedAt,
+      }))}
     />
   );
 }
