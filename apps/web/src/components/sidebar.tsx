@@ -1399,6 +1399,7 @@ export function Sidebar({
                         slug={currentSlug}
                         teamspace={ts}
                         lang={lang}
+                        userId={user.id}
                       />
                     )}
                     {role !== "viewer" && (
@@ -1712,10 +1713,12 @@ function TeamspaceMenu({
   slug,
   teamspace,
   lang,
+  userId,
 }: {
   slug: string;
   teamspace: SidebarTeamspace;
   lang: "ko" | "en";
+  userId: string;
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLSpanElement | null>(null);
@@ -1822,6 +1825,50 @@ function TeamspaceMenu({
             🔐 {lang === "ko" ? "접근 권한" : "Access"}
             <span className="text-gray-400 ml-1">({teamspace.access})</span>
           </button>
+          <div className="border-t border-gray-100 my-1" />
+          {teamspace.isMember ? (
+            <button
+              className="block w-full text-left px-3 py-1.5 hover:bg-black/5"
+              onClick={(e) => {
+                e.preventDefault();
+                setOpen(false);
+                if (
+                  !window.confirm(
+                    lang === "ko"
+                      ? `"${teamspace.name}" 팀스페이스에서 나갈까요?`
+                      : `Leave "${teamspace.name}"?`,
+                  )
+                )
+                  return;
+                start(async () => {
+                  const { removeTeamspaceMember } = await import(
+                    "@/app/w/[slug]/teamspace-actions"
+                  );
+                  await removeTeamspaceMember(slug, teamspace.id, userId);
+                });
+              }}
+            >
+              🚪 {lang === "ko" ? "나가기" : "Leave"}
+            </button>
+          ) : (
+            teamspace.access !== "private" && (
+              <button
+                className="block w-full text-left px-3 py-1.5 hover:bg-black/5"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setOpen(false);
+                  start(async () => {
+                    const { addTeamspaceMember } = await import(
+                      "@/app/w/[slug]/teamspace-actions"
+                    );
+                    await addTeamspaceMember(slug, teamspace.id, userId);
+                  });
+                }}
+              >
+                ➕ {lang === "ko" ? "참여" : "Join"}
+              </button>
+            )
+          )}
           <div className="border-t border-gray-100 my-1" />
           <button
             className="block w-full text-left px-3 py-1.5 hover:bg-black/5 text-red-600"
