@@ -1356,8 +1356,39 @@ export function Sidebar({
               const ours = inTeamspace.filter((n) => n.teamspaceId === ts.id);
               const lockIcon =
                 ts.access === "private" ? "🔒" : ts.access === "closed" ? "🔐" : "";
+              const isDropOver = dropTarget?.id === `ts:${ts.id}`;
               return (
-                <details key={ts.id} open className="group mt-1">
+                <details
+                  key={ts.id}
+                  open
+                  className={
+                    "group mt-1 " +
+                    (isDropOver ? "ring-2 ring-blue-400 ring-inset rounded" : "")
+                  }
+                  onDragOver={(e) => {
+                    if (!dragId) return;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setDropTarget({ id: `ts:${ts.id}`, where: "into" });
+                  }}
+                  onDragLeave={() => {
+                    if (dropTarget?.id === `ts:${ts.id}`) setDropTarget(null);
+                  }}
+                  onDrop={(e) => {
+                    if (!dragId) return;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const draggedId = dragId;
+                    setDragId(null);
+                    setDropTarget(null);
+                    startTransition(async () => {
+                      const { movePageToTeamspace } = await import(
+                        "@/app/w/[slug]/teamspace-actions"
+                      );
+                      await movePageToTeamspace(currentSlug, draggedId, ts.id);
+                    });
+                  }}
+                >
                   <summary className="px-3 py-1 text-[11px] uppercase tracking-wide text-gray-500 cursor-pointer list-none flex items-center gap-1 group/ts">
                     <span className="text-gray-400 group-open:rotate-90 transition inline-block">▸</span>
                     <span>{ts.icon ?? "👥"}</span>
