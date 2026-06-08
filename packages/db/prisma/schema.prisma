@@ -60,6 +60,40 @@ model Workspace {
   invites   Invite[]
   reminders Reminder[]
   syncedBlocks SyncedBlock[]
+  teamspaces Teamspace[]
+}
+
+model Teamspace {
+  id          String   @id @default(cuid())
+  workspaceId String
+  name        String
+  icon        String?  // emoji
+  description String?
+  // "open" — any workspace member can join, "closed" — invite only, "private" — invisible to non-members
+  access      String   @default("open")
+  position    Float    @default(0)
+  archivedAt  DateTime?
+  createdAt   DateTime @default(now())
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  pages       Page[]
+  members     TeamspaceMember[]
+
+  @@index([workspaceId])
+}
+
+model TeamspaceMember {
+  id          String    @id @default(cuid())
+  teamspaceId String
+  userId      String
+  role        String    @default("member") // "owner" | "member"
+  createdAt   DateTime  @default(now())
+
+  teamspace   Teamspace @relation(fields: [teamspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([teamspaceId, userId])
+  @@index([teamspaceId])
+  @@index([userId])
 }
 
 model WorkspaceMember {
@@ -81,6 +115,7 @@ model WorkspaceMember {
 model Page {
   id          String    @id @default(cuid())
   workspaceId String
+  teamspaceId String?
   parentId    String?
   kind        String    @default("doc")    // "doc" | "database"
   title       String    @default("Untitled")
@@ -119,6 +154,7 @@ model Page {
   updatedAt   DateTime  @updatedAt
 
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  teamspace   Teamspace? @relation(fields: [teamspaceId], references: [id], onDelete: SetNull)
   parent      Page?     @relation("PageTree", fields: [parentId], references: [id], onDelete: Cascade)
   children    Page[]    @relation("PageTree")
   author      User?     @relation("PageAuthor", fields: [authorId], references: [id])
@@ -131,6 +167,7 @@ model Page {
   reminders   Reminder[]
 
   @@index([workspaceId, parentId])
+  @@index([teamspaceId])
 }
 
 model PageSnapshot {
