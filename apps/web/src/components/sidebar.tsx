@@ -1704,6 +1704,7 @@ export function Sidebar({
       <MarkdownDropTarget slug={currentSlug} />
       <ManageTagsModal slug={currentSlug} />
       <MemberListModal members={members ?? []} />
+      <TeamspaceMembersModal slug={currentSlug} workspaceMembers={members ?? []} />
     </aside>
     </>
   );
@@ -1826,6 +1827,20 @@ function TeamspaceMenu({
             <span className="text-gray-400 ml-1">({teamspace.access})</span>
           </button>
           <div className="border-t border-gray-100 my-1" />
+          <button
+            className="block w-full text-left px-3 py-1.5 hover:bg-black/5"
+            onClick={(e) => {
+              e.preventDefault();
+              setOpen(false);
+              window.dispatchEvent(
+                new CustomEvent("noteforge:show-teamspace-members", {
+                  detail: { teamspaceId: teamspace.id, teamspaceName: teamspace.name },
+                }),
+              );
+            }}
+          >
+            👥 {lang === "ko" ? "멤버 관리" : "Manage members"}
+          </button>
           {teamspace.isMember ? (
             <button
               className="block w-full text-left px-3 py-1.5 hover:bg-black/5"
@@ -1896,6 +1911,121 @@ function TeamspaceMenu({
         </span>
       )}
     </span>
+  );
+}
+
+function TeamspaceMembersModal({
+  slug,
+  workspaceMembers,
+}: {
+  slug: string;
+  workspaceMembers: {
+    id: string;
+    name: string;
+    color: string;
+    avatarUrl: string | null;
+    email: string;
+    role: string;
+  }[];
+}) {
+  const [info, setInfo] = useState<{ teamspaceId: string; teamspaceName: string } | null>(null);
+  const [memberIds, setMemberIds] = useState<Set<string>>(new Set());
+  const [loading, setLoading] = useState(false);
+  const [, start] = useTransition();
+  useEffect(() => {
+    const h = (e: Event) => {
+      const detail = (e as CustomEvent<{ teamspaceId: string; teamspaceName: string }>).detail;
+      if (!detail) return;
+      setInfo(detail);
+    };
+    window.addEventListener("noteforge:show-teamspace-members", h);
+    return () => window.removeEventListener("noteforge:show-teamspace-members", h);
+  }, []);
+  useEffect(() => {
+    if (!info) return;
+    setLoading(true);
+    fetch(`/api/teamspace/${encodeURIComponent(info.teamspaceId)}/members`)
+      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((d: { members: { userId: string }[] }) => {
+        setMemberIds(new Set(d.members.map((m) => m.userId)));
+      })
+      .catch(() => setMemberIds(new Set()))
+      .finally(() => setLoading(false));
+  }, [info]);
+  if (!info) return null;
+  const close = () => setInfo(null);
+  const toggle = (userId: string) => {
+    const has = memberIds.has(userId);
+    const next = new Set(memberIds);
+    if (has) next.delete(userId);
+    else next.add(userId);
+    setMemberIds(next);
+    start(async () => {
+      const mod = await import("@/app/w/[slug]/teamspace-actions");
+      if (has) {
+        await mod.removeTeamspaceMember(slug, info.teamspaceId, userId);
+      } else {
+        await mod.addTeamspaceMember(slug, info.teamspaceId, userId);
+      }
+    });
+  };
+  return (
+    <div
+      className="fixed inset-0 z-50 bg-black/30 flex items-start justify-center pt-16 p-4"
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) close();
+      }}
+    >
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-md max-h-[70vh] flex flex-col">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+          <div>
+            <div className="text-sm font-medium text-gray-900">
+              {info.teamspaceName}
+            </div>
+            <div className="text-[11px] text-gray-500">
+              {memberIds.size} member{memberIds.size === 1 ? "" : "s"}
+            </div>
+          </div>
+          <button
+            onClick={close}
+            className="text-gray-400 hover:text-gray-900"
+          >
+            ✕
+          </button>
+        </div>
+        <div className="overflow-y-auto p-2">
+          {loading && (
+            <div className="text-xs text-gray-400 px-2 py-2">Loading…</div>
+          )}
+          {workspaceMembers.length === 0 && (
+            <div className="text-xs text-gray-400 px-2 py-2">No workspace members yet.</div>
+          )}
+          {workspaceMembers.map((m) => {
+            const on = memberIds.has(m.id);
+            return (
+              <button
+                key={m.id}
+                onClick={() => toggle(m.id)}
+                className="flex w-full items-center gap-2 px-2 py-1.5 text-left rounded hover:bg-black/5"
+              >
+                <span className="w-4 text-center text-xs">{on ? "✓" : ""}</span>
+                <span
+                  className="inline-flex items-center justify-center w-6 h-6 rounded-full text-white text-[10px] font-medium shrink-0"
+                  style={{ background: m.color }}
+                >
+                  {m.name.slice(0, 1).toUpperCase()}
+                </span>
+                <span className="flex-1 min-w-0">
+                  <span className="block text-sm text-gray-900 truncate">{m.name}</span>
+                  <span className="block text-[10px] text-gray-500 truncate">{m.email}</span>
+                </span>
+                <span className="text-[10px] text-gray-400">{m.role}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
   );
 }
 
