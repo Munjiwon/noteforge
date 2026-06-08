@@ -1322,6 +1322,13 @@ export function Sidebar({
                     <span className="truncate flex-1">{ts.name}</span>
                     {lockIcon && <span className="text-[10px]">{lockIcon}</span>}
                     {role !== "viewer" && (
+                      <TeamspaceMenu
+                        slug={currentSlug}
+                        teamspace={ts}
+                        lang={lang}
+                      />
+                    )}
+                    {role !== "viewer" && (
                       <button
                         onClick={(e) => {
                           e.preventDefault();
@@ -1625,6 +1632,150 @@ export function Sidebar({
       <MemberListModal members={members ?? []} />
     </aside>
     </>
+  );
+}
+
+function TeamspaceMenu({
+  slug,
+  teamspace,
+  lang,
+}: {
+  slug: string;
+  teamspace: SidebarTeamspace;
+  lang: "ko" | "en";
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLSpanElement | null>(null);
+  const [, start] = useTransition();
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+  return (
+    <span className="relative inline-block" ref={ref} data-sidebar-menu="1">
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setOpen((o) => !o);
+        }}
+        className="opacity-0 group-hover/ts:opacity-100 text-gray-400 hover:text-gray-900 px-1 normal-case tracking-normal text-xs"
+        title="Teamspace actions"
+      >
+        ⋯
+      </button>
+      {open && (
+        <span className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded shadow text-xs min-w-[180px] py-1 z-50 normal-case tracking-normal">
+          <button
+            className="block w-full text-left px-3 py-1.5 hover:bg-black/5"
+            onClick={(e) => {
+              e.preventDefault();
+              setOpen(false);
+              const next = window.prompt(
+                lang === "ko" ? "팀스페이스 이름" : "Rename teamspace",
+                teamspace.name,
+              );
+              if (!next) return;
+              const v = next.trim();
+              if (!v || v === teamspace.name) return;
+              start(async () => {
+                const { renameTeamspace } = await import(
+                  "@/app/w/[slug]/teamspace-actions"
+                );
+                await renameTeamspace(slug, teamspace.id, v);
+              });
+            }}
+          >
+            ✎ {lang === "ko" ? "이름 변경" : "Rename"}
+          </button>
+          <button
+            className="block w-full text-left px-3 py-1.5 hover:bg-black/5"
+            onClick={(e) => {
+              e.preventDefault();
+              setOpen(false);
+              const next = window.prompt(
+                lang === "ko" ? "팀스페이스 아이콘 (이모지)" : "Teamspace icon (emoji)",
+                teamspace.icon ?? "",
+              );
+              if (next === null) return;
+              start(async () => {
+                const { setTeamspaceIcon } = await import(
+                  "@/app/w/[slug]/teamspace-actions"
+                );
+                await setTeamspaceIcon(
+                  slug,
+                  teamspace.id,
+                  next.trim() ? next.trim() : null,
+                );
+              });
+            }}
+          >
+            😀 {lang === "ko" ? "아이콘 변경" : "Change icon"}
+          </button>
+          <button
+            className="block w-full text-left px-3 py-1.5 hover:bg-black/5"
+            onClick={(e) => {
+              e.preventDefault();
+              setOpen(false);
+              const cur = teamspace.access;
+              const next = window.prompt(
+                (lang === "ko"
+                  ? "접근 권한 (open / closed / private). 현재: "
+                  : "Access (open / closed / private). Current: ") + cur,
+                cur,
+              );
+              if (!next) return;
+              const v = next.trim();
+              if (v !== "open" && v !== "closed" && v !== "private") return;
+              start(async () => {
+                const { setTeamspaceAccess } = await import(
+                  "@/app/w/[slug]/teamspace-actions"
+                );
+                await setTeamspaceAccess(slug, teamspace.id, v);
+              });
+            }}
+          >
+            🔐 {lang === "ko" ? "접근 권한" : "Access"}
+            <span className="text-gray-400 ml-1">({teamspace.access})</span>
+          </button>
+          <div className="border-t border-gray-100 my-1" />
+          <button
+            className="block w-full text-left px-3 py-1.5 hover:bg-black/5 text-red-600"
+            onClick={(e) => {
+              e.preventDefault();
+              setOpen(false);
+              if (
+                !window.confirm(
+                  lang === "ko"
+                    ? `"${teamspace.name}" 팀스페이스를 삭제하시겠어요? 페이지는 워크스페이스 루트로 이동합니다.`
+                    : `Delete "${teamspace.name}"? Pages move back to the workspace root.`,
+                )
+              )
+                return;
+              start(async () => {
+                const { deleteTeamspace } = await import(
+                  "@/app/w/[slug]/teamspace-actions"
+                );
+                await deleteTeamspace(slug, teamspace.id);
+              });
+            }}
+          >
+            🗑 {lang === "ko" ? "삭제" : "Delete"}
+          </button>
+        </span>
+      )}
+    </span>
   );
 }
 
