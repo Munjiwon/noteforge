@@ -128,11 +128,34 @@ export async function GET(req: NextRequest) {
     hits.sort((a, b) => b._score - a._score);
   }
 
+  let teamspaces: { id: string; name: string; icon: string | null }[] = [];
+  if (q.length >= 1 && !authorId && !tagParam) {
+    const tsRows = await prisma.teamspace.findMany({
+      where: {
+        workspaceId: ws.id,
+        archivedAt: null,
+        OR: [
+          { name: { contains: q } },
+          { description: { contains: q } },
+        ],
+      },
+      take: 10,
+      orderBy: { position: "asc" },
+      include: {
+        members: { where: { userId }, select: { userId: true } },
+      },
+    });
+    teamspaces = tsRows
+      .filter((t) => t.access !== "private" || t.members.length > 0)
+      .map((t) => ({ id: t.id, name: t.name, icon: t.icon }));
+  }
+
   return NextResponse.json({
     hits: hits.map(({ _score, ...rest }) => {
       void _score;
       return rest;
     }),
+    teamspaces,
   });
 }
 
