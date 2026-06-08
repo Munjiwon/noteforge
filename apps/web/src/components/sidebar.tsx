@@ -58,6 +58,7 @@ type SidebarTeamspace = {
   icon: string | null;
   access: "open" | "closed" | "private";
   isMember: boolean;
+  memberCount?: number;
 };
 
 type TrashItem = { id: string; title: string; icon: string | null; kind: string; deletedAt?: Date | string | null };
@@ -1437,6 +1438,14 @@ export function Sidebar({
                       {ts.name}
                     </Link>
                     {lockIcon && <span className="text-[10px]">{lockIcon}</span>}
+                    {typeof ts.memberCount === "number" && ts.memberCount > 0 && (
+                      <span
+                        className="text-[10px] text-gray-400 normal-case tracking-normal"
+                        title={`${ts.memberCount} member${ts.memberCount === 1 ? "" : "s"}`}
+                      >
+                        👤{ts.memberCount}
+                      </span>
+                    )}
                     {role !== "viewer" && (
                       <TeamspaceMenu
                         slug={currentSlug}

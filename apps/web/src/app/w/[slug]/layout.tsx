@@ -247,6 +247,7 @@ export default async function WorkspaceLayout({
       orderBy: [{ position: "asc" }, { createdAt: "asc" }],
       include: {
         members: { where: { userId: ctx.user.id }, select: { role: true } },
+        _count: { select: { members: true } },
       },
     }),
   ]);
@@ -348,6 +349,7 @@ export default async function WorkspaceLayout({
       icon: t.icon,
       access: t.access as "open" | "closed" | "private",
       isMember: t.members.length > 0,
+      memberCount: t._count.members,
     }));
   const todayStart = new Date();
   todayStart.setHours(0, 0, 0, 0);
