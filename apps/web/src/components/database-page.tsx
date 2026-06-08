@@ -205,11 +205,25 @@ export function DatabasePage({
       <ViewTabs
         slug={slug}
         dbId={db.id}
-        views={
-          savedViews.length > 0
-            ? savedViews
-            : [{ id: "__legacy", name: "Default", kind: view }]
-        }
+        views={(savedViews.length > 0
+          ? savedViews
+          : [{ id: "__legacy", name: "Default", kind: view }]
+        ).map((v) => {
+          const filtersCount = (v as { filters?: unknown[] }).filters?.length ?? db.schema.filters?.length ?? 0;
+          const sortCount = (v as { sort?: unknown[] }).sort?.length ?? db.schema.sort?.length ?? 0;
+          const hiddenCount =
+            (v as { hiddenColumns?: unknown[] }).hiddenColumns?.length ??
+            db.schema.hiddenColumns?.length ??
+            0;
+          return {
+            id: v.id,
+            name: v.name,
+            kind: v.kind,
+            filtersCount,
+            sortCount,
+            hiddenCount,
+          };
+        })}
         activeViewId={activeView?.id ?? (savedViews.length === 0 ? "__legacy" : null)}
         readOnly={readOnly}
       />
@@ -503,7 +517,14 @@ function ViewTabs({
 }: {
   slug: string;
   dbId: string;
-  views: { id: string; name: string; kind: DbView }[];
+  views: {
+    id: string;
+    name: string;
+    kind: DbView;
+    filtersCount?: number;
+    sortCount?: number;
+    hiddenCount?: number;
+  }[];
   activeViewId: string | null;
   readOnly: boolean;
 }) {
@@ -537,6 +558,30 @@ function ViewTabs({
             >
               <span className="text-xs opacity-60">{VIEW_KIND_ICONS[v.kind]}</span>
               <span>{v.name}</span>
+              {(v.filtersCount ?? 0) > 0 && (
+                <span
+                  className="text-[10px] px-1 rounded bg-blue-50 text-blue-700"
+                  title={`${v.filtersCount} active filter${v.filtersCount === 1 ? "" : "s"}`}
+                >
+                  🔎{v.filtersCount}
+                </span>
+              )}
+              {(v.sortCount ?? 0) > 0 && (
+                <span
+                  className="text-[10px] px-1 rounded bg-purple-50 text-purple-700"
+                  title={`${v.sortCount} sort${v.sortCount === 1 ? "" : "s"}`}
+                >
+                  ⇅{v.sortCount}
+                </span>
+              )}
+              {(v.hiddenCount ?? 0) > 0 && (
+                <span
+                  className="text-[10px] px-1 rounded bg-gray-100 text-gray-600"
+                  title={`${v.hiddenCount} hidden column${v.hiddenCount === 1 ? "" : "s"}`}
+                >
+                  👁{v.hiddenCount}
+                </span>
+              )}
               {active && !readOnly && (
                 <span
                   className="ml-1 text-gray-400 hover:text-gray-900"
