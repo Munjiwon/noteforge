@@ -1429,7 +1429,13 @@ export function Sidebar({
                   >
                     <span className="text-gray-400 group-open:rotate-90 transition inline-block">▸</span>
                     <span>{ts.icon ?? "👥"}</span>
-                    <span className="truncate flex-1">{ts.name}</span>
+                    <Link
+                      href={`/w/${currentSlug}/teamspace/${ts.id}`}
+                      onClick={(e) => e.stopPropagation()}
+                      className="truncate flex-1 normal-case tracking-normal text-gray-700 hover:text-gray-900"
+                    >
+                      {ts.name}
+                    </Link>
                     {lockIcon && <span className="text-[10px]">{lockIcon}</span>}
                     {role !== "viewer" && (
                       <TeamspaceMenu
