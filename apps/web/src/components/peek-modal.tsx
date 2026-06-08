@@ -506,7 +506,19 @@ function renderPeekValue(
   prop: RowProp,
   v: unknown,
   onChange?: (next: unknown) => void,
+  ctx?: { createdAt: string; updatedAt: string; authorName: string | null },
 ): React.ReactNode {
+  if (prop.type === "created_at" && ctx) {
+    return <span className="text-gray-700">{new Date(ctx.createdAt).toLocaleString()}</span>;
+  }
+  if (prop.type === "updated_at" && ctx) {
+    return <span className="text-gray-700">{new Date(ctx.updatedAt).toLocaleString()}</span>;
+  }
+  if (prop.type === "created_by" && ctx) {
+    return (
+      <span className="text-gray-700">{ctx.authorName ?? "Unknown"}</span>
+    );
+  }
   const empty =
     v === null || v === undefined || v === "" || (Array.isArray(v) && v.length === 0);
   if (prop.type === "checkbox") {
@@ -777,8 +789,15 @@ export function PeekModal({
                             <div key={p.id} className="contents">
                               <div className="text-gray-500 truncate">{p.name}</div>
                               <div className="text-gray-800 truncate">
-                                {renderPeekValue(p, values[p.id], (next) =>
-                                  writeCell(p.id, next),
+                                {renderPeekValue(
+                                  p,
+                                  values[p.id],
+                                  (next) => writeCell(p.id, next),
+                                  {
+                                    createdAt: data.createdAt,
+                                    updatedAt: data.updatedAt,
+                                    authorName: data.author?.name ?? null,
+                                  },
                                 )}
                               </div>
                             </div>
