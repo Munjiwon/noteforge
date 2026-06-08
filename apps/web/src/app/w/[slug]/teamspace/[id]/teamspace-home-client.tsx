@@ -8,6 +8,7 @@ import {
   setTeamspaceAccess,
   addTeamspaceMember,
   removeTeamspaceMember,
+  createPageInTeamspace,
 } from "@/app/w/[slug]/teamspace-actions";
 
 type Member = {
@@ -50,6 +51,24 @@ export function TeamspaceHomeClient({
   }
   return (
     <section className="border border-gray-200 rounded p-4 space-y-3">
+      <div className="flex items-center gap-2 mb-3">
+        <button
+          type="button"
+          onClick={() => start(() => createPageInTeamspace(slug, ts.id, "doc"))}
+          disabled={pending}
+          className="text-xs px-3 py-1.5 rounded bg-gray-900 text-white hover:bg-gray-700 disabled:opacity-50"
+        >
+          + New page
+        </button>
+        <button
+          type="button"
+          onClick={() => start(() => createPageInTeamspace(slug, ts.id, "database"))}
+          disabled={pending}
+          className="text-xs px-3 py-1.5 rounded border border-gray-200 hover:bg-gray-50 disabled:opacity-50"
+        >
+          + New database
+        </button>
+      </div>
       <h2 className="text-sm font-semibold text-gray-700">Teamspace settings</h2>
       <label className="block">
         <span className="block text-[11px] text-gray-500 mb-1">Name</span>
