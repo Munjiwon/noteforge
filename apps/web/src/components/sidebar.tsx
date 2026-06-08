@@ -261,6 +261,7 @@ export function Sidebar({
     });
 
   const [dragId, setDragId] = useState<string | null>(null);
+  const [dragTsId, setDragTsId] = useState<string | null>(null);
   const [dropTarget, setDropTarget] = useState<{ id: string; where: "into" | "before" | "after" } | null>(null);
   const [movingId, setMovingId] = useState<string | null>(null);
   const [recentExpanded, setRecentExpanded] = useState(false);
@@ -1352,20 +1353,28 @@ export function Sidebar({
         };
         return (
           <div className="flex-1 overflow-auto pb-2">
-            {tsList.map((ts) => {
+            {tsList.map((ts, tsIdx) => {
               const ours = inTeamspace.filter((n) => n.teamspaceId === ts.id);
               const lockIcon =
                 ts.access === "private" ? "🔒" : ts.access === "closed" ? "🔐" : "";
               const isDropOver = dropTarget?.id === `ts:${ts.id}`;
+              const tsDragOver = dropTarget?.id === `tsdrag:${ts.id}`;
               return (
                 <details
                   key={ts.id}
                   open
                   className={
                     "group mt-1 " +
-                    (isDropOver ? "ring-2 ring-blue-400 ring-inset rounded" : "")
+                    (isDropOver ? "ring-2 ring-blue-400 ring-inset rounded " : "") +
+                    (tsDragOver ? "before:block before:h-0.5 before:bg-blue-400 " : "")
                   }
                   onDragOver={(e) => {
+                    if (dragTsId && dragTsId !== ts.id) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setDropTarget({ id: `tsdrag:${ts.id}`, where: "before" });
+                      return;
+                    }
                     if (!dragId) return;
                     e.preventDefault();
                     e.stopPropagation();
@@ -1373,8 +1382,24 @@ export function Sidebar({
                   }}
                   onDragLeave={() => {
                     if (dropTarget?.id === `ts:${ts.id}`) setDropTarget(null);
+                    if (dropTarget?.id === `tsdrag:${ts.id}`) setDropTarget(null);
                   }}
                   onDrop={(e) => {
+                    if (dragTsId && dragTsId !== ts.id) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      const draggedTs = dragTsId;
+                      const newPosition = tsIdx;
+                      setDragTsId(null);
+                      setDropTarget(null);
+                      startTransition(async () => {
+                        const { reorderTeamspace } = await import(
+                          "@/app/w/[slug]/teamspace-actions"
+                        );
+                        await reorderTeamspace(currentSlug, draggedTs, newPosition);
+                      });
+                      return;
+                    }
                     if (!dragId) return;
                     e.preventDefault();
                     e.stopPropagation();
@@ -1389,7 +1414,19 @@ export function Sidebar({
                     });
                   }}
                 >
-                  <summary className="px-3 py-1 text-[11px] uppercase tracking-wide text-gray-500 cursor-pointer list-none flex items-center gap-1 group/ts">
+                  <summary
+                    draggable={role !== "viewer"}
+                    onDragStart={(e) => {
+                      e.stopPropagation();
+                      setDragTsId(ts.id);
+                      e.dataTransfer.effectAllowed = "move";
+                    }}
+                    onDragEnd={() => {
+                      setDragTsId(null);
+                      setDropTarget(null);
+                    }}
+                    className="px-3 py-1 text-[11px] uppercase tracking-wide text-gray-500 cursor-pointer list-none flex items-center gap-1 group/ts"
+                  >
                     <span className="text-gray-400 group-open:rotate-90 transition inline-block">▸</span>
                     <span>{ts.icon ?? "👥"}</span>
                     <span className="truncate flex-1">{ts.name}</span>
