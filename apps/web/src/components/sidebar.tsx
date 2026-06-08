@@ -756,6 +756,48 @@ export function Sidebar({
                     >
                       ↪ Move to…
                     </button>
+                    {teamspaces && teamspaces.length > 0 && (
+                      <>
+                        <div className="text-[10px] uppercase text-gray-400 px-2 pt-1.5 pb-0.5">
+                          {lang === "ko" ? "팀스페이스로 이동" : "Move to teamspace"}
+                        </div>
+                        {teamspaces.map((ts) => (
+                          <button
+                            key={ts.id}
+                            disabled={node.teamspaceId === ts.id}
+                            className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded disabled:text-gray-300 disabled:hover:bg-transparent"
+                            onClick={() => {
+                              setAddMenuFor(null);
+                              startTransition(async () => {
+                                const { movePageToTeamspace } = await import(
+                                  "@/app/w/[slug]/teamspace-actions"
+                                );
+                                await movePageToTeamspace(currentSlug, node.id, ts.id);
+                              });
+                            }}
+                          >
+                            <span className="mr-1">{ts.icon ?? "👥"}</span>
+                            {ts.name}
+                          </button>
+                        ))}
+                        {node.teamspaceId && (
+                          <button
+                            className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded text-gray-500"
+                            onClick={() => {
+                              setAddMenuFor(null);
+                              startTransition(async () => {
+                                const { movePageToTeamspace } = await import(
+                                  "@/app/w/[slug]/teamspace-actions"
+                                );
+                                await movePageToTeamspace(currentSlug, node.id, null);
+                              });
+                            }}
+                          >
+                            ✕ {lang === "ko" ? "팀스페이스에서 빼기" : "Remove from teamspace"}
+                          </button>
+                        )}
+                      </>
+                    )}
                     <button
                       className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded"
                       onClick={() => {
