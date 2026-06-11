@@ -135,6 +135,13 @@ function buildSchemas(ids: { projects: string; tasks: string; sprints: string })
       },
       { id: "v_sprint", name: "By sprint", kind: "table", tableGroupBy: "p_sprint" },
       { id: "v_project", name: "By project", kind: "table", tableGroupBy: "p_project" },
+      {
+        id: "v_backlog",
+        name: "Backlog",
+        kind: "table",
+        filters: [{ id: "f_backlog", propId: "p_status", op: "eq", value: "ts_todo" }],
+        sort: [{ propId: "p_priority", dir: "desc" }],
+      },
       { id: "v_cal", name: "Calendar", kind: "calendar", calendarDateBy: "p_due" },
     ],
   };
