@@ -92,6 +92,27 @@ export default async function PageRoute({
   });
   if (!page) notFound();
 
+  // Enforce teamspace access: a private teamspace's pages are only readable by
+  // its members (workspace owners always retain access). Mirrors the visibility
+  // rule used by the sidebar and search so a stray URL can't leak private pages.
+  if (page.teamspaceId) {
+    const ts = await prisma.teamspace.findUnique({
+      where: { id: page.teamspaceId },
+      select: {
+        access: true,
+        members: { where: { userId: ctx.user.id }, select: { id: true } },
+      },
+    });
+    if (
+      ts &&
+      ts.access === "private" &&
+      ts.members.length === 0 &&
+      ctx.role !== "owner"
+    ) {
+      notFound();
+    }
+  }
+
   const trashed = page.deletedAt !== null;
   // honor lockedUntil: if expiry passed, treat as unlocked at read time
   const lockExpired =
