@@ -258,6 +258,40 @@ export async function removeTeamspaceMember(
   revalidatePath(`/w/${slug}`);
 }
 
+export async function setTeamspaceMemberRole(
+  slug: string,
+  teamspaceId: string,
+  userId: string,
+  role: "owner" | "member",
+) {
+  const ctx = await assertEditor(slug);
+  const ts = await prisma.teamspace.findFirst({
+    where: { id: teamspaceId, workspaceId: ctx.workspace.id },
+  });
+  if (!ts) throw new Error("not found");
+  // Never leave a teamspace ownerless: block demoting the last remaining owner.
+  if (role === "member") {
+    const owners = await prisma.teamspaceMember.count({
+      where: { teamspaceId, role: "owner" },
+    });
+    const target = await prisma.teamspaceMember.findUnique({
+      where: { teamspaceId_userId: { teamspaceId, userId } },
+      select: { role: true },
+    });
+    if (target?.role === "owner" && owners <= 1) {
+      throw new Error("A teamspace must keep at least one owner");
+    }
+  }
+  await prisma.teamspaceMember
+    .update({
+      where: { teamspaceId_userId: { teamspaceId, userId } },
+      data: { role },
+    })
+    .catch(() => undefined);
+  revalidatePath(`/w/${slug}`);
+  revalidatePath(`/w/${slug}/teamspace/${teamspaceId}`);
+}
+
 export async function movePageToTeamspace(
   slug: string,
   pageId: string,

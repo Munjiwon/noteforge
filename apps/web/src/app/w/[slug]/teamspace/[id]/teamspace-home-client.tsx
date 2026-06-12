@@ -8,6 +8,7 @@ import {
   setTeamspaceAccess,
   addTeamspaceMember,
   removeTeamspaceMember,
+  setTeamspaceMemberRole,
   createPageInTeamspace,
 } from "@/app/w/[slug]/teamspace-actions";
 
@@ -39,6 +40,7 @@ export function TeamspaceHomeClient({
 }) {
   const [ts, setTs] = useState(teamspace);
   const [ids, setIds] = useState<Set<string>>(new Set(memberIds));
+  const [roles, setRoles] = useState<Record<string, string>>(memberRoles);
   const [pending, start] = useTransition();
   if (!canEdit) {
     return (
@@ -127,7 +129,7 @@ export function TeamspaceHomeClient({
         <ul className="divide-y divide-gray-100">
           {workspaceMembers.map((m) => {
             const on = ids.has(m.id);
-            const role = memberRoles[m.id];
+            const role = roles[m.id] ?? "member";
             const isMe = m.id === currentUserId;
             return (
               <li key={m.id} className="flex items-center gap-2 py-1.5">
@@ -160,8 +162,36 @@ export function TeamspaceHomeClient({
                   </span>
                   <span className="block text-[10px] text-gray-500 truncate">{m.email}</span>
                 </span>
-                {on && role && (
-                  <span className="text-[10px] text-gray-400">{role}</span>
+                {on && (
+                  <button
+                    type="button"
+                    disabled={pending}
+                    title={
+                      role === "owner"
+                        ? "Demote to member"
+                        : "Promote to owner"
+                    }
+                    onClick={() => {
+                      const next = role === "owner" ? "member" : "owner";
+                      setRoles((r) => ({ ...r, [m.id]: next }));
+                      start(async () => {
+                        try {
+                          await setTeamspaceMemberRole(slug, ts.id, m.id, next);
+                        } catch {
+                          // revert on failure (e.g. last-owner guard)
+                          setRoles((r) => ({ ...r, [m.id]: role }));
+                        }
+                      });
+                    }}
+                    className={
+                      "text-[10px] px-1.5 py-0.5 rounded " +
+                      (role === "owner"
+                        ? "bg-amber-100 text-amber-700 hover:bg-amber-200"
+                        : "text-gray-400 hover:bg-gray-100")
+                    }
+                  >
+                    {role === "owner" ? "★ owner" : "member"}
+                  </button>
                 )}
               </li>
             );
