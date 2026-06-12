@@ -37,7 +37,8 @@ function buildSchemas(ids: { projects: string; tasks: string; sprints: string })
       },
       { id: "p_owner", name: "Owner", type: "person" },
       { id: "p_priority", name: "Priority", type: "select", options: PRIORITY_OPTIONS },
-      { id: "p_dates", name: "Dates", type: "date" },
+      { id: "p_start", name: "Start", type: "date" },
+      { id: "p_end", name: "End", type: "date" },
       { id: "p_summary", name: "Summary", type: "text" },
       { id: "p_tasks", name: "Tasks", type: "relation", targetDbId: ids.tasks },
       {
@@ -59,6 +60,14 @@ function buildSchemas(ids: { projects: string; tasks: string; sprints: string })
         hiddenColumns: ["p_tasks", "p_taskcount"],
       },
       { id: "v_all", name: "All projects", kind: "table" },
+      {
+        id: "v_timeline",
+        name: "Timeline",
+        kind: "timeline",
+        timelineStartBy: "p_start",
+        timelineEndBy: "p_end",
+      },
+      { id: "v_cal", name: "Calendar", kind: "calendar", calendarDateBy: "p_end" },
     ],
   };
 
@@ -148,6 +157,13 @@ function buildSchemas(ids: { projects: string; tasks: string; sprints: string })
     views: [
       { id: "v_all", name: "All sprints", kind: "table" },
       { id: "v_board", name: "By status", kind: "kanban", kanbanGroupBy: "p_sprintstatus" },
+      {
+        id: "v_timeline",
+        name: "Timeline",
+        kind: "timeline",
+        timelineStartBy: "p_start",
+        timelineEndBy: "p_end",
+      },
     ],
   };
 
@@ -231,6 +247,9 @@ export async function createProjectManagement(
   sprintStart.setDate(now.getDate() - 3);
   const sprintEnd = new Date(now);
   sprintEnd.setDate(now.getDate() + 11);
+  const projectStart = new Date(sprintStart);
+  const projectEnd = new Date(now);
+  projectEnd.setDate(now.getDate() + 25);
 
   const mkRow = async (
     dbId: string,
@@ -268,6 +287,8 @@ export async function createProjectManagement(
     {
       p_status: "st_active",
       p_priority: "pr_high",
+      p_start: iso(projectStart),
+      p_end: iso(projectEnd),
       p_summary: "Refresh the marketing site and ship a new landing page.",
     },
     1,
@@ -348,6 +369,8 @@ export async function createProjectManagement(
       dataValues: JSON.stringify({
         p_status: "st_active",
         p_priority: "pr_high",
+        p_start: iso(projectStart),
+        p_end: iso(projectEnd),
         p_summary: "Refresh the marketing site and ship a new landing page.",
         p_tasks: taskIds,
       }),
