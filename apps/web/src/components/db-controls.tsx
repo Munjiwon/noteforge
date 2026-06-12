@@ -160,7 +160,11 @@ export function DbControls({
             <option value="">None</option>
             {schema.props
               .filter(
-                (p) => p.type === "select" || p.type === "status" || p.type === "date",
+                (p) =>
+                  p.type === "select" ||
+                  p.type === "status" ||
+                  p.type === "date" ||
+                  p.type === "relation",
               )
               .map((p) => (
                 <option key={p.id} value={p.id}>

@@ -288,8 +288,14 @@ export async function setTableGroup(
   const next = propId ?? undefined;
   if (propId) {
     const p = schema.props.find((x) => x.id === propId);
-    if (!p || (p.type !== "select" && p.type !== "status" && p.type !== "date")) {
-      throw new Error("group-by must be a select, status, or date column");
+    if (
+      !p ||
+      (p.type !== "select" &&
+        p.type !== "status" &&
+        p.type !== "date" &&
+        p.type !== "relation")
+    ) {
+      throw new Error("group-by must be a select, status, date, or relation column");
     }
   }
   const active = getActiveView(schema);

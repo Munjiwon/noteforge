@@ -191,6 +191,34 @@ export function DatabaseView({
     const t = setTimeout(() => setLastDeleted(null), 5000);
     return () => clearTimeout(t);
   }, [lastDeleted]);
+
+  // When the table is grouped by a relation, fetch the target rows so group
+  // headers can show the related entity's title (e.g. group tasks by Sprint).
+  const tableGroupProp = (() => {
+    const gid = effectiveTableGroupBy(schema);
+    return gid ? schema.props.find((p) => p.id === gid) ?? null : null;
+  })();
+  const groupRelTargetDbId =
+    tableGroupProp?.type === "relation" ? tableGroupProp.targetDbId : null;
+  const [relGroupTitles, setRelGroupTitles] = useState<Record<string, string>>({});
+  useEffect(() => {
+    if (!groupRelTargetDbId) {
+      setRelGroupTitles({});
+      return;
+    }
+    let cancelled = false;
+    fetch(`/api/db/${encodeURIComponent(groupRelTargetDbId)}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (cancelled || !d) return;
+        const m: Record<string, string> = {};
+        for (const r of d.rows as { id: string; title: string }[]) m[r.id] = r.title;
+        setRelGroupTitles(m);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [groupRelTargetDbId]);
   const toggleRowSelected = (id: string) =>
     setSelectedRows((prev) => {
       const next = new Set(prev);
@@ -434,7 +462,8 @@ export function DatabaseView({
                 !groupBy ||
                 (groupBy.type !== "select" &&
                   groupBy.type !== "status" &&
-                  groupBy.type !== "date")
+                  groupBy.type !== "date" &&
+                  groupBy.type !== "relation")
               ) {
                 return rows.map((row, idx) => (
                   <RowRow {...rowProps(row, idx)} />
@@ -491,6 +520,26 @@ export function DatabaseView({
                   const [ob, sb] = orderKey(b);
                   return oa - ob || sa - sb;
                 });
+              } else if (groupBy.type === "relation") {
+                // One bucket per related entity; a row appears under each entity
+                // it links to. Labels come from the fetched target titles.
+                for (const row of rows) {
+                  const v = row.dataValues[groupBy.id];
+                  const idsArr = Array.isArray(v) ? (v as string[]) : [];
+                  if (idsArr.length === 0) {
+                    addToBucket("__none__", "No " + groupBy.name, "#f3f4f6", row);
+                    continue;
+                  }
+                  for (const rid of idsArr) {
+                    addToBucket(rid, relGroupTitles[rid] ?? "…", "#eef2ff", row);
+                  }
+                }
+                // Stable order: named buckets alphabetically, "No X" last.
+                buckets.sort((a, b) => {
+                  if (a.key === "__none__") return 1;
+                  if (b.key === "__none__") return -1;
+                  return a.label.localeCompare(b.label);
+                });
               } else {
                 for (const opt of groupBy.options) buckets.push({ key: opt.id, label: opt.name, color: opt.color, list: [] });
                 buckets.push({ key: "__none__", label: "No " + groupBy.name, color: "#f3f4f6", list: [] });
@@ -507,6 +556,9 @@ export function DatabaseView({
                 if (b.key === "__none__") return {};
                 if (groupBy.type === "select" || groupBy.type === "status") {
                   return { [groupBy.id]: b.key };
+                }
+                if (groupBy.type === "relation") {
+                  return { [groupBy.id]: [b.key] };
                 }
                 if (groupBy.type === "date") {
                   const today = new Date();
