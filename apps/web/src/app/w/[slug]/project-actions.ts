@@ -49,6 +49,14 @@ function buildSchemas(ids: { projects: string; tasks: string; sprints: string })
         targetPropId: "p_title",
         aggregate: "count",
       },
+      {
+        id: "p_progress",
+        name: "Progress",
+        type: "rollup",
+        relationPropId: "p_tasks",
+        targetPropId: "p_status",
+        aggregate: "percent_complete",
+      },
     ],
     activeViewId: "v_board",
     views: [
@@ -57,7 +65,7 @@ function buildSchemas(ids: { projects: string; tasks: string; sprints: string })
         name: "Board",
         kind: "kanban",
         kanbanGroupBy: "p_status",
-        hiddenColumns: ["p_tasks", "p_taskcount"],
+        hiddenColumns: ["p_tasks", "p_taskcount", "p_progress"],
       },
       { id: "v_all", name: "All projects", kind: "table" },
       {

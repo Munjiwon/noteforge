@@ -2017,7 +2017,7 @@ function ColumnConfigure({
     isRollup ? prop.targetPropId : "",
   );
   const [aggregate, setAggregate] = useState<
-    "count" | "sum" | "min" | "max" | "unique"
+    "count" | "sum" | "min" | "max" | "unique" | "percent_complete" | "percent_checked"
   >(isRollup ? prop.aggregate : "count");
   const [expr, setExpr] = useState(isFormula ? prop.expr : "");
   const [numFormat, setNumFormat] = useState<"integer" | "decimal" | "percent" | "currency" | "progress" | "rating">(
@@ -2147,6 +2147,8 @@ function ColumnConfigure({
                 <option value="min">Min</option>
                 <option value="max">Max</option>
                 <option value="unique">Unique values</option>
+                <option value="percent_complete">Percent complete (status)</option>
+                <option value="percent_checked">Percent checked</option>
               </select>
             </div>
             <button
@@ -2388,6 +2390,30 @@ function RollupCell({
       </div>
     );
   }
+  const isPercent =
+    prop.aggregate === "percent_complete" || prop.aggregate === "percent_checked";
+  if (isPercent) {
+    const pct = typeof value === "number" ? Math.round(value * 100) : null;
+    return (
+      <div className="px-3 py-2">
+        {pct === null ? (
+          <span className="text-gray-300 text-sm">—</span>
+        ) : (
+          <div className="flex items-center gap-2">
+            <div className="flex-1 h-1.5 rounded-full bg-gray-100 overflow-hidden min-w-[40px]">
+              <div
+                className="h-full rounded-full bg-emerald-500"
+                style={{ width: `${pct}%` }}
+              />
+            </div>
+            <span className="text-xs tabular-nums text-gray-600 w-9 text-right">
+              {pct}%
+            </span>
+          </div>
+        )}
+      </div>
+    );
+  }
   return (
     <div className="px-3 py-2 text-sm tabular-nums">
       {value === null ? <span className="text-gray-300">—</span> : String(value)}
@@ -2426,6 +2452,37 @@ function useRollup(
         const targetProp = props.find((p) => p.id === rollup.targetPropId);
         if (!targetProp) {
           setResult(null);
+          return;
+        }
+        const related = ids
+          .map((id) => rows.find((r) => r.id === id))
+          .filter((r): r is { id: string; title: string; dataValues: Record<string, unknown> } => !!r);
+        if (rollup.aggregate === "percent_complete") {
+          // Fraction of related rows whose status sits in the complete group.
+          if (targetProp.type !== "status") {
+            setResult(null);
+            return;
+          }
+          const total = related.length;
+          if (total === 0) {
+            setResult(0);
+            return;
+          }
+          const done = related.filter((r) => {
+            const opt = targetProp.options.find((o) => o.id === r.dataValues[targetProp.id]);
+            return opt?.group === "complete";
+          }).length;
+          setResult(done / total);
+          return;
+        }
+        if (rollup.aggregate === "percent_checked") {
+          const total = related.length;
+          if (total === 0) {
+            setResult(0);
+            return;
+          }
+          const checked = related.filter((r) => Boolean(r.dataValues[targetProp.id])).length;
+          setResult(checked / total);
           return;
         }
         const vals = ids

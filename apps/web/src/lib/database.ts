@@ -43,7 +43,17 @@ export const DEFAULT_STATUS_OPTIONS: DbStatusOption[] = [
   { id: "s_done", name: "Done", color: "#a7f3d0", group: "complete" },
 ];
 
-export type RollupAggregate = "count" | "sum" | "min" | "max" | "unique";
+export type RollupAggregate =
+  | "count"
+  | "sum"
+  | "min"
+  | "max"
+  | "unique"
+  // Progress aggregates: fraction (0..1) of related rows that are "done".
+  // percent_complete targets a status property (complete group);
+  // percent_checked targets a checkbox property.
+  | "percent_complete"
+  | "percent_checked";
 
 export type DbPropSelectOption = { id: string; name: string; color: string };
 

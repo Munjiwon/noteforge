@@ -181,7 +181,7 @@ export async function configureRollup(
   propId: string,
   relationPropId: string,
   targetPropId: string,
-  aggregate: "count" | "sum" | "min" | "max" | "unique",
+  aggregate: "count" | "sum" | "min" | "max" | "unique" | "percent_complete" | "percent_checked",
 ) {
   const { schema } = await loadDb(slug, dbId);
   const p = schema.props.find((x) => x.id === propId);
