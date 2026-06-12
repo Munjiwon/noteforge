@@ -40,24 +40,39 @@ export function KanbanView({
     const groupId = effectiveKanbanGroupBy(schema);
     if (!groupId) return null;
     const p = schema.props.find((x) => x.id === groupId);
-    return p && p.type === "select" ? p : null;
+    return p && (p.type === "select" || p.type === "status") ? p : null;
   }, [schema]);
 
   if (!groupProp) {
     return (
       <div className="text-sm text-gray-500 border border-dashed rounded p-6 text-center">
         <div className="text-2xl mb-2">🗂</div>
-        <p className="font-medium text-gray-700">Kanban needs a Select column</p>
+        <p className="font-medium text-gray-700">Kanban needs a Select or Status column</p>
         <p className="text-xs mt-1">
-          Switch to Table view → <span className="text-gray-700">+ Add column</span> → Select.
+          Switch to Table view → <span className="text-gray-700">+ Add column</span> → Select or Status.
           Then return here and pick it as <em>Group by</em>.
         </p>
       </div>
     );
   }
 
+  // Status options carry a group (todo / in_progress / complete) — order columns
+  // by that group so the board reads left-to-right like Notion's task boards.
+  const STATUS_GROUP_ORDER: Record<string, number> = {
+    todo: 0,
+    in_progress: 1,
+    complete: 2,
+  };
+  const orderedOptions =
+    groupProp.type === "status"
+      ? [...groupProp.options].sort(
+          (a, b) =>
+            (STATUS_GROUP_ORDER[a.group] ?? 9) - (STATUS_GROUP_ORDER[b.group] ?? 9),
+        )
+      : groupProp.options;
+
   const columns = [
-    ...groupProp.options.map((o) => ({ key: o.id, name: o.name, color: o.color })),
+    ...orderedOptions.map((o) => ({ key: o.id, name: o.name, color: o.color })),
     { key: NO_VALUE, name: "No " + groupProp.name, color: "#f3f4f6" },
   ];
 

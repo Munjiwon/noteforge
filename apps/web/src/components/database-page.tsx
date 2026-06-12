@@ -82,7 +82,10 @@ export function DatabasePage({
   const view: DbView = effectiveViewKind(db.schema);
   const savedViews = db.schema.views ?? [];
   const activeView = getActiveView(db.schema);
-  const selectProps = db.schema.props.filter((p) => p.type === "select");
+  // Kanban can group by select or status; status boards read like Notion's.
+  const kanbanGroupProps = db.schema.props.filter(
+    (p) => p.type === "select" || p.type === "status",
+  );
   const [rowSearch, setRowSearch] = useState("");
   const queried = applyQuery(db.schema, rows);
   const visibleRows = rowSearch.trim()
@@ -324,20 +327,21 @@ export function DatabasePage({
             ? `${rows.length} row${rows.length === 1 ? "" : "s"}`
             : `${visibleRows.length} of ${rows.length} rows`}
         </span>
-        {view === "kanban" && selectProps.length > 0 && (
+        {view === "kanban" && kanbanGroupProps.length > 0 && (
           <label className="inline-flex items-center gap-1">
             <span>Group by:</span>
             <select
               className="bg-transparent border border-gray-200 rounded px-1 py-0.5"
               disabled={readOnly}
-              value={effectiveKanbanGroupBy(db.schema) ?? selectProps[0].id}
+              value={effectiveKanbanGroupBy(db.schema) ?? kanbanGroupProps[0].id}
               onChange={(e) =>
                 start(() => setKanbanGroup(slug, db.id, e.target.value))
               }
             >
-              {selectProps.map((p) => (
+              {kanbanGroupProps.map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.name}
+                  {p.type === "status" ? " (status)" : ""}
                 </option>
               ))}
             </select>

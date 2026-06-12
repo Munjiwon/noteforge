@@ -533,7 +533,22 @@ export async function addSelectOption(
 ) {
   const { schema } = await loadDb(slug, dbId);
   const p = schema.props.find((x) => x.id === propId);
-  if (!p || (p.type !== "select" && p.type !== "multi_select")) return;
+  if (!p) return;
+  if (p.type === "status") {
+    // New columns added from a status board land in the To-do group by default,
+    // matching Notion (you re-group them from the property editor afterward).
+    const sopt = {
+      id: newId("o"),
+      name: name.trim(),
+      color: SELECT_COLORS[p.options.length % SELECT_COLORS.length],
+      group: "todo" as const,
+    };
+    p.options.push(sopt);
+    await saveSchema(dbId, schema);
+    revalidatePath(`/w/${slug}/p/${dbId}`);
+    return sopt;
+  }
+  if (p.type !== "select" && p.type !== "multi_select") return;
   const opt = {
     id: newId("o"),
     name: name.trim(),
@@ -866,7 +881,8 @@ export async function setTimelineRange(
 export async function setKanbanGroup(slug: string, dbId: string, propId: string) {
   const { schema } = await loadDb(slug, dbId);
   const p = schema.props.find((x) => x.id === propId);
-  if (!p || p.type !== "select") throw new Error("group-by must be a select column");
+  if (!p || (p.type !== "select" && p.type !== "status"))
+    throw new Error("group-by must be a select or status column");
   const active = getActiveView(schema);
   if (active) active.kanbanGroupBy = propId;
   else schema.kanbanGroupBy = propId;
