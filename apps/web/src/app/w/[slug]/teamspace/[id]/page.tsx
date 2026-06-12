@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { requireWorkspaceMember } from "@/lib/workspace";
 import { prisma } from "db";
 import { TeamspaceHomeClient } from "./teamspace-home-client";
+import { JoinTeamspaceButton } from "./join-button";
 
 export const dynamic = "force-dynamic";
 
@@ -40,6 +41,7 @@ export default async function TeamspaceHomePage({
     orderBy: { createdAt: "asc" },
   });
   const memberIdSet = new Set(ts.members.map((m) => m.userId));
+  const isMember = memberIdSet.has(ctx.user.id);
   const memberRoleById = new Map(ts.members.map((m) => [m.userId, m.role]));
   const userById = new Map(
     workspaceMembers.map((m) => [m.user.id, { name: m.user.name, color: m.user.color, avatarUrl: m.user.avatarUrl, email: m.user.email }]),
@@ -68,6 +70,9 @@ export default async function TeamspaceHomePage({
             <span>{ts.pages.length} page{ts.pages.length === 1 ? "" : "s"}</span>
           </div>
         </div>
+        {!isMember && ts.access === "open" && (
+          <JoinTeamspaceButton slug={params.slug} teamspaceId={ts.id} />
+        )}
       </div>
       <TeamspaceHomeClient
         slug={params.slug}
