@@ -11,6 +11,7 @@ import {
   setTeamspaceMemberRole,
   createPageInTeamspace,
 } from "@/app/w/[slug]/teamspace-actions";
+import { createProjectManagement } from "@/app/w/[slug]/project-actions";
 
 type Member = {
   id: string;
@@ -69,6 +70,15 @@ export function TeamspaceHomeClient({
           className="text-xs px-3 py-1.5 rounded border border-gray-200 hover:bg-gray-50 disabled:opacity-50"
         >
           + New database
+        </button>
+        <button
+          type="button"
+          onClick={() => start(() => createProjectManagement(slug, ts.id))}
+          disabled={pending}
+          className="text-xs px-3 py-1.5 rounded border border-gray-200 hover:bg-gray-50 disabled:opacity-50"
+          title="Create linked Projects, Tasks and Sprints databases"
+        >
+          📊 Project management
         </button>
       </div>
       <h2 className="text-sm font-semibold text-gray-700">Teamspace settings</h2>

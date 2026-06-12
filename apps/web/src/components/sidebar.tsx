@@ -1218,6 +1218,20 @@ export function Sidebar({
                 >
                   👥 {lang === "ko" ? "새 팀스페이스" : "New teamspace"}
                 </button>
+                <button
+                  className="block w-full text-left px-2 py-1 text-sm hover:bg-black/5 rounded"
+                  onClick={() => {
+                    setAddMenuFor(null);
+                    startTransition(async () => {
+                      const { createProjectManagement } = await import(
+                        "@/app/w/[slug]/project-actions"
+                      );
+                      await createProjectManagement(currentSlug, null);
+                    });
+                  }}
+                >
+                  📊 {lang === "ko" ? "프로젝트 관리" : "Project management"}
+                </button>
                 <div className="border-t my-1" />
                 <div className="text-[10px] uppercase text-gray-400 px-2 pb-1">From template</div>
                 {PAGE_TEMPLATES.map((t) => (

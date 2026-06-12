@@ -86,6 +86,8 @@ export function DatabasePage({
   const kanbanGroupProps = db.schema.props.filter(
     (p) => p.type === "select" || p.type === "status",
   );
+  // A sprints database is recognised by its sprint-status property.
+  const isSprintDb = db.schema.props.some((p) => p.id === "p_sprintstatus");
   const [rowSearch, setRowSearch] = useState("");
   const queried = applyQuery(db.schema, rows);
   const visibleRows = rowSearch.trim()
@@ -308,6 +310,9 @@ export function DatabasePage({
           </button>
         </div>
         <DbControls slug={slug} dbId={db.id} schema={db.schema} readOnly={readOnly} />
+        {isSprintDb && !readOnly && (
+          <SprintToolbar slug={slug} dbId={db.id} />
+        )}
         <input
           value={rowSearch}
           onChange={(e) => setRowSearch(e.target.value)}
@@ -420,6 +425,44 @@ export function DatabasePage({
       </div>
       <PeekModal pageId={peekId} onClose={() => setPeekId(null)} />
     </div>
+  );
+}
+
+function SprintToolbar({ slug, dbId }: { slug: string; dbId: string }) {
+  const [busy, start] = useTransition();
+  return (
+    <span className="inline-flex items-center gap-1">
+      <button
+        disabled={busy}
+        onClick={() =>
+          start(async () => {
+            const { setSprintStatusFromDates } = await import(
+              "@/app/w/[slug]/project-actions"
+            );
+            await setSprintStatusFromDates(slug, dbId);
+          })
+        }
+        className="text-xs px-2 py-1 rounded border border-gray-200 hover:bg-gray-50 disabled:opacity-50"
+        title="Recompute Future / Current / Past from each sprint's dates"
+      >
+        ↻ Refresh status
+      </button>
+      <button
+        disabled={busy}
+        onClick={() =>
+          start(async () => {
+            const { createNextSprint } = await import(
+              "@/app/w/[slug]/project-actions"
+            );
+            await createNextSprint(slug, dbId);
+          })
+        }
+        className="text-xs px-2 py-1 rounded bg-gray-900 text-white hover:bg-gray-700 disabled:opacity-50"
+        title="Close the current sprint and start the next two-week sprint"
+      >
+        🏃 Start next sprint
+      </button>
+    </span>
   );
 }
 

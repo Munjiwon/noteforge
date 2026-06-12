@@ -301,3 +301,107 @@ export async function createProjectManagement(
   revalidatePath(`/w/${slug}`, "layout");
   redirect(`/w/${slug}/p/${ids.tasks}`);
 }
+
+type SprintRow = { id: string; title: string; values: Record<string, unknown> };
+
+// Load a sprints database's rows along with parsed dataValues. The page must
+// carry a `p_sprintstatus` property to count as a sprints database.
+async function loadSprintRows(slug: string, sprintsDbId: string) {
+  const ctx = await assertEditor(slug);
+  const db = await prisma.page.findFirst({
+    where: { id: sprintsDbId, workspaceId: ctx.workspace.id, kind: "database" },
+    select: { dbSchema: true },
+  });
+  if (!db?.dbSchema) throw new Error("not a database");
+  const schema = JSON.parse(db.dbSchema) as DbSchema;
+  if (!schema.props.some((p) => p.id === "p_sprintstatus")) {
+    throw new Error("not a sprints database");
+  }
+  const rows = await prisma.page.findMany({
+    where: { parentId: sprintsDbId, workspaceId: ctx.workspace.id, deletedAt: null },
+    orderBy: { position: "asc" },
+    select: { id: true, title: true, dataValues: true, position: true },
+  });
+  const parsed: (SprintRow & { position: number })[] = rows.map((r) => ({
+    id: r.id,
+    title: r.title,
+    position: r.position,
+    values: r.dataValues ? (JSON.parse(r.dataValues) as Record<string, unknown>) : {},
+  }));
+  return { ctx, rows: parsed };
+}
+
+// Recompute every sprint's status (Future / Current / Past) from its
+// start/end dates relative to today — mirrors Notion's auto sprint status.
+export async function setSprintStatusFromDates(slug: string, sprintsDbId: string) {
+  const { rows } = await loadSprintRows(slug, sprintsDbId);
+  const today = iso(new Date());
+  for (const r of rows) {
+    const start = typeof r.values.p_start === "string" ? r.values.p_start : null;
+    const end = typeof r.values.p_end === "string" ? r.values.p_end : null;
+    let status: string;
+    if (start && today < start) status = "sp_future";
+    else if (end && today > end) status = "sp_past";
+    else status = "sp_current";
+    if (r.values.p_sprintstatus !== status) {
+      await prisma.page.update({
+        where: { id: r.id },
+        data: { dataValues: JSON.stringify({ ...r.values, p_sprintstatus: status }) },
+      });
+    }
+  }
+  revalidatePath(`/w/${slug}/p/${sprintsDbId}`);
+}
+
+// Close the current sprint and open the next one: any Current sprint becomes
+// Past, and a new two-week sprint (numbered after the highest "Sprint N") is
+// created as Current, starting the day after the latest existing end date.
+export async function createNextSprint(slug: string, sprintsDbId: string) {
+  const { ctx, rows } = await loadSprintRows(slug, sprintsDbId);
+
+  // Mark current sprints as past.
+  for (const r of rows) {
+    if (r.values.p_sprintstatus === "sp_current") {
+      await prisma.page.update({
+        where: { id: r.id },
+        data: { dataValues: JSON.stringify({ ...r.values, p_sprintstatus: "sp_past" }) },
+      });
+    }
+  }
+
+  // Next sprint number from the highest "Sprint N" title.
+  let maxNum = 0;
+  for (const r of rows) {
+    const m = /sprint\s+(\d+)/i.exec(r.title);
+    if (m) maxNum = Math.max(maxNum, Number(m[1]));
+  }
+
+  // Start the day after the latest known end date, else today.
+  let latestEnd: string | null = null;
+  for (const r of rows) {
+    const end = typeof r.values.p_end === "string" ? r.values.p_end : null;
+    if (end && (!latestEnd || end > latestEnd)) latestEnd = end;
+  }
+  const start = latestEnd ? new Date(latestEnd) : new Date();
+  if (latestEnd) start.setDate(start.getDate() + 1);
+  const end = new Date(start);
+  end.setDate(start.getDate() + 13);
+
+  const maxPos = rows.reduce((acc, r) => Math.max(acc, r.position), 0);
+  await prisma.page.create({
+    data: {
+      workspaceId: ctx.workspace.id,
+      parentId: sprintsDbId,
+      kind: "doc",
+      title: `Sprint ${maxNum + 1}`,
+      position: maxPos + 1,
+      authorId: ctx.user.id,
+      dataValues: JSON.stringify({
+        p_sprintstatus: "sp_current",
+        p_start: iso(start),
+        p_end: iso(end),
+      }),
+    },
+  });
+  revalidatePath(`/w/${slug}/p/${sprintsDbId}`);
+}
