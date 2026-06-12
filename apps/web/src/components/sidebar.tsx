@@ -1908,27 +1908,27 @@ function TeamspaceMenu({
                 )
                   return;
                 start(async () => {
-                  const { removeTeamspaceMember } = await import(
+                  const { leaveTeamspace } = await import(
                     "@/app/w/[slug]/teamspace-actions"
                   );
-                  await removeTeamspaceMember(slug, teamspace.id, userId);
+                  await leaveTeamspace(slug, teamspace.id);
                 });
               }}
             >
               🚪 {lang === "ko" ? "나가기" : "Leave"}
             </button>
           ) : (
-            teamspace.access !== "private" && (
+            teamspace.access === "open" && (
               <button
                 className="block w-full text-left px-3 py-1.5 hover:bg-black/5"
                 onClick={(e) => {
                   e.preventDefault();
                   setOpen(false);
                   start(async () => {
-                    const { addTeamspaceMember } = await import(
+                    const { joinTeamspace } = await import(
                       "@/app/w/[slug]/teamspace-actions"
                     );
-                    await addTeamspaceMember(slug, teamspace.id, userId);
+                    await joinTeamspace(slug, teamspace.id);
                   });
                 }}
               >

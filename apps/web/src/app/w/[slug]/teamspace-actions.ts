@@ -258,6 +258,38 @@ export async function removeTeamspaceMember(
   revalidatePath(`/w/${slug}`);
 }
 
+// Self-service join: any workspace member (including viewers) may add
+// themselves to an OPEN teamspace. Closed teamspaces are invite-only and
+// private ones are invisible, so neither is joinable this way.
+export async function joinTeamspace(slug: string, teamspaceId: string) {
+  const ctx = await requireWorkspaceMember(slug);
+  const ts = await prisma.teamspace.findFirst({
+    where: { id: teamspaceId, workspaceId: ctx.workspace.id },
+    select: { access: true },
+  });
+  if (!ts) throw new Error("not found");
+  if (ts.access !== "open") throw new Error("This teamspace is invite-only");
+  await prisma.teamspaceMember.upsert({
+    where: { teamspaceId_userId: { teamspaceId, userId: ctx.user.id } },
+    update: {},
+    create: { teamspaceId, userId: ctx.user.id, role: "member" },
+  });
+  revalidatePath(`/w/${slug}`);
+  revalidatePath(`/w/${slug}/teamspace/${teamspaceId}`);
+}
+
+// Self-service leave: anyone may remove themselves from a teamspace.
+export async function leaveTeamspace(slug: string, teamspaceId: string) {
+  const ctx = await requireWorkspaceMember(slug);
+  await prisma.teamspaceMember
+    .delete({
+      where: { teamspaceId_userId: { teamspaceId, userId: ctx.user.id } },
+    })
+    .catch(() => undefined);
+  revalidatePath(`/w/${slug}`);
+  revalidatePath(`/w/${slug}/teamspace/${teamspaceId}`);
+}
+
 export async function setTeamspaceMemberRole(
   slug: string,
   teamspaceId: string,
