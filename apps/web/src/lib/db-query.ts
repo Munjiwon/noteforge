@@ -52,7 +52,15 @@ function passes(filter: DbFilter, prop: DbProp, row: BaseRow): boolean {
   }
 }
 
-export function applyQuery<R extends BaseRow>(schema: DbSchema, rows: R[]): R[] {
+// Filter values of "@me" resolve to the current viewer's id, so a saved view
+// like "My tasks" follows whoever is looking at it (Notion's behaviour).
+const ME = "@me";
+
+export function applyQuery<R extends BaseRow>(
+  schema: DbSchema,
+  rows: R[],
+  viewerId?: string,
+): R[] {
   const filters = effectiveFilters(schema);
   const combinator = effectiveFilterCombinator(schema);
   const sort = effectiveSort(schema);
@@ -63,7 +71,9 @@ export function applyQuery<R extends BaseRow>(schema: DbSchema, rows: R[]): R[] 
     const test = (row: BaseRow, f: DbFilter) => {
       const prop = schema.props.find((p) => p.id === f.propId);
       if (!prop) return combinator === "and"; // unknown prop: AND keeps row, OR skips it
-      return passes(f, prop, row);
+      const rf =
+        f.value === ME ? { ...f, value: viewerId ?? "\0__no_viewer__" } : f;
+      return passes(rf, prop, row);
     };
     out = rows.filter((row) =>
       combinator === "or"

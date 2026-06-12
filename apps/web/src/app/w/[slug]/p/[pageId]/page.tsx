@@ -281,6 +281,7 @@ export default async function PageRoute({
           }))}
           rowTemplates={rowTemplates}
           role={effectiveRole}
+          viewerId={ctx.user.id}
         />
       </>
     );

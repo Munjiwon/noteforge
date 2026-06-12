@@ -80,6 +80,12 @@ function buildSchemas(ids: { projects: string; tasks: string; sprints: string })
     views: [
       { id: "v_board", name: "Board", kind: "kanban", kanbanGroupBy: "p_status" },
       { id: "v_all", name: "All tasks", kind: "table" },
+      {
+        id: "v_mine",
+        name: "My tasks",
+        kind: "table",
+        filters: [{ id: "f_mine", propId: "p_assignee", op: "eq", value: "@me" }],
+      },
       { id: "v_cal", name: "Calendar", kind: "calendar", calendarDateBy: "p_due" },
     ],
   };
@@ -239,10 +245,16 @@ export async function createProjectManagement(
   );
 
   // Tasks, linked to the project and sprint.
-  const taskSpecs: { title: string; status: string; priority: string; dueOffset: number }[] = [
+  const taskSpecs: {
+    title: string;
+    status: string;
+    priority: string;
+    dueOffset: number;
+    mine?: boolean;
+  }[] = [
     { title: "Audit current pages", status: "ts_done", priority: "pr_med", dueOffset: -1 },
-    { title: "Design new landing page", status: "ts_prog", priority: "pr_high", dueOffset: 3 },
-    { title: "Implement hero section", status: "ts_todo", priority: "pr_high", dueOffset: 6 },
+    { title: "Design new landing page", status: "ts_prog", priority: "pr_high", dueOffset: 3, mine: true },
+    { title: "Implement hero section", status: "ts_todo", priority: "pr_high", dueOffset: 6, mine: true },
     { title: "QA and launch", status: "ts_todo", priority: "pr_med", dueOffset: 10 },
   ];
   const taskIds: string[] = [];
@@ -259,6 +271,7 @@ export async function createProjectManagement(
         p_due: iso(due),
         p_project: [projectId],
         p_sprint: [sprintId],
+        ...(t.mine ? { p_assignee: ctx.user.id } : {}),
       },
       tpos++,
     );

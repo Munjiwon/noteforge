@@ -472,7 +472,7 @@ function FilterValueInput({
   readOnly: boolean;
   onChange: (v: DbFilter["value"]) => void;
 }) {
-  if (prop.type === "select") {
+  if (prop.type === "select" || prop.type === "status") {
     return (
       <select
         disabled={readOnly}
@@ -486,6 +486,21 @@ function FilterValueInput({
             {o.name}
           </option>
         ))}
+      </select>
+    );
+  }
+  if (prop.type === "person") {
+    // "@me" follows the current viewer (Notion's "Me"); a member picker would
+    // need the workspace roster, which this control doesn't load.
+    return (
+      <select
+        disabled={readOnly}
+        className="border border-gray-200 rounded px-1 py-0.5 text-xs"
+        value={value === "@me" ? "@me" : ""}
+        onChange={(e) => onChange(e.target.value || null)}
+      >
+        <option value="">—</option>
+        <option value="@me">Me</option>
       </select>
     );
   }

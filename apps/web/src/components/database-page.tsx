@@ -39,6 +39,7 @@ export function DatabasePage({
   rowTemplates = [],
   role,
   canChangeSettings = false,
+  viewerId,
 }: {
   slug: string;
   db: {
@@ -70,6 +71,7 @@ export function DatabasePage({
   rowTemplates?: { id: string; title: string; icon: string | null }[];
   role: "owner" | "editor" | "viewer";
   canChangeSettings?: boolean;
+  viewerId?: string;
 }) {
   const router = useRouter();
   const [title, setTitle] = useState(db.title);
@@ -89,7 +91,7 @@ export function DatabasePage({
   // A sprints database is recognised by its sprint-status property.
   const isSprintDb = db.schema.props.some((p) => p.id === "p_sprintstatus");
   const [rowSearch, setRowSearch] = useState("");
-  const queried = applyQuery(db.schema, rows);
+  const queried = applyQuery(db.schema, rows, viewerId);
   const visibleRows = rowSearch.trim()
     ? queried.filter((r) =>
         (r.title || "Untitled").toLowerCase().includes(rowSearch.trim().toLowerCase()),
