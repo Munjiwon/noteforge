@@ -51,7 +51,13 @@ function buildSchemas(ids: { projects: string; tasks: string; sprints: string })
     ],
     activeViewId: "v_board",
     views: [
-      { id: "v_board", name: "Board", kind: "kanban", kanbanGroupBy: "p_status" },
+      {
+        id: "v_board",
+        name: "Board",
+        kind: "kanban",
+        kanbanGroupBy: "p_status",
+        hiddenColumns: ["p_tasks", "p_taskcount"],
+      },
       { id: "v_all", name: "All projects", kind: "table" },
     ],
   };
@@ -75,10 +81,33 @@ function buildSchemas(ids: { projects: string; tasks: string; sprints: string })
       { id: "p_due", name: "Due", type: "date" },
       { id: "p_project", name: "Project", type: "relation", targetDbId: ids.projects },
       { id: "p_sprint", name: "Sprint", type: "relation", targetDbId: ids.sprints },
+      { id: "p_parent", name: "Parent task", type: "relation", targetDbId: ids.tasks },
+      { id: "p_subtasks", name: "Sub-tasks", type: "relation", targetDbId: ids.tasks },
+      {
+        id: "p_subtaskcount",
+        name: "Sub-task count",
+        type: "rollup",
+        relationPropId: "p_subtasks",
+        targetPropId: "p_title",
+        aggregate: "count",
+      },
     ],
     activeViewId: "v_board",
     views: [
-      { id: "v_board", name: "Board", kind: "kanban", kanbanGroupBy: "p_status" },
+      {
+        id: "v_board",
+        name: "Board",
+        kind: "kanban",
+        kanbanGroupBy: "p_status",
+        // Keep cards readable: hide relation/rollup columns on the board.
+        hiddenColumns: [
+          "p_project",
+          "p_sprint",
+          "p_parent",
+          "p_subtasks",
+          "p_subtaskcount",
+        ],
+      },
       { id: "v_all", name: "All tasks", kind: "table" },
       {
         id: "v_mine",
@@ -277,6 +306,39 @@ export async function createProjectManagement(
     );
     taskIds.push(id);
   }
+
+  // A sub-task under "Implement hero section" (taskIds[2]) to demonstrate the
+  // parent / sub-task self-relation.
+  const parentTaskId = taskIds[2];
+  const subTaskId = await mkRow(
+    ids.tasks,
+    "Build responsive hero layout",
+    {
+      p_status: "ts_todo",
+      p_priority: "pr_med",
+      p_project: [projectId],
+      p_sprint: [sprintId],
+      p_parent: [parentTaskId],
+    },
+    tpos++,
+  );
+  const parentDue = new Date(now);
+  parentDue.setDate(now.getDate() + 6);
+  await prisma.page.update({
+    where: { id: parentTaskId },
+    data: {
+      dataValues: JSON.stringify({
+        p_status: "ts_todo",
+        p_priority: "pr_high",
+        p_due: iso(parentDue),
+        p_project: [projectId],
+        p_sprint: [sprintId],
+        p_assignee: ctx.user.id,
+        p_subtasks: [subTaskId],
+      }),
+    },
+  });
+  taskIds.push(subTaskId);
 
   // Relations are one-way, so populate the reverse sides explicitly: the
   // project and sprint must list their task ids for rollups/links to resolve.
