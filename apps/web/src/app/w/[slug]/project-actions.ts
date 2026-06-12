@@ -110,6 +110,7 @@ function buildSchemas(ids: { projects: string; tasks: string; sprints: string })
       },
     ],
     activeViewId: "v_board",
+    treeParentProp: "p_parent",
     views: [
       {
         id: "v_board",

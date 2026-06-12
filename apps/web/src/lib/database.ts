@@ -137,6 +137,9 @@ export type DbSchema = {
   hiddenColumns?: string[];
   columnWidths?: Record<string, number>;
   tableGroupBy?: string;
+  // Id of a self-relation prop that points to a row's parent. When set, the
+  // table renders rows as an indented tree (Notion-style sub-items).
+  treeParentProp?: string;
 };
 
 export function getActiveView(schema: DbSchema): SavedView | null {

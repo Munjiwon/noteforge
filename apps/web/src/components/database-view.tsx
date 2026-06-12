@@ -183,6 +183,27 @@ export function DatabaseView({
       } catch {}
       return next;
     });
+  const treeCollapseKey = `noteforge:db-tree-collapsed:${dbId}`;
+  const [treeCollapsed, setTreeCollapsed] = useState<Set<string>>(() => {
+    if (typeof window === "undefined") return new Set();
+    try {
+      const raw = localStorage.getItem(treeCollapseKey);
+      return raw ? new Set(JSON.parse(raw) as string[]) : new Set();
+    } catch {
+      return new Set();
+    }
+  });
+  const toggleTree = (id: string) =>
+    setTreeCollapsed((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      try {
+        localStorage.setItem(treeCollapseKey, JSON.stringify(Array.from(next)));
+      } catch {}
+      return next;
+    });
+
   const [lastDeleted, setLastDeleted] = useState<
     { title: string; dataValues: Record<string, unknown> } | null
   >(null);
@@ -458,12 +479,55 @@ export function DatabaseView({
                 },
                 onDrop: () => onDropOnRow(idx),
               });
+              if (!groupBy) {
+                // Ungrouped. If a tree parent relation is configured, render the
+                // rows as an indented sub-task tree (Notion-style sub-items).
+                const parentProp = schema.treeParentProp;
+                if (parentProp && schema.props.some((p) => p.id === parentProp)) {
+                  const byId = new Map(rows.map((r) => [r.id, r]));
+                  const childrenOf = new Map<string, Row[]>();
+                  const roots: Row[] = [];
+                  for (const row of rows) {
+                    const pv = row.dataValues[parentProp];
+                    const pid = Array.isArray(pv) && pv.length ? (pv[0] as string) : null;
+                    if (pid && pid !== row.id && byId.has(pid)) {
+                      const arr = childrenOf.get(pid) ?? [];
+                      arr.push(row);
+                      childrenOf.set(pid, arr);
+                    } else {
+                      roots.push(row);
+                    }
+                  }
+                  const out: React.ReactNode[] = [];
+                  const seen = new Set<string>();
+                  const walk = (r: Row, depth: number) => {
+                    if (seen.has(r.id)) return; // guard against relation cycles
+                    seen.add(r.id);
+                    const kids = childrenOf.get(r.id) ?? [];
+                    out.push(
+                      <RowRow
+                        {...rowProps(r, rows.indexOf(r))}
+                        depth={depth}
+                        hasChildren={kids.length > 0}
+                        collapsed={treeCollapsed.has(r.id)}
+                        onToggleCollapse={() => toggleTree(r.id)}
+                      />,
+                    );
+                    if (treeCollapsed.has(r.id)) return;
+                    for (const k of kids) walk(k, depth + 1);
+                  };
+                  for (const r of roots) walk(r, 0);
+                  return out;
+                }
+                return rows.map((row, idx) => (
+                  <RowRow {...rowProps(row, idx)} />
+                ));
+              }
               if (
-                !groupBy ||
-                (groupBy.type !== "select" &&
-                  groupBy.type !== "status" &&
-                  groupBy.type !== "date" &&
-                  groupBy.type !== "relation")
+                groupBy.type !== "select" &&
+                groupBy.type !== "status" &&
+                groupBy.type !== "date" &&
+                groupBy.type !== "relation"
               ) {
                 return rows.map((row, idx) => (
                   <RowRow {...rowProps(row, idx)} />
@@ -920,6 +984,10 @@ function RowRow({
   onDragOver,
   onDragEnd,
   onDrop,
+  depth = 0,
+  hasChildren = false,
+  collapsed = false,
+  onToggleCollapse,
 }: {
   row: Row;
   schema: DbSchema;
@@ -935,6 +1003,10 @@ function RowRow({
   onDragOver?: () => void;
   onDragEnd?: () => void;
   onDrop?: () => void;
+  depth?: number;
+  hasChildren?: boolean;
+  collapsed?: boolean;
+  onToggleCollapse?: () => void;
 }) {
   const [hover, setHover] = useState(false);
   const [ctxMenu, setCtxMenu] = useState<{ x: number; y: number } | null>(null);
@@ -999,8 +1071,31 @@ function RowRow({
           className="border-r border-gray-100 last:border-r-0 align-top relative"
         >
           <div className="flex items-center">
+            {p.id === "p_title" && depth > 0 && (
+              <span
+                className="shrink-0"
+                style={{ width: depth * 16 }}
+                aria-hidden
+              />
+            )}
+            {p.id === "p_title" && (onToggleCollapse !== undefined || depth > 0) && (
+              <button
+                type="button"
+                onClick={onToggleCollapse}
+                disabled={!hasChildren}
+                className={
+                  "shrink-0 w-4 text-[10px] " +
+                  (hasChildren
+                    ? "text-gray-500 hover:text-gray-900"
+                    : "text-transparent")
+                }
+                title={hasChildren ? (collapsed ? "Expand sub-tasks" : "Collapse sub-tasks") : undefined}
+              >
+                {hasChildren ? (collapsed ? "▶" : "▼") : "·"}
+              </button>
+            )}
             {p.id === "p_title" && row.icon && (
-              <span className="pl-3 pr-1 text-sm leading-none shrink-0">
+              <span className="pl-1 pr-1 text-sm leading-none shrink-0">
                 {row.icon}
               </span>
             )}
