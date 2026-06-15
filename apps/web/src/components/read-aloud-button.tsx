@@ -8,13 +8,18 @@ export function ReadAloudButton({
   getText: () => string;
 }) {
   const [speaking, setSpeaking] = useState(false);
-  const supported =
-    typeof window !== "undefined" && "speechSynthesis" in window;
+  // Decide support only after mount: the server (and the first client render)
+  // must render identically, or hydration desyncs the whole toolbar. Checking
+  // `window` during render makes server output null but client output a button.
+  const [mounted, setMounted] = useState(false);
   useEffect(() => {
+    setMounted(true);
     return () => {
       if (typeof window !== "undefined") window.speechSynthesis?.cancel();
     };
   }, []);
+  const supported =
+    mounted && typeof window !== "undefined" && "speechSynthesis" in window;
   if (!supported) return null;
   const stop = () => {
     window.speechSynthesis.cancel();
