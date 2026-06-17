@@ -128,6 +128,7 @@ export function BoardView({
               {columns.map((col) => {
                 const colCards = lane.cards.filter((c) => statusToCol.get(c.statusId) === col.id);
                 const overLimit = col.wipLimit != null && colCards.length > col.wipLimit;
+                const colPoints = colCards.reduce((s, c) => s + (c.storyPoints ?? 0), 0);
                 return (
                   <div
                     key={col.id}
@@ -144,9 +145,16 @@ export function BoardView({
                   >
                     <div className="flex items-center justify-between px-3 py-2 text-xs font-medium text-gray-600">
                       <span>{col.name}</span>
-                      <span className={overLimit ? "text-red-600" : "text-gray-400"}>
-                        {colCards.length}
-                        {col.wipLimit != null ? ` / ${col.wipLimit}` : ""}
+                      <span className="flex items-center gap-1.5">
+                        {colPoints > 0 && (
+                          <span className="rounded-full bg-gray-200 px-1.5 text-[10px] text-gray-600">
+                            {colPoints} pts
+                          </span>
+                        )}
+                        <span className={overLimit ? "text-red-600" : "text-gray-400"}>
+                          {colCards.length}
+                          {col.wipLimit != null ? ` / ${col.wipLimit}` : ""}
+                        </span>
                       </span>
                     </div>
                     <div className="flex flex-col gap-2 px-2 pb-2">
