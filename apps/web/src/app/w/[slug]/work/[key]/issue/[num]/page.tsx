@@ -4,6 +4,7 @@ import { loadProjectMeta, workspaceMemberOptions } from "@/lib/work-server";
 import { prisma } from "db";
 import { IssueDetail } from "@/components/work/issue-detail";
 import { IssueRelations } from "@/components/work/issue-relations";
+import { IssueWorklog } from "@/components/work/issue-worklog";
 import { ISSUE_LINK_TYPES } from "@/lib/work";
 
 export const dynamic = "force-dynamic";
@@ -47,6 +48,10 @@ export default async function IssuePage({
       },
       linksIn: {
         include: { source: { select: { number: true, summary: true } } },
+      },
+      worklogs: {
+        orderBy: { startedAt: "desc" },
+        include: { author: { select: { name: true } } },
       },
     },
   });
@@ -153,6 +158,21 @@ export default async function IssuePage({
         selectedVersionIds={issue.fixVersions.map((v) => v.versionId)}
         allLabels={meta.labels.map((l) => ({ name: l.name, color: l.color }))}
         selectedLabels={issue.labels.map((l) => l.label.name)}
+      />
+      <IssueWorklog
+        slug={params.slug}
+        issueId={issue.id}
+        currentUserId={ctx.user.id}
+        readOnly={readOnly}
+        originalEstimate={issue.originalEstimate}
+        worklogs={issue.worklogs.map((w) => ({
+          id: w.id,
+          seconds: w.seconds,
+          comment: w.comment,
+          startedAt: w.startedAt.toISOString(),
+          authorId: w.authorId,
+          authorName: w.author.name,
+        }))}
       />
     </div>
   );

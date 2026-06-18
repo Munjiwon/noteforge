@@ -1690,6 +1690,18 @@ export function Sidebar({
           🎯 Projects
         </Link>
         <Link
+          href={`/w/${currentSlug}/work/my`}
+          className="block text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
+        >
+          🧑‍💻 My work
+        </Link>
+        <Link
+          href={`/w/${currentSlug}/work/search`}
+          className="block text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
+        >
+          🔎 Issue search
+        </Link>
+        <Link
           href={`/w/${currentSlug}/calendar`}
           className="block text-xs text-gray-500 hover:text-gray-900 px-2 py-1 rounded hover:bg-black/5"
         >
