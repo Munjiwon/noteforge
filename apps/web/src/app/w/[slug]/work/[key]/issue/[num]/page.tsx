@@ -3,6 +3,8 @@ import { requireWorkspaceMember } from "@/lib/workspace";
 import { loadProjectMeta, workspaceMemberOptions } from "@/lib/work-server";
 import { prisma } from "db";
 import { IssueDetail } from "@/components/work/issue-detail";
+import { IssueRelations } from "@/components/work/issue-relations";
+import { ISSUE_LINK_TYPES } from "@/lib/work";
 
 export const dynamic = "force-dynamic";
 
@@ -37,14 +39,47 @@ export default async function IssuePage({
         include: { status: { select: { category: true } } },
       },
       watchers: { select: { userId: true } },
+      labels: { include: { label: { select: { name: true } } } },
+      components: { select: { componentId: true } },
+      fixVersions: { select: { versionId: true } },
+      linksOut: {
+        include: { target: { select: { number: true, summary: true } } },
+      },
+      linksIn: {
+        include: { source: { select: { number: true, summary: true } } },
+      },
     },
   });
   if (!issue) notFound();
 
-  const [meta, members] = await Promise.all([
+  const [meta, members, linkableIssues] = await Promise.all([
     loadProjectMeta(project.id, ctx.workspace.id),
     workspaceMemberOptions(ctx.workspace.id),
+    prisma.issue.findMany({
+      where: { projectId: project.id, id: { not: issue.id } },
+      orderBy: { number: "asc" },
+      select: { id: true, number: true, summary: true },
+    }),
   ]);
+
+  const linkTypeName = (id: string, inward: boolean) => {
+    const t = ISSUE_LINK_TYPES.find((x) => x.id === id);
+    return t ? (inward ? t.inward : t.name) : id;
+  };
+  const links = [
+    ...issue.linksOut.map((l) => ({
+      id: l.id,
+      typeLabel: linkTypeName(l.type, false),
+      otherNumber: l.target.number,
+      otherSummary: l.target.summary,
+    })),
+    ...issue.linksIn.map((l) => ({
+      id: l.id,
+      typeLabel: linkTypeName(l.type, true),
+      otherNumber: l.source.number,
+      otherSummary: l.source.summary,
+    })),
+  ];
 
   const readOnly = ctx.role === "viewer";
 
@@ -104,6 +139,20 @@ export default async function IssuePage({
           summary: s.summary,
           category: s.status.category,
         }))}
+      />
+      <IssueRelations
+        slug={params.slug}
+        projectKey={project.key}
+        issueId={issue.id}
+        readOnly={readOnly}
+        links={links}
+        linkableIssues={linkableIssues}
+        allComponents={meta.components.map((c) => ({ id: c.id, name: c.name }))}
+        selectedComponentIds={issue.components.map((c) => c.componentId)}
+        allVersions={meta.versions.map((v) => ({ id: v.id, name: v.name, released: v.released }))}
+        selectedVersionIds={issue.fixVersions.map((v) => v.versionId)}
+        allLabels={meta.labels.map((l) => ({ name: l.name, color: l.color }))}
+        selectedLabels={issue.labels.map((l) => l.label.name)}
       />
     </div>
   );
