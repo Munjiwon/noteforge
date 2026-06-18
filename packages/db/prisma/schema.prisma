@@ -27,6 +27,18 @@ model User {
   pageReactions PageReaction[]
   pageSubscriptions PageSubscription[]
   reminders    Reminder[]
+
+  // Work management (JIRA-style)
+  workProjectsLed  WorkProject[]     @relation("WorkProjectLead")
+  issuesAssigned   Issue[]           @relation("IssueAssignee")
+  issuesReported   Issue[]           @relation("IssueReporter")
+  worklogs         Worklog[]
+  issueComments    IssueComment[]
+  issueWatching    IssueWatcher[]
+  issueActivities  IssueActivity[]
+  componentsLed    WorkComponent[]   @relation("ComponentLead")
+  issueAttachments IssueAttachment[]
+  savedFilters     SavedFilter[]
 }
 
 model ApiToken {
@@ -61,6 +73,11 @@ model Workspace {
   reminders Reminder[]
   syncedBlocks SyncedBlock[]
   teamspaces Teamspace[]
+
+  // Work management (JIRA-style)
+  workProjects WorkProject[]
+  labels       WorkLabel[]
+  savedFilters SavedFilter[]
 }
 
 model Teamspace {
@@ -332,4 +349,362 @@ model Invite {
 
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   createdBy   User      @relation("InviteCreator", fields: [createdById], references: [id])
+}
+
+// ===========================================================================
+// Work management (JIRA-style): first-class issue tracking, workflows, agile
+// boards, sprints, and reports — distinct from the flexible Page databases.
+// ===========================================================================
+
+model WorkProject {
+  id          String    @id @default(cuid())
+  workspaceId String
+  key         String    // short code used in issue keys, e.g. "ENG" -> ENG-12
+  name        String
+  description String?
+  icon        String?   // emoji
+  color       String?   // hex
+  type        String    @default("scrum") // "scrum" | "kanban"
+  leadId      String?
+  nextNumber  Int       @default(1) // monotonic counter for issue keys
+  archivedAt  DateTime?
+  createdAt   DateTime  @default(now())
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  lead        User?     @relation("WorkProjectLead", fields: [leadId], references: [id], onDelete: SetNull)
+  issues      Issue[]
+  sprints     Sprint[]
+  boards      Board[]
+  issueTypes  IssueType[]
+  statuses    WorkflowStatus[]
+  transitions WorkflowTransition[]
+  components  WorkComponent[]
+  versions    WorkVersion[]
+
+  @@unique([workspaceId, key])
+  @@index([workspaceId])
+}
+
+model IssueType {
+  id        String  @id @default(cuid())
+  projectId String
+  name      String
+  icon      String? // emoji
+  level     String  @default("standard") // "epic" | "standard" | "subtask"
+  color     String?
+  position  Float   @default(0)
+
+  project   WorkProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  issues    Issue[]
+
+  @@index([projectId])
+}
+
+model WorkflowStatus {
+  id        String  @id @default(cuid())
+  projectId String
+  name      String
+  category  String  @default("todo") // "todo" | "in_progress" | "done"
+  color     String?
+  position  Float   @default(0)
+
+  project        WorkProject          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  issues         Issue[]
+  transitionsFrom WorkflowTransition[] @relation("TransitionFrom")
+  transitionsTo   WorkflowTransition[] @relation("TransitionTo")
+
+  @@index([projectId])
+}
+
+model WorkflowTransition {
+  id           String  @id @default(cuid())
+  projectId    String
+  name         String
+  fromStatusId String? // null = global (allowed from any status)
+  toStatusId   String
+
+  project    WorkProject     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  fromStatus WorkflowStatus? @relation("TransitionFrom", fields: [fromStatusId], references: [id], onDelete: Cascade)
+  toStatus   WorkflowStatus  @relation("TransitionTo", fields: [toStatusId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+}
+
+model Issue {
+  id               String    @id @default(cuid())
+  projectId        String
+  number           Int       // per-project sequential; key = project.key + "-" + number
+  typeId           String
+  statusId         String
+  summary          String    @default("")
+  description      String    @default("[]") // BlockNote JSON
+  priority         String    @default("medium") // "highest" | "high" | "medium" | "low" | "lowest"
+  assigneeId       String?
+  reporterId       String?
+  parentId         String?   // sub-task parent
+  epicId           String?   // epic link
+  sprintId         String?
+  rank             Float     @default(0) // backlog / board ordering
+  storyPoints      Float?
+  originalEstimate Int?      // seconds
+  dueDate          DateTime?
+  resolution       String?   // null | "done" | "wontdo" | "duplicate" | "cannot_reproduce"
+  resolvedAt       DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  project     WorkProject     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  type        IssueType       @relation(fields: [typeId], references: [id])
+  status      WorkflowStatus  @relation(fields: [statusId], references: [id])
+  assignee    User?           @relation("IssueAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  reporter    User?           @relation("IssueReporter", fields: [reporterId], references: [id], onDelete: SetNull)
+  parent      Issue?          @relation("IssueSubtasks", fields: [parentId], references: [id], onDelete: SetNull)
+  subtasks    Issue[]         @relation("IssueSubtasks")
+  epic        Issue?          @relation("IssueEpic", fields: [epicId], references: [id], onDelete: SetNull)
+  epicChildren Issue[]        @relation("IssueEpic")
+  sprint      Sprint?         @relation(fields: [sprintId], references: [id], onDelete: SetNull)
+  comments    IssueComment[]
+  activities  IssueActivity[]
+  watchers    IssueWatcher[]
+  worklogs    Worklog[]
+  attachments IssueAttachment[]
+  linksOut    IssueLink[]     @relation("LinkSource")
+  linksIn     IssueLink[]     @relation("LinkTarget")
+  labels      IssueLabel[]
+  components  IssueComponent[]
+  fixVersions IssueFixVersion[]
+
+  @@unique([projectId, number])
+  @@index([projectId])
+  @@index([statusId])
+  @@index([sprintId])
+  @@index([assigneeId])
+  @@index([epicId])
+  @@index([parentId])
+}
+
+model Sprint {
+  id           String    @id @default(cuid())
+  projectId    String
+  name         String
+  goal         String?
+  state        String    @default("future") // "future" | "active" | "completed"
+  startDate    DateTime?
+  endDate      DateTime?
+  completeDate DateTime?
+  sequence     Int       @default(0)
+  createdAt    DateTime  @default(now())
+
+  project   WorkProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  issues    Issue[]
+
+  @@index([projectId])
+}
+
+model Board {
+  id        String  @id @default(cuid())
+  projectId String
+  name      String
+  type      String  @default("scrum") // "scrum" | "kanban"
+  swimlane  String  @default("none")  // "none" | "assignee" | "epic" | "subtask"
+  filterJql String?
+  createdAt DateTime @default(now())
+
+  project WorkProject   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  columns BoardColumn[]
+
+  @@index([projectId])
+}
+
+model BoardColumn {
+  id        String  @id @default(cuid())
+  boardId   String
+  name      String
+  statusIds String  @default("[]") // JSON array of WorkflowStatus ids mapped to this column
+  position  Float   @default(0)
+  wipLimit  Int?
+
+  board Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  @@index([boardId])
+}
+
+model IssueLink {
+  id        String   @id @default(cuid())
+  sourceId  String
+  targetId  String
+  type      String   // "blocks" | "relates" | "duplicates" | "clones"
+  createdAt DateTime @default(now())
+
+  source Issue @relation("LinkSource", fields: [sourceId], references: [id], onDelete: Cascade)
+  target Issue @relation("LinkTarget", fields: [targetId], references: [id], onDelete: Cascade)
+
+  @@unique([sourceId, targetId, type])
+  @@index([sourceId])
+  @@index([targetId])
+}
+
+model WorkComponent {
+  id          String  @id @default(cuid())
+  projectId   String
+  name        String
+  description String?
+  leadId      String?
+
+  project WorkProject     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  lead    User?           @relation("ComponentLead", fields: [leadId], references: [id], onDelete: SetNull)
+  issues  IssueComponent[]
+
+  @@index([projectId])
+}
+
+model WorkVersion {
+  id          String    @id @default(cuid())
+  projectId   String
+  name        String
+  description String?
+  startDate   DateTime?
+  releaseDate DateTime?
+  released    Boolean   @default(false)
+  archived    Boolean   @default(false)
+  position    Float     @default(0)
+
+  project WorkProject       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  issues  IssueFixVersion[]
+
+  @@index([projectId])
+}
+
+model WorkLabel {
+  id          String  @id @default(cuid())
+  workspaceId String
+  name        String
+  color       String?
+
+  workspace Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  issues    IssueLabel[]
+
+  @@unique([workspaceId, name])
+  @@index([workspaceId])
+}
+
+model IssueLabel {
+  id      String @id @default(cuid())
+  issueId String
+  labelId String
+
+  issue Issue     @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  label WorkLabel @relation(fields: [labelId], references: [id], onDelete: Cascade)
+
+  @@unique([issueId, labelId])
+  @@index([labelId])
+}
+
+model IssueComponent {
+  id          String @id @default(cuid())
+  issueId     String
+  componentId String
+
+  issue     Issue         @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  component WorkComponent @relation(fields: [componentId], references: [id], onDelete: Cascade)
+
+  @@unique([issueId, componentId])
+  @@index([componentId])
+}
+
+model IssueFixVersion {
+  id        String @id @default(cuid())
+  issueId   String
+  versionId String
+
+  issue   Issue       @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  version WorkVersion @relation(fields: [versionId], references: [id], onDelete: Cascade)
+
+  @@unique([issueId, versionId])
+  @@index([versionId])
+}
+
+model Worklog {
+  id        String   @id @default(cuid())
+  issueId   String
+  authorId  String
+  seconds   Int
+  startedAt DateTime @default(now())
+  comment   String?
+  createdAt DateTime @default(now())
+
+  issue  Issue @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  author User  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([issueId])
+}
+
+model IssueComment {
+  id        String   @id @default(cuid())
+  issueId   String
+  authorId  String
+  body      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  issue  Issue @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  author User  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([issueId])
+}
+
+model IssueActivity {
+  id        String   @id @default(cuid())
+  issueId   String
+  userId    String?
+  field     String   // "status" | "assignee" | "sprint" | "points" | "created" | ...
+  from      String?
+  to        String?
+  createdAt DateTime @default(now())
+
+  issue Issue @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  user  User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([issueId, createdAt])
+}
+
+model IssueWatcher {
+  id      String @id @default(cuid())
+  issueId String
+  userId  String
+
+  issue Issue @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([issueId, userId])
+}
+
+model IssueAttachment {
+  id           String   @id @default(cuid())
+  issueId      String
+  url          String
+  name         String
+  size         Int      @default(0)
+  uploadedById String?
+  createdAt    DateTime @default(now())
+
+  issue      Issue @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  uploadedBy User? @relation(fields: [uploadedById], references: [id], onDelete: SetNull)
+
+  @@index([issueId])
+}
+
+model SavedFilter {
+  id          String   @id @default(cuid())
+  workspaceId String
+  ownerId     String
+  name        String
+  jql         String
+  shared      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  owner     User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
 }
