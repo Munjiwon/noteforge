@@ -19,6 +19,40 @@ export async function assertWorkEditor(slug: string) {
   return ctx;
 }
 
+// Load the project's metadata used to populate issue editors and pickers:
+// statuses, issue types, sprints, epics, components, versions, and labels.
+export async function loadProjectMeta(projectId: string, workspaceId: string) {
+  const [statuses, types, sprints, epics, components, versions, labels] =
+    await Promise.all([
+      prisma.workflowStatus.findMany({
+        where: { projectId },
+        orderBy: { position: "asc" },
+      }),
+      prisma.issueType.findMany({
+        where: { projectId },
+        orderBy: { position: "asc" },
+      }),
+      prisma.sprint.findMany({
+        where: { projectId, state: { not: "completed" } },
+        orderBy: { sequence: "asc" },
+      }),
+      prisma.issue.findMany({
+        where: { projectId, type: { level: "epic" } },
+        select: { id: true, number: true, summary: true },
+      }),
+      prisma.workComponent.findMany({ where: { projectId }, orderBy: { name: "asc" } }),
+      prisma.workVersion.findMany({
+        where: { projectId, archived: false },
+        orderBy: { position: "asc" },
+      }),
+      prisma.workLabel.findMany({
+        where: { workspaceId },
+        orderBy: { name: "asc" },
+      }),
+    ]);
+  return { statuses, types, sprints, epics, components, versions, labels };
+}
+
 // Load the members of a workspace for assignee/reporter pickers.
 export async function workspaceMemberOptions(workspaceId: string) {
   const rows = await prisma.workspaceMember.findMany({

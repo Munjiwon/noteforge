@@ -114,7 +114,7 @@ export async function createWorkProject(formData: FormData) {
   });
 
   revalidatePath(`/w/${slug}/work`, "layout");
-  redirect(`/w/${slug}/work/${key}/board`);
+  redirect(`/w/${slug}/work/${key}`);
 }
 
 export async function updateWorkProject(formData: FormData) {

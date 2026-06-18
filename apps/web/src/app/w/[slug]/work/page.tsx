@@ -56,7 +56,7 @@ export default async function WorkProjectsPage({
           {projects.map((p) => (
             <Link
               key={p.id}
-              href={`/w/${params.slug}/work/${p.key}/board`}
+              href={`/w/${params.slug}/work/${p.key}`}
               className="group rounded-lg border border-gray-200 p-4 transition hover:border-gray-300 hover:shadow-sm"
             >
               <div className="mb-2 flex items-center gap-2">
