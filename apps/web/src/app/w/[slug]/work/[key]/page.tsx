@@ -5,6 +5,5 @@ export default function WorkProjectIndex({
 }: {
   params: { slug: string; key: string };
 }) {
-  // Board view is added in a later step; land on the issues list for now.
-  redirect(`/w/${params.slug}/work/${params.key}/issues`);
+  redirect(`/w/${params.slug}/work/${params.key}/board`);
 }
