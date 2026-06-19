@@ -23,6 +23,7 @@ export type BacklogItem = {
   assigneeName: string | null;
   assigneeColor: string | null;
   storyPoints: number | null;
+  rank: number;
 };
 
 export type SprintSection = {
@@ -60,6 +61,7 @@ export function BacklogView({
   const points = (items: BacklogItem[]) =>
     items.reduce((s, i) => s + (i.storyPoints ?? 0), 0);
 
+  // Append to the end of a section (drop on empty area / section body).
   const drop = (sprintId: string | null, key: string) => {
     setOver(null);
     const id = dragId;
@@ -71,12 +73,38 @@ export function BacklogView({
     });
   };
 
-  const Row = ({ i }: { i: BacklogItem }) => (
+  // Insert the dragged issue before `target` within `items`, computing a
+  // midpoint rank between the target and its predecessor.
+  const dropBefore = (sprintId: string | null, items: BacklogItem[], index: number) => {
+    setOver(null);
+    const id = dragId;
+    setDragId(null);
+    if (!id || readOnly) return;
+    const neighbors = items.filter((x) => x.id !== id);
+    // Recompute the insertion index within the dragged-item-excluded list.
+    const target = items[index];
+    const pos = target ? neighbors.findIndex((x) => x.id === target.id) : neighbors.length;
+    const before = pos > 0 ? neighbors[pos - 1].rank : null;
+    const at = pos >= 0 && pos < neighbors.length ? neighbors[pos].rank : null;
+    let rank: number;
+    if (before == null && at == null) rank = 0;
+    else if (before == null) rank = at! - 1;
+    else if (at == null) rank = before + 1;
+    else rank = (before + at) / 2;
+    start(async () => {
+      await moveIssueToSprint(slug, id, sprintId, rank);
+      router.refresh();
+    });
+  };
+
+  const Row = ({ i, items, index, sprintId }: { i: BacklogItem; items: BacklogItem[]; index: number; sprintId: string | null }) => (
     <a
       href={`/w/${slug}/work/${projectKey}/issue/${i.number}`}
       draggable={!readOnly}
-      onDragStart={() => setDragId(i.id)}
+      onDragStart={(e) => { e.stopPropagation(); setDragId(i.id); }}
       onDragEnd={() => setDragId(null)}
+      onDragOver={(e) => { if (!readOnly && dragId) { e.preventDefault(); e.stopPropagation(); } }}
+      onDrop={(e) => { if (dragId) { e.preventDefault(); e.stopPropagation(); dropBefore(sprintId, items, index); } }}
       className={`flex items-center gap-2 border-b border-gray-100 bg-white px-3 py-1.5 text-sm last:border-0 hover:bg-black/[0.02] ${
         dragId === i.id ? "opacity-40" : ""
       }`}
@@ -143,8 +171,8 @@ export function BacklogView({
         <div className="ml-auto flex items-center gap-2">{actions}</div>
       </div>
       <div>
-        {items.map((i) => (
-          <Row key={i.id} i={i} />
+        {items.map((i, idx) => (
+          <Row key={i.id} i={i} items={items} index={idx} sprintId={sprintId} />
         ))}
         {items.length === 0 && (
           <div className="px-3 py-4 text-center text-xs text-gray-300">

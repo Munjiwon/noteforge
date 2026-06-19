@@ -47,6 +47,7 @@ export default async function BacklogPage({
     assigneeName: i.assignee?.name ?? null,
     assigneeColor: i.assignee?.color ?? null,
     storyPoints: i.storyPoints,
+    rank: i.rank,
   });
 
   const bySprint = new Map<string, BacklogItem[]>();
