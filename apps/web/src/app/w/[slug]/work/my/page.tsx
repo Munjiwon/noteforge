@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireWorkspaceMember } from "@/lib/workspace";
 import { prisma } from "db";
 import { IssueTable, toIssueRow } from "@/components/work/issue-table";
+import { priorityMeta } from "@/lib/work";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +22,9 @@ export default async function MyWorkPage({
       project: { workspaceId: ctx.workspace.id, archivedAt: null },
       ...(showDone ? {} : { status: { category: { not: "done" } } }),
     },
-    orderBy: [{ priority: "asc" }, { updatedAt: "desc" }],
+    // priority is a String column — order by recency in SQL, then by priority
+    // severity in memory below (lexical priority order would be wrong).
+    orderBy: [{ updatedAt: "desc" }],
     take: 200,
     include: {
       project: { select: { key: true } },
@@ -30,6 +33,7 @@ export default async function MyWorkPage({
       assignee: { select: { name: true, color: true } },
     },
   });
+  issues.sort((a, b) => priorityMeta(b.priority).rank - priorityMeta(a.priority).rank);
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-6">
