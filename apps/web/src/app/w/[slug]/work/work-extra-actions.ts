@@ -68,6 +68,36 @@ export async function setOriginalEstimate(slug: string, issueId: string, duratio
   revalidatePath(`/w/${slug}/work/${key}`, "layout");
 }
 
+// ---- Attachments -------------------------------------------------------
+
+export async function addIssueAttachment(
+  slug: string,
+  issueId: string,
+  url: string,
+  name: string,
+  size: number,
+) {
+  const ctx = await assertEditor(slug);
+  const key = await issueProjectKey(ctx.workspace.id, issueId);
+  if (!url || !name) throw new Error("missing file");
+  await prisma.issueAttachment.create({
+    data: { issueId, url, name, size: Math.max(0, Math.floor(size) || 0), uploadedById: ctx.user.id },
+  });
+  revalidatePath(`/w/${slug}/work/${key}`, "layout");
+}
+
+export async function deleteIssueAttachment(slug: string, attachmentId: string) {
+  const ctx = await assertEditor(slug);
+  const att = await prisma.issueAttachment.findFirst({
+    where: { id: attachmentId, issue: { project: { workspaceId: ctx.workspace.id } } },
+    include: { issue: { include: { project: { select: { key: true } } } } },
+  });
+  if (!att) throw new Error("not found");
+  if (att.uploadedById !== ctx.user.id && ctx.role !== "owner") throw new Error("forbidden");
+  await prisma.issueAttachment.delete({ where: { id: attachmentId } });
+  revalidatePath(`/w/${slug}/work/${att.issue.project.key}`, "layout");
+}
+
 // ---- Saved filters -----------------------------------------------------
 
 export async function createSavedFilter(formData: FormData) {

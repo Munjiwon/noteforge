@@ -5,6 +5,7 @@ import { prisma } from "db";
 import { IssueDetail } from "@/components/work/issue-detail";
 import { IssueRelations } from "@/components/work/issue-relations";
 import { IssueWorklog } from "@/components/work/issue-worklog";
+import { IssueAttachments } from "@/components/work/issue-attachments";
 import { ISSUE_LINK_TYPES } from "@/lib/work";
 
 export const dynamic = "force-dynamic";
@@ -53,6 +54,7 @@ export default async function IssuePage({
         orderBy: { startedAt: "desc" },
         include: { author: { select: { name: true } } },
       },
+      attachments: { orderBy: { createdAt: "desc" } },
     },
   });
   if (!issue) notFound();
@@ -172,6 +174,20 @@ export default async function IssuePage({
           startedAt: w.startedAt.toISOString(),
           authorId: w.authorId,
           authorName: w.author.name,
+        }))}
+      />
+      <IssueAttachments
+        slug={params.slug}
+        issueId={issue.id}
+        currentUserId={ctx.user.id}
+        readOnly={readOnly}
+        attachments={issue.attachments.map((a) => ({
+          id: a.id,
+          url: a.url,
+          name: a.name,
+          size: a.size,
+          uploadedById: a.uploadedById,
+          createdAt: a.createdAt.toISOString(),
         }))}
       />
     </div>
