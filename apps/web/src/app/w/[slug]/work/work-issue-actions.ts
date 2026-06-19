@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "db";
 import { requireWorkspaceMember } from "@/lib/workspace";
+import { validateIssueRefs } from "@/lib/work-server";
 
 async function assertEditor(slug: string) {
   const ctx = await requireWorkspaceMember(slug);
@@ -83,6 +84,17 @@ export async function createIssue(formData: FormData) {
   });
   if (!project) throw new Error("project not found");
 
+  // Reject cross-project/workspace references supplied by the client.
+  await validateIssueRefs({
+    workspaceId: ctx.workspace.id,
+    projectId,
+    assigneeId,
+    typeId,
+    sprintId,
+    epicId,
+    parentId,
+  });
+
   // Default type: first standard type (or first subtask type if creating under
   // a parent), default status: first "todo" status.
   const [types, todoStatus, rankAgg] = await Promise.all([
@@ -152,6 +164,19 @@ export async function setIssueField(formData: FormData) {
   const value = rawValue === null ? null : String(rawValue);
 
   const { ctx, issue } = await loadIssueForEdit(slug, issueId);
+
+  // Reject cross-project/workspace references (assignee, type, sprint, epic,
+  // parent) before writing — only the field being edited is checked.
+  await validateIssueRefs({
+    workspaceId: ctx.workspace.id,
+    projectId: issue.projectId,
+    selfIssueId: issueId,
+    assigneeId: field === "assigneeId" ? value : undefined,
+    typeId: field === "typeId" ? value : undefined,
+    sprintId: field === "sprintId" ? value : undefined,
+    epicId: field === "epicId" ? value : undefined,
+    parentId: field === "parentId" ? value : undefined,
+  });
 
   const data: Record<string, unknown> = {};
   let from: string | null = null;

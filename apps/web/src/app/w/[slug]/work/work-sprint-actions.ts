@@ -97,6 +97,13 @@ export async function completeSprint(
   destSprintId: string | null = null,
 ) {
   const { sprint } = await loadSprint(slug, sprintId);
+  if (destSprintId) {
+    const dest = await prisma.sprint.findFirst({
+      where: { id: destSprintId, projectId: sprint.projectId },
+      select: { id: true },
+    });
+    if (!dest) throw new Error("destination sprint does not belong to this project");
+  }
   const incomplete = await prisma.issue.findMany({
     where: { sprintId, status: { category: { not: "done" } } },
     select: { id: true },
@@ -134,6 +141,13 @@ export async function moveIssueToSprint(
     include: { project: { select: { key: true } } },
   });
   if (!issue) throw new Error("issue not found");
+  if (sprintId) {
+    const dest = await prisma.sprint.findFirst({
+      where: { id: sprintId, projectId: issue.projectId },
+      select: { id: true },
+    });
+    if (!dest) throw new Error("sprint does not belong to this project");
+  }
   let newRank = rank;
   if (newRank === undefined) {
     const agg = await prisma.issue.aggregate({

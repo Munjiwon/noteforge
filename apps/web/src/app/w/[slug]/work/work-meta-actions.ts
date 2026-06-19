@@ -105,6 +105,11 @@ export async function setIssueComponent(
   });
   if (!issue) throw new Error("not found");
   if (on) {
+    const comp = await prisma.workComponent.findFirst({
+      where: { id: componentId, projectId: issue.projectId },
+      select: { id: true },
+    });
+    if (!comp) throw new Error("component does not belong to this project");
     await prisma.issueComponent.create({ data: { issueId, componentId } }).catch(() => {});
   } else {
     await prisma.issueComponent.deleteMany({ where: { issueId, componentId } });
@@ -176,6 +181,11 @@ export async function setIssueFixVersion(
   });
   if (!issue) throw new Error("not found");
   if (on) {
+    const ver = await prisma.workVersion.findFirst({
+      where: { id: versionId, projectId: issue.projectId },
+      select: { id: true },
+    });
+    if (!ver) throw new Error("version does not belong to this project");
     await prisma.issueFixVersion.create({ data: { issueId, versionId } }).catch(() => {});
   } else {
     await prisma.issueFixVersion.deleteMany({ where: { issueId, versionId } });
