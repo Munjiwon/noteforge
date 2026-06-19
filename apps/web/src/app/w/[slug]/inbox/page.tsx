@@ -115,13 +115,19 @@ export default async function InboxPage({
             return (
               <section key={pageId}>
                 <div className="text-xs text-gray-500 mb-1 flex items-center gap-1">
-                  <span>{page?.icon ?? (page?.kind === "database" ? "📊" : "📄")}</span>
-                  <Link
-                    href={page ? `/w/${params.slug}/p/${page.id}` : "#"}
-                    className="hover:underline"
-                  >
-                    {page?.title || "Unknown page"}
-                  </Link>
+                  {pageId === "no-page" ? (
+                    <span>🎯 Issues &amp; activity</span>
+                  ) : (
+                    <>
+                      <span>{page?.icon ?? (page?.kind === "database" ? "📊" : "📄")}</span>
+                      <Link
+                        href={page ? `/w/${params.slug}/p/${page.id}` : "#"}
+                        className="hover:underline"
+                      >
+                        {page?.title || "Unknown page"}
+                      </Link>
+                    </>
+                  )}
                 </div>
                 <ul className="border border-gray-200 rounded divide-y divide-gray-100">
                   {items.map((n) => {
@@ -130,6 +136,12 @@ export default async function InboxPage({
                         ? "mentioned you"
                         : n.kind === "comment_reply"
                         ? "replied to your thread"
+                        : n.kind === "issue_assigned"
+                        ? "assigned you an issue"
+                        : n.kind === "issue_status"
+                        ? "updated an issue's status"
+                        : n.kind === "issue_comment"
+                        ? "commented on an issue"
                         : "commented";
                     return (
                       <li
@@ -154,9 +166,14 @@ export default async function InboxPage({
                             <span className="font-medium">{n.actor?.name ?? "Someone"}</span>{" "}
                             {verb}
                           </div>
-                          {n.preview && (
-                            <div className="text-xs text-gray-500">{n.preview}</div>
-                          )}
+                          {n.preview &&
+                            (n.linkPath ? (
+                              <Link href={n.linkPath} className="text-xs text-blue-600 hover:underline">
+                                {n.preview}
+                              </Link>
+                            ) : (
+                              <div className="text-xs text-gray-500">{n.preview}</div>
+                            ))}
                           <div className="text-[10px] text-gray-400 mt-0.5">
                             {new Date(n.createdAt).toLocaleString()}
                           </div>

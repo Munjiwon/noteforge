@@ -260,6 +260,7 @@ export default async function WorkspaceLayout({
     createdAt: n.createdAt.toISOString(),
     pageId: n.pageId,
     commentId: n.commentId,
+    linkPath: n.linkPath,
     workspaceSlug: ctx.workspace.slug,
     actor: n.actor
       ? { name: n.actor.name, color: n.actor.color, avatarUrl: n.actor.avatarUrl }

@@ -325,8 +325,11 @@ model Notification {
   workspaceId String
   pageId      String?
   commentId   String?
-  kind        String   // "mention" | "comment_reply" | "comment_new"
+  kind        String   // "mention" | "comment_reply" | "comment_new" | "issue_*"
   preview     String   @default("")
+  // Optional explicit destination (e.g. an issue URL) for notifications not
+  // anchored to a Page. Falls back to the pageId-derived link when null.
+  linkPath    String?
   read        Boolean  @default(false)
   createdAt   DateTime @default(now())
 

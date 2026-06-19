@@ -46,6 +46,7 @@ async function notifyWatchers(
   workspaceId: string,
   kind: string,
   preview: string,
+  linkPath: string,
 ) {
   const watchers = await prisma.issueWatcher.findMany({
     where: { issueId, userId: { not: actorId } },
@@ -59,6 +60,7 @@ async function notifyWatchers(
       workspaceId,
       kind,
       preview,
+      linkPath,
     })),
   });
 }
@@ -262,6 +264,7 @@ export async function setIssueField(formData: FormData) {
         workspaceId: ctx.workspace.id,
         kind: "issue_assigned",
         preview: `Assigned to you: ${issue.project.key}-${issue.number} ${issue.summary}`,
+        linkPath: `/w/${slug}/work/${issue.project.key}/issue/${issue.number}`,
       },
     });
   }
@@ -316,6 +319,7 @@ export async function transitionIssue(
     ctx.workspace.id,
     "issue_status",
     `${issue.project.key}-${issue.number} → ${toStatus.name}`,
+    `/w/${slug}/work/${issue.project.key}/issue/${issue.number}`,
   );
   revalidateProject(slug, issue.project.key);
 }
@@ -361,6 +365,7 @@ export async function addIssueComment(formData: FormData) {
     ctx.workspace.id,
     "issue_comment",
     `${issue.project.key}-${issue.number}: ${body.slice(0, 60)}`,
+    `/w/${slug}/work/${issue.project.key}/issue/${issue.number}`,
   );
   revalidateProject(slug, issue.project.key);
 }

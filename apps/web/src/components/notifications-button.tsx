@@ -17,6 +17,7 @@ export type NotifItem = {
   createdAt: string;
   pageId: string | null;
   commentId: string | null;
+  linkPath?: string | null;
   workspaceSlug: string | null;
   actor: { name: string; color: string; avatarUrl?: string | null } | null;
 };
@@ -218,9 +219,16 @@ function NotifRow({
       ? "edited a page you follow"
       : n.kind === "reminder"
       ? "reminded you"
+      : n.kind === "issue_assigned"
+      ? "assigned you an issue"
+      : n.kind === "issue_status"
+      ? "updated an issue's status"
+      : n.kind === "issue_comment"
+      ? "commented on an issue"
       : "commented";
-  const href =
-    n.workspaceSlug && n.pageId
+  const href = n.linkPath
+    ? n.linkPath
+    : n.workspaceSlug && n.pageId
       ? `/w/${n.workspaceSlug}/p/${n.pageId}${n.commentId ? `?c=${encodeURIComponent(n.commentId)}` : ""}`
       : "#";
 
