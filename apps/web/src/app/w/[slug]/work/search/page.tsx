@@ -3,6 +3,7 @@ import { requireWorkspaceMember } from "@/lib/workspace";
 import { prisma } from "db";
 import { buildIssueQuery } from "@/lib/work-jql";
 import { IssueTable, toIssueRow } from "@/components/work/issue-table";
+import { priorityMeta } from "@/lib/work";
 import { createSavedFilter, deleteSavedFilter } from "@/app/w/[slug]/work/work-extra-actions";
 
 export const dynamic = "force-dynamic";
@@ -24,7 +25,7 @@ export default async function SearchPage({
   const ctx = await requireWorkspaceMember(params.slug);
   const q = searchParams.q ?? "";
 
-  const [{ where, orderBy }, savedFilters] = await Promise.all([
+  const [{ where, orderBy, prioritySort }, savedFilters] = await Promise.all([
     buildIssueQuery(q, ctx.workspace.id, ctx.user.id),
     prisma.savedFilter.findMany({
       where: { workspaceId: ctx.workspace.id, OR: [{ ownerId: ctx.user.id }, { shared: true }] },
@@ -32,9 +33,21 @@ export default async function SearchPage({
     }),
   ]);
 
-  const issues = q.trim()
-    ? await prisma.issue.findMany({ where, orderBy, take: 200, include: ISSUE_INCLUDE })
+  const CAP = 200;
+  // Fetch one extra to detect (and surface) truncation.
+  let issues = q.trim()
+    ? await prisma.issue.findMany({ where, orderBy, take: CAP + 1, include: ISSUE_INCLUDE })
     : [];
+  const truncated = issues.length > CAP;
+  if (truncated) issues = issues.slice(0, CAP);
+  // Priority is a String column, so "ORDER BY priority" must be applied here by
+  // severity rank rather than in SQL.
+  if (prioritySort) {
+    issues.sort((a, b) => {
+      const d = priorityMeta(b.priority).rank - priorityMeta(a.priority).rank;
+      return prioritySort === "desc" ? d : -d;
+    });
+  }
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-6">
@@ -57,7 +70,8 @@ export default async function SearchPage({
       </form>
       <p className="mb-4 text-xs text-gray-400">
         Fields: status, type, priority, assignee, reporter, sprint, project, label, component,
-        resolution, summary, due, created · operators = != ~ &gt; &lt; in · join with AND.
+        resolution, epic (e.g. <code>epic = ENG-12</code>), summary, due, created · operators =
+        != ~ &gt; &lt; in(a,b) · join with AND / OR · <code>ORDER BY priority desc</code>.
       </p>
 
       {savedFilters.length > 0 && (
@@ -91,7 +105,11 @@ export default async function SearchPage({
 
       {q.trim() ? (
         <>
-          <div className="mb-2 text-sm text-gray-400">{issues.length} result{issues.length === 1 ? "" : "s"}</div>
+          <div className="mb-2 text-sm text-gray-400">
+            {truncated
+              ? `Showing first ${CAP} matches (more exist — refine your query)`
+              : `${issues.length} result${issues.length === 1 ? "" : "s"}`}
+          </div>
           <IssueTable slug={params.slug} rows={issues.map(toIssueRow)} />
         </>
       ) : (
