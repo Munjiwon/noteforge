@@ -71,20 +71,34 @@ export function BoardView({
       const k = c.assigneeId ?? "__none";
       (groups.get(k) ?? groups.set(k, []).get(k)!).push(c);
     }
+    const seen = new Set<string>();
     for (const m of swimlaneOptions.members) {
-      if (groups.has(m.id)) lanes.push({ key: m.id, label: m.name, cards: groups.get(m.id)! });
+      if (groups.has(m.id)) {
+        lanes.push({ key: m.id, label: m.name, cards: groups.get(m.id)! });
+        seen.add(m.id);
+      }
     }
     if (groups.has("__none")) lanes.push({ key: "__none", label: "Unassigned", cards: groups.get("__none")! });
+    // Don't drop cards whose assignee isn't in the options list (e.g. a former
+    // member): collect them into an "Other" lane.
+    const leftover = [...groups.entries()].filter(([k]) => k !== "__none" && !seen.has(k)).flatMap(([, v]) => v);
+    if (leftover.length) lanes.push({ key: "__other", label: "Other", cards: leftover });
   } else {
     const groups = new Map<string, BoardCard[]>();
     for (const c of cards) {
       const k = c.epicId ?? "__none";
       (groups.get(k) ?? groups.set(k, []).get(k)!).push(c);
     }
+    const seen = new Set<string>();
     for (const e of swimlaneOptions.epics) {
-      if (groups.has(e.id)) lanes.push({ key: e.id, label: e.label, cards: groups.get(e.id)! });
+      if (groups.has(e.id)) {
+        lanes.push({ key: e.id, label: e.label, cards: groups.get(e.id)! });
+        seen.add(e.id);
+      }
     }
     if (groups.has("__none")) lanes.push({ key: "__none", label: "No epic", cards: groups.get("__none")! });
+    const leftover = [...groups.entries()].filter(([k]) => k !== "__none" && !seen.has(k)).flatMap(([, v]) => v);
+    if (leftover.length) lanes.push({ key: "__other", label: "Other", cards: leftover });
   }
 
   return (
