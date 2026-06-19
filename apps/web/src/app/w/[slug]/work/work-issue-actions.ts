@@ -143,6 +143,11 @@ export async function createIssue(formData: FormData) {
 
   await Promise.all([
     recordActivity(issue.id, ctx.user.id, "created", null, summary),
+    // Membership history so velocity's "ever in sprint" scan captures issues
+    // created directly into a sprint (not just those dragged in later).
+    sprintId
+      ? recordActivity(issue.id, ctx.user.id, "sprint", null, sprintId)
+      : Promise.resolve(),
     prisma.issueWatcher.create({ data: { issueId: issue.id, userId: ctx.user.id } }),
     assigneeId && assigneeId !== ctx.user.id
       ? prisma.issueWatcher
@@ -227,9 +232,12 @@ export async function setIssueField(formData: FormData) {
 
   await prisma.issue.update({ where: { id: issueId }, data });
   // Log meaningful changes (skip noisy description/summary keystrokes only when
-  // unchanged) for the history tab and burndown reconstruction.
+  // unchanged) for the history tab and burndown reconstruction. Sprint changes
+  // are logged under the canonical "sprint" field (matching moveIssueToSprint)
+  // so velocity's history scan sees them regardless of the edit path.
+  const activityField = field === "sprintId" ? "sprint" : field;
   if (field !== "description" && from !== to) {
-    await recordActivity(issueId, ctx.user.id, field, from, to);
+    await recordActivity(issueId, ctx.user.id, activityField, from, to);
   }
   if (field === "assigneeId" && value && value !== ctx.user.id) {
     await prisma.issueWatcher
@@ -283,8 +291,13 @@ export async function transitionIssue(
     data.resolution = null;
     data.resolvedAt = null;
   }
-  await prisma.issue.update({ where: { id: issueId }, data });
-  await recordActivity(issueId, ctx.user.id, "status", issue.status.name, toStatus.name);
+  // Commit the status change and its history row atomically.
+  await prisma.$transaction([
+    prisma.issue.update({ where: { id: issueId }, data }),
+    prisma.issueActivity.create({
+      data: { issueId, userId: ctx.user.id, field: "status", from: issue.status.name, to: toStatus.name },
+    }),
+  ]);
   await notifyWatchers(
     issueId,
     ctx.user.id,

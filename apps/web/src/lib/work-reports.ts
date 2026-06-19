@@ -101,8 +101,9 @@ export async function computeVelocity(projectId: string, take = 6): Promise<Velo
   const bars: VelocityBar[] = [];
   for (const s of sprints) {
     // "Ever in sprint" = current members plus issues whose history moved them in.
+    // Accept the legacy "sprintId" field name alongside the canonical "sprint".
     const movedIn = await prisma.issueActivity.findMany({
-      where: { field: "sprint", to: s.id, issue: { projectId } },
+      where: { field: { in: ["sprint", "sprintId"] }, to: s.id, issue: { projectId } },
       select: { issueId: true },
     });
     const ids = new Set(movedIn.map((m) => m.issueId));

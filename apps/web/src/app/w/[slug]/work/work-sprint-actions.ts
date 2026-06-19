@@ -96,7 +96,7 @@ export async function completeSprint(
   sprintId: string,
   destSprintId: string | null = null,
 ) {
-  const { sprint } = await loadSprint(slug, sprintId);
+  const { ctx, sprint } = await loadSprint(slug, sprintId);
   if (destSprintId) {
     const dest = await prisma.sprint.findFirst({
       where: { id: destSprintId, projectId: sprint.projectId },
@@ -107,12 +107,29 @@ export async function completeSprint(
   const incomplete = await prisma.issue.findMany({
     where: { sprintId, status: { category: { not: "done" } } },
     select: { id: true },
+    orderBy: { rank: "asc" },
   });
   if (incomplete.length > 0) {
-    await prisma.issue.updateMany({
-      where: { id: { in: incomplete.map((i) => i.id) } },
-      data: { sprintId: destSprintId },
+    // Append carried-over issues to the destination (or backlog) and record a
+    // "sprint" activity per move so velocity history stays consistent.
+    const agg = await prisma.issue.aggregate({
+      where: { projectId: sprint.projectId, sprintId: destSprintId },
+      _max: { rank: true },
     });
+    let rank = (agg._max.rank ?? 0) + 1;
+    await prisma.$transaction([
+      ...incomplete.map((i) =>
+        prisma.issue.update({
+          where: { id: i.id },
+          data: { sprintId: destSprintId, rank: rank++ },
+        }),
+      ),
+      ...incomplete.map((i) =>
+        prisma.issueActivity.create({
+          data: { issueId: i.id, userId: ctx.user.id, field: "sprint", from: sprintId, to: destSprintId },
+        }),
+      ),
+    ]);
   }
   await prisma.sprint.update({
     where: { id: sprintId },
