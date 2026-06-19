@@ -67,6 +67,17 @@ export async function updateSprint(formData: FormData) {
     const v = String(formData.get("endDate"));
     data.endDate = v ? new Date(v) : null;
   }
+  // Reject invalid dates and start-after-end (against the resulting values).
+  for (const k of ["startDate", "endDate"] as const) {
+    if (data[k] instanceof Date && isNaN((data[k] as Date).getTime())) {
+      throw new Error(`invalid ${k}`);
+    }
+  }
+  const finalStart = (data.startDate as Date | null | undefined) ?? sprint.startDate;
+  const finalEnd = (data.endDate as Date | null | undefined) ?? sprint.endDate;
+  if (finalStart && finalEnd && finalStart > finalEnd) {
+    throw new Error("sprint start date must be on or before the end date");
+  }
   await prisma.sprint.update({ where: { id: sprintId }, data });
   revalidate(slug, sprint.project.key);
 }

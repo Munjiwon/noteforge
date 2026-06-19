@@ -97,13 +97,15 @@ export async function createIssue(formData: FormData) {
 
   // Default type: first standard type (or first subtask type if creating under
   // a parent), default status: first "todo" status.
-  const [types, todoStatus, rankAgg] = await Promise.all([
+  const [types, todoStatus, parent] = await Promise.all([
     prisma.issueType.findMany({ where: { projectId }, orderBy: { position: "asc" } }),
     prisma.workflowStatus.findFirst({
       where: { projectId, category: "todo" },
       orderBy: { position: "asc" },
     }),
-    prisma.issue.aggregate({ where: { projectId }, _max: { rank: true } }),
+    parentId
+      ? prisma.issue.findUnique({ where: { id: parentId }, select: { sprintId: true } })
+      : Promise.resolve(null),
   ]);
   const resolvedType =
     types.find((t) => t.id === typeId) ??
@@ -114,6 +116,8 @@ export async function createIssue(formData: FormData) {
   const status =
     todoStatus ?? (await prisma.workflowStatus.findFirst({ where: { projectId } }));
   if (!status) throw new Error("project has no statuses");
+  // A sub-task inherits its parent's sprint when none was specified.
+  const effectiveSprintId = sprintId ?? parent?.sprintId ?? null;
 
   const issue = await prisma.$transaction(async (tx) => {
     const proj = await tx.workProject.update({
@@ -122,6 +126,8 @@ export async function createIssue(formData: FormData) {
       select: { nextNumber: true },
     });
     const number = proj.nextNumber - 1;
+    // Allocate rank inside the transaction so concurrent creates don't collide.
+    const rankAgg = await tx.issue.aggregate({ where: { projectId }, _max: { rank: true } });
     return tx.issue.create({
       data: {
         projectId,
@@ -132,7 +138,7 @@ export async function createIssue(formData: FormData) {
         priority,
         assigneeId,
         reporterId: ctx.user.id,
-        sprintId,
+        sprintId: effectiveSprintId,
         epicId,
         parentId,
         rank: (rankAgg._max.rank ?? 0) + 1,
@@ -145,8 +151,8 @@ export async function createIssue(formData: FormData) {
     recordActivity(issue.id, ctx.user.id, "created", null, summary),
     // Membership history so velocity's "ever in sprint" scan captures issues
     // created directly into a sprint (not just those dragged in later).
-    sprintId
-      ? recordActivity(issue.id, ctx.user.id, "sprint", null, sprintId)
+    effectiveSprintId
+      ? recordActivity(issue.id, ctx.user.id, "sprint", null, effectiveSprintId)
       : Promise.resolve(),
     prisma.issueWatcher.create({ data: { issueId: issue.id, userId: ctx.user.id } }),
     assigneeId && assigneeId !== ctx.user.id
@@ -206,14 +212,20 @@ export async function setIssueField(formData: FormData) {
       data.typeId = value || issue.typeId;
       from = issue.typeId;
       break;
-    case "storyPoints":
-      data.storyPoints = value ? Number(value) : null;
+    case "storyPoints": {
+      const n = value ? Number(value) : null;
+      if (n !== null && (!Number.isFinite(n) || n < 0)) throw new Error("invalid story points");
+      data.storyPoints = n;
       from = issue.storyPoints?.toString() ?? null;
       break;
-    case "dueDate":
-      data.dueDate = value ? new Date(value) : null;
+    }
+    case "dueDate": {
+      const d = value ? new Date(value) : null;
+      if (d !== null && isNaN(d.getTime())) throw new Error("invalid due date");
+      data.dueDate = d;
       from = issue.dueDate?.toISOString() ?? null;
       break;
+    }
     case "epicId":
       data.epicId = value || null;
       from = issue.epicId;

@@ -19,6 +19,9 @@ export function DescriptionEditor({
 }) {
   const editor = useCreateBlockNote();
   const loaded = useRef(false);
+  // Becomes true only AFTER the initial programmatic load settles, so the
+  // replaceBlocks() that seeds the editor doesn't schedule a spurious save.
+  const ready = useRef(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [saved, setSaved] = useState(true);
 
@@ -33,6 +36,11 @@ export function DescriptionEditor({
     } catch {
       /* keep empty doc */
     }
+    // Arm change-saving on the next tick, after the seed edit's onChange.
+    const t = setTimeout(() => {
+      ready.current = true;
+    }, 0);
+    return () => clearTimeout(t);
   }, [editor, initialContent]);
 
   return (
@@ -42,7 +50,7 @@ export function DescriptionEditor({
         editable={!readOnly}
         theme="light"
         onChange={() => {
-          if (readOnly || !loaded.current) return;
+          if (readOnly || !ready.current) return;
           setSaved(false);
           if (timer.current) clearTimeout(timer.current);
           timer.current = setTimeout(() => {
