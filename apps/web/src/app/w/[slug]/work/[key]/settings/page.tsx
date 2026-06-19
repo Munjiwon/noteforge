@@ -3,6 +3,7 @@ import { requireWorkspaceMember } from "@/lib/workspace";
 import { workspaceMemberOptions } from "@/lib/work-server";
 import { prisma } from "db";
 import { ProjectSettings } from "@/components/work/project-settings";
+import { WorkflowEditor, type WfTransitions } from "@/components/work/workflow-editor";
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +19,7 @@ export default async function ProjectSettingsPage({
   });
   if (!project) notFound();
 
-  const [members, components, statuses, labels] = await Promise.all([
+  const [members, components, statuses, transitions, board, labels] = await Promise.all([
     workspaceMemberOptions(ctx.workspace.id),
     prisma.workComponent.findMany({
       where: { projectId: project.id },
@@ -28,6 +29,15 @@ export default async function ProjectSettingsPage({
     prisma.workflowStatus.findMany({
       where: { projectId: project.id },
       orderBy: { position: "asc" },
+      include: { _count: { select: { issues: true } } },
+    }),
+    prisma.workflowTransition.findMany({
+      where: { projectId: project.id },
+      select: { fromStatusId: true, toStatusId: true },
+    }),
+    prisma.board.findFirst({
+      where: { projectId: project.id },
+      include: { columns: { orderBy: { position: "asc" } } },
     }),
     prisma.workLabel.findMany({
       where: {
@@ -41,20 +51,52 @@ export default async function ProjectSettingsPage({
     }),
   ]);
 
+  // Build the per-target transition map for the editor.
+  const trMap: WfTransitions = {};
+  for (const s of statuses) trMap[s.id] = { any: false, from: [] };
+  for (const t of transitions) {
+    const cur = trMap[t.toStatusId] ?? { any: false, from: [] };
+    if (t.fromStatusId === null) cur.any = true;
+    else cur.from.push(t.fromStatusId);
+    trMap[t.toStatusId] = cur;
+  }
+
+  const canEdit = ctx.role !== "viewer";
+
   return (
-    <ProjectSettings
-      slug={params.slug}
-      canEdit={ctx.role !== "viewer"}
-      project={project}
-      members={members.map((m) => ({ id: m.id, name: m.name }))}
-      components={components.map((c) => ({
-        id: c.id,
-        name: c.name,
-        description: c.description,
-        leadName: c.lead?.name ?? null,
-      }))}
-      statuses={statuses.map((s) => ({ id: s.id, name: s.name, category: s.category }))}
-      labels={labels.map((l) => ({ name: l.name, color: l.color, count: l._count.issues }))}
-    />
+    <div className="mx-auto max-w-3xl space-y-8 px-6 py-6">
+      <ProjectSettings
+        slug={params.slug}
+        canEdit={canEdit}
+        project={project}
+        members={members.map((m) => ({ id: m.id, name: m.name }))}
+        components={components.map((c) => ({
+          id: c.id,
+          name: c.name,
+          description: c.description,
+          leadName: c.lead?.name ?? null,
+        }))}
+        labels={labels.map((l) => ({ name: l.name, color: l.color, count: l._count.issues }))}
+      />
+      <WorkflowEditor
+        slug={params.slug}
+        projectId={project.id}
+        canEdit={canEdit}
+        statuses={statuses.map((s) => ({ id: s.id, name: s.name, category: s.category, issueCount: s._count.issues }))}
+        transitions={trMap}
+        columns={(board?.columns ?? []).map((c) => ({
+          id: c.id,
+          name: c.name,
+          wipLimit: c.wipLimit,
+          statusIds: (() => {
+            try {
+              return JSON.parse(c.statusIds) as string[];
+            } catch {
+              return [];
+            }
+          })(),
+        }))}
+      />
+    </div>
   );
 }

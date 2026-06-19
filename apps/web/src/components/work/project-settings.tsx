@@ -4,14 +4,12 @@ import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateWorkProject } from "@/app/w/[slug]/work/work-project-actions";
 import { createComponent, deleteComponent } from "@/app/w/[slug]/work/work-meta-actions";
-import { categoryMeta } from "@/lib/work";
 
 export function ProjectSettings({
   slug,
   project,
   members,
   components,
-  statuses,
   labels,
   canEdit,
 }: {
@@ -19,7 +17,6 @@ export function ProjectSettings({
   project: { id: string; name: string; description: string | null; leadId: string | null };
   members: { id: string; name: string }[];
   components: { id: string; name: string; description: string | null; leadName: string | null }[];
-  statuses: { id: string; name: string; category: string }[];
   labels: { name: string; color: string | null; count: number }[];
   canEdit: boolean;
 }) {
@@ -27,7 +24,7 @@ export function ProjectSettings({
   const [, start] = useTransition();
 
   return (
-    <div className="mx-auto max-w-3xl space-y-8 px-6 py-6">
+    <div className="space-y-8">
       {/* Details */}
       <section>
         <h3 className="mb-3 font-semibold">Project details</h3>
@@ -91,22 +88,6 @@ export function ProjectSettings({
             <button className="rounded bg-gray-800 px-3 py-1 text-sm text-white">Add</button>
           </form>
         )}
-      </section>
-
-      {/* Workflow */}
-      <section>
-        <h3 className="mb-3 font-semibold">Workflow statuses</h3>
-        <div className="flex flex-wrap gap-2">
-          {statuses.map((s) => (
-            <span
-              key={s.id}
-              className="rounded px-2 py-1 text-xs"
-              style={{ background: `${categoryMeta(s.category).color}22`, color: categoryMeta(s.category).color }}
-            >
-              {s.name} · {categoryMeta(s.category).name}
-            </span>
-          ))}
-        </div>
       </section>
 
       {/* Labels */}
