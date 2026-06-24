@@ -18,6 +18,8 @@ export type BoardCard = {
   storyPoints: number | null;
   epicId: string | null;
   epicLabel: string | null;
+  dueDate: string | null;
+  statusCategory: string;
 };
 
 type Column = { id: string; name: string; statusIds: string[]; wipLimit: number | null };
@@ -45,6 +47,7 @@ export function BoardView({
 
   const statusToCol = new Map<string, string>();
   for (const c of columns) for (const sid of c.statusIds) statusToCol.set(sid, c.id);
+  const today = new Date().toISOString().slice(0, 10);
 
   const drop = (colId: string) => {
     setOverCol(null);
@@ -158,7 +161,12 @@ export function BoardView({
                       </span>
                     </div>
                     <div className="flex flex-col gap-2 px-2 pb-2">
-                      {colCards.map((c) => (
+                      {colCards.map((c) => {
+                        const overdue =
+                          !!c.dueDate &&
+                          c.statusCategory !== "done" &&
+                          c.dueDate.slice(0, 10) < today;
+                        return (
                         <a
                           key={c.id}
                           href={`/w/${slug}/work/${projectKey}/issue/${c.number}`}
@@ -170,11 +178,23 @@ export function BoardView({
                           }`}
                         >
                           <div className="mb-1 text-sm">{c.summary || "Untitled"}</div>
-                          {c.epicLabel && (
-                            <div className="mb-1 inline-block rounded bg-purple-100 px-1.5 py-0.5 text-[10px] text-purple-700">
-                              {c.epicLabel}
-                            </div>
-                          )}
+                          <div className="mb-1 flex flex-wrap gap-1">
+                            {c.epicLabel && (
+                              <span className="inline-block rounded bg-purple-100 px-1.5 py-0.5 text-[10px] text-purple-700">
+                                {c.epicLabel}
+                              </span>
+                            )}
+                            {c.dueDate && (
+                              <span
+                                className={`inline-block rounded px-1.5 py-0.5 text-[10px] ${
+                                  overdue ? "bg-red-100 text-red-700" : "bg-gray-100 text-gray-600"
+                                }`}
+                                title={overdue ? "Overdue" : "Due date"}
+                              >
+                                📅 {c.dueDate.slice(5, 10)}
+                              </span>
+                            )}
+                          </div>
                           <div className="flex items-center gap-2 text-xs text-gray-500">
                             <span>{c.typeIcon}</span>
                             <span className="font-mono">{projectKey}-{c.number}</span>
@@ -195,7 +215,8 @@ export function BoardView({
                             )}
                           </div>
                         </a>
-                      ))}
+                        );
+                      })}
                       {colCards.length === 0 && (
                         <div className="px-1 py-4 text-center text-xs text-gray-300">Drop here</div>
                       )}

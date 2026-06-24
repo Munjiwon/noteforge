@@ -46,6 +46,7 @@ export default async function BoardPage({
             type: { select: { icon: true } },
             assignee: { select: { name: true, color: true } },
             epic: { select: { number: true, summary: true } },
+            status: { select: { category: true } },
           },
         });
 
@@ -62,6 +63,8 @@ export default async function BoardPage({
     storyPoints: i.storyPoints,
     epicId: i.epicId,
     epicLabel: i.epic ? issueKey(project.key, i.epic.number) : null,
+    dueDate: i.dueDate ? i.dueDate.toISOString() : null,
+    statusCategory: i.status.category,
   }));
 
   const epics = await prisma.issue.findMany({
