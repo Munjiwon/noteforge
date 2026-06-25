@@ -4,6 +4,7 @@ import { requireWorkspaceMember } from "@/lib/workspace";
 import { loadProjectMeta } from "@/lib/work-server";
 import { prisma } from "db";
 import { QuickCreateIssue } from "@/components/work/quick-create-issue";
+import { ExportIssuesButton } from "@/components/work/export-issues-button";
 import { priorityMeta, categoryMeta } from "@/lib/work";
 
 export const dynamic = "force-dynamic";
@@ -73,6 +74,18 @@ export default async function IssuesPage({
               Filter
             </button>
           </form>
+          <ExportIssuesButton
+            filename={`${project.key}-issues.csv`}
+            rows={issues.map((i) => ({
+              key: `${project.key}-${i.number}`,
+              type: i.type.name,
+              summary: i.summary,
+              status: i.status.name,
+              priority: priorityMeta(i.priority).name,
+              assignee: i.assignee?.name ?? "",
+              points: i.storyPoints?.toString() ?? "",
+            }))}
+          />
         </div>
       </div>
 
