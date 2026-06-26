@@ -10,6 +10,7 @@ import {
   completeSprint,
   deleteSprint,
   moveIssueToSprint,
+  updateSprint,
 } from "@/app/w/[slug]/work/work-sprint-actions";
 
 export type BacklogItem = {
@@ -144,6 +145,7 @@ export function BacklogView({
     keyId,
     items,
     actions,
+    headerExtra,
   }: {
     title: React.ReactNode;
     subtitle?: React.ReactNode;
@@ -151,6 +153,7 @@ export function BacklogView({
     keyId: string;
     items: BacklogItem[];
     actions?: React.ReactNode;
+    headerExtra?: React.ReactNode;
   }) => (
     <div
       onDragOver={(e) => {
@@ -170,6 +173,7 @@ export function BacklogView({
         </span>
         <div className="ml-auto flex items-center gap-2">{actions}</div>
       </div>
+      {headerExtra}
       <div>
         {items.map((i, idx) => (
           <Row key={i.id} i={i} items={items} index={idx} sprintId={sprintId} />
@@ -192,6 +196,35 @@ export function BacklogView({
       )}
     </div>
   );
+
+  const SprintGoal = ({ sprintId, goal }: { sprintId: string; goal: string | null }) => {
+    if (readOnly) {
+      return goal ? (
+        <div className="border-t border-gray-100 px-3 py-1.5 text-xs text-gray-500">🎯 {goal}</div>
+      ) : null;
+    }
+    return (
+      <div className="border-t border-gray-100 px-3 py-1">
+        <input
+          defaultValue={goal ?? ""}
+          placeholder="🎯 Add a sprint goal…"
+          onBlur={(e) => {
+            if (e.target.value !== (goal ?? "")) {
+              const fd = new FormData();
+              fd.set("slug", slug);
+              fd.set("sprintId", sprintId);
+              fd.set("goal", e.target.value);
+              start(async () => {
+                await updateSprint(fd);
+                router.refresh();
+              });
+            }
+          }}
+          className="w-full rounded border border-transparent bg-transparent px-1 py-0.5 text-xs text-gray-600 hover:border-gray-200 focus:border-gray-300 focus:outline-none"
+        />
+      </div>
+    );
+  };
 
   return (
     <div className="px-4 py-4">
@@ -217,6 +250,7 @@ export function BacklogView({
               </span>
             ) : undefined
           }
+          headerExtra={<SprintGoal sprintId={s.id} goal={s.goal} />}
           items={s.items}
           actions={
             readOnly ? null : (
