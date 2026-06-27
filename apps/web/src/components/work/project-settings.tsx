@@ -3,7 +3,13 @@
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateWorkProject } from "@/app/w/[slug]/work/work-project-actions";
-import { createComponent, deleteComponent } from "@/app/w/[slug]/work/work-meta-actions";
+import {
+  createComponent,
+  deleteComponent,
+  createLabel,
+  deleteLabel,
+  setLabelColor,
+} from "@/app/w/[slug]/work/work-meta-actions";
 
 export function ProjectSettings({
   slug,
@@ -17,7 +23,7 @@ export function ProjectSettings({
   project: { id: string; name: string; description: string | null; leadId: string | null };
   members: { id: string; name: string }[];
   components: { id: string; name: string; description: string | null; leadName: string | null }[];
-  labels: { name: string; color: string | null; count: number }[];
+  labels: { id: string; name: string; color: string | null; count: number }[];
   canEdit: boolean;
 }) {
   const router = useRouter();
@@ -92,15 +98,45 @@ export function ProjectSettings({
 
       {/* Labels */}
       <section>
-        <h3 className="mb-3 font-semibold">Labels in use</h3>
-        <div className="flex flex-wrap gap-2">
+        <h3 className="mb-3 font-semibold">Labels</h3>
+        <p className="mb-2 text-xs text-gray-400">
+          Labels are shared across the workspace. The count shows usage in this project.
+        </p>
+        <div className="mb-2 space-y-1">
           {labels.map((l) => (
-            <span key={l.name} className="rounded px-2 py-1 text-xs text-white" style={{ background: l.color ?? "#64748b" }}>
-              {l.name} ({l.count})
-            </span>
+            <div key={l.id} className="flex items-center gap-2 text-sm">
+              <input
+                type="color"
+                disabled={!canEdit}
+                defaultValue={l.color ?? "#64748b"}
+                onChange={(e) => start(async () => { await setLabelColor(slug, l.id, e.target.value); router.refresh(); })}
+                className="h-5 w-5 cursor-pointer rounded border-0 bg-transparent p-0"
+                title="Change color"
+              />
+              <span className="rounded px-2 py-0.5 text-xs text-white" style={{ background: l.color ?? "#64748b" }}>
+                {l.name}
+              </span>
+              <span className="text-xs text-gray-400">{l.count} in project</span>
+              {canEdit && (
+                <button
+                  onClick={() => { if (confirm(`Delete label "${l.name}" from the workspace?`)) start(async () => { await deleteLabel(slug, l.id); router.refresh(); }); }}
+                  className="ml-auto text-xs text-gray-400 hover:text-red-600"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
           ))}
           {labels.length === 0 && <p className="text-xs text-gray-400">No labels yet.</p>}
         </div>
+        {canEdit && (
+          <form action={createLabel} className="flex items-center gap-2">
+            <input type="hidden" name="slug" value={slug} />
+            <input name="name" placeholder="New label" required className="rounded border border-gray-300 px-2 py-1 text-sm" />
+            <input name="color" type="color" defaultValue="#3b82f6" className="h-7 w-9 cursor-pointer rounded border border-gray-300 bg-white p-0.5" />
+            <button className="rounded bg-gray-800 px-3 py-1 text-sm text-white">Add label</button>
+          </form>
+        )}
       </section>
     </div>
   );

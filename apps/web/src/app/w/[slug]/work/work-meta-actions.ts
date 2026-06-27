@@ -197,6 +197,43 @@ export async function setIssueFixVersion(
 
 const LABEL_COLORS = ["#ef4444", "#f59e0b", "#10b981", "#3b82f6", "#8b5cf6", "#ec4899", "#64748b"];
 
+export async function createLabel(formData: FormData) {
+  const slug = String(formData.get("slug") || "");
+  const name = String(formData.get("name") || "").trim();
+  const color = String(formData.get("color") || "");
+  if (!name) return;
+  const ctx = await assertEditor(slug);
+  await prisma.workLabel
+    .create({
+      data: {
+        workspaceId: ctx.workspace.id,
+        name,
+        color: /^#[0-9a-f]{6}$/i.test(color) ? color : LABEL_COLORS[name.length % LABEL_COLORS.length],
+      },
+    })
+    .catch(() => {}); // ignore duplicate name (unique per workspace)
+  revalidatePath(`/w/${slug}/work`, "layout");
+}
+
+export async function deleteLabel(slug: string, labelId: string) {
+  const ctx = await assertEditor(slug);
+  const res = await prisma.workLabel.deleteMany({
+    where: { id: labelId, workspaceId: ctx.workspace.id },
+  });
+  if (res.count === 0) throw new Error("not found");
+  revalidatePath(`/w/${slug}/work`, "layout");
+}
+
+export async function setLabelColor(slug: string, labelId: string, color: string) {
+  const ctx = await assertEditor(slug);
+  if (!/^#[0-9a-f]{6}$/i.test(color)) throw new Error("invalid color");
+  await prisma.workLabel.updateMany({
+    where: { id: labelId, workspaceId: ctx.workspace.id },
+    data: { color },
+  });
+  revalidatePath(`/w/${slug}/work`, "layout");
+}
+
 export async function setIssueLabel(
   slug: string,
   issueId: string,

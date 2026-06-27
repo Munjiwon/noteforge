@@ -40,10 +40,7 @@ export default async function ProjectSettingsPage({
       include: { columns: { orderBy: { position: "asc" } } },
     }),
     prisma.workLabel.findMany({
-      where: {
-        workspaceId: ctx.workspace.id,
-        issues: { some: { issue: { projectId: project.id } } },
-      },
+      where: { workspaceId: ctx.workspace.id },
       include: {
         _count: { select: { issues: { where: { issue: { projectId: project.id } } } } },
       },
@@ -76,7 +73,7 @@ export default async function ProjectSettingsPage({
           description: c.description,
           leadName: c.lead?.name ?? null,
         }))}
-        labels={labels.map((l) => ({ name: l.name, color: l.color, count: l._count.issues }))}
+        labels={labels.map((l) => ({ id: l.id, name: l.name, color: l.color, count: l._count.issues }))}
       />
       <WorkflowEditor
         slug={params.slug}
