@@ -112,6 +112,7 @@ export default async function BoardPage({
         <BoardView
           slug={params.slug}
           projectKey={project.key}
+          currentUserId={ctx.user.id}
           readOnly={ctx.role === "viewer"}
           columns={board.columns.map((c) => ({
             id: c.id,

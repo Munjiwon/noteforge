@@ -30,6 +30,7 @@ export function BoardView({
   columns,
   cards,
   swimlaneOptions,
+  currentUserId,
   readOnly,
 }: {
   slug: string;
@@ -37,6 +38,7 @@ export function BoardView({
   columns: Column[];
   cards: BoardCard[];
   swimlaneOptions: { epics: { id: string; label: string }[]; members: { id: string; name: string }[] };
+  currentUserId: string;
   readOnly: boolean;
 }) {
   const router = useRouter();
@@ -44,10 +46,23 @@ export function BoardView({
   const [dragId, setDragId] = useState<string | null>(null);
   const [overCol, setOverCol] = useState<string | null>(null);
   const [swimlane, setSwimlane] = useState<"none" | "assignee" | "epic">("none");
+  const [query, setQuery] = useState("");
+  const [mineOnly, setMineOnly] = useState(false);
 
   const statusToCol = new Map<string, string>();
   for (const c of columns) for (const sid of c.statusIds) statusToCol.set(sid, c.id);
   const today = new Date().toISOString().slice(0, 10);
+
+  // Client-side quick filter applied before swimlane grouping.
+  const q = query.trim().toLowerCase();
+  const cards2 = cards.filter((c) => {
+    if (mineOnly && c.assigneeId !== currentUserId) return false;
+    if (q) {
+      const hay = `${projectKey}-${c.number} ${c.summary}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
 
   const drop = (colId: string) => {
     setOverCol(null);
@@ -67,10 +82,10 @@ export function BoardView({
   // Build swimlane rows.
   const lanes: { key: string; label: string; cards: BoardCard[] }[] = [];
   if (swimlane === "none") {
-    lanes.push({ key: "all", label: "", cards });
+    lanes.push({ key: "all", label: "", cards: cards2 });
   } else if (swimlane === "assignee") {
     const groups = new Map<string, BoardCard[]>();
-    for (const c of cards) {
+    for (const c of cards2) {
       const k = c.assigneeId ?? "__none";
       (groups.get(k) ?? groups.set(k, []).get(k)!).push(c);
     }
@@ -88,7 +103,7 @@ export function BoardView({
     if (leftover.length) lanes.push({ key: "__other", label: "Other", cards: leftover });
   } else {
     const groups = new Map<string, BoardCard[]>();
-    for (const c of cards) {
+    for (const c of cards2) {
       const k = c.epicId ?? "__none";
       (groups.get(k) ?? groups.set(k, []).get(k)!).push(c);
     }
@@ -117,6 +132,16 @@ export function BoardView({
           <option value="assignee">Assignee</option>
           <option value="epic">Epic</option>
         </select>
+        <input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Filter cards…"
+          className="rounded border border-gray-300 px-2 py-1 text-sm"
+        />
+        <label className="flex items-center gap-1 text-gray-500">
+          <input type="checkbox" checked={mineOnly} onChange={(e) => setMineOnly(e.target.checked)} />
+          Only my issues
+        </label>
       </div>
 
       <div className="space-y-4">
