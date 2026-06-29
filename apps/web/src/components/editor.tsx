@@ -12417,6 +12417,14 @@ export function Editor({
                 onItemClick: insert("dbView"),
               },
               {
+                title: "Work issues",
+                subtext: "Embed a work project's open issues",
+                aliases: ["work", "issues", "jira", "board", "project", "이슈", "지라"],
+                group: "Advanced",
+                icon: <span>🎯</span>,
+                onItemClick: insert("workView"),
+              },
+              {
                 title: "Table of contents",
                 subtext: "Auto-generated list of headings",
                 aliases: ["toc", "table of contents", "contents", "목차"],

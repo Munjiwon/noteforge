@@ -18,6 +18,7 @@ import { BookmarkBlock } from "./bookmark-block";
 import { AudioBlock } from "./audio-block";
 import { PageEmbedBlock } from "./page-embed-block";
 import { SyncedBlock } from "./synced-block";
+import { WorkViewBlock } from "./workview-block";
 
 export const editorSchema = BlockNoteSchema.create({
   blockSpecs: {
@@ -34,6 +35,7 @@ export const editorSchema = BlockNoteSchema.create({
     audio: AudioBlock,
     pageEmbed: PageEmbedBlock,
     synced: SyncedBlock,
+    workView: WorkViewBlock,
   },
   inlineContentSpecs: {
     ...defaultInlineContentSpecs,
