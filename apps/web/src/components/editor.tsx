@@ -12500,6 +12500,7 @@ export function Editor({
               const data = (await res.json()) as {
                 users: { id: string; name: string; color: string }[];
                 pages: { id: string; title: string; icon: string | null }[];
+                issues?: { id: string; number: number; summary: string; projectKey: string }[];
               };
               const items: DefaultReactSuggestionItem[] = [];
               for (const u of data.users) {
@@ -12543,6 +12544,30 @@ export function Editor({
                           kind: "page",
                           id: p.id,
                           label: p.title || "Untitled",
+                        },
+                      } as any,
+                      " ",
+                    ]);
+                  },
+                });
+              }
+              for (const i of data.issues ?? []) {
+                items.push({
+                  title: `${i.projectKey}-${i.number}`,
+                  subtext: i.summary || "Link issue",
+                  group: "Issues",
+                  icon: <span>🎯</span>,
+                  onItemClick: () => {
+                    editor.insertInlineContent([
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      {
+                        type: "mention",
+                        props: {
+                          kind: "issue",
+                          id: i.id,
+                          label: i.summary || `${i.projectKey}-${i.number}`,
+                          projectKey: i.projectKey,
+                          number: String(i.number),
                         },
                       } as any,
                       " ",

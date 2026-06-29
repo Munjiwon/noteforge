@@ -15,21 +15,43 @@ export const MentionInline = createReactInlineContentSpec(
   {
     type: "mention",
     propSchema: {
-      kind: { default: "user", values: ["user", "page", "date"] },
+      kind: { default: "user", values: ["user", "page", "date", "issue"] },
       id: { default: "" },
       label: { default: "" },
+      // For kind="issue": project key + issue number to build a self-contained
+      // link without an extra fetch. id holds the Issue cuid (used for backlinks).
+      projectKey: { default: "" },
+      number: { default: "" },
     },
     content: "none",
   },
   {
     render: ({ inlineContent }) => {
-      const { kind, id, label } = inlineContent.props as {
-        kind: "user" | "page" | "date";
+      const { kind, id, label, projectKey, number } = inlineContent.props as {
+        kind: "user" | "page" | "date" | "issue";
         id: string;
         label: string;
+        projectKey: string;
+        number: string;
       };
       if (kind === "page") {
         return <PageMention id={id} label={label} />;
+      }
+      if (kind === "issue") {
+        const href =
+          projectKey && number
+            ? `/w/${getSlugFromUrl()}/work/${projectKey}/issue/${number}`
+            : "#";
+        return (
+          <a
+            href={href}
+            title={label}
+            className="inline-block bg-indigo-50 text-indigo-700 rounded px-1 mx-0.5 text-[13px] font-mono no-underline hover:bg-indigo-100"
+            contentEditable={false}
+          >
+            {projectKey}-{number}
+          </a>
+        );
       }
       if (kind === "date") {
         return (
