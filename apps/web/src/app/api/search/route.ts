@@ -150,12 +150,53 @@ export async function GET(req: NextRequest) {
       .map((t) => ({ id: t.id, name: t.name, icon: t.icon }));
   }
 
+  let issues: {
+    number: number;
+    projectKey: string;
+    summary: string;
+    statusName: string;
+    updatedAt: string;
+  }[] = [];
+  if (q.length >= 1 && !authorId && !tagParam) {
+    // The human key (KEY-12) is computed, not a column. Parse a typed key so
+    // "ENG-12" / "ENG 12" surfaces the issue by project key + number.
+    const keyMatch = /^([A-Za-z][A-Za-z0-9]*)[-\s]?(\d+)$/.exec(q);
+    const issueRows = await prisma.issue.findMany({
+      where: {
+        project: { workspaceId: ws.id, archivedAt: null },
+        OR: [
+          { summary: { contains: q } },
+          ...(keyMatch
+            ? [{ project: { key: { contains: keyMatch[1].toUpperCase() } }, number: Number(keyMatch[2]) }]
+            : []),
+        ],
+      },
+      take: 10,
+      orderBy: { updatedAt: "desc" },
+      select: {
+        number: true,
+        summary: true,
+        project: { select: { key: true } },
+        status: { select: { name: true } },
+        updatedAt: true,
+      },
+    });
+    issues = issueRows.map((i) => ({
+      number: i.number,
+      projectKey: i.project.key,
+      summary: i.summary,
+      statusName: i.status.name,
+      updatedAt: i.updatedAt.toISOString(),
+    }));
+  }
+
   return NextResponse.json({
     hits: hits.map(({ _score, ...rest }) => {
       void _score;
       return rest;
     }),
     teamspaces,
+    issues,
   });
 }
 

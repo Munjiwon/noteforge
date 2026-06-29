@@ -14,6 +14,14 @@ type Hit = {
   updatedAt?: string;
 };
 
+type IssueHit = {
+  number: number;
+  projectKey: string;
+  summary: string;
+  statusName: string;
+  updatedAt?: string;
+};
+
 function markMatch(text: string, q: string): React.ReactNode {
   const needle = q.trim();
   if (!needle) return text;
@@ -51,6 +59,7 @@ export function SearchPalette({
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState("");
   const [hits, setHits] = useState<Hit[]>([]);
+  const [issues, setIssues] = useState<IssueHit[]>([]);
   const [highlight, setHighlight] = useState(0);
   const [loading, setLoading] = useState(false);
   const [kindFilter, setKindFilter] = useState<"all" | "doc" | "database">("all");
@@ -101,6 +110,7 @@ export function SearchPalette({
       // search-open detail.tag case so users can immediately see matches).
       if (!tag) setQ("");
       setHits([]);
+      setIssues([]);
       setHighlight(0);
     }
   }, [open, tag]);
@@ -109,6 +119,7 @@ export function SearchPalette({
     if (!open) return;
     if (!q.trim() && !tag.trim() && since === "any") {
       setHits([]);
+      setIssues([]);
       return;
     }
     setLoading(true);
@@ -144,8 +155,9 @@ export function SearchPalette({
           signal: ctrl.signal,
         });
         if (!res.ok) return;
-        const data = (await res.json()) as { hits: Hit[] };
+        const data = (await res.json()) as { hits: Hit[]; issues?: IssueHit[] };
         setHits(data.hits);
+        setIssues(data.issues ?? []);
         setHighlight(0);
       } catch {
         /* aborted */
@@ -310,6 +322,31 @@ export function SearchPalette({
                 </div>
               );
             })()}
+          {q.trim() !== "" && issues.length > 0 && (
+            <div className="border-b border-gray-100">
+              <div className="px-3 pt-2 pb-1 text-[10px] uppercase tracking-wide text-gray-400">
+                Issues
+              </div>
+              <ul>
+                {issues.map((i) => (
+                  <li key={`${i.projectKey}-${i.number}`}>
+                    <a
+                      href={`/w/${slug}/work/${i.projectKey}/issue/${i.number}`}
+                      onClick={() => setOpen(false)}
+                      className="block px-3 py-1.5 text-sm hover:bg-gray-100 flex items-center gap-2"
+                    >
+                      <span>🎯</span>
+                      <span className="font-mono text-[11px] text-gray-400 shrink-0">
+                        {i.projectKey}-{i.number}
+                      </span>
+                      <span className="truncate">{i.summary || "Untitled"}</span>
+                      <span className="ml-auto text-[10px] text-gray-400 shrink-0">{i.statusName}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
           {q.trim() === "" ? (
             <RecentSearches onPick={(t) => setQ(t)} />
           ) : loading && hits.length === 0 ? (
