@@ -87,9 +87,15 @@ export const WorkViewBlock = createReactBlockSpec(
       }
 
       if (error) {
+        // Non-members / signed-out viewers (e.g. on a published page) get a
+        // neutral placeholder rather than a red error.
+        const denied = /\b(401|403)\b/.test(error);
         return (
-          <div className="my-2 rounded border border-red-200 bg-red-50 p-3 text-xs text-red-700" contentEditable={false}>
-            Couldn&apos;t load work view ({error}).
+          <div
+            className={`my-2 rounded border p-3 text-xs ${denied ? "border-gray-200 text-gray-400" : "border-red-200 bg-red-50 text-red-700"}`}
+            contentEditable={false}
+          >
+            {denied ? "🎯 Work issues (sign in with access to view)." : `Couldn't load work view (${error}).`}
           </div>
         );
       }

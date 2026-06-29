@@ -189,7 +189,9 @@ export default async function TodayPage({
         ) : (
           <ul className="space-y-1">
             {myDueIssues.map((i) => {
-              const overdue = !!i.dueDate && i.dueDate < today;
+              // Compare by UTC date string (consistent with the Home page).
+              const overdue =
+                !!i.dueDate && i.dueDate.toISOString().slice(0, 10) < new Date().toISOString().slice(0, 10);
               return (
                 <li key={`${i.project.key}-${i.number}`}>
                   <Link

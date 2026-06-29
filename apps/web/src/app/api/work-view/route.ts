@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
   }
 
   const project = await prisma.workProject.findFirst({
-    where: { workspaceId: ws.id, key },
+    where: { workspaceId: ws.id, key, archivedAt: null },
     select: { id: true, key: true, name: true, icon: true },
   });
   if (!project) return NextResponse.json({ error: "not found" }, { status: 404 });
