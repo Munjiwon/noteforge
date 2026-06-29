@@ -19,8 +19,10 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ users: [], pages: [], issues: [] }, { status: 403 });
   }
 
-  // Allow matching a typed key like "ENG-12" by its trailing number.
-  const numMatch = /(\d+)\s*$/.exec(q)?.[1];
+  // Match a typed key like "ENG-12" / "ENG 12" — scoped to that project key so
+  // a bare number doesn't surface issue #N of every project. A separator is
+  // required so plain digits in a summary search aren't treated as a key.
+  const keyMatch = /^([A-Za-z][A-Za-z0-9]*)[-\s](\d+)$/.exec(q);
 
   const [users, pages, issues] = await Promise.all([
     prisma.workspaceMember.findMany({
@@ -57,7 +59,9 @@ export async function GET(req: NextRequest) {
           ? {
               OR: [
                 { summary: { contains: q } },
-                ...(numMatch ? [{ number: Number(numMatch) }] : []),
+                ...(keyMatch
+                  ? [{ project: { key: { contains: keyMatch[1].toUpperCase() } }, number: Number(keyMatch[2]) }]
+                  : []),
               ],
             }
           : {}),

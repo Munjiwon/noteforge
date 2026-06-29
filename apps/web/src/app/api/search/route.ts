@@ -160,7 +160,7 @@ export async function GET(req: NextRequest) {
   if (q.length >= 1 && !authorId && !tagParam) {
     // The human key (KEY-12) is computed, not a column. Parse a typed key so
     // "ENG-12" / "ENG 12" surfaces the issue by project key + number.
-    const keyMatch = /^([A-Za-z][A-Za-z0-9]*)[-\s]?(\d+)$/.exec(q);
+    const keyMatch = /^([A-Za-z][A-Za-z0-9]*)[-\s](\d+)$/.exec(q);
     const issueRows = await prisma.issue.findMany({
       where: {
         project: { workspaceId: ws.id, archivedAt: null },
