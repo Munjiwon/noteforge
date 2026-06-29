@@ -192,7 +192,17 @@ export function SearchPalette({
     router.push(`/w/${slug}/p/${hit.id}`);
   };
 
+  const chooseIssue = (i: IssueHit) => {
+    setOpen(false);
+    router.push(`/w/${slug}/work/${i.projectKey}/issue/${i.number}`);
+  };
+
   if (!open) return null;
+
+  // Combined keyboard-navigable list: issues are rendered above page hits, so
+  // highlight 0..issues.length-1 selects issues, the rest select filtered hits.
+  const filtered = hits.filter((h) => (kindFilter === "all" ? true : h.kind === kindFilter));
+  const navCount = issues.length + filtered.length;
 
   return (
     <div
@@ -229,13 +239,18 @@ export function SearchPalette({
             onKeyDown={(e) => {
               if (e.key === "ArrowDown") {
                 e.preventDefault();
-                setHighlight((h) => (hits.length === 0 ? 0 : (h + 1) % hits.length));
+                setHighlight((h) => (navCount === 0 ? 0 : (h + 1) % navCount));
               } else if (e.key === "ArrowUp") {
                 e.preventDefault();
-                setHighlight((h) => (hits.length === 0 ? 0 : (h - 1 + hits.length) % hits.length));
-              } else if (e.key === "Enter" && hits[highlight]) {
+                setHighlight((h) => (navCount === 0 ? 0 : (h - 1 + navCount) % navCount));
+              } else if (e.key === "Enter" && navCount > 0) {
                 e.preventDefault();
-                choose(hits[highlight], e.metaKey || e.ctrlKey);
+                if (highlight < issues.length) {
+                  chooseIssue(issues[highlight]);
+                } else {
+                  const hit = filtered[highlight - issues.length];
+                  if (hit) choose(hit, e.metaKey || e.ctrlKey);
+                }
               }
             }}
           />
@@ -328,12 +343,16 @@ export function SearchPalette({
                 Issues
               </div>
               <ul>
-                {issues.map((i) => (
+                {issues.map((i, idx) => (
                   <li key={`${i.projectKey}-${i.number}`}>
                     <a
                       href={`/w/${slug}/work/${i.projectKey}/issue/${i.number}`}
                       onClick={() => setOpen(false)}
-                      className="block px-3 py-1.5 text-sm hover:bg-gray-100 flex items-center gap-2"
+                      onMouseEnter={() => setHighlight(idx)}
+                      className={clsx(
+                        "block px-3 py-1.5 text-sm hover:bg-gray-100 flex items-center gap-2",
+                        idx === highlight && "bg-gray-100",
+                      )}
                     >
                       <span>🎯</span>
                       <span className="font-mono text-[11px] text-gray-400 shrink-0">
@@ -352,10 +371,8 @@ export function SearchPalette({
           ) : loading && hits.length === 0 ? (
             <div className="text-xs text-gray-400 text-center py-8">Searching…</div>
           ) : (() => {
-            const filtered = hits.filter((h) =>
-              kindFilter === "all" ? true : h.kind === kindFilter,
-            );
             return filtered.length === 0 ? (
+              issues.length > 0 ? null : (
               <div className="text-center py-8">
                 <div className="text-xs text-gray-400 mb-2">No results.</div>
                 {q.trim() && (
@@ -375,6 +392,7 @@ export function SearchPalette({
                   </button>
                 )}
               </div>
+              )
             ) : (
               <ul>
               {filtered.map((h, i) => (
@@ -384,10 +402,10 @@ export function SearchPalette({
                       e.preventDefault();
                       choose(h);
                     }}
-                    onMouseEnter={() => setHighlight(i)}
+                    onMouseEnter={() => setHighlight(issues.length + i)}
                     className={clsx(
                       "w-full text-left px-3 py-2 flex items-start gap-2",
-                      i === highlight && "bg-gray-100",
+                      issues.length + i === highlight && "bg-gray-100",
                     )}
                   >
                     <span className="text-base w-5 text-center pt-0.5">
