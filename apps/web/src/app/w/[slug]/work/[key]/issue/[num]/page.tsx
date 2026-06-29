@@ -6,6 +6,7 @@ import { IssueDetail } from "@/components/work/issue-detail";
 import { IssueRelations } from "@/components/work/issue-relations";
 import { IssueWorklog } from "@/components/work/issue-worklog";
 import { IssueAttachments } from "@/components/work/issue-attachments";
+import { IssueReferencedBy } from "@/components/work/issue-referenced-by";
 import { ISSUE_LINK_TYPES } from "@/lib/work";
 
 export const dynamic = "force-dynamic";
@@ -59,13 +60,20 @@ export default async function IssuePage({
   });
   if (!issue) notFound();
 
-  const [meta, members, linkableIssues] = await Promise.all([
+  const [meta, members, linkableIssues, referencedBy] = await Promise.all([
     loadProjectMeta(project.id, ctx.workspace.id),
     workspaceMemberOptions(ctx.workspace.id),
     prisma.issue.findMany({
       where: { projectId: project.id, id: { not: issue.id } },
       orderBy: { number: "asc" },
       select: { id: true, number: true, summary: true },
+    }),
+    // Pages that @-mention this issue (derived from the cuid in their content).
+    prisma.page.findMany({
+      where: { workspaceId: ctx.workspace.id, deletedAt: null, content: { contains: issue.id } },
+      orderBy: { updatedAt: "desc" },
+      take: 30,
+      select: { id: true, title: true, icon: true, kind: true },
     }),
   ]);
 
@@ -190,6 +198,7 @@ export default async function IssuePage({
           createdAt: a.createdAt.toISOString(),
         }))}
       />
+      <IssueReferencedBy slug={params.slug} pages={referencedBy} />
     </div>
   );
 }
