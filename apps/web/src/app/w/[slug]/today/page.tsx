@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireWorkspaceMember } from "@/lib/workspace";
 import { prisma } from "db";
 import { parseSchema } from "@/lib/database";
+import { priorityMeta } from "@/lib/work";
 
 function startOfDay(d = new Date()): Date {
   const x = new Date(d);
@@ -32,7 +33,7 @@ export default async function TodayPage({
   const today = startOfDay();
   const tomorrow = endOfDay();
 
-  const [databases, edited, comments, mentions] = await Promise.all([
+  const [databases, edited, comments, mentions, myDueIssues] = await Promise.all([
     prisma.page.findMany({
       where: {
         workspaceId: ctx.workspace.id,
@@ -82,6 +83,25 @@ export default async function TodayPage({
       take: 20,
       include: {
         actor: { select: { name: true, color: true } },
+      },
+    }),
+    prisma.issue.findMany({
+      where: {
+        assigneeId: ctx.user.id,
+        project: { workspaceId: ctx.workspace.id, archivedAt: null },
+        status: { category: { not: "done" } },
+        dueDate: { not: null, lte: tomorrow },
+      },
+      orderBy: { dueDate: "asc" },
+      take: 30,
+      select: {
+        number: true,
+        summary: true,
+        dueDate: true,
+        priority: true,
+        project: { select: { key: true } },
+        type: { select: { icon: true } },
+        status: { select: { name: true } },
       },
     }),
   ]);
@@ -158,6 +178,44 @@ export default async function TodayPage({
           ← Back
         </Link>
       </div>
+
+      <section className="mb-8">
+        <h2 className="text-sm font-semibold text-gray-700 mb-2">
+          My issues due
+          <span className="ml-2 text-xs text-gray-400">{myDueIssues.length}</span>
+        </h2>
+        {myDueIssues.length === 0 ? (
+          <p className="text-xs text-gray-400">No assigned issues due today or overdue.</p>
+        ) : (
+          <ul className="space-y-1">
+            {myDueIssues.map((i) => {
+              const overdue = !!i.dueDate && i.dueDate < today;
+              return (
+                <li key={`${i.project.key}-${i.number}`}>
+                  <Link
+                    href={`/w/${params.slug}/work/${i.project.key}/issue/${i.number}`}
+                    className="flex items-center gap-2 text-sm text-gray-800 hover:bg-black/5 rounded px-2 py-1"
+                  >
+                    <span>{i.type.icon ?? "🎫"}</span>
+                    <span className="font-mono text-[11px] text-gray-400 shrink-0">
+                      {i.project.key}-{i.number}
+                    </span>
+                    <span className="flex-1 truncate">{i.summary || "Untitled"}</span>
+                    <span style={{ color: priorityMeta(i.priority).color }}>
+                      {priorityMeta(i.priority).icon}
+                    </span>
+                    <span
+                      className={`text-[11px] shrink-0 ${overdue ? "font-medium text-red-600" : "text-gray-400"}`}
+                    >
+                      {overdue ? "Overdue" : "Today"}
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </section>
 
       <section className="mb-8">
         <h2 className="text-sm font-semibold text-gray-700 mb-2">

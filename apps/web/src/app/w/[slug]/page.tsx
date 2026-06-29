@@ -4,6 +4,7 @@ import { prisma } from "db";
 import { parseSchema } from "@/lib/database";
 import { TemplateGalleryButton } from "@/components/template-gallery";
 import { Avatar } from "@/components/avatar";
+import { priorityMeta, categoryMeta } from "@/lib/work";
 
 function greeting(): string {
   const h = new Date().getHours();
@@ -42,7 +43,7 @@ export default async function WorkspaceHome({
   const weekAgo = new Date(Date.now() - 7 * 24 * 3600 * 1000);
 
   const activeSince = new Date(Date.now() - 5 * 60 * 1000);
-  const [recents, favorites, totals, dueCount, comingReminders, dateDatabases, recent7, activeMembers, newest] = await Promise.all([
+  const [recents, favorites, totals, dueCount, comingReminders, dateDatabases, recent7, activeMembers, newest, myIssues] = await Promise.all([
     prisma.page.findMany({
       where: {
         workspaceId: ctx.workspace.id,
@@ -158,7 +159,29 @@ export default async function WorkspaceHome({
       take: 5,
       select: { id: true, title: true, icon: true, kind: true, createdAt: true },
     }),
+    prisma.issue.findMany({
+      where: {
+        assigneeId: ctx.user.id,
+        project: { workspaceId: ctx.workspace.id, archivedAt: null },
+        status: { category: { not: "done" } },
+      },
+      orderBy: { updatedAt: "desc" },
+      take: 12,
+      select: {
+        number: true,
+        summary: true,
+        priority: true,
+        dueDate: true,
+        project: { select: { key: true } },
+        type: { select: { icon: true } },
+        status: { select: { name: true, category: true } },
+      },
+    }),
   ]);
+  // priority is a String column; sort by severity rank in memory.
+  myIssues.sort((a, b) => priorityMeta(b.priority).rank - priorityMeta(a.priority).rank);
+  const topIssues = myIssues.slice(0, 8);
+  const todayKey = new Date().toISOString().slice(0, 10);
   const [newPages7, editedPages7, newComments7] = recent7;
   const [pageTotal, dbTotal, memberTotal] = totals;
 
@@ -291,6 +314,53 @@ export default async function WorkspaceHome({
         />
         <TemplateGalleryButton slug={params.slug} />
       </section>
+
+      {topIssues.length > 0 && (
+        <section className="mb-8">
+          <h2 className="text-xs uppercase tracking-wide text-gray-500 mb-2">
+            My open issues
+          </h2>
+          <ul className="border border-gray-200 rounded-md divide-y divide-gray-100">
+            {topIssues.map((i) => {
+              const overdue =
+                !!i.dueDate &&
+                i.status.category !== "done" &&
+                i.dueDate.toISOString().slice(0, 10) < todayKey;
+              return (
+                <li key={`${i.project.key}-${i.number}`}>
+                  <Link
+                    href={`/w/${params.slug}/work/${i.project.key}/issue/${i.number}`}
+                    className="flex items-center gap-2 px-3 py-1.5 text-sm hover:bg-black/5"
+                  >
+                    <span>{i.type.icon ?? "🎫"}</span>
+                    <span className="font-mono text-[11px] text-gray-400 shrink-0">
+                      {i.project.key}-{i.number}
+                    </span>
+                    <span className="flex-1 truncate">{i.summary || "Untitled"}</span>
+                    {i.dueDate && (
+                      <span className={`text-[11px] shrink-0 ${overdue ? "text-red-600" : "text-gray-400"}`}>
+                        📅 {i.dueDate.toISOString().slice(5, 10)}
+                      </span>
+                    )}
+                    <span style={{ color: priorityMeta(i.priority).color }}>
+                      {priorityMeta(i.priority).icon}
+                    </span>
+                    <span
+                      className="rounded px-1.5 py-0.5 text-[10px] shrink-0"
+                      style={{
+                        background: `${categoryMeta(i.status.category).color}22`,
+                        color: categoryMeta(i.status.category).color,
+                      }}
+                    >
+                      {i.status.name}
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )}
 
       <section className="grid sm:grid-cols-2 gap-6 mb-8">
         <Card title="Recently edited" emptyText="No pages yet — click + in the sidebar.">
