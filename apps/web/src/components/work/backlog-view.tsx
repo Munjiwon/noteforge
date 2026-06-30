@@ -197,6 +197,60 @@ export function BacklogView({
     </div>
   );
 
+  const saveSprint = (sprintId: string, field: string, value: string) => {
+    const fd = new FormData();
+    fd.set("slug", slug);
+    fd.set("sprintId", sprintId);
+    fd.set(field, value);
+    start(async () => {
+      try {
+        await updateSprint(fd);
+        router.refresh();
+      } catch (e) {
+        alert(e instanceof Error ? e.message : "Couldn't update sprint");
+      }
+    });
+  };
+
+  const SprintDates = ({
+    sprintId,
+    startDate,
+    endDate,
+  }: {
+    sprintId: string;
+    startDate: string | null;
+    endDate: string | null;
+  }) => {
+    if (readOnly) {
+      return startDate && endDate ? (
+        <span className="text-xs text-gray-400">
+          {startDate.slice(0, 10)} → {endDate.slice(0, 10)}
+        </span>
+      ) : null;
+    }
+    const cls =
+      "rounded border border-transparent px-1 py-0.5 text-xs text-gray-500 hover:border-gray-200 focus:border-gray-300 focus:outline-none";
+    return (
+      <span className="flex items-center gap-1 text-xs text-gray-400">
+        <input
+          type="date"
+          defaultValue={startDate ? startDate.slice(0, 10) : ""}
+          onChange={(e) => saveSprint(sprintId, "startDate", e.target.value)}
+          className={cls}
+          title="Sprint start"
+        />
+        →
+        <input
+          type="date"
+          defaultValue={endDate ? endDate.slice(0, 10) : ""}
+          onChange={(e) => saveSprint(sprintId, "endDate", e.target.value)}
+          className={cls}
+          title="Sprint end"
+        />
+      </span>
+    );
+  };
+
   const SprintGoal = ({ sprintId, goal }: { sprintId: string; goal: string | null }) => {
     if (readOnly) {
       return goal ? (
@@ -243,13 +297,7 @@ export function BacklogView({
               )}
             </span>
           }
-          subtitle={
-            s.startDate && s.endDate ? (
-              <span className="text-xs text-gray-400">
-                {s.startDate.slice(0, 10)} → {s.endDate.slice(0, 10)}
-              </span>
-            ) : undefined
-          }
+          subtitle={<SprintDates sprintId={s.id} startDate={s.startDate} endDate={s.endDate} />}
           headerExtra={<SprintGoal sprintId={s.id} goal={s.goal} />}
           items={s.items}
           actions={
