@@ -82,7 +82,20 @@ export function NewProjectDialog({ slug }: { slug: string }) {
                 </div>
               </div>
               <div>
-                <label className="mb-1 block text-xs font-medium text-gray-500">Template</label>
+                <div className="mb-1 flex items-center gap-1.5">
+                  <label className="block text-xs font-medium text-gray-500">Template</label>
+                  <span className="group relative inline-flex">
+                    <span className="flex h-4 w-4 cursor-help items-center justify-center rounded-full bg-gray-200 text-[10px] font-semibold text-gray-600">
+                      ?
+                    </span>
+                    <span className="pointer-events-none absolute left-0 top-5 z-10 hidden w-80 rounded-md border border-gray-200 bg-white p-2.5 text-[11px] leading-relaxed text-gray-600 shadow-lg group-hover:block">
+                      <b>Scrum</b> — 스프린트(정해진 기간) 단위로 일하는 방식이에요. <b>백로그</b> 탭에서 이슈를 모아 스프린트를 시작/완료하고, 보드는 <b>현재 진행 중인 스프린트</b>만 보여줍니다. 번다운·벨로시티 같은 리포트가 의미 있게 동작해요. (개발 팀의 반복 개발에 적합)
+                      <br />
+                      <br />
+                      <b>Kanban</b> — 정해진 기간 없이 <b>연속적인 흐름</b>으로 일하는 방식이에요. 백로그·스프린트가 없고, 보드에 <b>모든 이슈</b>가 상태(To Do→진행중→완료)별로 계속 흐릅니다. (운영·지원·상시 업무에 적합)
+                    </span>
+                  </span>
+                </div>
                 <div className="flex gap-2">
                   {(["scrum", "kanban"] as const).map((t) => (
                     <button
