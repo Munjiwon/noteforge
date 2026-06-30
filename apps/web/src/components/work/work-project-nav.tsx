@@ -17,6 +17,7 @@ export function WorkProjectNav({
   const tabs: { href: string; label: string }[] = [
     { href: `${base}/board`, label: "Board" },
     ...(type === "scrum" ? [{ href: `${base}/backlog`, label: "Backlog" }] : []),
+    ...(type === "scrum" ? [{ href: `${base}/sprints`, label: "Sprints" }] : []),
     { href: `${base}/issues`, label: "Issues" },
     { href: `${base}/roadmap`, label: "Roadmap" },
     { href: `${base}/reports`, label: "Reports" },
