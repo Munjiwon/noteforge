@@ -75,6 +75,11 @@ export default async function BoardPage({
     where: { workspaceId: ctx.workspace.id },
     include: { user: { select: { id: true, name: true } } },
   });
+  const types = await prisma.issueType.findMany({
+    where: { projectId: project.id },
+    orderBy: { position: "asc" },
+    select: { id: true, name: true, icon: true, level: true },
+  });
 
   return (
     <div>
@@ -112,6 +117,11 @@ export default async function BoardPage({
         <BoardView
           slug={params.slug}
           projectKey={project.key}
+          projectId={project.id}
+          activeSprintId={activeSprint?.id ?? null}
+          createTypes={types
+            .filter((t) => t.level !== "epic")
+            .map((t) => ({ id: t.id, name: t.name, icon: t.icon }))}
           currentUserId={ctx.user.id}
           readOnly={ctx.role === "viewer"}
           columns={board.columns.map((c) => ({

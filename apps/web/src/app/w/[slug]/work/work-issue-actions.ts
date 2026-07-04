@@ -78,6 +78,7 @@ export async function createIssue(formData: FormData) {
   const parentId = String(formData.get("parentId") || "") || null;
   const priority = String(formData.get("priority") || "medium");
   const assigneeId = String(formData.get("assigneeId") || "") || null;
+  const statusId = String(formData.get("statusId") || "") || null;
 
   const ctx = await assertEditor(slug);
   const project = await prisma.workProject.findFirst({
@@ -115,8 +116,13 @@ export async function createIssue(formData: FormData) {
     types.find((t) => t.level === "standard") ??
     types[0];
   if (!resolvedType) throw new Error("project has no issue types");
-  const status =
+  let status =
     todoStatus ?? (await prisma.workflowStatus.findFirst({ where: { projectId } }));
+  // Allow creating directly into a specific status (e.g. from a board column).
+  if (statusId) {
+    const s = await prisma.workflowStatus.findFirst({ where: { id: statusId, projectId } });
+    if (s) status = s;
+  }
   if (!status) throw new Error("project has no statuses");
   // A sub-task inherits its parent's sprint when none was specified.
   const effectiveSprintId = sprintId ?? parent?.sprintId ?? null;

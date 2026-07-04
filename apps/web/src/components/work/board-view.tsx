@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { priorityMeta } from "@/lib/work";
-import { transitionIssue } from "@/app/w/[slug]/work/work-issue-actions";
+import { transitionIssue, createIssue } from "@/app/w/[slug]/work/work-issue-actions";
 
 export type BoardCard = {
   id: string;
@@ -31,6 +31,9 @@ export function BoardView({
   cards,
   swimlaneOptions,
   currentUserId,
+  projectId,
+  activeSprintId,
+  createTypes,
   readOnly,
 }: {
   slug: string;
@@ -39,6 +42,9 @@ export function BoardView({
   cards: BoardCard[];
   swimlaneOptions: { epics: { id: string; label: string }[]; members: { id: string; name: string }[] };
   currentUserId: string;
+  projectId: string;
+  activeSprintId: string | null;
+  createTypes: { id: string; name: string; icon: string | null }[];
   readOnly: boolean;
 }) {
   const router = useRouter();
@@ -243,7 +249,16 @@ export function BoardView({
                         );
                       })}
                       {colCards.length === 0 && (
-                        <div className="px-1 py-4 text-center text-xs text-gray-300">Drop here</div>
+                        <div className="px-1 py-3 text-center text-xs text-gray-300">Drop here</div>
+                      )}
+                      {swimlane === "none" && !readOnly && col.statusIds[0] && createTypes[0] && (
+                        <ColumnCreate
+                          slug={slug}
+                          projectId={projectId}
+                          statusId={col.statusIds[0]}
+                          sprintId={activeSprintId}
+                          typeId={createTypes[0].id}
+                        />
                       )}
                     </div>
                   </div>
@@ -254,5 +269,75 @@ export function BoardView({
         ))}
       </div>
     </div>
+  );
+}
+
+// Inline "create issue" at the bottom of a board column. Top-level (not nested
+// in BoardView) so it keeps its input state across board re-renders.
+function ColumnCreate({
+  slug,
+  projectId,
+  statusId,
+  sprintId,
+  typeId,
+}: {
+  slug: string;
+  projectId: string;
+  statusId: string;
+  sprintId: string | null;
+  typeId: string;
+}) {
+  const router = useRouter();
+  const [, start] = useTransition();
+  const [open, setOpen] = useState(false);
+  const [summary, setSummary] = useState("");
+
+  if (!open) {
+    return (
+      <button
+        onClick={() => setOpen(true)}
+        className="w-full rounded px-2 py-1 text-left text-xs text-gray-400 hover:bg-white hover:text-gray-700"
+      >
+        + Create
+      </button>
+    );
+  }
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (!summary.trim()) return;
+        const fd = new FormData();
+        fd.set("slug", slug);
+        fd.set("projectId", projectId);
+        fd.set("summary", summary.trim());
+        fd.set("statusId", statusId);
+        fd.set("typeId", typeId);
+        if (sprintId) fd.set("sprintId", sprintId);
+        start(async () => {
+          await createIssue(fd);
+          setSummary("");
+          setOpen(false);
+          router.refresh();
+        });
+      }}
+    >
+      <textarea
+        autoFocus
+        value={summary}
+        onChange={(e) => setSummary(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            (e.currentTarget.form as HTMLFormElement | null)?.requestSubmit();
+          }
+          if (e.key === "Escape") setOpen(false);
+        }}
+        onBlur={() => { if (!summary.trim()) setOpen(false); }}
+        placeholder="What needs to be done?"
+        rows={2}
+        className="w-full rounded border border-gray-300 bg-white p-1.5 text-xs text-gray-900"
+      />
+    </form>
   );
 }
