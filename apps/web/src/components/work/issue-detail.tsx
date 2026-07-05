@@ -367,6 +367,14 @@ export function IssueDetail({
               </option>
             ))}
           </select>
+          {!readOnly && issue.assigneeId !== currentUserId && (
+            <button
+              onClick={() => save("assigneeId", currentUserId)}
+              className="mt-0.5 px-1.5 text-[11px] text-[rgb(var(--accent,99_102_241))] hover:underline"
+            >
+              Assign to me
+            </button>
+          )}
         </Field>
         <Field label="Reporter">
           <Avatar member={issue.reporterId ? memberMap.get(issue.reporterId) ?? null : null} />
