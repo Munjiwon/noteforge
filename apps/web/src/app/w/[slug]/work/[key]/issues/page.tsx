@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireWorkspaceMember } from "@/lib/workspace";
-import { loadProjectMeta } from "@/lib/work-server";
+import { loadProjectMeta, workspaceMemberOptions } from "@/lib/work-server";
 import { prisma } from "db";
 import { QuickCreateIssue } from "@/components/work/quick-create-issue";
 import { ExportIssuesButton } from "@/components/work/export-issues-button";
-import { priorityMeta, categoryMeta } from "@/lib/work";
+import { priorityMeta, categoryMeta, PRIORITIES } from "@/lib/work";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +14,7 @@ export default async function IssuesPage({
   searchParams,
 }: {
   params: { slug: string; key: string };
-  searchParams: { status?: string; assignee?: string; type?: string };
+  searchParams: { status?: string; assignee?: string; type?: string; priority?: string };
 }) {
   const ctx = await requireWorkspaceMember(params.slug);
   const project = await prisma.workProject.findFirst({
@@ -23,13 +23,17 @@ export default async function IssuesPage({
   });
   if (!project) notFound();
 
-  const meta = await loadProjectMeta(project.id, ctx.workspace.id);
+  const [meta, members] = await Promise.all([
+    loadProjectMeta(project.id, ctx.workspace.id),
+    workspaceMemberOptions(ctx.workspace.id),
+  ]);
   const issues = await prisma.issue.findMany({
     where: {
       projectId: project.id,
       ...(searchParams.status ? { statusId: searchParams.status } : {}),
       ...(searchParams.assignee ? { assigneeId: searchParams.assignee } : {}),
       ...(searchParams.type ? { typeId: searchParams.type } : {}),
+      ...(searchParams.priority ? { priority: searchParams.priority } : {}),
     },
     orderBy: [{ updatedAt: "desc" }],
     include: {
@@ -67,6 +71,30 @@ export default async function IssuesPage({
               {meta.types.map((t) => (
                 <option key={t.id} value={t.id}>
                   {t.name}
+                </option>
+              ))}
+            </select>
+            <select
+              name="assignee"
+              defaultValue={searchParams.assignee ?? ""}
+              className="rounded border border-gray-300 px-2 py-1 text-sm"
+            >
+              <option value="">All assignees</option>
+              {members.map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.name}
+                </option>
+              ))}
+            </select>
+            <select
+              name="priority"
+              defaultValue={searchParams.priority ?? ""}
+              className="rounded border border-gray-300 px-2 py-1 text-sm"
+            >
+              <option value="">All priorities</option>
+              {PRIORITIES.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.name}
                 </option>
               ))}
             </select>
