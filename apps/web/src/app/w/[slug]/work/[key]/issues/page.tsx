@@ -40,6 +40,7 @@ export default async function IssuesPage({
       status: true,
       type: true,
       assignee: { select: { name: true, color: true } },
+      labels: { include: { label: { select: { name: true, color: true } } } },
     },
   });
 
@@ -153,6 +154,19 @@ export default async function IssuesPage({
                   <Link href={`/w/${params.slug}/work/${project.key}/issue/${i.number}`} className="hover:underline">
                     {i.summary || <span className="text-gray-400">Untitled</span>}
                   </Link>
+                  {i.labels.length > 0 && (
+                    <span className="ml-2 inline-flex flex-wrap gap-1 align-middle">
+                      {i.labels.map((l) => (
+                        <span
+                          key={l.id}
+                          className="rounded px-1.5 py-0.5 text-[10px] text-white"
+                          style={{ background: l.label.color ?? "#64748b" }}
+                        >
+                          {l.label.name}
+                        </span>
+                      ))}
+                    </span>
+                  )}
                 </td>
                 <td className="px-3 py-2">
                   <span
