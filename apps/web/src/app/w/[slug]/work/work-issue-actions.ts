@@ -330,6 +330,65 @@ export async function transitionIssue(
   revalidateProject(slug, issue.project.key);
 }
 
+/**
+ * Duplicate an issue: copies its fields (summary prefixed "Copy of"), labels,
+ * components, and fix versions into a new issue. Returns the new issue key parts.
+ */
+export async function cloneIssue(slug: string, issueId: string) {
+  const ctx = await assertEditor(slug);
+  const src = await prisma.issue.findFirst({
+    where: { id: issueId, project: { workspaceId: ctx.workspace.id } },
+    include: {
+      project: { select: { id: true, key: true } },
+      labels: { select: { labelId: true } },
+      components: { select: { componentId: true } },
+      fixVersions: { select: { versionId: true } },
+    },
+  });
+  if (!src) throw new Error("issue not found");
+
+  const created = await prisma.$transaction(async (tx) => {
+    const proj = await tx.workProject.update({
+      where: { id: src.projectId },
+      data: { nextNumber: { increment: 1 } },
+      select: { nextNumber: true },
+    });
+    const number = proj.nextNumber - 1;
+    const rankAgg = await tx.issue.aggregate({ where: { projectId: src.projectId }, _max: { rank: true } });
+    return tx.issue.create({
+      data: {
+        projectId: src.projectId,
+        number,
+        summary: `Copy of ${src.summary}`.trim(),
+        description: src.description,
+        typeId: src.typeId,
+        statusId: src.statusId,
+        priority: src.priority,
+        assigneeId: src.assigneeId,
+        reporterId: ctx.user.id,
+        sprintId: src.sprintId,
+        epicId: src.epicId,
+        parentId: src.parentId,
+        storyPoints: src.storyPoints,
+        originalEstimate: src.originalEstimate,
+        dueDate: src.dueDate,
+        rank: (rankAgg._max.rank ?? 0) + 1,
+        labels: { create: src.labels.map((l) => ({ labelId: l.labelId })) },
+        components: { create: src.components.map((c) => ({ componentId: c.componentId })) },
+        fixVersions: { create: src.fixVersions.map((v) => ({ versionId: v.versionId })) },
+      },
+      select: { id: true, number: true },
+    });
+  });
+
+  await Promise.all([
+    recordActivity(created.id, ctx.user.id, "created", null, `Cloned from ${src.project.key}-${src.number}`),
+    prisma.issueWatcher.create({ data: { issueId: created.id, userId: ctx.user.id } }).catch(() => {}),
+  ]);
+  revalidateProject(slug, src.project.key);
+  return { number: created.number, projectKey: src.project.key };
+}
+
 // Reorder an issue relative to the project's other issues (board/backlog DnD).
 export async function setIssueRank(slug: string, issueId: string, rank: number) {
   const { issue } = await loadIssueForEdit(slug, issueId);

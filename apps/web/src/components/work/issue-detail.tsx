@@ -11,6 +11,7 @@ import {
   deleteIssue,
   toggleWatch,
   createIssue,
+  cloneIssue,
   deleteIssueComment,
 } from "@/app/w/[slug]/work/work-issue-actions";
 
@@ -432,18 +433,31 @@ export function IssueDetail({
             {isWatching ? "👁 Watching" : "👁 Watch"} ({watcherCount})
           </button>
           {!readOnly && (
-            <button
-              onClick={() => {
-                if (!confirm("Delete this issue?")) return;
-                startTransition(async () => {
-                  await deleteIssue(slug, issue.id);
-                  router.push(`/w/${slug}/work/${projectKey}/board`);
-                });
-              }}
-              className="text-xs text-gray-400 hover:text-red-600"
-            >
-              Delete
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() =>
+                  startTransition(async () => {
+                    const res = await cloneIssue(slug, issue.id);
+                    if (res) router.push(`/w/${slug}/work/${res.projectKey}/issue/${res.number}`);
+                  })
+                }
+                className="text-xs text-gray-500 hover:text-gray-900"
+              >
+                Clone
+              </button>
+              <button
+                onClick={() => {
+                  if (!confirm("Delete this issue?")) return;
+                  startTransition(async () => {
+                    await deleteIssue(slug, issue.id);
+                    router.push(`/w/${slug}/work/${projectKey}/board`);
+                  });
+                }}
+                className="text-xs text-gray-400 hover:text-red-600"
+              >
+                Delete
+              </button>
+            </div>
           )}
         </div>
       </aside>
