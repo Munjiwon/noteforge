@@ -27,13 +27,21 @@ export default async function MyWorkPage({
     orderBy: [{ updatedAt: "desc" }],
     take: 200,
     include: {
-      project: { select: { key: true } },
+      project: { select: { key: true, name: true } },
       type: { select: { icon: true, name: true } },
       status: { select: { name: true, category: true } },
       assignee: { select: { name: true, color: true } },
     },
   });
   issues.sort((a, b) => priorityMeta(b.priority).rank - priorityMeta(a.priority).rank);
+
+  // Group by project (preserving the priority order within each group).
+  const groups = new Map<string, { name: string; rows: typeof issues }>();
+  for (const i of issues) {
+    const g = groups.get(i.project.key) ?? { name: i.project.name, rows: [] };
+    g.rows.push(i);
+    groups.set(i.project.key, g);
+  }
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-6">
@@ -47,7 +55,29 @@ export default async function MyWorkPage({
           {showDone ? "Hide done" : "Show done"}
         </Link>
       </div>
-      <IssueTable slug={params.slug} rows={issues.map(toIssueRow)} />
+      {issues.length === 0 ? (
+        <div className="rounded-lg border border-dashed border-gray-300 py-12 text-center text-sm text-gray-400">
+          Nothing assigned to you{showDone ? "" : " that's still open"}.
+        </div>
+      ) : (
+        <div className="space-y-6">
+          {[...groups.entries()].map(([key, g]) => (
+            <div key={key}>
+              <div className="mb-1.5 flex items-center gap-2 text-sm">
+                <Link
+                  href={`/w/${params.slug}/work/${key}/board`}
+                  className="font-medium text-gray-800 hover:underline"
+                >
+                  {g.name}
+                </Link>
+                <span className="rounded bg-gray-100 px-1.5 font-mono text-[11px] text-gray-500">{key}</span>
+                <span className="text-xs text-gray-400">{g.rows.length}</span>
+              </div>
+              <IssueTable slug={params.slug} rows={g.rows.map(toIssueRow)} />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
