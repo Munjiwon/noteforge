@@ -14,7 +14,14 @@ export default async function IssuesPage({
   searchParams,
 }: {
   params: { slug: string; key: string };
-  searchParams: { status?: string; assignee?: string; type?: string; priority?: string };
+  searchParams: {
+    status?: string;
+    assignee?: string;
+    type?: string;
+    priority?: string;
+    sort?: string;
+    dir?: string;
+  };
 }) {
   const ctx = await requireWorkspaceMember(params.slug);
   const project = await prisma.workProject.findFirst({
@@ -27,6 +34,15 @@ export default async function IssuesPage({
     loadProjectMeta(project.id, ctx.workspace.id),
     workspaceMemberOptions(ctx.workspace.id),
   ]);
+  const sort = searchParams.sort ?? "updated";
+  const dir: "asc" | "desc" = searchParams.dir === "asc" ? "asc" : "desc";
+  const dbOrderBy =
+    sort === "number"
+      ? { number: dir }
+      : sort === "points"
+      ? { storyPoints: dir }
+      : { updatedAt: dir }; // "updated" (default) and "priority" (sorted in memory)
+
   const issues = await prisma.issue.findMany({
     where: {
       projectId: project.id,
@@ -35,7 +51,7 @@ export default async function IssuesPage({
       ...(searchParams.type ? { typeId: searchParams.type } : {}),
       ...(searchParams.priority ? { priority: searchParams.priority } : {}),
     },
-    orderBy: [{ updatedAt: "desc" }],
+    orderBy: [dbOrderBy],
     include: {
       status: true,
       type: true,
@@ -43,6 +59,25 @@ export default async function IssuesPage({
       labels: { include: { label: { select: { name: true, color: true } } } },
     },
   });
+  if (sort === "priority") {
+    issues.sort((a, b) => {
+      const d = priorityMeta(b.priority).rank - priorityMeta(a.priority).rank;
+      return dir === "asc" ? -d : d;
+    });
+  }
+
+  // Build a sortable-column header link that preserves the active filters and
+  // toggles direction when the same column is clicked.
+  const sortLink = (field: string) => {
+    const p = new URLSearchParams();
+    for (const k of ["status", "assignee", "type", "priority"] as const) {
+      if (searchParams[k]) p.set(k, searchParams[k]!);
+    }
+    p.set("sort", field);
+    p.set("dir", sort === field && dir === "desc" ? "asc" : "desc");
+    return `?${p.toString()}`;
+  };
+  const arrow = (field: string) => (sort === field ? (dir === "asc" ? " ▲" : " ▼") : "");
 
   return (
     <div className="px-6 py-5">
@@ -133,12 +168,18 @@ export default async function IssuesPage({
           <thead className="bg-gray-50 text-left text-xs text-gray-500">
             <tr>
               <th className="px-3 py-2 font-medium">Type</th>
-              <th className="px-3 py-2 font-medium">Key</th>
+              <th className="px-3 py-2 font-medium">
+                <Link href={sortLink("number")} className="hover:text-gray-900">Key{arrow("number")}</Link>
+              </th>
               <th className="px-3 py-2 font-medium">Summary</th>
               <th className="px-3 py-2 font-medium">Status</th>
-              <th className="px-3 py-2 font-medium">Priority</th>
+              <th className="px-3 py-2 font-medium">
+                <Link href={sortLink("priority")} className="hover:text-gray-900">Priority{arrow("priority")}</Link>
+              </th>
               <th className="px-3 py-2 font-medium">Assignee</th>
-              <th className="px-3 py-2 font-medium">Pts</th>
+              <th className="px-3 py-2 font-medium">
+                <Link href={sortLink("points")} className="hover:text-gray-900">Pts{arrow("points")}</Link>
+              </th>
             </tr>
           </thead>
           <tbody>
