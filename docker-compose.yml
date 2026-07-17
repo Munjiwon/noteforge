@@ -1,0 +1,30 @@
+# Runs the whole app (Next.js web + Yjs collab server) in one container.
+# Usage:
+#   docker compose up --build
+# Then open http://localhost:3001  (login: alice@test.dev / password123)
+services:
+  app:
+    build: .
+    image: noteforge
+    ports:
+      - "3001:3000" # web  (host 3001 avoids clashing with a local `next dev` on 3000)
+      - "1234:1234" # collab websocket (must match NEXT_PUBLIC_COLLAB_URL baked at build)
+    environment:
+      DATABASE_URL: "file:/data/dev.db"
+      # Change this in any real deployment. Shared by web (auth + collab tokens)
+      # and the collab server.
+      AUTH_SECRET: "${AUTH_SECRET:-dev-insecure-secret-change-me-0123456789abcdef}"
+      AUTH_TRUST_HOST: "true"
+      NEXTAUTH_URL: "http://localhost:3001"
+      COLLAB_PORT: "1234"
+      COLLAB_DATA: "/data/collab"
+      # Seed demo data on first boot (idempotent). Set to 0 to disable.
+      SEED: "1"
+    volumes:
+      - notion-data:/data
+      - notion-uploads:/app/apps/web/.uploads
+    restart: unless-stopped
+
+volumes:
+  notion-data:
+  notion-uploads:

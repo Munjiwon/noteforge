@@ -1,0 +1,28 @@
+# Deps & build artifacts (installed/built fresh inside the image)
+**/node_modules
+**/.next
+**/dist
+**/.turbo
+
+# Local databases, uploads, collab state (use volumes instead)
+**/*.db
+**/*.db-journal
+**/dev.db*
+**/.uploads
+**/data
+apps/collab/data
+
+# Env & secrets (provided at runtime via compose)
+**/.env
+**/.env.local
+**/.env.*.local
+
+# VCS / editor / OS
+.git
+.gitignore
+**/.DS_Store
+*.log
+npm-debug.log*
+
+# Scratch / docs not needed at runtime
+**/*.md
