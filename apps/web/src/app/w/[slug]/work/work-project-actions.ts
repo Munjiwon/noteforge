@@ -144,6 +144,15 @@ export async function archiveWorkProject(slug: string, id: string) {
   redirect(`/w/${slug}/work`);
 }
 
+export async function restoreWorkProject(slug: string, id: string) {
+  const ctx = await assertEditor(slug);
+  await prisma.workProject.updateMany({
+    where: { id, workspaceId: ctx.workspace.id },
+    data: { archivedAt: null },
+  });
+  revalidatePath(`/w/${slug}/work`, "layout");
+}
+
 export async function deleteWorkProject(slug: string, id: string) {
   const ctx = await assertEditor(slug);
   if (ctx.role !== "owner") throw new Error("forbidden");

@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { updateWorkProject } from "@/app/w/[slug]/work/work-project-actions";
+import { updateWorkProject, archiveWorkProject } from "@/app/w/[slug]/work/work-project-actions";
 import {
   createComponent,
   deleteComponent,
@@ -138,6 +138,27 @@ export function ProjectSettings({
           </form>
         )}
       </section>
+
+      {canEdit && (
+        <section>
+          <h3 className="mb-1 font-semibold text-red-700">Danger zone</h3>
+          <p className="mb-2 text-xs text-gray-400">
+            Archiving hides the project from the list; you can restore it later. Issues are kept.
+          </p>
+          <button
+            onClick={() => {
+              if (confirm(`Archive "${project.name}"? You can restore it from the projects list.`)) {
+                start(async () => {
+                  await archiveWorkProject(slug, project.id);
+                });
+              }
+            }}
+            className="rounded border border-red-300 px-3 py-1.5 text-sm text-red-700 hover:bg-red-50"
+          >
+            Archive project
+          </button>
+        </section>
+      )}
     </div>
   );
 }

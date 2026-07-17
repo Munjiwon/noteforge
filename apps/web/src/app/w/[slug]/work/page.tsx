@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireWorkspaceMember } from "@/lib/workspace";
 import { prisma } from "db";
 import { NewProjectDialog } from "@/components/work/new-project-dialog";
+import { restoreWorkProject } from "@/app/w/[slug]/work/work-project-actions";
 
 export const dynamic = "force-dynamic";
 
@@ -30,6 +31,13 @@ export default async function WorkProjectsPage({
     _count: { _all: true },
   });
   const openByProject = new Map(openCounts.map((c) => [c.projectId, c._count._all]));
+
+  const archived = await prisma.workProject.findMany({
+    where: { workspaceId: ctx.workspace.id, archivedAt: { not: null } },
+    orderBy: { archivedAt: "desc" },
+    select: { id: true, key: true, name: true, icon: true },
+  });
+  const canEdit = ctx.role !== "viewer";
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-10">
@@ -75,6 +83,30 @@ export default async function WorkProjectsPage({
               </div>
             </Link>
           ))}
+        </div>
+      )}
+
+      {archived.length > 0 && (
+        <div className="mt-10">
+          <h2 className="mb-2 text-xs font-medium uppercase tracking-wide text-gray-500">
+            Archived ({archived.length})
+          </h2>
+          <ul className="divide-y divide-gray-100 rounded-lg border border-gray-200">
+            {archived.map((p) => (
+              <li key={p.id} className="flex items-center gap-2 px-3 py-2 text-sm">
+                <span>{p.icon || "🗂️"}</span>
+                <span className="text-gray-600">{p.name}</span>
+                <span className="rounded bg-gray-100 px-1.5 font-mono text-[11px] text-gray-400">{p.key}</span>
+                {canEdit && (
+                  <form action={restoreWorkProject.bind(null, params.slug, p.id)} className="ml-auto">
+                    <button className="rounded border border-gray-300 px-2 py-0.5 text-xs hover:bg-black/5">
+                      Restore
+                    </button>
+                  </form>
+                )}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </div>
