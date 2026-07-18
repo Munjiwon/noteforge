@@ -11,7 +11,7 @@ const themeBootstrap = `
 (function(){
   try {
     var k = "collab-notion-theme";
-    var v = localStorage.getItem(k) || "auto";
+    var v = localStorage.getItem(k) || "light";
     var dark = v === "dark" || (v === "auto" && matchMedia("(prefers-color-scheme: dark)").matches);
     if (dark) document.documentElement.classList.add("dark");
   } catch(e) {}

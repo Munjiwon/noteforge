@@ -24,13 +24,13 @@ export function ThemeToggle() {
 
   useEffect(() => {
     const stored = (localStorage.getItem(STORAGE_KEY) as Theme | null) ?? null;
-    const initial: Theme = stored ?? "auto";
+    const initial: Theme = stored ?? "light";
     setTheme(initial);
     applyTheme(initial);
     // when in auto mode, react to system changes
     const mql = matchMedia("(prefers-color-scheme: dark)");
     const onChange = () => {
-      const cur = (localStorage.getItem(STORAGE_KEY) as Theme | null) ?? "auto";
+      const cur = (localStorage.getItem(STORAGE_KEY) as Theme | null) ?? "light";
       if (cur === "auto") applyTheme("auto");
     };
     mql.addEventListener("change", onChange);
