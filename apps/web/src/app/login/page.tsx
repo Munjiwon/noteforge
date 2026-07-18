@@ -9,10 +9,10 @@ export default function LoginPage({
 }) {
   async function login(formData: FormData) {
     "use server";
-    const email = String(formData.get("email") ?? "");
+    const identifier = String(formData.get("identifier") ?? "").toLowerCase().trim();
     const password = String(formData.get("password") ?? "");
     try {
-      await signIn("credentials", { email, password, redirect: false });
+      await signIn("credentials", { identifier, password, redirect: false });
     } catch {
       redirect("/login?error=1");
     }
@@ -28,14 +28,16 @@ export default function LoginPage({
           <p className="text-xs text-gray-500">Sign in to continue to your workspace.</p>
         </div>
         {searchParams.error && (
-          <p className="text-red-600 text-sm text-center">Invalid email or password.</p>
+          <p className="text-red-600 text-sm text-center">아이디(또는 이메일) 또는 비밀번호가 올바르지 않습니다.</p>
         )}
         <form action={login} className="space-y-3">
           <label className="block">
-            <span className="text-xs text-gray-600">Email</span>
+            <span className="text-xs text-gray-600">아이디 또는 이메일</span>
             <input
-              name="email"
-              type="email"
+              name="identifier"
+              type="text"
+              autoCapitalize="none"
+              autoComplete="username"
               required
               className="mt-1 w-full border rounded px-3 py-2 text-sm outline-none focus:border-gray-400"
             />

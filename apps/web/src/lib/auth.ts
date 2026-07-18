@@ -5,7 +5,8 @@ import { prisma } from "db";
 import { z } from "zod";
 
 const loginSchema = z.object({
-  email: z.string().email(),
+  // Accepts either a username (id) or an email address.
+  identifier: z.string().min(1),
   password: z.string().min(6),
 });
 
@@ -16,12 +17,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: { signIn: "/login" },
   providers: [
     Credentials({
-      credentials: { email: {}, password: {} },
+      credentials: { identifier: {}, password: {} },
       async authorize(creds) {
         const parsed = loginSchema.safeParse(creds);
         if (!parsed.success) return null;
-        const user = await prisma.user.findUnique({
-          where: { email: parsed.data.email },
+        const id = parsed.data.identifier.toLowerCase().trim();
+        const user = await prisma.user.findFirst({
+          where: { OR: [{ username: id }, { email: id }] },
         });
         if (!user) return null;
         const ok = await bcrypt.compare(parsed.data.password, user.passwordHash);
