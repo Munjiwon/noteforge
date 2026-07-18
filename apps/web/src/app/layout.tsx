@@ -3,7 +3,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-  title: "Collab Notion",
+  title: "NoteForge",
   description: "Self-hosted collaborative workspace",
 };
 

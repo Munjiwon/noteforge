@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "db";
 
-const SYSTEM = "You are a helpful assistant inside a Notion-style workspace. Reply concisely.";
+const SYSTEM = "You are a helpful assistant inside a collaborative note-taking workspace. Reply concisely.";
 
 function stripBlockNoteJson(json: string): string {
   try {
@@ -897,7 +897,7 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
   emails_7day: (text) =>
     `Outline a 7-day email course on the topic. For each day give: **Day N — Subject**, then a 2-sentence body summary. Reply as markdown.\n\nTopic:\n${text}`,
   lead_magnet_idea: (text) =>
-    `Suggest 5 lead-magnet ideas for the audience. For each: title, format (PDF / template / Notion doc / video / mini-course), 1-line value promise. Reply as a markdown bullet list.\n\nAudience:\n${text}`,
+    `Suggest 5 lead-magnet ideas for the audience. For each: title, format (PDF / template / doc / video / mini-course), 1-line value promise. Reply as a markdown bullet list.\n\nAudience:\n${text}`,
   landing_faq: (text) =>
     `Write a landing-page FAQ section. 6 Q&A pairs covering: pricing, security, comparison, refunds, integrations, support. Reply as markdown '**Q:**' / '**A:**' pairs.\n\nProduct:\n${text}`,
   landing_feature_grid: (text) =>
@@ -1691,7 +1691,7 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
   translate_ko_to_portuguese: (text) =>
     `Translate the Korean text below into natural Portuguese (português). 포르투갈 vs 브라질 변종은 입력 맥락에서 추론, 기본은 브라질 포르투갈어 (글로벌 사용자 더 많음). 격식 시스템 ('senhor/a' 정중 / 'você' 일상 / 'tu' 일부 지역 친근), 성 / 수 일치, 동사 활용 정확히. 격식은 원문에 맞춤 (한국어 합쇼체 → 'senhor/a' + 정중 / 해요체 → 'você' / 반말 → 'você' 친근하게). Reply with two sections: '**Tradução**' (the translated text, paragraph breaks preserved) and '**번역 노트**' (3 bullets in Korean — 1) 변종 (브라질 vs 포르투갈) 결정 1가지, 2) 의역한 표현 1가지, 3) 동사 시제 결정 1가지).\n\n원문 (한국어):\n${text}`,
   cross_team_async_update_ko: (text) =>
-    `Draft a Korean cross-team async update post (Slack 또는 Notion 게시) — '내가 속한 팀이 다른 팀에게 보내는 정기 업데이트'. Use 해요체. 5분 안에 읽고 다음 액션 잡을 수 있게. Markdown sections: '**제목**' (1줄, 28자 이내 — '[보내는 팀] → [받는 팀] 이번 주 업데이트 — YYYY-MM-DD' 류), '**한 줄 핵심**' (1줄 — 받는 팀이 알아야 할 가장 중요한 1가지), '**우리 팀에서 진척된 것 (3 bullets)**' (각 1줄, 받는 팀이 신경 쓰는 영역 위주로 골라), '**받는 팀에 영향 있는 변경 (있으면)**' (bullets — '곧 X가 바뀝니다, 여러분 쪽 Y에 영향이 있을 수 있어요' + 시점), '**받는 팀에 부탁 (있으면)**' (numbered — 구체적 — 누가 / 무엇을 / 언제까지), '**다음 업데이트 시점**' (1줄 — 'YYYY-MM-DD 다음 업데이트 보내드릴게요'), '**질문 채널**' (1줄 — Slack 채널 + 답변 SLA).\n\n이번 주 우리 팀 진척 / 받는 팀 컨텍스트:\n${text}`,
+    `Draft a Korean cross-team async update post (Slack 또는 사내 위키 게시) — '내가 속한 팀이 다른 팀에게 보내는 정기 업데이트'. Use 해요체. 5분 안에 읽고 다음 액션 잡을 수 있게. Markdown sections: '**제목**' (1줄, 28자 이내 — '[보내는 팀] → [받는 팀] 이번 주 업데이트 — YYYY-MM-DD' 류), '**한 줄 핵심**' (1줄 — 받는 팀이 알아야 할 가장 중요한 1가지), '**우리 팀에서 진척된 것 (3 bullets)**' (각 1줄, 받는 팀이 신경 쓰는 영역 위주로 골라), '**받는 팀에 영향 있는 변경 (있으면)**' (bullets — '곧 X가 바뀝니다, 여러분 쪽 Y에 영향이 있을 수 있어요' + 시점), '**받는 팀에 부탁 (있으면)**' (numbered — 구체적 — 누가 / 무엇을 / 언제까지), '**다음 업데이트 시점**' (1줄 — 'YYYY-MM-DD 다음 업데이트 보내드릴게요'), '**질문 채널**' (1줄 — Slack 채널 + 답변 SLA).\n\n이번 주 우리 팀 진척 / 받는 팀 컨텍스트:\n${text}`,
   customer_health_score_definition_ko: (text) =>
     `Define a Korean Customer Health Score from the customer-success signals below. Use 해요체. Markdown sections: '**Score 정의 (1줄)**' (1줄 — 0-100점 / 빨강-노랑-초록 등 어떤 척도), '**Score 공식**' (1단락 — 어떤 신호들을 어떤 가중치로 합하는지, 가능하면 수식 1줄), '**신호별 정의 (테이블)**' (컬럼: '신호 | 측정 방법 | 가중치 | 데이터 출처'. 신호 예: Product usage frequency, depth of feature use, support ticket volume, NPS, CSM-relationship strength, contract value trend), '**Score → 액션 매핑**' (테이블 — 'Score 구간 | 색 라벨 | 권장 액션 | 책임자'), '**False positive / False negative 사례**' (2 bullets — score가 거짓 신호 줄 수 있는 케이스 + 우리가 어떻게 보정), '**모니터링 / 리뷰 cadence**' (1줄 — 누가 / 얼마 만에 score 정의 자체를 재검토), '**시작 사용 가이드 (3 bullets)**' — 1) 처음 N개월은 score 자체를 만든다고 생각, 2) 액션을 너무 자동화하지 말기, 3) score는 도구일 뿐 사람 판단을 대체하지 않음.\n\n고객 / 신호 컨텍스트:\n${text}`,
   translate_ko_to_polish: (text) =>
@@ -1967,7 +1967,7 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
   translate_ko_to_kannada: (text) =>
     `Translate the Korean text below into natural Kannada (ಕನ್ನಡ). 격식 ('ನೀವು' 정중 / 'ನೀನು' 친근) 원문에 맞춤. Reply with two sections: '**ಅನುವಾದ**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
   team_meeting_async_format_ko: (text) =>
-    `Convert a Korean recurring team meeting (주간 standup / 분기 리뷰) into an async written format — so the team can reclaim the synchronous time. Use 해요체. Markdown: '**기존 미팅**' (1줄 — 이름 / 빈도 / 시간 / 참석자 수), '**왜 async로 옮기나요**' (1단락 — 시간 / 시간대 / 깊은 작업 보호), '**Async 형식**' (bullets — 어디에 (Slack / Notion 페이지 / 폼) / 언제까지 작성 / 어떤 양식), '**템플릿 (복붙용)**' (코드 블록 — 각 사람이 매주 채울 양식 — '지난 주 ✓ / 이번 주 → / 막힘 ⚠ / 도움 🆘'), '**Sync는 언제 다시 필요한가요**' (bullets — 분기 1회 / 결정 필요 / 사람 변동), '**Trial 기간 + 측정**' (1줄 — '4주 trial, 그 후 retro로 결정').\n\n기존 미팅 컨텍스트:\n${text}`,
+    `Convert a Korean recurring team meeting (주간 standup / 분기 리뷰) into an async written format — so the team can reclaim the synchronous time. Use 해요체. Markdown: '**기존 미팅**' (1줄 — 이름 / 빈도 / 시간 / 참석자 수), '**왜 async로 옮기나요**' (1단락 — 시간 / 시간대 / 깊은 작업 보호), '**Async 형식**' (bullets — 어디에 (Slack / 위키 페이지 / 폼) / 언제까지 작성 / 어떤 양식), '**템플릿 (복붙용)**' (코드 블록 — 각 사람이 매주 채울 양식 — '지난 주 ✓ / 이번 주 → / 막힘 ⚠ / 도움 🆘'), '**Sync는 언제 다시 필요한가요**' (bullets — 분기 1회 / 결정 필요 / 사람 변동), '**Trial 기간 + 측정**' (1줄 — '4주 trial, 그 후 retro로 결정').\n\n기존 미팅 컨텍스트:\n${text}`,
   translate_ko_to_malayalam: (text) =>
     `Translate the Korean text below into natural Malayalam (മലയാളം). 격식 ('നിങ്ങൾ' 정중 / 'നീ' 친근) 원문에 맞춤. Reply with two sections: '**വിവർത്തനം**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
   customer_quarterly_strategic_review_ko: (text) =>
@@ -2047,7 +2047,7 @@ const ACTION_PROMPT: Record<string, (text: string, instr?: string) => string> = 
   translate_ko_to_austrian_german: (text) =>
     `Translate the Korean text below into natural Austrian German (österreichisches Deutsch). 격식 ('Sie' 정중 / 'du' 친근) 원문에 맞춤. Use Austrian vocabulary where natural (e.g., 'Jänner' for January, 'Erdäpfel' for potatoes, 'Sackerl' for bag). Reply with two sections: '**Übersetzung**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
   weekly_team_health_pulse_ko: (text) =>
-    `Build a Korean weekly team health pulse — short async form sent every Friday to team members. Use 해요체. 익명 옵션 강조. Markdown: '**제목 (이메일 / 폼)**' (1줄 — '주간 health pulse — 30초만'), '**왜 보내요 (1줄)**' (1줄 — '매니저가 빨리 도울 수 있게'), '**질문 (5개, 각 1-5 척도)**' (numbered: 1) 이번 주 명확성 (내가 해야 할 게 명확했나) 1-5, 2) 협업 (도움 요청에 응답 받았나) 1-5, 3) 진척 (의미 있는 진전을 느꼈나) 1-5, 4) 에너지 (이번 주 끝에 에너지가 남았나) 1-5, 5) 답하고 싶은 1가지 (open)), '**보내는 방법**' (1줄 — 'Slack 폼 / Google Form 익명 / Notion'), '**매니저가 어떻게 쓰나요 (1단락)**' (3-4줄 — 보이는 패턴에 대응 / 개인 1:1 시 사용 / 절대 평가에 안 씀).\n\n팀 / 컨텍스트:\n${text}`,
+    `Build a Korean weekly team health pulse — short async form sent every Friday to team members. Use 해요체. 익명 옵션 강조. Markdown: '**제목 (이메일 / 폼)**' (1줄 — '주간 health pulse — 30초만'), '**왜 보내요 (1줄)**' (1줄 — '매니저가 빨리 도울 수 있게'), '**질문 (5개, 각 1-5 척도)**' (numbered: 1) 이번 주 명확성 (내가 해야 할 게 명확했나) 1-5, 2) 협업 (도움 요청에 응답 받았나) 1-5, 3) 진척 (의미 있는 진전을 느꼈나) 1-5, 4) 에너지 (이번 주 끝에 에너지가 남았나) 1-5, 5) 답하고 싶은 1가지 (open)), '**보내는 방법**' (1줄 — 'Slack 폼 / Google Form 익명 / 사내 위키'), '**매니저가 어떻게 쓰나요 (1단락)**' (3-4줄 — 보이는 패턴에 대응 / 개인 1:1 시 사용 / 절대 평가에 안 씀).\n\n팀 / 컨텍스트:\n${text}`,
   translate_ko_to_andean_spanish: (text) =>
     `Translate the Korean text below into natural Andean Spanish (español andino — Bolivia / Peru / Ecuador 산악 지역). 격식 ('usted' 정중 / 'tú' 친근) 원문에 맞춤. Quechua / Aymara 영향 어휘 자연스럽게 사용 가능. Reply with two sections: '**Traducción**' and '**번역 노트**' (3 bullets in Korean).\n\n원문:\n${text}`,
   customer_qr_code_handout_ko: (text) =>

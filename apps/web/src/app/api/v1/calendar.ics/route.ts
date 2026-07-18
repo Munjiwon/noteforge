@@ -55,7 +55,7 @@ export async function GET(req: NextRequest) {
   const lines: string[] = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Collab Notion//EN",
+    "PRODID:-//NoteForge//EN",
     "CALSCALE:GREGORIAN",
     `X-WR-CALNAME:${esc(workspace.name)}`,
   ];
