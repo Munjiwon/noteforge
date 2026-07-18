@@ -58,7 +58,7 @@ export default function SignupPage({
         )}
         <label className="block">
           <span className="text-sm text-gray-600">Name</span>
-          <input name="name" required className="mt-1 w-full border rounded px-3 py-2" />
+          <input name="name" required className="mt-1 w-full border rounded px-3 py-2 bg-white text-gray-900 placeholder-gray-400" />
         </label>
         <label className="block">
           <span className="text-sm text-gray-600">아이디 (Username)</span>
@@ -70,12 +70,12 @@ export default function SignupPage({
             placeholder="예: jiwon"
             pattern="[A-Za-z0-9._\-]{3,20}"
             title="영문/숫자/._- 3~20자"
-            className="mt-1 w-full border rounded px-3 py-2"
+            className="mt-1 w-full border rounded px-3 py-2 bg-white text-gray-900 placeholder-gray-400"
           />
         </label>
         <label className="block">
           <span className="text-sm text-gray-600">Email</span>
-          <input name="email" type="email" required className="mt-1 w-full border rounded px-3 py-2" />
+          <input name="email" type="email" required className="mt-1 w-full border rounded px-3 py-2 bg-white text-gray-900 placeholder-gray-400" />
         </label>
         <label className="block">
           <span className="text-sm text-gray-600">Password</span>
@@ -84,7 +84,7 @@ export default function SignupPage({
             type="password"
             required
             minLength={6}
-            className="mt-1 w-full border rounded px-3 py-2"
+            className="mt-1 w-full border rounded px-3 py-2 bg-white text-gray-900 placeholder-gray-400"
           />
         </label>
         <button className="w-full bg-accent text-white rounded py-2 hover:opacity-90">

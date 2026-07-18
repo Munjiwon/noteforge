@@ -39,7 +39,7 @@ export default function LoginPage({
               autoCapitalize="none"
               autoComplete="username"
               required
-              className="mt-1 w-full border rounded px-3 py-2 text-sm outline-none focus:border-gray-400"
+              className="mt-1 w-full border rounded px-3 py-2 text-sm outline-none focus:border-gray-400 bg-white text-gray-900 placeholder-gray-400"
             />
           </label>
           <label className="block">
@@ -49,7 +49,7 @@ export default function LoginPage({
               type="password"
               required
               minLength={6}
-              className="mt-1 w-full border rounded px-3 py-2 text-sm outline-none focus:border-gray-400"
+              className="mt-1 w-full border rounded px-3 py-2 text-sm outline-none focus:border-gray-400 bg-white text-gray-900 placeholder-gray-400"
             />
           </label>
           <button className="w-full bg-accent text-white rounded py-2 text-sm hover:opacity-90">
