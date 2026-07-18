@@ -542,7 +542,7 @@ export async function addSelectOption(
   if (!p) return;
   if (p.type === "status") {
     // New columns added from a status board land in the To-do group by default,
-    // matching Notion (you re-group them from the property editor afterward).
+    // (you re-group them from the property editor afterward).
     const sopt = {
       id: newId("o"),
       name: name.trim(),

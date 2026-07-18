@@ -494,7 +494,7 @@ function FilterValueInput({
     );
   }
   if (prop.type === "person") {
-    // "@me" follows the current viewer (Notion's "Me"); a member picker would
+    // "@me" follows the current viewer ("Me"); a member picker would
     // need the workspace roster, which this control doesn't load.
     return (
       <select

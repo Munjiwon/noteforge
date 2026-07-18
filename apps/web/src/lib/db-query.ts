@@ -53,7 +53,7 @@ function passes(filter: DbFilter, prop: DbProp, row: BaseRow): boolean {
 }
 
 // Filter values of "@me" resolve to the current viewer's id, so a saved view
-// like "My tasks" follows whoever is looking at it (Notion's behaviour).
+// like "My tasks" follows whoever is looking at it.
 const ME = "@me";
 
 export function applyQuery<R extends BaseRow>(

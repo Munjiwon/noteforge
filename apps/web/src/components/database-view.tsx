@@ -481,7 +481,7 @@ export function DatabaseView({
               });
               if (!groupBy) {
                 // Ungrouped. If a tree parent relation is configured, render the
-                // rows as an indented sub-task tree (Notion-style sub-items).
+                // rows as an indented sub-task tree (sub-items).
                 const parentProp = schema.treeParentProp;
                 if (parentProp && schema.props.some((p) => p.id === parentProp)) {
                   const byId = new Map(rows.map((r) => [r.id, r]));

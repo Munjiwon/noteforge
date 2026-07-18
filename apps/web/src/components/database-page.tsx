@@ -84,7 +84,7 @@ export function DatabasePage({
   const view: DbView = effectiveViewKind(db.schema);
   const savedViews = db.schema.views ?? [];
   const activeView = getActiveView(db.schema);
-  // Kanban can group by select or status; status boards read like Notion's.
+  // Kanban can group by select or status; status boards.
   const kanbanGroupProps = db.schema.props.filter(
     (p) => p.type === "select" || p.type === "status",
   );

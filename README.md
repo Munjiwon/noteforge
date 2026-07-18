@@ -1,10 +1,10 @@
-# Collab Notion
+# NoteForge
 
-Self-hosted, collaborative Notion-style workspace.
+Self-hosted, collaborative docs + JIRA-style work-management workspace.
 
 ## Stack
 - Next.js 14 (App Router) + TypeScript + Tailwind
-- BlockNote (Notion-style block editor)
+- BlockNote (block-based editor)
 - Yjs + y-websocket (real-time collaboration)
 - Prisma + SQLite (dev) / Postgres (prod)
 - Auth.js (NextAuth v5) — email + password (credentials)

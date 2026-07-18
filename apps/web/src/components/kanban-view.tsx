@@ -57,7 +57,7 @@ export function KanbanView({
   }
 
   // Status options carry a group (todo / in_progress / complete) — order columns
-  // by that group so the board reads left-to-right like Notion's task boards.
+  // by that group so the board reads left-to-right like task boards.
   const STATUS_GROUP_ORDER: Record<string, number> = {
     todo: 0,
     in_progress: 1,

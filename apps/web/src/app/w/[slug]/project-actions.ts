@@ -201,7 +201,7 @@ function iso(d: Date): string {
 }
 
 /**
- * Scaffold a Notion-style project-management workspace: three interlinked
+ * Scaffold a project-management workspace: three interlinked
  * databases (Projects, Tasks, Sprints) with relations, a task-count rollup,
  * status boards, and a seeded current sprint + sample project and tasks.
  * Created under `teamspaceId` when provided, otherwise at the workspace root.
@@ -456,7 +456,7 @@ async function loadSprintRows(slug: string, sprintsDbId: string) {
 }
 
 // Recompute every sprint's status (Future / Current / Past) from its
-// start/end dates relative to today — mirrors Notion's auto sprint status.
+// start/end dates relative to today — auto sprint status.
 export async function setSprintStatusFromDates(slug: string, sprintsDbId: string) {
   const { rows } = await loadSprintRows(slug, sprintsDbId);
   const today = iso(new Date());

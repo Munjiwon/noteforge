@@ -90,7 +90,7 @@ export async function GET(req: NextRequest) {
         if (Number.isNaN(dt.getTime())) continue;
         lines.push(
           "BEGIN:VEVENT",
-          `UID:row-${r.id}-${p.id}@collab-notion`,
+          `UID:row-${r.id}-${p.id}@noteforge`,
           `DTSTAMP:${ics(r.updatedAt)}`,
           `DTSTART:${ics(dt)}`,
           `SUMMARY:${esc(`${db.title}: ${r.title || "Untitled"}`)}`,
@@ -109,7 +109,7 @@ export async function GET(req: NextRequest) {
   for (const r of reminders) {
     lines.push(
       "BEGIN:VEVENT",
-      `UID:reminder-${r.id}@collab-notion`,
+      `UID:reminder-${r.id}@noteforge`,
       `DTSTAMP:${ics(r.createdAt)}`,
       `DTSTART:${ics(r.dueAt)}`,
       `SUMMARY:${esc(r.note ?? `Reminder · ${r.page.title || "Untitled"}`)}`,

@@ -21,10 +21,10 @@ services:
       # Seed demo data on first boot (idempotent). Set to 0 to disable.
       SEED: "1"
     volumes:
-      - notion-data:/data
-      - notion-uploads:/app/apps/web/.uploads
+      - noteforge-data:/data
+      - noteforge-uploads:/app/apps/web/.uploads
     restart: unless-stopped
 
 volumes:
-  notion-data:
-  notion-uploads:
+  noteforge-data:
+  noteforge-uploads:

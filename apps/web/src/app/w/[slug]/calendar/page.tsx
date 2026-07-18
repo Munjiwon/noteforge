@@ -18,7 +18,7 @@ function startOfMonth(d: Date): Date {
 }
 function startOfGrid(d: Date): Date {
   const first = startOfMonth(d);
-  // Notion-like: Sunday-first grid
+  // Sunday-first grid
   first.setDate(1 - first.getDay());
   first.setHours(0, 0, 0, 0);
   return first;
