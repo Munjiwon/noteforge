@@ -1,5 +1,7 @@
 # NoteForge
 
+[![Hits](https://hits.sh/github.com/Munjiwon/noteforge.svg?label=visitors)](https://hits.sh/github.com/Munjiwon/noteforge/)
+
 Self-hosted, collaborative docs + JIRA-style work-management workspace.
 
 ## Stack
