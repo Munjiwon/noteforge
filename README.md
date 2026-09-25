@@ -105,3 +105,13 @@ Optional:
 - Real WebSocket push for notifications is currently emulated with 60s polling; collab server channel reuse is a future task
 - `UPLOAD_BACKEND=s3` is wired into the storage abstraction but the AWS SDK call itself is not implemented yet (falls back to local disk)
 - Cell-level row history beyond `PageActivity` aggregate logs
+
+## License
+
+Copyright (c) 2026 Munjiwon. All rights reserved except as granted below.
+
+This project is licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE.md).
+You may use, copy, modify, and share it for **noncommercial purposes only**
+(personal use, study, research, hobby projects, and use by nonprofit, educational,
+or public organizations). Any commercial use requires a separate license —
+please contact the author via GitHub.
